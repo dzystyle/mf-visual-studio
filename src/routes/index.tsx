@@ -21,6 +21,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const navigate = useNavigate();
   return (
     <div className="relative">
       <PromoBanner />
@@ -39,7 +40,11 @@ function Home() {
           </p>
 
           <div className="mt-8">
-            <PromptBox />
+            <PromptBox
+              onSubmit={(prompt) =>
+                navigate({ to: "/script", search: { prompt } })
+              }
+            />
           </div>
         </div>
 
