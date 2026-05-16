@@ -547,3 +547,87 @@ function MiniChip({
     </button>
   );
 }
+
+function MediaAssetsCard({
+  node,
+}: {
+  node: Extract<BotNode, { type: "mediaAssets" }>;
+}) {
+  const [open, setOpen] = useState(true);
+  return (
+    <div className="rounded-xl border border-border/60 bg-card/40">
+      <div className="flex items-center justify-between border-b border-border/40 px-3 py-2">
+        <div className="flex items-center gap-2 text-[12px]">
+          <span className="rounded-md bg-aurora-pink/15 px-2 py-0.5 font-medium text-aurora-pink">
+            {node.title}
+          </span>
+          {node.badge && (
+            <span className="text-aurora-orange">{node.badge} 🎬</span>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {node.cost && (
+            <span className="flex items-center gap-1 rounded-md bg-foreground/10 px-2 py-0.5 text-[11px] text-aurora-orange">
+              🎞 {node.cost}
+            </span>
+          )}
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <ChevronDown
+              className={`h-4 w-4 transition ${open ? "" : "-rotate-90"}`}
+            />
+          </button>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 border-b border-border/40 px-3 py-2 text-[12px]">
+        <div className="h-4 w-4 rounded-full bg-gradient-to-br from-aurora-blue to-aurora-pink" />
+        <span className="font-medium text-aurora-blue">Media Assets</span>
+        <span className="ml-auto text-muted-foreground">已完成</span>
+      </div>
+      {open && (
+        <ol className="relative px-4 py-3">
+          <div className="absolute bottom-4 left-[22px] top-4 w-px bg-border/60" />
+          {node.steps.map((s, i) => (
+            <li key={i} className="relative flex gap-3 pb-4 last:pb-0">
+              <div className="relative z-10 mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border border-success/60 bg-card">
+                <CheckCircle2 className="h-3 w-3 text-success" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[12px] font-medium text-foreground">
+                  {s.title}
+                </div>
+                {s.desc && (
+                  <div className="mt-1 whitespace-pre-line text-[11.5px] leading-relaxed text-muted-foreground">
+                    {s.desc}
+                    {s.desc.endsWith("…") && (
+                      <button className="ml-1 text-foreground underline">
+                        展开
+                      </button>
+                    )}
+                  </div>
+                )}
+                {s.assets && (
+                  <div className="mt-2 space-y-1.5">
+                    {s.assets.map((a, j) => (
+                      <div
+                        key={j}
+                        className="flex items-center gap-2 rounded-md bg-card/60 p-1.5"
+                      >
+                        <div className="h-9 w-9 flex-shrink-0 rounded bg-gradient-to-br from-muted to-foreground/10" />
+                        <span className="truncate text-[11.5px] text-foreground/90">
+                          {a.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  );
+}
