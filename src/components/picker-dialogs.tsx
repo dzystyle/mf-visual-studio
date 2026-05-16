@@ -234,6 +234,7 @@ export function ElementsPickerDialog({ open, onOpenChange, onSelect }: { open: b
           {elementItems.map((it) => (
             <button
               key={it.id}
+              onClick={() => pick(it.name)}
               className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-gradient-to-br from-aurora-pink/20 via-aurora-blue/20 to-aurora-orange/20 text-left transition hover:border-aurora-blue/60"
             >
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
