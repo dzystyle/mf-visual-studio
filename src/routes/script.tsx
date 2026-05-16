@@ -14,11 +14,19 @@ import {
   MoreHorizontal,
   ChevronDown,
   ChevronRight,
+  ChevronUp,
   Plus,
   Package,
   Smile,
   ArrowUp,
   CheckCircle2,
+  Quote,
+  Heart,
+  Trash2,
+  Pencil,
+  RefreshCw,
+  Eye,
+  Video,
 } from "lucide-react";
 
 type Search = { prompt?: string };
