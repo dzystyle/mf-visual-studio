@@ -204,7 +204,22 @@ type BotNode =
   | { type: "heading"; text: string }
   | { type: "list"; items: (string | { label: string; sub?: string })[] }
   | { type: "shots"; rows: { shot: string; time: string; content: string }[] }
-  | { type: "meta"; icon: string; label: string; value: string };
+  | { type: "meta"; icon: string; label: string; value: string }
+  | {
+      type: "mediaAssets";
+      title: string;
+      badge?: string;
+      cost?: string;
+      steps: {
+        title: string;
+        desc?: string;
+        assets?: { name: string }[];
+      }[];
+    }
+  | {
+      type: "characterTable";
+      rows: { icon: string; name: string; features: string }[];
+    };
 
 const scriptShots = [
   { shot: "1", time: "0–3s", content: "特写猛推:打卡机屏幕显示\"8:59:59\",红色数字疯狂跳动,一只汗湿的手猛地拍在打卡键上" },
@@ -259,6 +274,56 @@ const seedConversation: Msg[] = [
       { type: "meta", icon: "🎭", label: "角色定义(7人):", value: "萨姆、老板、卡特警探、小胖、丽莎、保安队长、马克" },
       { type: "meta", icon: "🎵", label: "音频层:", value: "全局60秒工业风电子配乐(含环境音采样)" },
       { type: "text", text: "确认无误后,下一步将为7位角色各生成一张参考形象图,用于后续视频生成时保持角色一致性。" },
+    ],
+  },
+  { kind: "user", text: "故事板确认,开始生成角色参考图" },
+  {
+    kind: "bot",
+    nodes: [
+      { type: "text", text: "好的,故事板已确认!现在开始为7位角色生成参考形象图 🎬" },
+      {
+        type: "mediaAssets",
+        title: "首次生成图片",
+        badge: "+30",
+        cost: "-77",
+        steps: [
+          { title: "Agent分析完成", desc: "好的!开始为7位角色生成参考形象图。首先注册所有角色图像资产。" },
+          { title: "资产配置完成" },
+          { title: "Agent分析完成", desc: "资产注册完成!现在为所有7位角色同步撰写提示词。" },
+          {
+            title: "编写提示词完成",
+            desc: "Element_Sam_ref_img\n角色参考图——萨姆(Sam)。版面布局:左侧为半身特写,右侧依次为全身正面、侧面、背面四视图,白色中性背景,无阴影干扰。人物设定:28岁瘦…",
+          },
+          { title: "Agent分析完成", desc: "提示词已全部就绪!现在同步生成所有7位角色的参考形象图 🎬" },
+          {
+            title: "生成素材完成",
+            assets: [
+              { name: "Element_Sam_ref_img" },
+              { name: "Element_Boss_ref_img" },
+              { name: "Element_Detective_Cart..." },
+              { name: "Element_Xiao_Pang_ref..." },
+              { name: "Element_Lisa_ref_img" },
+              { name: "Element_Security_Chief..." },
+              { name: "Element_Mark_ref_img" },
+            ],
+          },
+          { title: "Agent分析完成" },
+        ],
+      },
+      { type: "text", text: "7位角色的参考形象图全部生成完毕!✅", emphasis: true },
+      { type: "text", text: "请查看上方每位角色的三视图参考图,确认外观是否符合预期:" },
+      {
+        type: "characterTable",
+        rows: [
+          { icon: "🧑", name: "萨姆", features: "黑框眼镜、蓝格子衬衫、浓黑眼圈" },
+          { icon: "👨‍💼", name: "老板", features: "秃顶、深灰西装、金表、横肉脸" },
+          { icon: "🔪", name: "卡特警探", features: "寸头、左脸刀疤、黑色战术背心" },
+          { icon: "👀", name: "小胖", features: "圆框眼镜、灰色卫衣、含胸低头" },
+          { icon: "💃", name: "丽莎", features: "金色大波浪、黑色职业套装、红唇" },
+          { icon: "💪", name: "保安队长", features: "光头、肌肉发达、黑色制服、颈纹身" },
+          { icon: "🎧", name: "马克", features: "凌乱棕色长发、黑色连帽衫、耳机" },
+        ],
+      },
     ],
   },
 ];
@@ -386,6 +451,34 @@ function BotNodeView({ node }: { node: BotNode }) {
       </p>
     );
   }
+  if (node.type === "mediaAssets") {
+    return <MediaAssetsCard node={node} />;
+  }
+  if (node.type === "characterTable") {
+    return (
+      <div className="overflow-hidden rounded-lg border border-border/60">
+        <table className="w-full text-[12px]">
+          <thead>
+            <tr className="bg-card/60 text-muted-foreground">
+              <th className="w-24 px-3 py-2 text-left font-medium">角色</th>
+              <th className="px-2 py-2 text-left font-medium">关键外观特征</th>
+            </tr>
+          </thead>
+          <tbody>
+            {node.rows.map((r, i) => (
+              <tr key={i} className="border-t border-border/40 align-top">
+                <td className="px-3 py-2 text-foreground/90">
+                  <span className="mr-1">{r.icon}</span>
+                  {r.name}
+                </td>
+                <td className="px-2 py-2 leading-relaxed text-foreground/80">{r.features}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
   // status card
   const tone =
     node.tone === "warn"
@@ -452,5 +545,89 @@ function MiniChip({
         </span>
       )}
     </button>
+  );
+}
+
+function MediaAssetsCard({
+  node,
+}: {
+  node: Extract<BotNode, { type: "mediaAssets" }>;
+}) {
+  const [open, setOpen] = useState(true);
+  return (
+    <div className="rounded-xl border border-border/60 bg-card/40">
+      <div className="flex items-center justify-between border-b border-border/40 px-3 py-2">
+        <div className="flex items-center gap-2 text-[12px]">
+          <span className="rounded-md bg-aurora-pink/15 px-2 py-0.5 font-medium text-aurora-pink">
+            {node.title}
+          </span>
+          {node.badge && (
+            <span className="text-aurora-orange">{node.badge} 🎬</span>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {node.cost && (
+            <span className="flex items-center gap-1 rounded-md bg-foreground/10 px-2 py-0.5 text-[11px] text-aurora-orange">
+              🎞 {node.cost}
+            </span>
+          )}
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <ChevronDown
+              className={`h-4 w-4 transition ${open ? "" : "-rotate-90"}`}
+            />
+          </button>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 border-b border-border/40 px-3 py-2 text-[12px]">
+        <div className="h-4 w-4 rounded-full bg-gradient-to-br from-aurora-blue to-aurora-pink" />
+        <span className="font-medium text-aurora-blue">Media Assets</span>
+        <span className="ml-auto text-muted-foreground">已完成</span>
+      </div>
+      {open && (
+        <ol className="relative px-4 py-3">
+          <div className="absolute bottom-4 left-[22px] top-4 w-px bg-border/60" />
+          {node.steps.map((s, i) => (
+            <li key={i} className="relative flex gap-3 pb-4 last:pb-0">
+              <div className="relative z-10 mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border border-success/60 bg-card">
+                <CheckCircle2 className="h-3 w-3 text-success" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[12px] font-medium text-foreground">
+                  {s.title}
+                </div>
+                {s.desc && (
+                  <div className="mt-1 whitespace-pre-line text-[11.5px] leading-relaxed text-muted-foreground">
+                    {s.desc}
+                    {s.desc.endsWith("…") && (
+                      <button className="ml-1 text-foreground underline">
+                        展开
+                      </button>
+                    )}
+                  </div>
+                )}
+                {s.assets && (
+                  <div className="mt-2 space-y-1.5">
+                    {s.assets.map((a, j) => (
+                      <div
+                        key={j}
+                        className="flex items-center gap-2 rounded-md bg-card/60 p-1.5"
+                      >
+                        <div className="h-9 w-9 flex-shrink-0 rounded bg-gradient-to-br from-muted to-foreground/10" />
+                        <span className="truncate text-[11.5px] text-foreground/90">
+                          {a.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
   );
 }
