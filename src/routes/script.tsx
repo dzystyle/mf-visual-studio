@@ -401,6 +401,34 @@ function BotNodeView({ node }: { node: BotNode }) {
       </p>
     );
   }
+  if (node.type === "mediaAssets") {
+    return <MediaAssetsCard node={node} />;
+  }
+  if (node.type === "characterTable") {
+    return (
+      <div className="overflow-hidden rounded-lg border border-border/60">
+        <table className="w-full text-[12px]">
+          <thead>
+            <tr className="bg-card/60 text-muted-foreground">
+              <th className="w-24 px-3 py-2 text-left font-medium">角色</th>
+              <th className="px-2 py-2 text-left font-medium">关键外观特征</th>
+            </tr>
+          </thead>
+          <tbody>
+            {node.rows.map((r, i) => (
+              <tr key={i} className="border-t border-border/40 align-top">
+                <td className="px-3 py-2 text-foreground/90">
+                  <span className="mr-1">{r.icon}</span>
+                  {r.name}
+                </td>
+                <td className="px-2 py-2 leading-relaxed text-foreground/80">{r.features}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
   // status card
   const tone =
     node.tone === "warn"
