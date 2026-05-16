@@ -37,16 +37,26 @@ type Element = {
   name: string;
   desc: string;
   expanded?: boolean;
+  thumbs?: string[];
+  refId?: string;
+  count?: number;
 };
 
+import charSam from "@/assets/char-sam.jpg";
+import charBoss from "@/assets/char-boss.jpg";
+import charCarter from "@/assets/char-carter.jpg";
+import charXiaopang from "@/assets/char-xiaopang.jpg";
+import charLisa from "@/assets/char-lisa.jpg";
+import charSecurity from "@/assets/char-security.jpg";
+
 const initialElements: Element[] = [
-  { name: "Element_Sam", desc: "28岁瘦弱白人男性,黑框眼镜,洗旧蓝格子衬衫,卡其裤,破洞白球鞋,凌乱棕发,眼下有浓重黑眼圈。现代都市写实风格。" },
-  { name: "Element_Boss", desc: "50岁肥胖白人男性,秃顶,身穿昂贵的深灰色西装,佩戴金表,满脸横肉,面部特征常常紧皱眉头。" },
-  { name: "Element_Detective_Carter", desc: "38岁高大白人男性,寸头发型,左脸有一道明显的刀疤,穿着黑色战术背心叩作战服。外观硬朗冷峻。", expanded: true },
-  { name: "Element_Xiao_Pang", desc: "21岁亚裔男性,圆框眼镜,穿着宽松的灰色卫衣。体态多表现为含胸低头。" },
-  { name: "Element_Lisa", desc: "32岁白人女性,金色大波浪卷发,穿着黑色紧身职业套装搭配细高跟鞋,涂有鲜艳红唇,外表冷艳。" },
-  { name: "Element_Security_Chief", desc: "36岁黑人男性,光头,肌肉非常发达。穿着黑色保安制服,脖子上带有显眼的纹身。" },
-  { name: "Element_Mark", desc: "" },
+  { name: "Element_Sam", desc: "28岁瘦弱白人男性,黑框眼镜,洗旧蓝格子衬衫,卡其裤,破洞白球鞋,凌乱棕发,眼下有浓重黑眼圈。现代都市写实风格。", thumbs: [charSam, charSam], refId: "Element_Sam_ref_img", count: 2 },
+  { name: "Element_Boss", desc: "50岁肥胖白人男性,秃顶,身穿昂贵的深灰色西装,佩戴金表,满脸横肉,面部特征常常紧皱眉头。", thumbs: [charBoss], refId: "Element_Boss_ref_img" },
+  { name: "Element_Detective_Carter", desc: "38岁高大白人男性,寸头发型,左脸有一道明显的刀疤,穿着黑色战术背心叩作战服。外观硬朗冷峻。", thumbs: [charCarter, charCarter], refId: "Element_Detective_Carter_ref_img", expanded: true },
+  { name: "Element_Xiao_Pang", desc: "21岁亚裔男性,圆框眼镜,穿着宽松的灰色卫衣。体态多表现为含胸低头。", thumbs: [charXiaopang], refId: "Element_Xiao_Pang_ref_img" },
+  { name: "Element_Lisa", desc: "32岁白人女性,金色大波浪卷发,穿着黑色紧身职业套装搭配细高跟鞋,涂有鲜艳红唇,外表冷艳。", thumbs: [charLisa], refId: "Element_Lisa_ref_img" },
+  { name: "Element_Security_Chief", desc: "36岁黑人男性,光头,肌肉非常发达。穿着黑色保安制服,脖子上带有显眼的纹身。", thumbs: [charSecurity], refId: "Element_Security_Chief_ref_img" },
+  { name: "Element_Mark", desc: "", thumbs: [], refId: "Element_Mark_ref_img" },
 ];
 
 function ScriptPage() {
@@ -166,26 +176,53 @@ function StoryboardPanel({ onClose }: { onClose: () => void }) {
 }
 
 function ElementRow({ el }: { el: Element }) {
-  const [open, setOpen] = useState(!!el.expanded);
+  const [open, setOpen] = useState(el.expanded !== false);
+  const hasThumbs = (el.thumbs?.length ?? 0) > 0;
   return (
-    <div className="group border-t border-border/40 px-5 py-4 hover:bg-card/40">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="text-sm font-medium text-foreground">{el.name}</div>
-          {el.desc && (
-            <div className="mt-1 text-[12px] leading-relaxed text-muted-foreground">
-              {el.desc}
-            </div>
-          )}
-          {open && (
-            <button className="mt-2 flex h-6 w-6 items-center justify-center rounded border border-dashed border-border text-muted-foreground hover:border-foreground hover:text-foreground">
-              <Plus className="h-3 w-3" />
-            </button>
-          )}
+    <div className="group border-t border-border/40 px-4 py-3.5 hover:bg-card/40">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex min-w-0 flex-1 items-start gap-2">
+          <div className="mt-1 hidden h-3 w-2 flex-col justify-between opacity-0 group-hover:opacity-60">
+            <div className="flex gap-0.5"><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/></div>
+            <div className="flex gap-0.5"><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/></div>
+            <div className="flex gap-0.5"><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/></div>
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-[13px] font-semibold text-foreground">{el.name}</div>
+            {open && el.desc && (
+              <div className="mt-1.5 text-[11.5px] leading-relaxed text-muted-foreground">
+                {el.desc}
+              </div>
+            )}
+            {open && hasThumbs && (
+              <div className="mt-2.5 flex items-center gap-1.5">
+                {el.thumbs!.slice(0, 2).map((src, i) => (
+                  <div key={i} className="relative h-16 w-16 overflow-hidden rounded-md border border-border/60 bg-muted">
+                    <img src={src} alt={el.name} loading="lazy" className="h-full w-full object-cover" />
+                  </div>
+                ))}
+              </div>
+            )}
+            {open && el.refId && (
+              <div className="mt-2 flex items-center gap-1.5">
+                <div className="inline-flex items-center gap-1 rounded-md border border-border/60 bg-card/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                  <span className="rounded bg-muted/60 px-1 text-[9px] text-foreground/80">图片</span>
+                  <span className="max-w-[110px] truncate">{el.refId}</span>
+                  {el.count && el.count > 1 && (
+                    <span className="rounded bg-success/20 px-1 text-[9px] text-success">x{el.count}</span>
+                  )}
+                  <ChevronRight className="h-2.5 w-2.5" />
+                </div>
+                <button className="flex h-5 w-5 items-center justify-center rounded border border-dashed border-border text-muted-foreground hover:border-foreground hover:text-foreground">
+                  <Plus className="h-2.5 w-2.5" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
         <button
           onClick={() => setOpen((v) => !v)}
-          className="mt-0.5 text-muted-foreground opacity-0 transition group-hover:opacity-100"
+          className="mt-0.5 text-muted-foreground transition hover:text-foreground"
         >
           <ChevronDown
             className={`h-4 w-4 transition ${open ? "" : "-rotate-90"}`}
