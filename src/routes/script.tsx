@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { ModelPickerDialog, SkillPickerDialog, ElementsPickerDialog } from "@/components/picker-dialogs";
 import {
   Play,
   LayoutGrid,
