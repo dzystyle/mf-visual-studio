@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import projectTeacher from "@/assets/project-teacher.jpg";
 
 export const Route = createFileRoute("/projects")({
-  head: () => ({ meta: [{ title: "我的项目 — Flova.ai" }] }),
+  head: () => ({ meta: [{ title: "我的项目 — movieflow.ai" }] }),
   component: ProjectsPage,
 });
 
@@ -40,7 +40,7 @@ function ProjectsPage() {
                   <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover" />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-3xl font-semibold text-foreground/20">
-                    Flova
+                    MovieFlow
                   </div>
                 )}
               </div>
