@@ -155,7 +155,7 @@ function TabBtn({
 
 function StoryboardPanel({ onClose }: { onClose: () => void }) {
   return (
-    <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
+    <div className="flex w-[300px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
       <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
         <div className="flex items-center gap-1.5 text-xs text-foreground">
           <LayoutGrid className="h-3.5 w-3.5" />
