@@ -327,9 +327,14 @@ function BotMessage({ nodes }: { nodes: BotNode[] }) {
 function BotNodeView({ node }: { node: BotNode }) {
   if (node.type === "text") {
     return (
-      <p className="text-[13px] leading-relaxed text-foreground/90">
+      <p className={`text-[13px] leading-relaxed ${node.emphasis ? "text-foreground" : "text-foreground/90"}`}>
         {node.text}
       </p>
+    );
+  }
+  if (node.type === "heading") {
+    return (
+      <p className="text-[13px] font-semibold text-foreground">{node.text}</p>
     );
   }
   if (node.type === "list") {
@@ -347,6 +352,38 @@ function BotNodeView({ node }: { node: BotNode }) {
           </li>
         ))}
       </ul>
+    );
+  }
+  if (node.type === "shots") {
+    return (
+      <div className="overflow-hidden rounded-lg border border-border/60">
+        <table className="w-full text-[12px]">
+          <thead>
+            <tr className="bg-card/60 text-muted-foreground">
+              <th className="w-16 px-3 py-2 text-left font-medium">镜头</th>
+              <th className="w-20 px-2 py-2 text-left font-medium">时间段</th>
+              <th className="px-2 py-2 text-left font-medium">核心内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            {node.rows.map((r, i) => (
+              <tr key={i} className="border-t border-border/40 align-top">
+                <td className="px-3 py-2 text-foreground/80">{r.shot}</td>
+                <td className="px-2 py-2 text-muted-foreground">{r.time}</td>
+                <td className="px-2 py-2 leading-relaxed text-foreground/90">{r.content}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+  if (node.type === "meta") {
+    return (
+      <p className="text-[13px] leading-relaxed text-foreground/90">
+        <span className="mr-1">{node.icon}</span>
+        <span className="font-medium">{node.label}</span> {node.value}
+      </p>
     );
   }
   // status card
