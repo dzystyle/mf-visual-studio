@@ -75,21 +75,35 @@ const initialElements: Element[] = [
   { name: "Element_Mark", desc: "", thumbs: [], refId: "Element_Mark_ref_img" },
 ];
 
+type Mode = "storyboard" | "timeline";
+
 function ScriptPage() {
   const { prompt } = Route.useSearch();
-  const [showStoryboard, setShowStoryboard] = useState(true);
+  const [mode, setMode] = useState<Mode>("storyboard");
+  const [showLeft, setShowLeft] = useState(true);
   const [showPreview, setShowPreview] = useState(true);
   const [showChat, setShowChat] = useState(true);
 
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
-      <TitleBar />
+      <TitleBar mode={mode} setMode={setMode} />
       <div className="flex flex-1 gap-2 overflow-hidden px-2 pb-2">
-        {showStoryboard && (
-          <StoryboardPanel onClose={() => setShowStoryboard(false)} />
-        )}
-        {showPreview && (
-          <PreviewPanel onClose={() => setShowPreview(false)} />
+        {mode === "timeline" ? (
+          <TimelineWorkspace
+            showLeft={showLeft}
+            showPreview={showPreview}
+            onCloseLeft={() => setShowLeft(false)}
+            onClosePreview={() => setShowPreview(false)}
+          />
+        ) : (
+          <>
+            {showLeft && (
+              <StoryboardPanel onClose={() => setShowLeft(false)} />
+            )}
+            {showPreview && (
+              <PreviewPanel onClose={() => setShowPreview(false)} />
+            )}
+          </>
         )}
         {showChat && (
           <ChatPanel
@@ -102,7 +116,7 @@ function ScriptPage() {
   );
 }
 
-function TitleBar() {
+function TitleBar({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void }) {
   return (
     <div className="flex h-12 items-center justify-between border-b border-border/60 bg-sidebar px-3">
       <div className="flex items-center gap-3">
@@ -111,9 +125,9 @@ function TitleBar() {
         </Link>
         <div className="text-sm font-medium">《超能替罪羊》剧本视频制作</div>
         <div className="ml-2 flex items-center gap-1">
-          <TabBtn icon={LayoutGrid} label="故事板" active />
+          <TabBtn icon={LayoutGrid} label={mode === "storyboard" ? "故事板" : undefined} active={mode === "storyboard"} onClick={() => setMode("storyboard")} />
           <TabBtn icon={FolderOpen} />
-          <TabBtn icon={Scissors} />
+          <TabBtn icon={Scissors} label={mode === "timeline" ? "时间线" : undefined} active={mode === "timeline"} onClick={() => setMode("timeline")} />
           <TabBtn icon={FileText} />
         </div>
       </div>
@@ -127,7 +141,7 @@ function TitleBar() {
         </button>
         <div className="flex items-center gap-1.5 rounded-md border border-border bg-card/60 px-2.5 py-1.5 text-xs">
           <Coins className="h-3.5 w-3.5 text-aurora-orange" />
-          <span className="font-semibold">2,020</span>
+          <span className="font-semibold">62</span>
         </div>
         <div className="flex items-center gap-1.5 rounded-md border border-border bg-card/60 px-2.5 py-1.5 text-xs">
           <div className="h-4 w-4 rounded-full bg-gradient-to-br from-aurora-pink to-aurora-blue" />
@@ -142,13 +156,16 @@ function TabBtn({
   icon: Icon,
   label,
   active,
+  onClick,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label?: string;
   active?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <button
+      onClick={onClick}
       className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs transition ${
         active
           ? "bg-success/15 text-success"
