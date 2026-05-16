@@ -123,8 +123,20 @@ const skills = [
   { title: "故事驱动型视频", author: "MovieFlow", img: skillStory, desc: "从一句话到完整短片" },
 ];
 
-export function SkillPickerDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+export function SkillPickerDialog({
+  open,
+  onOpenChange,
+  onSelect,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  onSelect?: (title: string) => void;
+}) {
   const [tab, setTab] = useState<"mine" | "featured">("mine");
+  const pick = (title: string) => {
+    onSelect?.(title);
+    onOpenChange(false);
+  };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl border-border bg-card/95 backdrop-blur-xl">
@@ -154,6 +166,7 @@ export function SkillPickerDialog({ open, onOpenChange }: { open: boolean; onOpe
           {skills.map((s) => (
             <button
               key={s.title}
+              onClick={() => pick(s.title)}
               className="group flex gap-3 rounded-xl border border-border bg-background/40 p-2.5 text-left transition hover:border-aurora-blue/60 hover:bg-accent/40"
             >
               <img src={s.img} alt={s.title} className="h-16 w-20 shrink-0 rounded-lg object-cover" />
