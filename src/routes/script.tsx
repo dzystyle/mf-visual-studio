@@ -213,12 +213,17 @@ type BotNode =
       steps: {
         title: string;
         desc?: string;
-        assets?: { name: string }[];
+        assets?: { name: string; duration?: string }[];
       }[];
     }
   | {
       type: "characterTable";
       rows: { icon: string; name: string; features: string }[];
+    }
+  | {
+      type: "progressTable";
+      title?: string;
+      rows: { shot: string; content: string; status: string }[];
     };
 
 const scriptShots = [
