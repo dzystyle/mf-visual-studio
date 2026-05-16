@@ -42,6 +42,8 @@ export function PromptBox() {
   const [openElements, setOpenElements] = useState(false);
   const [plusOpen, setPlusOpen] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [model, setModel] = useState("Seedance 2");
+  const [skill, setSkill] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const pendingKind = useRef<Attachment["kind"]>("image");
 
