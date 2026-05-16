@@ -70,6 +70,7 @@ const initialElements: Element[] = [
 function ScriptPage() {
   const { prompt } = Route.useSearch();
   const [showStoryboard, setShowStoryboard] = useState(true);
+  const [showPreview, setShowPreview] = useState(true);
   const [showChat, setShowChat] = useState(true);
 
   return (
@@ -78,6 +79,9 @@ function ScriptPage() {
       <div className="flex flex-1 gap-2 overflow-hidden px-2 pb-2">
         {showStoryboard && (
           <StoryboardPanel onClose={() => setShowStoryboard(false)} />
+        )}
+        {showPreview && (
+          <PreviewPanel onClose={() => setShowPreview(false)} />
         )}
         {showChat && (
           <ChatPanel
