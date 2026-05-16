@@ -650,7 +650,13 @@ function MediaAssetsCard({
                         key={j}
                         className="flex items-center gap-2 rounded-md bg-card/60 p-1.5"
                       >
-                        <div className="h-9 w-9 flex-shrink-0 rounded bg-gradient-to-br from-muted to-foreground/10" />
+                        <div className="relative h-9 w-9 flex-shrink-0 overflow-hidden rounded bg-gradient-to-br from-muted to-foreground/10">
+                          {a.duration && (
+                            <span className="absolute bottom-0.5 left-0.5 rounded bg-black/70 px-1 text-[9px] leading-tight text-white">
+                              {a.duration}
+                            </span>
+                          )}
+                        </div>
                         <span className="truncate text-[11.5px] text-foreground/90">
                           {a.name}
                         </span>
