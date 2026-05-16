@@ -186,24 +186,42 @@ function Chip({
   label,
   badge,
   onClick,
+  active,
+  onClear,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   badge?: string;
   onClick?: () => void;
+  active?: boolean;
+  onClear?: () => void;
 }) {
   return (
-    <button
-      onClick={onClick}
-      className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card"
+    <div
+      className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs text-foreground transition ${
+        active
+          ? "border-aurora-blue/60 bg-aurora-blue/10"
+          : "border-border bg-card/40 hover:bg-card"
+      }`}
     >
-      <Icon className="h-3.5 w-3.5 text-muted-foreground" />
-      <span>{label}</span>
-      {badge ? (
-        <span className="ml-0.5 rounded-full bg-success/20 px-1.5 text-[9px] font-medium text-success">
-          {badge}
-        </span>
+      <button onClick={onClick} className="flex items-center gap-1.5">
+        <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+        <span className="max-w-[140px] truncate">{label}</span>
+        {badge ? (
+          <span className="ml-0.5 rounded-full bg-success/20 px-1.5 text-[9px] font-medium text-success">
+            {badge}
+          </span>
+        ) : null}
+      </button>
+      {onClear ? (
+        <button
+          onClick={onClear}
+          className="flex h-3.5 w-3.5 items-center justify-center rounded-full text-muted-foreground hover:text-foreground"
+        >
+          <X className="h-3 w-3" />
+        </button>
       ) : null}
-    </button>
+    </div>
   );
 }
+
