@@ -14,11 +14,19 @@ import {
   MoreHorizontal,
   ChevronDown,
   ChevronRight,
+  ChevronUp,
   Plus,
   Package,
   Smile,
   ArrowUp,
   CheckCircle2,
+  Quote,
+  Heart,
+  Trash2,
+  Pencil,
+  RefreshCw,
+  Eye,
+  Video,
 } from "lucide-react";
 
 type Search = { prompt?: string };
@@ -62,6 +70,7 @@ const initialElements: Element[] = [
 function ScriptPage() {
   const { prompt } = Route.useSearch();
   const [showStoryboard, setShowStoryboard] = useState(true);
+  const [showPreview, setShowPreview] = useState(true);
   const [showChat, setShowChat] = useState(true);
 
   return (
@@ -70,6 +79,9 @@ function ScriptPage() {
       <div className="flex flex-1 gap-2 overflow-hidden px-2 pb-2">
         {showStoryboard && (
           <StoryboardPanel onClose={() => setShowStoryboard(false)} />
+        )}
+        {showPreview && (
+          <PreviewPanel onClose={() => setShowPreview(false)} />
         )}
         {showChat && (
           <ChatPanel
@@ -143,7 +155,7 @@ function TabBtn({
 
 function StoryboardPanel({ onClose }: { onClose: () => void }) {
   return (
-    <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
+    <div className="flex w-[300px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
       <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
         <div className="flex items-center gap-1.5 text-xs text-foreground">
           <LayoutGrid className="h-3.5 w-3.5" />
@@ -782,6 +794,136 @@ function MediaAssetsCard({
           ))}
         </ol>
       )}
+    </div>
+  );
+}
+
+const fileAssets: { name: string; src: string; isVideo?: boolean }[] = [
+  { name: "Element_Sam_ref_img", src: charSam },
+  { name: "", src: charSam },
+  { name: "Element_Boss_ref_img", src: charBoss },
+  { name: "Element_Detective_Carter_ref_img", src: charCarter },
+  { name: "", src: charCarter },
+  { name: "", src: charSam },
+  { name: "", src: charXiaopang },
+  { name: "", src: charLisa },
+  { name: "", src: charSecurity },
+  { name: "", src: charBoss },
+  { name: "", src: charSam, isVideo: true },
+  { name: "", src: charSam, isVideo: true },
+];
+
+function PreviewPanel({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="flex flex-1 min-w-0 flex-col gap-2 overflow-hidden">
+      {/* Preview card */}
+      <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
+        <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
+          <div className="flex items-center gap-1.5 text-xs">
+            <Eye className="h-3.5 w-3.5" />
+            <span>预览</span>
+            <span className="text-muted-foreground">Element_Sam_ref_img</span>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+        <div className="relative flex flex-1 flex-col overflow-hidden">
+          {/* Top chips */}
+          <div className="absolute left-3 top-3 z-10 flex items-center gap-2">
+            <span className="rounded-md bg-black/50 px-2 py-1 text-[11px] text-foreground backdrop-blur">Nano Banana 2</span>
+            <span className="rounded-md bg-black/50 px-2 py-1 text-[11px] text-foreground backdrop-blur">2K (2752*1536)</span>
+          </div>
+          <div className="absolute right-3 top-3 z-10 flex items-center gap-1">
+            {[Quote, Download, Heart, Trash2].map((Icon, i) => (
+              <button key={i} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-black/40 hover:text-foreground">
+                <Icon className="h-3.5 w-3.5" />
+              </button>
+            ))}
+          </div>
+          {/* Side nav */}
+          <div className="absolute left-3 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-1.5">
+            <button className="flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-foreground backdrop-blur hover:bg-black/60">
+              <ChevronUp className="h-4 w-4" />
+            </button>
+            <span className="rounded bg-black/40 px-1.5 py-0.5 text-[10px] text-muted-foreground backdrop-blur">元素</span>
+            <button className="flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-foreground backdrop-blur hover:bg-black/60">
+              <ChevronDown className="h-4 w-4" />
+            </button>
+          </div>
+          {/* Image */}
+          <div className="flex flex-1 items-center justify-center overflow-hidden bg-gradient-to-b from-background to-black/60">
+            <img src={charSam} alt="Element_Sam_ref_img" className="h-full w-full object-contain" />
+          </div>
+          {/* Bottom composer */}
+          <div className="flex items-center gap-2 border-t border-border/60 p-3">
+            <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
+              <input
+                placeholder="输入评论,编辑当前镜头并生成新画面..."
+                className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none"
+              />
+              <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
+                <ArrowUp className="h-3 w-3" />
+              </button>
+            </div>
+            <button className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-[12px] text-foreground hover:bg-card">
+              <Pencil className="h-3.5 w-3.5" /> 手动编辑
+            </button>
+            <button className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-[12px] text-foreground hover:bg-card">
+              <RefreshCw className="h-3.5 w-3.5" /> 重新生成
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* File area */}
+      <div className="flex h-[260px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
+        <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
+          <div className="flex items-center gap-1.5 text-xs">
+            <FolderOpen className="h-3.5 w-3.5" />
+            文件区
+          </div>
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+              <span className="relative inline-flex h-3.5 w-7 items-center rounded-full bg-muted/60">
+                <span className="absolute left-0.5 h-2.5 w-2.5 rounded-full bg-foreground/70" />
+              </span>
+              只展示未分配素材
+            </label>
+            <button className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground">
+              <MoreHorizontal className="h-3.5 w-3.5" />
+            </button>
+            <button className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground">
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto scrollbar-hide p-3">
+          <div className="grid grid-cols-6 gap-2">
+            {fileAssets.map((a, i) => (
+              <div key={i} className="space-y-1">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-md border border-border/60 bg-muted">
+                  <img src={a.src} alt={a.name} loading="lazy" className="h-full w-full object-cover" />
+                  {a.isVideo && (
+                    <span className="absolute left-1 top-1 flex h-5 w-5 items-center justify-center rounded bg-black/60">
+                      <Video className="h-3 w-3 text-foreground" />
+                    </span>
+                  )}
+                </div>
+                {a.name && (
+                  <div className="flex items-center justify-between rounded bg-success/15 px-1.5 py-0.5 text-[10px] text-success">
+                    <span className="truncate">{a.name}</span>
+                    <ChevronRight className="h-2.5 w-2.5 flex-shrink-0" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
