@@ -199,8 +199,9 @@ const elementItems = Array.from({ length: 12 }).map((_, i) => ({
   name: ["少女·夏野", "赛博都市", "黄昏海岸", "雪山追逐", "霓虹街角", "古风庭院", "未来太空站", "复古胶片", "雨夜东京", "极地极光", "森林精灵", "末日废土"][i],
 }));
 
-export function ElementsPickerDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+export function ElementsPickerDialog({ open, onOpenChange, onSelect }: { open: boolean; onOpenChange: (v: boolean) => void; onSelect?: (name: string) => void }) {
   const [tab, setTab] = useState("char");
+  const pick = (name: string) => { onSelect?.(name); onOpenChange(false); };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl border-border bg-card/95 backdrop-blur-xl">
@@ -233,6 +234,7 @@ export function ElementsPickerDialog({ open, onOpenChange }: { open: boolean; on
           {elementItems.map((it) => (
             <button
               key={it.id}
+              onClick={() => pick(it.name)}
               className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-gradient-to-br from-aurora-pink/20 via-aurora-blue/20 to-aurora-orange/20 text-left transition hover:border-aurora-blue/60"
             >
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">

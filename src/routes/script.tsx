@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { ModelPickerDialog, SkillPickerDialog, ElementsPickerDialog } from "@/components/picker-dialogs";
 import {
   Play,
   LayoutGrid,
@@ -574,9 +575,28 @@ function BotNodeView({ node }: { node: BotNode }) {
 
 function Composer() {
   const [text, setText] = useState("");
+  const [modelOpen, setModelOpen] = useState(false);
+  const [skillOpen, setSkillOpen] = useState(false);
+  const [elemOpen, setElemOpen] = useState(false);
+  const [model, setModel] = useState<string | null>(null);
+  const [skill, setSkill] = useState<string | null>(null);
+  const [elements, setElements] = useState<string[]>([]);
   return (
     <div className="border-t border-border/60 p-3">
       <div className="rounded-xl border border-border/60 bg-card/50 p-2.5">
+        {(model || skill || elements.length > 0) && (
+          <div className="mb-2 flex flex-wrap gap-1.5">
+            {model && (
+              <SelectedChip icon={LayoutGrid} label={model} onRemove={() => setModel(null)} />
+            )}
+            {skill && (
+              <SelectedChip icon={Package} label={skill} onRemove={() => setSkill(null)} />
+            )}
+            {elements.map((e) => (
+              <SelectedChip key={e} icon={Smile} label={e} onRemove={() => setElements((xs) => xs.filter((x) => x !== e))} />
+            ))}
+          </div>
+        )}
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -588,16 +608,29 @@ function Composer() {
             <button className="flex h-6 w-6 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent">
               <Plus className="h-3 w-3" />
             </button>
-            <MiniChip icon={LayoutGrid} label="模型" badge="新" />
-            <MiniChip icon={Package} label="Skill" />
-            <MiniChip icon={Smile} label="元素" />
+            <MiniChip icon={LayoutGrid} label="模型" badge="新" onClick={() => setModelOpen(true)} />
+            <MiniChip icon={Package} label="Skill" onClick={() => setSkillOpen(true)} />
+            <MiniChip icon={Smile} label="元素" onClick={() => setElemOpen(true)} />
           </div>
           <button className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground hover:bg-foreground hover:text-background">
             <ArrowUp className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>
+      <ModelPickerDialog open={modelOpen} onOpenChange={setModelOpen} value={model ?? undefined} onSelect={setModel} />
+      <SkillPickerDialog open={skillOpen} onOpenChange={setSkillOpen} onSelect={setSkill} />
+      <ElementsPickerDialog open={elemOpen} onOpenChange={setElemOpen} onSelect={(name) => setElements((xs) => (xs.includes(name) ? xs : [...xs, name]))} />
     </div>
+  );
+}
+
+function SelectedChip({ icon: Icon, label, onRemove }: { icon: React.ComponentType<{ className?: string }>; label: string; onRemove: () => void }) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-aurora-blue/40 bg-aurora-blue/10 px-2 py-0.5 text-[11px] text-foreground">
+      <Icon className="h-3 w-3 text-aurora-blue" />
+      <span className="max-w-[140px] truncate">{label}</span>
+      <button onClick={onRemove} className="ml-0.5 text-muted-foreground hover:text-foreground">×</button>
+    </span>
   );
 }
 
@@ -605,13 +638,15 @@ function MiniChip({
   icon: Icon,
   label,
   badge,
+  onClick,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   badge?: string;
+  onClick?: () => void;
 }) {
   return (
-    <button className="flex items-center gap-1 rounded-full border border-border bg-card/40 px-2 py-1 text-[11px] text-foreground hover:bg-card">
+    <button onClick={onClick} className="flex items-center gap-1 rounded-full border border-border bg-card/40 px-2 py-1 text-[11px] text-foreground hover:bg-card">
       <Icon className="h-3 w-3 text-muted-foreground" />
       <span>{label}</span>
       {badge && (
