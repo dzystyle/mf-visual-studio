@@ -276,6 +276,56 @@ const seedConversation: Msg[] = [
       { type: "text", text: "确认无误后,下一步将为7位角色各生成一张参考形象图,用于后续视频生成时保持角色一致性。" },
     ],
   },
+  { kind: "user", text: "故事板确认,开始生成角色参考图" },
+  {
+    kind: "bot",
+    nodes: [
+      { type: "text", text: "好的,故事板已确认!现在开始为7位角色生成参考形象图 🎬" },
+      {
+        type: "mediaAssets",
+        title: "首次生成图片",
+        badge: "+30",
+        cost: "-77",
+        steps: [
+          { title: "Agent分析完成", desc: "好的!开始为7位角色生成参考形象图。首先注册所有角色图像资产。" },
+          { title: "资产配置完成" },
+          { title: "Agent分析完成", desc: "资产注册完成!现在为所有7位角色同步撰写提示词。" },
+          {
+            title: "编写提示词完成",
+            desc: "Element_Sam_ref_img\n角色参考图——萨姆(Sam)。版面布局:左侧为半身特写,右侧依次为全身正面、侧面、背面四视图,白色中性背景,无阴影干扰。人物设定:28岁瘦…",
+          },
+          { title: "Agent分析完成", desc: "提示词已全部就绪!现在同步生成所有7位角色的参考形象图 🎬" },
+          {
+            title: "生成素材完成",
+            assets: [
+              { name: "Element_Sam_ref_img" },
+              { name: "Element_Boss_ref_img" },
+              { name: "Element_Detective_Cart..." },
+              { name: "Element_Xiao_Pang_ref..." },
+              { name: "Element_Lisa_ref_img" },
+              { name: "Element_Security_Chief..." },
+              { name: "Element_Mark_ref_img" },
+            ],
+          },
+          { title: "Agent分析完成" },
+        ],
+      },
+      { type: "text", text: "7位角色的参考形象图全部生成完毕!✅", emphasis: true },
+      { type: "text", text: "请查看上方每位角色的三视图参考图,确认外观是否符合预期:" },
+      {
+        type: "characterTable",
+        rows: [
+          { icon: "🧑", name: "萨姆", features: "黑框眼镜、蓝格子衬衫、浓黑眼圈" },
+          { icon: "👨‍💼", name: "老板", features: "秃顶、深灰西装、金表、横肉脸" },
+          { icon: "🔪", name: "卡特警探", features: "寸头、左脸刀疤、黑色战术背心" },
+          { icon: "👀", name: "小胖", features: "圆框眼镜、灰色卫衣、含胸低头" },
+          { icon: "💃", name: "丽莎", features: "金色大波浪、黑色职业套装、红唇" },
+          { icon: "💪", name: "保安队长", features: "光头、肌肉发达、黑色制服、颈纹身" },
+          { icon: "🎧", name: "马克", features: "凌乱棕色长发、黑色连帽衫、耳机" },
+        ],
+      },
+    ],
+  },
 ];
 
 function ChatPanel({
