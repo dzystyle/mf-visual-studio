@@ -12,7 +12,7 @@ import tvPalace from "@/assets/tv-palace.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Flova.ai — 你的专属 AI 视频创作 Agent" },
+      { title: "movieflow.ai — 你的专属 AI 视频创作 Agent" },
       { name: "description", content: "把品味和习惯写进 Skill,让精力回归创意。" },
     ],
   }),
@@ -31,7 +31,7 @@ function Home() {
 
         <div className="mx-auto max-w-4xl pt-10 text-center">
           <h1 className="text-[44px] font-semibold leading-tight tracking-tight text-foreground">
-            Flova 1.0 — 你的专属 AI 视频创作 Agent
+            MovieFlow 1.0 — 你的专属 AI 视频创作 Agent
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
             把品味和习惯写进 Skill,让精力回归创意
@@ -78,11 +78,11 @@ function Home() {
         </div>
       </section>
 
-      {/* FlovaTV */}
+      {/* MovieFlowTV */}
       <section className="px-6 pb-24">
         <div className="mx-auto max-w-7xl">
           <div className="mb-4 flex items-end justify-between">
-            <h2 className="text-lg font-semibold">FlovaTV</h2>
+            <h2 className="text-lg font-semibold">MovieFlowTV</h2>
             <div className="flex items-center gap-2">
               {["全部", "影视", "短剧", "漫剧", "MV", "TVC"].map((t, i) => (
                 <button
@@ -100,10 +100,10 @@ function Home() {
           </div>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            <TvCard title="星海漫游" author="Flova Studio" image={tvSpace} />
+            <TvCard title="星海漫游" author="MovieFlow Studio" image={tvSpace} />
             <TvCard title="红尘旧梦" author="夜色出品" image={tvDrama} />
             <TvCard title="深宫往事" author="一帧影像" image={tvPalace} tall />
-            <TvCard title="霓虹之夜" author="Flova" image={tvSpace} />
+            <TvCard title="霓虹之夜" author="MovieFlow" image={tvSpace} />
             <TvCard title="花信风" author="叙光" image={tvDrama} />
           </div>
         </div>
