@@ -131,8 +131,8 @@ export function PromptBox() {
         </button>
       </div>
 
-      <ModelPickerDialog open={openModel} onOpenChange={setOpenModel} />
-      <SkillPickerDialog open={openSkill} onOpenChange={setOpenSkill} />
+      <ModelPickerDialog open={openModel} onOpenChange={setOpenModel} value={model} onSelect={setModel} />
+      <SkillPickerDialog open={openSkill} onOpenChange={setOpenSkill} onSelect={setSkill} />
       <ElementsPickerDialog open={openElements} onOpenChange={setOpenElements} />
     </div>
   );
