@@ -116,8 +116,14 @@ export function PromptBox() {
             onChange={onFiles}
           />
 
-          <Chip icon={LayoutGrid} label="模型" badge="新" onClick={() => setOpenModel(true)} />
-          <Chip icon={Package} label="Skill" onClick={() => setOpenSkill(true)} />
+          <Chip icon={LayoutGrid} label={model} badge="新" onClick={() => setOpenModel(true)} />
+          <Chip
+            icon={Package}
+            label={skill ?? "Skill"}
+            active={!!skill}
+            onClick={() => setOpenSkill(true)}
+            onClear={skill ? () => setSkill(null) : undefined}
+          />
           <Chip icon={Smile} label="元素" onClick={() => setOpenElements(true)} />
         </div>
         <button className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background">
