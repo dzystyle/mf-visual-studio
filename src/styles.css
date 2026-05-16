@@ -116,7 +116,13 @@
     backdrop-filter: blur(20px);
     border: 1px solid oklch(1 0 0 / 0.08);
   }
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+    width: 0;
+    height: 0;
   }
 }

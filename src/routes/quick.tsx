@@ -105,7 +105,7 @@ function QuickPage() {
         <BrandMark />
         <TopBar />
 
-        <div className="mx-auto mb-4 mt-2 flex w-full max-w-6xl items-center gap-2 text-sm">
+        <div className="mx-auto mb-4 flex w-full max-w-6xl items-center gap-2 pt-16 text-sm">
           <Sparkles className="h-4 w-4 text-primary" />
           <span className="font-medium">快速生成</span>
           <div className="ml-auto flex items-center gap-2">
@@ -118,7 +118,7 @@ function QuickPage() {
         {/* Conversation stream */}
         <div
           ref={scrollRef}
-          className="mx-auto w-full max-w-6xl flex-1 space-y-10 overflow-y-auto pb-6 pr-2"
+          className="scrollbar-hide mx-auto w-full max-w-6xl flex-1 space-y-10 overflow-y-auto pb-6"
         >
           {msgs.map((m) => (
             <MessageBlock key={m.id} msg={m} />
