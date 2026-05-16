@@ -27,6 +27,14 @@ import {
   RefreshCw,
   Eye,
   Video,
+  Pause,
+  Maximize2,
+  Volume2,
+  Music2,
+  Undo2,
+  Redo2,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 
 type Search = { prompt?: string };
