@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TvRouteImport } from './routes/tv'
 import { Route as TutorialRouteImport } from './routes/tutorial'
 import { Route as SkillRouteImport } from './routes/skill'
+import { Route as ScriptRouteImport } from './routes/script'
 import { Route as QuickRouteImport } from './routes/quick'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ElementsRouteImport } from './routes/elements'
@@ -30,6 +31,11 @@ const TutorialRoute = TutorialRouteImport.update({
 const SkillRoute = SkillRouteImport.update({
   id: '/skill',
   path: '/skill',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScriptRoute = ScriptRouteImport.update({
+  id: '/script',
+  path: '/script',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuickRoute = QuickRouteImport.update({
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/elements': typeof ElementsRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
+  '/script': typeof ScriptRoute
   '/skill': typeof SkillRoute
   '/tutorial': typeof TutorialRoute
   '/tv': typeof TvRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/elements': typeof ElementsRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
+  '/script': typeof ScriptRoute
   '/skill': typeof SkillRoute
   '/tutorial': typeof TutorialRoute
   '/tv': typeof TvRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/elements': typeof ElementsRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
+  '/script': typeof ScriptRoute
   '/skill': typeof SkillRoute
   '/tutorial': typeof TutorialRoute
   '/tv': typeof TvRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/elements'
     | '/projects'
     | '/quick'
+    | '/script'
     | '/skill'
     | '/tutorial'
     | '/tv'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/elements'
     | '/projects'
     | '/quick'
+    | '/script'
     | '/skill'
     | '/tutorial'
     | '/tv'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/elements'
     | '/projects'
     | '/quick'
+    | '/script'
     | '/skill'
     | '/tutorial'
     | '/tv'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   ElementsRoute: typeof ElementsRoute
   ProjectsRoute: typeof ProjectsRoute
   QuickRoute: typeof QuickRoute
+  ScriptRoute: typeof ScriptRoute
   SkillRoute: typeof SkillRoute
   TutorialRoute: typeof TutorialRoute
   TvRoute: typeof TvRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/skill'
       fullPath: '/skill'
       preLoaderRoute: typeof SkillRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/script': {
+      id: '/script'
+      path: '/script'
+      fullPath: '/script'
+      preLoaderRoute: typeof ScriptRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quick': {
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   ElementsRoute: ElementsRoute,
   ProjectsRoute: ProjectsRoute,
   QuickRoute: QuickRoute,
+  ScriptRoute: ScriptRoute,
   SkillRoute: SkillRoute,
   TutorialRoute: TutorialRoute,
   TvRoute: TvRoute,
@@ -187,3 +208,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
