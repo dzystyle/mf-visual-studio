@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useRef, useState, useEffect } from "react";
 import { Plus, ChevronRight, Play } from "lucide-react";
 import { PromoBanner } from "@/components/PromoBanner";
 import { BrandMark, TopBar } from "@/components/TopBar";
