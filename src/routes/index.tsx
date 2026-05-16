@@ -149,7 +149,7 @@ function ProjectCard({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-secondary to-muted text-3xl font-semibold tracking-tight text-foreground/30">
-            Flova
+            MovieFlow
           </div>
         )}
       </div>
