@@ -200,20 +200,47 @@ type Msg =
   | { kind: "bot"; nodes: BotNode[] };
 type BotNode =
   | { type: "status"; icon: "skill" | "spec" | "board"; label: string; tone?: "default" | "warn" | "accent" }
-  | { type: "text"; text: string }
-  | { type: "list"; items: (string | { label: string; sub?: string })[] };
+  | { type: "text"; text: string; emphasis?: boolean }
+  | { type: "heading"; text: string }
+  | { type: "list"; items: (string | { label: string; sub?: string })[] }
+  | { type: "shots"; rows: { shot: string; time: string; content: string }[] }
+  | { type: "meta"; icon: string; label: string; value: string };
+
+const scriptShots = [
+  { shot: "1", time: "0–3s", content: "特写猛推:打卡机屏幕显示\"8:59:59\",红色数字疯狂跳动,一只汗湿的手猛地拍在打卡键上" },
+  { shot: "2", time: "3–7s", content: "低角度跟拍:萨姆喘着粗气冲进公司大门,领带歪在一边,手里还攥着没吃完的三明治" },
+  { shot: "3", time: "7–12s", content: "全景:老板从办公室走出来,挡住萨姆去路,一脚狠狠踹在萨姆肚子上" },
+  { shot: "4", time: "12–17s", content: "慢动作特写:萨姆向后摔倒,手中热咖啡泼洒,老板反手将整杯咖啡浇在萨姆头上" },
+  { shot: "5", time: "17–22s", content: "中景扫过:周围同事纷纷侧目,有人偷笑,有人拿出手机偷拍,无人上前帮忙" },
+  { shot: "6", time: "22–28s", content: "萨姆第一视角:模糊的视线中,老板指着他的鼻子破口大骂,口水喷在他脸上" },
+  { shot: "7", time: "28–34s", content: "闪回特写:午夜零点,萨姆躺在床上,眼睛突然发出淡蓝色微光,视网膜上浮现文字" },
+  { shot: "8", time: "34–40s", content: "中景:老板不耐烦地挥手,「滚去地下室搬杂物!今天别让我再看见你!」" },
+  { shot: "9", time: "40–45s", content: "萨姆背影:他低着头走向地下室楼梯,头发上还滴着咖啡" },
+  { shot: "10", time: "45–50s", content: "空镜:安静的走廊,突然从顶楼VIP办公室传来「咚」的一声沉闷重物倒地声" },
+  { shot: "11", time: "50–55s", content: "快速跟拍:萨姆猛地抬头,犹豫一秒后转身冲向楼梯,脚步急促" },
+  { shot: "12", time: "55–60s", content: "主观镜头:萨姆推开VIP办公室门,浓烈的血腥味扑面而来,镜头缓缓下移,露出地上的大片血迹" },
+];
+
+const storyboardShots = [
+  { shot: "Shot 1", time: "0–12s", content: "打卡机特写→萨姆冲进公司→老板踹人" },
+  { shot: "Shot 2", time: "12–22s", content: "咖啡浇头慢动作→同事旁观无人帮忙" },
+  { shot: "Shot 3", time: "22–34s", content: "老板骂人(主观视角)→闪回萨姆床上眼睛发蓝光/异能觉醒" },
+  { shot: "Shot 4", time: "34–45s", content: "老板挥手发配地下室→萨姆背影走向楼梯" },
+  { shot: "Shot 5", time: "45–60s", content: "安静走廊空镜/倒地声→萨姆转身冲楼梯→推开VIP办公室门/血迹" },
+];
 
 const seedConversation: Msg[] = [
   {
     kind: "bot",
     nodes: [
+      { type: "heading", text: "《超能替罪羊》第1集 · Seedance 逐帧分镜剧本" },
+      { type: "text", text: "全局设定:现代都市写字楼,冷色调工业风,压抑的蓝灰色主调,雨天外景,室内荧光灯惨白光线,全程手持镜头+快速剪辑,营造紧张窒息感。" },
+      { type: "text", text: "固定人物:萨姆 / 老板 / 卡特警探 / 小胖 / 丽莎 / 保安队长 / 马克 共 7 人。" },
+      { type: "shots", rows: scriptShots },
       { type: "status", icon: "skill", label: "Skill 已完成" },
       { type: "text", text: "好的,正在为您加载「剧本驱动型视频」技能,稍等片刻!" },
       { type: "text", text: "技能加载完毕!现在让我建立项目规格文档,然后启动制作流程。" },
-      {
-        type: "text",
-        text: "技能「剧本驱动型视频」已加载,核心流程如下:",
-      },
+      { type: "text", text: "技能「剧本驱动型视频」已加载,核心流程如下:" },
       {
         type: "list",
         items: [
@@ -226,11 +253,12 @@ const seedConversation: Msg[] = [
       { type: "text", text: "项目规格已确立!现在开始设计故事板,将第1集的12个分镜全部结构化。" },
       { type: "status", icon: "board", label: "故事板 已更新", tone: "accent" },
       { type: "text", text: "故事板已就绪!5个长镜头(包含内部快剪)完整覆盖第1集60秒,7位角色全部定义完毕。" },
-      {
-        type: "text",
-        text: "现在进入 第一个关键阶段:故事板确认,请您查看上方的分镜结构。以下是当前故事板概览:",
-      },
-      { type: "text", text: "■ 镜头列表(共5组,每组含内部剪辑)" },
+      { type: "text", text: "现在进入 第一个关键阶段:故事板确认,请您查看上方的分镜结构。以下是当前故事板概览:", emphasis: true },
+      { type: "heading", text: "■ 镜头列表(共5组,每组含内部剪辑)" },
+      { type: "shots", rows: storyboardShots },
+      { type: "meta", icon: "🎭", label: "角色定义(7人):", value: "萨姆、老板、卡特警探、小胖、丽莎、保安队长、马克" },
+      { type: "meta", icon: "🎵", label: "音频层:", value: "全局60秒工业风电子配乐(含环境音采样)" },
+      { type: "text", text: "确认无误后,下一步将为7位角色各生成一张参考形象图,用于后续视频生成时保持角色一致性。" },
     ],
   },
 ];
