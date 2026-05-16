@@ -47,11 +47,7 @@ function Home() {
           <div className="mb-3 text-center text-xs text-muted-foreground">
             热门 Skills
           </div>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
-            {hotSkills.map((s) => (
-              <SkillCard key={s.id} {...s} />
-            ))}
-          </div>
+          <SkillsWithPreview />
         </div>
       </section>
 
