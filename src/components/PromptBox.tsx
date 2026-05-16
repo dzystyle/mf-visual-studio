@@ -42,6 +42,8 @@ export function PromptBox() {
   const [openElements, setOpenElements] = useState(false);
   const [plusOpen, setPlusOpen] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [model, setModel] = useState("Seedance 2");
+  const [skill, setSkill] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const pendingKind = useRef<Attachment["kind"]>("image");
 
@@ -114,8 +116,14 @@ export function PromptBox() {
             onChange={onFiles}
           />
 
-          <Chip icon={LayoutGrid} label="模型" badge="新" onClick={() => setOpenModel(true)} />
-          <Chip icon={Package} label="Skill" onClick={() => setOpenSkill(true)} />
+          <Chip icon={LayoutGrid} label={model} badge="新" onClick={() => setOpenModel(true)} />
+          <Chip
+            icon={Package}
+            label={skill ?? "Skill"}
+            active={!!skill}
+            onClick={() => setOpenSkill(true)}
+            onClear={skill ? () => setSkill(null) : undefined}
+          />
           <Chip icon={Smile} label="元素" onClick={() => setOpenElements(true)} />
         </div>
         <button className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background">
@@ -123,8 +131,8 @@ export function PromptBox() {
         </button>
       </div>
 
-      <ModelPickerDialog open={openModel} onOpenChange={setOpenModel} />
-      <SkillPickerDialog open={openSkill} onOpenChange={setOpenSkill} />
+      <ModelPickerDialog open={openModel} onOpenChange={setOpenModel} value={model} onSelect={setModel} />
+      <SkillPickerDialog open={openSkill} onOpenChange={setOpenSkill} onSelect={setSkill} />
       <ElementsPickerDialog open={openElements} onOpenChange={setOpenElements} />
     </div>
   );
@@ -178,24 +186,42 @@ function Chip({
   label,
   badge,
   onClick,
+  active,
+  onClear,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   badge?: string;
   onClick?: () => void;
+  active?: boolean;
+  onClear?: () => void;
 }) {
   return (
-    <button
-      onClick={onClick}
-      className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card"
+    <div
+      className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs text-foreground transition ${
+        active
+          ? "border-aurora-blue/60 bg-aurora-blue/10"
+          : "border-border bg-card/40 hover:bg-card"
+      }`}
     >
-      <Icon className="h-3.5 w-3.5 text-muted-foreground" />
-      <span>{label}</span>
-      {badge ? (
-        <span className="ml-0.5 rounded-full bg-success/20 px-1.5 text-[9px] font-medium text-success">
-          {badge}
-        </span>
+      <button onClick={onClick} className="flex items-center gap-1.5">
+        <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+        <span className="max-w-[140px] truncate">{label}</span>
+        {badge ? (
+          <span className="ml-0.5 rounded-full bg-success/20 px-1.5 text-[9px] font-medium text-success">
+            {badge}
+          </span>
+        ) : null}
+      </button>
+      {onClear ? (
+        <button
+          onClick={onClear}
+          className="flex h-3.5 w-3.5 items-center justify-center rounded-full text-muted-foreground hover:text-foreground"
+        >
+          <X className="h-3 w-3" />
+        </button>
       ) : null}
-    </button>
+    </div>
   );
 }
+
