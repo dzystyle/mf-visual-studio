@@ -38,8 +38,22 @@ const modelGroups: { label: string; items: { name: string; tag?: string; desc: s
   },
 ];
 
-export function ModelPickerDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
-  const [selected, setSelected] = useState("Seedance 1.0 Pro");
+export function ModelPickerDialog({
+  open,
+  onOpenChange,
+  value,
+  onSelect,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  value?: string;
+  onSelect?: (name: string) => void;
+}) {
+  const selected = value ?? "Seedance 2";
+  const handlePick = (name: string) => {
+    onSelect?.(name);
+    onOpenChange(false);
+  };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl border-border bg-card/95 backdrop-blur-xl">
@@ -63,7 +77,7 @@ export function ModelPickerDialog({ open, onOpenChange }: { open: boolean; onOpe
                   return (
                     <button
                       key={m.name}
-                      onClick={() => setSelected(m.name)}
+                      onClick={() => handlePick(m.name)}
                       className={`group relative rounded-xl border p-3 text-left transition ${
                         active
                           ? "border-aurora-blue bg-aurora-blue/10"
