@@ -13,7 +13,8 @@ const modelGroups: { label: string; items: { name: string; tag?: string; desc: s
   {
     label: "视频模型",
     items: [
-      { name: "Seedance 1.0 Pro", tag: "推荐", desc: "字节跳动 · 高质量电影级视频", badge: "新" },
+      { name: "Seedance 2", tag: "推荐", desc: "字节跳动 · 高质量电影级视频", badge: "新" },
+      { name: "Seedance 1.0 Pro", desc: "字节跳动 · 经典电影级版本" },
       { name: "Kling 2.1 Master", desc: "可灵 · 长镜头与运镜表现优秀" },
       { name: "Hailuo 02", desc: "MiniMax · 自然光影,人物细节" },
       { name: "Veo 3", desc: "Google · 真实物理与音效同步" },
