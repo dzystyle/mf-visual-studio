@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useRef, useState, useEffect } from "react";
 import { Plus, ChevronRight, Play } from "lucide-react";
 import { PromoBanner } from "@/components/PromoBanner";
 import { BrandMark, TopBar } from "@/components/TopBar";
@@ -46,11 +47,7 @@ function Home() {
           <div className="mb-3 text-center text-xs text-muted-foreground">
             热门 Skills
           </div>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
-            {hotSkills.map((s) => (
-              <SkillCard key={s.id} {...s} />
-            ))}
-          </div>
+          <SkillsWithPreview />
         </div>
       </section>
 
@@ -108,6 +105,67 @@ function Home() {
           </div>
         </div>
       </section>
+    </div>
+  );
+}
+
+function SkillsWithPreview() {
+  const [hovered, setHovered] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const active = hotSkills.find((s) => s.id === hovered) ?? null;
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (active) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    } else {
+      v.pause();
+    }
+  }, [active?.video]);
+
+  return (
+    <div>
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+        {hotSkills.map((s) => (
+          <SkillCard
+            key={s.id}
+            {...s}
+            onHover={() => setHovered(s.id)}
+            onLeave={() => setHovered((h) => (h === s.id ? null : h))}
+          />
+        ))}
+      </div>
+      <div
+        className={`mx-auto mt-4 overflow-hidden rounded-2xl border border-border bg-card/40 transition-all duration-300 ${
+          active ? "max-h-[480px] opacity-100" : "max-h-0 border-transparent opacity-0"
+        }`}
+        style={{ maxWidth: 880 }}
+      >
+        {active && (
+          <div className="flex items-stretch gap-4 p-3">
+            <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black">
+              <video
+                ref={videoRef}
+                key={active.video}
+                src={active.video}
+                poster={active.image}
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover"
+              />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                <div className="text-sm font-semibold">{active.title}</div>
+                <div className="mt-0.5 text-[11px] text-foreground/70">
+                  {active.desc}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
