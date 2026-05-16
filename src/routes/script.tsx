@@ -204,7 +204,22 @@ type BotNode =
   | { type: "heading"; text: string }
   | { type: "list"; items: (string | { label: string; sub?: string })[] }
   | { type: "shots"; rows: { shot: string; time: string; content: string }[] }
-  | { type: "meta"; icon: string; label: string; value: string };
+  | { type: "meta"; icon: string; label: string; value: string }
+  | {
+      type: "mediaAssets";
+      title: string;
+      badge?: string;
+      cost?: string;
+      steps: {
+        title: string;
+        desc?: string;
+        assets?: { name: string }[];
+      }[];
+    }
+  | {
+      type: "characterTable";
+      rows: { icon: string; name: string; features: string }[];
+    };
 
 const scriptShots = [
   { shot: "1", time: "0–3s", content: "特写猛推:打卡机屏幕显示\"8:59:59\",红色数字疯狂跳动,一只汗湿的手猛地拍在打卡键上" },
