@@ -638,13 +638,15 @@ function MiniChip({
   icon: Icon,
   label,
   badge,
+  onClick,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   badge?: string;
+  onClick?: () => void;
 }) {
   return (
-    <button className="flex items-center gap-1 rounded-full border border-border bg-card/40 px-2 py-1 text-[11px] text-foreground hover:bg-card">
+    <button onClick={onClick} className="flex items-center gap-1 rounded-full border border-border bg-card/40 px-2 py-1 text-[11px] text-foreground hover:bg-card">
       <Icon className="h-3 w-3 text-muted-foreground" />
       <span>{label}</span>
       {badge && (
