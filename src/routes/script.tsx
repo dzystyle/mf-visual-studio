@@ -484,6 +484,35 @@ function BotNodeView({ node }: { node: BotNode }) {
       </div>
     );
   }
+  if (node.type === "progressTable") {
+    return (
+      <div className="space-y-2">
+        {node.title && (
+          <p className="text-[13px] font-medium text-foreground/90">🎬 {node.title}</p>
+        )}
+        <div className="overflow-hidden rounded-lg border border-border/60">
+          <table className="w-full text-[12px]">
+            <thead>
+              <tr className="bg-card/60 text-muted-foreground">
+                <th className="w-16 px-3 py-2 text-left font-medium">分镜</th>
+                <th className="px-2 py-2 text-left font-medium">内容</th>
+                <th className="w-24 px-2 py-2 text-left font-medium">状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              {node.rows.map((r, i) => (
+                <tr key={i} className="border-t border-border/40 align-top">
+                  <td className="px-3 py-2 text-foreground/90">{r.shot}</td>
+                  <td className="px-2 py-2 leading-relaxed text-foreground/80">{r.content}</td>
+                  <td className="px-2 py-2 text-success">✅ {r.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  }
   // status card
   const tone =
     node.tone === "warn"
