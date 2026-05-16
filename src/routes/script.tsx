@@ -27,6 +27,14 @@ import {
   RefreshCw,
   Eye,
   Video,
+  Pause,
+  Maximize2,
+  Volume2,
+  Music2,
+  Undo2,
+  Redo2,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 
 type Search = { prompt?: string };
@@ -67,21 +75,35 @@ const initialElements: Element[] = [
   { name: "Element_Mark", desc: "", thumbs: [], refId: "Element_Mark_ref_img" },
 ];
 
+type Mode = "storyboard" | "timeline";
+
 function ScriptPage() {
   const { prompt } = Route.useSearch();
-  const [showStoryboard, setShowStoryboard] = useState(true);
+  const [mode, setMode] = useState<Mode>("storyboard");
+  const [showLeft, setShowLeft] = useState(true);
   const [showPreview, setShowPreview] = useState(true);
   const [showChat, setShowChat] = useState(true);
 
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
-      <TitleBar />
+      <TitleBar mode={mode} setMode={setMode} />
       <div className="flex flex-1 gap-2 overflow-hidden px-2 pb-2">
-        {showStoryboard && (
-          <StoryboardPanel onClose={() => setShowStoryboard(false)} />
-        )}
-        {showPreview && (
-          <PreviewPanel onClose={() => setShowPreview(false)} />
+        {mode === "timeline" ? (
+          <TimelineWorkspace
+            showLeft={showLeft}
+            showPreview={showPreview}
+            onCloseLeft={() => setShowLeft(false)}
+            onClosePreview={() => setShowPreview(false)}
+          />
+        ) : (
+          <>
+            {showLeft && (
+              <StoryboardPanel onClose={() => setShowLeft(false)} />
+            )}
+            {showPreview && (
+              <PreviewPanel onClose={() => setShowPreview(false)} />
+            )}
+          </>
         )}
         {showChat && (
           <ChatPanel
@@ -94,7 +116,7 @@ function ScriptPage() {
   );
 }
 
-function TitleBar() {
+function TitleBar({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void }) {
   return (
     <div className="flex h-12 items-center justify-between border-b border-border/60 bg-sidebar px-3">
       <div className="flex items-center gap-3">
@@ -103,9 +125,9 @@ function TitleBar() {
         </Link>
         <div className="text-sm font-medium">《超能替罪羊》剧本视频制作</div>
         <div className="ml-2 flex items-center gap-1">
-          <TabBtn icon={LayoutGrid} label="故事板" active />
+          <TabBtn icon={LayoutGrid} label={mode === "storyboard" ? "故事板" : undefined} active={mode === "storyboard"} onClick={() => setMode("storyboard")} />
           <TabBtn icon={FolderOpen} />
-          <TabBtn icon={Scissors} />
+          <TabBtn icon={Scissors} label={mode === "timeline" ? "时间线" : undefined} active={mode === "timeline"} onClick={() => setMode("timeline")} />
           <TabBtn icon={FileText} />
         </div>
       </div>
@@ -119,7 +141,7 @@ function TitleBar() {
         </button>
         <div className="flex items-center gap-1.5 rounded-md border border-border bg-card/60 px-2.5 py-1.5 text-xs">
           <Coins className="h-3.5 w-3.5 text-aurora-orange" />
-          <span className="font-semibold">2,020</span>
+          <span className="font-semibold">62</span>
         </div>
         <div className="flex items-center gap-1.5 rounded-md border border-border bg-card/60 px-2.5 py-1.5 text-xs">
           <div className="h-4 w-4 rounded-full bg-gradient-to-br from-aurora-pink to-aurora-blue" />
@@ -134,13 +156,16 @@ function TabBtn({
   icon: Icon,
   label,
   active,
+  onClick,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label?: string;
   active?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <button
+      onClick={onClick}
       className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs transition ${
         active
           ? "bg-success/15 text-success"
@@ -921,6 +946,239 @@ function PreviewPanel({ onClose }: { onClose: () => void }) {
                 )}
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =============== Timeline Mode ===============
+
+const shotClips: { name: string; src: string; width: number }[] = [
+  { name: "Shot_Late_And_Kicked", src: charSam, width: 140 },
+  { name: "Shot_Humiliation", src: charBoss, width: 110 },
+  { name: "Shot_Cursing_Flash", src: charSam, width: 150 },
+  { name: "Shot_Basement_Banish", src: charSecurity, width: 130 },
+  { name: "Shot_The_Thud_Blood", src: charSam, width: 180 },
+];
+
+function TimelineWorkspace({
+  showLeft,
+  showPreview,
+  onCloseLeft,
+  onClosePreview,
+}: {
+  showLeft: boolean;
+  showPreview: boolean;
+  onCloseLeft: () => void;
+  onClosePreview: () => void;
+}) {
+  return (
+    <div className="flex flex-1 min-w-0 flex-col gap-2 overflow-hidden">
+      {/* Top row: file area + preview */}
+      <div className="flex flex-1 gap-2 overflow-hidden">
+        {showLeft && <FileLibraryPanel onClose={onCloseLeft} />}
+        {showPreview && <EditorPreviewPanel onClose={onClosePreview} />}
+      </div>
+      {/* Bottom: timeline track */}
+      <TimelineBar />
+    </div>
+  );
+}
+
+function FileLibraryPanel({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="flex w-[360px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
+      <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
+        <div className="flex items-center gap-1.5 text-xs">
+          <FolderOpen className="h-3.5 w-3.5" />
+          文件区
+        </div>
+        <div className="flex items-center gap-1">
+          <button className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground">
+            <MoreHorizontal className="h-3.5 w-3.5" />
+          </button>
+          <button onClick={onClose} className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground">
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      </div>
+      <div className="flex-1 overflow-y-auto scrollbar-hide p-3">
+        <div className="grid grid-cols-3 gap-2">
+          {fileAssets.filter((a) => !a.isVideo).map((a, i) => (
+            <AssetCard key={i} name={a.name} src={a.src} />
+          ))}
+        </div>
+        <div className="mt-2 grid grid-cols-4 gap-2">
+          {shotClips.slice(0, 4).map((s, i) => (
+            <AssetCard key={i} name={s.name} src={s.src} video tone="muted" />
+          ))}
+        </div>
+        <div className="mt-2 grid grid-cols-3 gap-2">
+          <AssetCard name="Shot_Base" src={charSam} video tone="muted" />
+          <AudioCard name="Audio_BGM_Industr..." />
+          <AudioCard name="Audio_BGM_Industr..." />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AssetCard({ name, src, video, tone }: { name: string; src: string; video?: boolean; tone?: "success" | "muted" }) {
+  const t = tone === "muted" ? "bg-muted/40 text-muted-foreground" : "bg-success/15 text-success";
+  return (
+    <div className="space-y-1">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-md border border-border/60 bg-muted">
+        <img src={src} alt={name} loading="lazy" className="h-full w-full object-cover" />
+        {video && (
+          <span className="absolute left-1 top-1 flex h-5 w-5 items-center justify-center rounded bg-black/60">
+            <Video className="h-3 w-3 text-foreground" />
+          </span>
+        )}
+      </div>
+      {name && (
+        <div className={`flex items-center justify-between rounded px-1.5 py-0.5 text-[10px] ${t}`}>
+          <span className="truncate">{name}</span>
+          <ChevronRight className="h-2.5 w-2.5 flex-shrink-0" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AudioCard({ name }: { name: string }) {
+  return (
+    <div className="space-y-1">
+      <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-md border border-border/60 bg-muted/30">
+        <div className="flex h-6 w-full items-center justify-around px-2">
+          {Array.from({ length: 22 }).map((_, i) => (
+            <span key={i} className="w-0.5 rounded-full bg-aurora-blue/70" style={{ height: `${20 + Math.abs(Math.sin(i)) * 80}%` }} />
+          ))}
+        </div>
+      </div>
+      <div className="flex items-center justify-between rounded bg-muted/40 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+        <span className="truncate">{name}</span>
+        <ChevronRight className="h-2.5 w-2.5 flex-shrink-0" />
+      </div>
+    </div>
+  );
+}
+
+function EditorPreviewPanel({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="flex flex-1 min-w-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
+      <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
+        <div className="flex items-center gap-1.5 text-xs">
+          <Eye className="h-3.5 w-3.5" />
+          <span>预览</span>
+          <span className="text-muted-foreground">Shot_The_Thud_And_Blood_final_video</span>
+        </div>
+        <button onClick={onClose} className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground">
+          <X className="h-3.5 w-3.5" />
+        </button>
+      </div>
+      <div className="relative flex flex-1 flex-col overflow-hidden">
+        <div className="absolute left-3 top-3 z-10 flex items-center gap-2">
+          <span className="rounded-md bg-black/50 px-2 py-1 text-[11px] text-foreground backdrop-blur">Seedance 2.0</span>
+          <span className="rounded-md bg-black/50 px-2 py-1 text-[11px] text-foreground backdrop-blur">720p</span>
+        </div>
+        <div className="absolute right-3 top-3 z-10 flex items-center gap-1">
+          {[Quote, Download, Heart, Trash2, Maximize2].map((Icon, i) => (
+            <button key={i} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-black/40 hover:text-foreground">
+              <Icon className="h-3.5 w-3.5" />
+            </button>
+          ))}
+        </div>
+        <div className="flex flex-1 items-center justify-center overflow-hidden bg-gradient-to-b from-background to-black/60 p-4">
+          <div className="relative h-full aspect-[9/16] max-h-full overflow-hidden rounded-md bg-black">
+            <img src={charSam} alt="preview" className="h-full w-full object-cover" />
+          </div>
+        </div>
+        <div className="flex items-center gap-2 border-t border-border/60 p-3">
+          <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
+            <input placeholder="输入评论,编辑当前镜头并生成新画面..." className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
+            <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
+              <ArrowUp className="h-3 w-3" />
+            </button>
+          </div>
+          <button className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-[12px] text-foreground hover:bg-card">
+            <Pencil className="h-3.5 w-3.5" /> 手动编辑
+          </button>
+          <button className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-[12px] text-foreground hover:bg-card">
+            <RefreshCw className="h-3.5 w-3.5" /> 重新生成
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TimelineBar() {
+  const ticks = ["00:00", "0:05", "0:10", "0:15", "0:20", "0:25", "0:30", "0:35", "0:40", "0:45", "0:50", "0:55", "1:00", "1:05"];
+  return (
+    <div className="flex h-[220px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
+      {/* Toolbar */}
+      <div className="flex h-10 items-center justify-between border-b border-border/60 px-3">
+        <div className="flex items-center gap-1">
+          <button className="flex h-7 w-7 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground"><Undo2 className="h-3.5 w-3.5" /></button>
+          <button className="flex h-7 w-7 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground"><Redo2 className="h-3.5 w-3.5" /></button>
+        </div>
+        <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+          <span><span className="text-foreground">00:00</span></span>
+          <button className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20"><Play className="h-3 w-3 fill-current" /></button>
+          <span>01:00</span>
+        </div>
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <button className="flex h-7 w-7 items-center justify-center rounded hover:bg-accent hover:text-foreground"><Volume2 className="h-3.5 w-3.5" /></button>
+          <button className="flex h-7 w-7 items-center justify-center rounded hover:bg-accent hover:text-foreground"><Maximize2 className="h-3.5 w-3.5" /></button>
+          <button className="flex h-7 w-7 items-center justify-center rounded hover:bg-accent hover:text-foreground"><ZoomOut className="h-3.5 w-3.5" /></button>
+          <div className="h-1 w-20 rounded-full bg-muted/50"><div className="h-full w-1/3 rounded-full bg-foreground/60" /></div>
+          <button className="flex h-7 w-7 items-center justify-center rounded hover:bg-accent hover:text-foreground"><ZoomIn className="h-3.5 w-3.5" /></button>
+        </div>
+      </div>
+      {/* Timeline area */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Side icons */}
+        <div className="flex w-10 flex-shrink-0 flex-col items-center gap-3 border-r border-border/60 py-2 pt-8 text-muted-foreground">
+          <button className="flex h-6 w-6 items-center justify-center rounded hover:bg-accent hover:text-foreground"><Undo2 className="h-3 w-3" /></button>
+          <button className="flex h-6 w-6 items-center justify-center rounded hover:bg-accent hover:text-foreground"><Redo2 className="h-3 w-3" /></button>
+          <div className="flex-1" />
+          <Video className="h-3.5 w-3.5" />
+          <Volume2 className="h-3.5 w-3.5" />
+          <Volume2 className="h-3.5 w-3.5" />
+        </div>
+        <div className="relative flex-1 overflow-x-auto scrollbar-hide">
+          {/* Time ruler */}
+          <div className="flex h-6 items-end border-b border-border/40 px-2 text-[10px] text-muted-foreground">
+            {ticks.map((t) => (
+              <div key={t} className="flex-1 border-l border-border/40 pl-1 first:border-l-0">{t}</div>
+            ))}
+          </div>
+          {/* Playhead */}
+          <div className="absolute left-4 top-0 bottom-0 z-10 w-px bg-aurora-orange">
+            <div className="absolute -left-1 top-0 h-2 w-2 rotate-45 bg-aurora-orange" />
+          </div>
+          {/* Video clips track */}
+          <div className="flex h-12 items-center gap-0.5 px-2 py-1">
+            {shotClips.map((c, i) => (
+              <div key={i} className="relative h-full overflow-hidden rounded border border-border/60 bg-muted" style={{ width: `${c.width}px` }}>
+                <div className="flex h-full">
+                  {Array.from({ length: Math.max(3, Math.floor(c.width / 36)) }).map((_, j) => (
+                    <img key={j} src={c.src} alt="" className="h-full w-9 flex-shrink-0 object-cover opacity-90" />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Empty middle track */}
+          <div className="h-6 border-t border-border/40" />
+          {/* Audio track */}
+          <div className="flex h-7 items-center px-2">
+            <div className="flex h-full w-full items-center gap-2 rounded bg-success/30 px-2 text-[11px] text-success">
+              <Music2 className="h-3 w-3" />
+              <span>背景音乐</span>
+            </div>
           </div>
         </div>
       </div>
