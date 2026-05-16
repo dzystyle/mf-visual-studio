@@ -36,7 +36,8 @@ const ACCEPT_MAP: Record<Attachment["kind"], string> = {
   text: ".txt,.md,.json,.csv,text/*",
 };
 
-export function PromptBox() {
+export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = {}) {
+  const [text, setText] = useState("");
   const [openModel, setOpenModel] = useState(false);
   const [openSkill, setOpenSkill] = useState(false);
   const [openElements, setOpenElements] = useState(false);
