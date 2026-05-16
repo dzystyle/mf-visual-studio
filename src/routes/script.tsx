@@ -331,6 +331,47 @@ const seedConversation: Msg[] = [
       },
     ],
   },
+  { kind: "user", text: "角色确认,开始生成分镜视频" },
+  {
+    kind: "bot",
+    nodes: [
+      {
+        type: "mediaAssets",
+        title: "Media Assets",
+        cost: "-1260",
+        steps: [
+          {
+            title: "Agent分析完成",
+            desc: "好的,萨姆的参考图已更新,现在将所有5个分镜的 prompt_id 复用,同时将萨姆替换为新版资源,一次性批量提交给 Seedance 2.0 生成!",
+          },
+          {
+            title: "生成素材完成",
+            assets: [
+              { name: "Shot_Late_And_Kicked...", duration: "00:12" },
+              { name: "Shot_Humiliation_final_...", duration: "00:10" },
+              { name: "Shot_Cursing_And_Flas...", duration: "00:12" },
+              { name: "Shot_Basement_Banish...", duration: "00:11" },
+              { name: "Shot_The_Thud_And_Bl...", duration: "00:15" },
+            ],
+          },
+          { title: "Agent分析完成" },
+        ],
+      },
+      { type: "text", text: "5个分镜视频全部生成完毕!✅ 请在上方查看每个片段的效果。", emphasis: true },
+      {
+        type: "progressTable",
+        title: "当前进度一览:",
+        rows: [
+          { shot: "Shot 1", content: "凌辱咖啡→同事旁观", status: "已生成" },
+          { shot: "Shot 2", content: "打卡机→萨姆冲进→老板踹+骂", status: "已生成" },
+          { shot: "Shot 3", content: "老板骂人主观视角→异能觉醒闪回", status: "已生成" },
+          { shot: "Shot 4", content: "老板发配地下室→萨姆背影", status: "已生成" },
+          { shot: "Shot 5", content: "走廊倒地声→萨姆转身冲楼梯→血迹", status: "已生成" },
+        ],
+      },
+      { type: "text", text: "请仔细查看5个片段,如有需要调整的镜头告诉我。视频满意后,下一步将生成 60秒工业风背景配乐,然后进行最终剪辑合成 🎬" },
+    ],
+  },
 ];
 
 function ChatPanel({
