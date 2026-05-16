@@ -1072,7 +1072,7 @@ function EditorPreviewPanel({ onClose }: { onClose: () => void }) {
         <div className="flex items-center gap-1.5 text-xs">
           <Eye className="h-3.5 w-3.5" />
           <span>预览</span>
-          <span className="text-muted-foreground">Shot_The_Thud_And_Blood_final_video</span>
+          <span className="text-muted-foreground">Element_Sam_ref_img</span>
         </div>
         <button onClick={onClose} className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground">
           <X className="h-3.5 w-3.5" />
@@ -1080,8 +1080,8 @@ function EditorPreviewPanel({ onClose }: { onClose: () => void }) {
       </div>
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <div className="absolute left-3 top-3 z-10 flex items-center gap-2">
-          <span className="rounded-md bg-black/50 px-2 py-1 text-[11px] text-foreground backdrop-blur">Seedance 2.0</span>
-          <span className="rounded-md bg-black/50 px-2 py-1 text-[11px] text-foreground backdrop-blur">720p</span>
+          <span className="rounded-md bg-black/50 px-2 py-1 text-[11px] text-foreground backdrop-blur">Nano Banana 2</span>
+          <span className="rounded-md bg-black/50 px-2 py-1 text-[11px] text-foreground backdrop-blur">2K (2752*1536)</span>
         </div>
         <div className="absolute right-3 top-3 z-10 flex items-center gap-1">
           {[Quote, Download, Heart, Trash2, Maximize2].map((Icon, i) => (
@@ -1091,9 +1091,7 @@ function EditorPreviewPanel({ onClose }: { onClose: () => void }) {
           ))}
         </div>
         <div className="flex flex-1 items-center justify-center overflow-hidden bg-gradient-to-b from-background to-black/60 p-4">
-          <div className="relative h-full aspect-[9/16] max-h-full overflow-hidden rounded-md bg-black">
-            <img src={charSam} alt="preview" className="h-full w-full object-cover" />
-          </div>
+          <img src={charSam} alt="Element_Sam_ref_img" className="max-h-full max-w-full rounded-md object-contain" />
         </div>
         <div className="flex items-center gap-2 border-t border-border/60 p-3">
           <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
