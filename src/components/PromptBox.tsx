@@ -36,7 +36,8 @@ const ACCEPT_MAP: Record<Attachment["kind"], string> = {
   text: ".txt,.md,.json,.csv,text/*",
 };
 
-export function PromptBox() {
+export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = {}) {
+  const [text, setText] = useState("");
   const [openModel, setOpenModel] = useState(false);
   const [openSkill, setOpenSkill] = useState(false);
   const [openElements, setOpenElements] = useState(false);
@@ -85,6 +86,18 @@ export function PromptBox() {
 
       <textarea
         rows={3}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            const v = text.trim();
+            if (v && onSubmit) {
+              onSubmit(v);
+              setText("");
+            }
+          }
+        }}
         placeholder="由一个想法或故事开始..."
         className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
       />
@@ -126,7 +139,16 @@ export function PromptBox() {
           />
           <Chip icon={Smile} label="元素" onClick={() => setOpenElements(true)} />
         </div>
-        <button className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background">
+        <button
+          onClick={() => {
+            const v = text.trim();
+            if (v && onSubmit) {
+              onSubmit(v);
+              setText("");
+            }
+          }}
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
+        >
           <ArrowUp className="h-4 w-4" />
         </button>
       </div>
