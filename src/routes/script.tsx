@@ -37,6 +37,9 @@ type Element = {
   name: string;
   desc: string;
   expanded?: boolean;
+  thumbs?: string[];
+  refId?: string;
+  count?: number;
 };
 
 import charSam from "@/assets/char-sam.jpg";
