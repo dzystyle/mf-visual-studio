@@ -39,14 +39,21 @@ type Element = {
   expanded?: boolean;
 };
 
+import charSam from "@/assets/char-sam.jpg";
+import charBoss from "@/assets/char-boss.jpg";
+import charCarter from "@/assets/char-carter.jpg";
+import charXiaopang from "@/assets/char-xiaopang.jpg";
+import charLisa from "@/assets/char-lisa.jpg";
+import charSecurity from "@/assets/char-security.jpg";
+
 const initialElements: Element[] = [
-  { name: "Element_Sam", desc: "28岁瘦弱白人男性,黑框眼镜,洗旧蓝格子衬衫,卡其裤,破洞白球鞋,凌乱棕发,眼下有浓重黑眼圈。现代都市写实风格。" },
-  { name: "Element_Boss", desc: "50岁肥胖白人男性,秃顶,身穿昂贵的深灰色西装,佩戴金表,满脸横肉,面部特征常常紧皱眉头。" },
-  { name: "Element_Detective_Carter", desc: "38岁高大白人男性,寸头发型,左脸有一道明显的刀疤,穿着黑色战术背心叩作战服。外观硬朗冷峻。", expanded: true },
-  { name: "Element_Xiao_Pang", desc: "21岁亚裔男性,圆框眼镜,穿着宽松的灰色卫衣。体态多表现为含胸低头。" },
-  { name: "Element_Lisa", desc: "32岁白人女性,金色大波浪卷发,穿着黑色紧身职业套装搭配细高跟鞋,涂有鲜艳红唇,外表冷艳。" },
-  { name: "Element_Security_Chief", desc: "36岁黑人男性,光头,肌肉非常发达。穿着黑色保安制服,脖子上带有显眼的纹身。" },
-  { name: "Element_Mark", desc: "" },
+  { name: "Element_Sam", desc: "28岁瘦弱白人男性,黑框眼镜,洗旧蓝格子衬衫,卡其裤,破洞白球鞋,凌乱棕发,眼下有浓重黑眼圈。现代都市写实风格。", thumbs: [charSam, charSam], refId: "Element_Sam_ref_img", count: 2 },
+  { name: "Element_Boss", desc: "50岁肥胖白人男性,秃顶,身穿昂贵的深灰色西装,佩戴金表,满脸横肉,面部特征常常紧皱眉头。", thumbs: [charBoss], refId: "Element_Boss_ref_img" },
+  { name: "Element_Detective_Carter", desc: "38岁高大白人男性,寸头发型,左脸有一道明显的刀疤,穿着黑色战术背心叩作战服。外观硬朗冷峻。", thumbs: [charCarter, charCarter], refId: "Element_Detective_Carter_ref_img", expanded: true },
+  { name: "Element_Xiao_Pang", desc: "21岁亚裔男性,圆框眼镜,穿着宽松的灰色卫衣。体态多表现为含胸低头。", thumbs: [charXiaopang], refId: "Element_Xiao_Pang_ref_img" },
+  { name: "Element_Lisa", desc: "32岁白人女性,金色大波浪卷发,穿着黑色紧身职业套装搭配细高跟鞋,涂有鲜艳红唇,外表冷艳。", thumbs: [charLisa], refId: "Element_Lisa_ref_img" },
+  { name: "Element_Security_Chief", desc: "36岁黑人男性,光头,肌肉非常发达。穿着黑色保安制服,脖子上带有显眼的纹身。", thumbs: [charSecurity], refId: "Element_Security_Chief_ref_img" },
+  { name: "Element_Mark", desc: "", thumbs: [], refId: "Element_Mark_ref_img" },
 ];
 
 function ScriptPage() {
