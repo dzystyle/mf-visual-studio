@@ -666,7 +666,13 @@ function BotNodeView({ node }: { node: BotNode }) {
   );
 }
 
-function Composer() {
+function Composer({
+  quotes = [],
+  onRemoveQuote,
+}: {
+  quotes?: QuotedRef[];
+  onRemoveQuote?: (id: string) => void;
+} = {}) {
   const [text, setText] = useState("");
   const [modelOpen, setModelOpen] = useState(false);
   const [skillOpen, setSkillOpen] = useState(false);
@@ -677,6 +683,26 @@ function Composer() {
   return (
     <div className="border-t border-border/60 p-3">
       <div className="rounded-xl border border-border/60 bg-card/50 p-2.5">
+        {quotes.length > 0 && (
+          <div className="mb-2 flex flex-wrap gap-1.5">
+            {quotes.map((q) => (
+              <span
+                key={q.id}
+                className="inline-flex items-center gap-1.5 rounded-md border border-aurora-pink/40 bg-aurora-pink/10 px-1.5 py-1 text-[11px] text-foreground"
+              >
+                <img src={q.image} alt={q.name} className="h-5 w-5 rounded object-cover" />
+                <Quote className="h-3 w-3 text-aurora-pink" />
+                <span className="max-w-[160px] truncate">{q.name}</span>
+                <button
+                  onClick={() => onRemoveQuote?.(q.id)}
+                  className="ml-0.5 text-muted-foreground hover:text-foreground"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
         {(model || skill || elements.length > 0) && (
           <div className="mb-2 flex flex-wrap gap-1.5">
             {model && (
