@@ -76,6 +76,7 @@ const initialElements: Element[] = [
 ];
 
 type Mode = "storyboard" | "timeline";
+export type QuotedRef = { id: string; name: string; image: string };
 
 function ScriptPage() {
   const { prompt } = Route.useSearch();
@@ -83,6 +84,14 @@ function ScriptPage() {
   const [showLeft, setShowLeft] = useState(true);
   const [showPreview, setShowPreview] = useState(true);
   const [showChat, setShowChat] = useState(true);
+  const [quotes, setQuotes] = useState<QuotedRef[]>([]);
+
+  const addQuote = (q: QuotedRef) => {
+    setShowChat(true);
+    setQuotes((xs) => (xs.some((x) => x.id === q.id) ? xs : [...xs, q]));
+  };
+  const removeQuote = (id: string) =>
+    setQuotes((xs) => xs.filter((x) => x.id !== id));
 
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
@@ -94,6 +103,7 @@ function ScriptPage() {
             showPreview={showPreview}
             onCloseLeft={() => setShowLeft(false)}
             onClosePreview={() => setShowPreview(false)}
+            onQuote={addQuote}
           />
         ) : (
           <>
@@ -101,7 +111,10 @@ function ScriptPage() {
               <StoryboardPanel onClose={() => setShowLeft(false)} />
             )}
             {showPreview && (
-              <PreviewPanel onClose={() => setShowPreview(false)} />
+              <PreviewPanel
+                onClose={() => setShowPreview(false)}
+                onQuote={addQuote}
+              />
             )}
           </>
         )}
@@ -109,6 +122,8 @@ function ScriptPage() {
           <ChatPanel
             initialPrompt={prompt}
             onClose={() => setShowChat(false)}
+            quotes={quotes}
+            onRemoveQuote={removeQuote}
           />
         )}
       </div>
@@ -452,9 +467,13 @@ const seedConversation: Msg[] = [
 function ChatPanel({
   initialPrompt,
   onClose,
+  quotes,
+  onRemoveQuote,
 }: {
   initialPrompt?: string;
   onClose: () => void;
+  quotes: QuotedRef[];
+  onRemoveQuote: (id: string) => void;
 }) {
   const [msgs] = useState<Msg[]>(() =>
     initialPrompt
@@ -491,7 +510,7 @@ function ChatPanel({
         )}
       </div>
 
-      <Composer />
+      <Composer quotes={quotes} onRemoveQuote={onRemoveQuote} />
     </div>
   );
 }
@@ -647,7 +666,13 @@ function BotNodeView({ node }: { node: BotNode }) {
   );
 }
 
-function Composer() {
+function Composer({
+  quotes = [],
+  onRemoveQuote,
+}: {
+  quotes?: QuotedRef[];
+  onRemoveQuote?: (id: string) => void;
+} = {}) {
   const [text, setText] = useState("");
   const [modelOpen, setModelOpen] = useState(false);
   const [skillOpen, setSkillOpen] = useState(false);
@@ -658,6 +683,26 @@ function Composer() {
   return (
     <div className="border-t border-border/60 p-3">
       <div className="rounded-xl border border-border/60 bg-card/50 p-2.5">
+        {quotes.length > 0 && (
+          <div className="mb-2 flex flex-wrap gap-1.5">
+            {quotes.map((q) => (
+              <span
+                key={q.id}
+                className="inline-flex items-center gap-1.5 rounded-md border border-aurora-pink/40 bg-aurora-pink/10 px-1.5 py-1 text-[11px] text-foreground"
+              >
+                <img src={q.image} alt={q.name} className="h-5 w-5 rounded object-cover" />
+                <Quote className="h-3 w-3 text-aurora-pink" />
+                <span className="max-w-[160px] truncate">{q.name}</span>
+                <button
+                  onClick={() => onRemoveQuote?.(q.id)}
+                  className="ml-0.5 text-muted-foreground hover:text-foreground"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
         {(model || skill || elements.length > 0) && (
           <div className="mb-2 flex flex-wrap gap-1.5">
             {model && (
@@ -838,7 +883,8 @@ const fileAssets: { name: string; src: string; isVideo?: boolean }[] = [
   { name: "", src: charSam, isVideo: true },
 ];
 
-function PreviewPanel({ onClose }: { onClose: () => void }) {
+function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: QuotedRef) => void }) {
+  const quoteCurrent = () => onQuote({ id: "Element_Sam_ref_img", name: "Element_Sam_ref_img", image: charSam });
   return (
     <div className="flex flex-1 min-w-0 flex-col gap-2 overflow-hidden">
       {/* Preview card */}
@@ -864,7 +910,11 @@ function PreviewPanel({ onClose }: { onClose: () => void }) {
           </div>
           <div className="absolute right-3 top-3 z-10 flex items-center gap-1">
             {[Quote, Download, Heart, Trash2].map((Icon, i) => (
-              <button key={i} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-black/40 hover:text-foreground">
+              <button
+                key={i}
+                onClick={i === 0 ? quoteCurrent : undefined}
+                className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-black/40 hover:text-foreground"
+              >
                 <Icon className="h-3.5 w-3.5" />
               </button>
             ))}
@@ -968,18 +1018,20 @@ function TimelineWorkspace({
   showPreview,
   onCloseLeft,
   onClosePreview,
+  onQuote,
 }: {
   showLeft: boolean;
   showPreview: boolean;
   onCloseLeft: () => void;
   onClosePreview: () => void;
+  onQuote: (q: QuotedRef) => void;
 }) {
   return (
     <div className="flex flex-1 min-w-0 flex-col gap-2 overflow-hidden">
       {/* Top row: file area + preview */}
       <div className="flex flex-1 gap-2 overflow-hidden">
         {showLeft && <FileLibraryPanel onClose={onCloseLeft} />}
-        {showPreview && <EditorPreviewPanel onClose={onClosePreview} />}
+        {showPreview && <EditorPreviewPanel onClose={onClosePreview} onQuote={onQuote} />}
       </div>
       {/* Bottom: timeline track */}
       <TimelineBar />
@@ -1065,7 +1117,8 @@ function AudioCard({ name }: { name: string }) {
   );
 }
 
-function EditorPreviewPanel({ onClose }: { onClose: () => void }) {
+function EditorPreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: QuotedRef) => void }) {
+  const quoteCurrent = () => onQuote({ id: "Element_Sam_ref_img", name: "Element_Sam_ref_img", image: charSam });
   return (
     <div className="flex flex-1 min-w-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
       <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
@@ -1085,7 +1138,11 @@ function EditorPreviewPanel({ onClose }: { onClose: () => void }) {
         </div>
         <div className="absolute right-3 top-3 z-10 flex items-center gap-1">
           {[Quote, Download, Heart, Trash2, Maximize2].map((Icon, i) => (
-            <button key={i} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-black/40 hover:text-foreground">
+            <button
+              key={i}
+              onClick={i === 0 ? quoteCurrent : undefined}
+              className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-black/40 hover:text-foreground"
+            >
               <Icon className="h-3.5 w-3.5" />
             </button>
           ))}
