@@ -883,7 +883,8 @@ const fileAssets: { name: string; src: string; isVideo?: boolean }[] = [
   { name: "", src: charSam, isVideo: true },
 ];
 
-function PreviewPanel({ onClose }: { onClose: () => void }) {
+function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: QuotedRef) => void }) {
+  const quoteCurrent = () => onQuote({ id: "Element_Sam_ref_img", name: "Element_Sam_ref_img", image: charSam });
   return (
     <div className="flex flex-1 min-w-0 flex-col gap-2 overflow-hidden">
       {/* Preview card */}
