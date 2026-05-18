@@ -76,6 +76,7 @@ const initialElements: Element[] = [
 ];
 
 type Mode = "storyboard" | "timeline";
+export type QuotedRef = { id: string; name: string; image: string };
 
 function ScriptPage() {
   const { prompt } = Route.useSearch();
@@ -83,6 +84,14 @@ function ScriptPage() {
   const [showLeft, setShowLeft] = useState(true);
   const [showPreview, setShowPreview] = useState(true);
   const [showChat, setShowChat] = useState(true);
+  const [quotes, setQuotes] = useState<QuotedRef[]>([]);
+
+  const addQuote = (q: QuotedRef) => {
+    setShowChat(true);
+    setQuotes((xs) => (xs.some((x) => x.id === q.id) ? xs : [...xs, q]));
+  };
+  const removeQuote = (id: string) =>
+    setQuotes((xs) => xs.filter((x) => x.id !== id));
 
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
@@ -94,6 +103,7 @@ function ScriptPage() {
             showPreview={showPreview}
             onCloseLeft={() => setShowLeft(false)}
             onClosePreview={() => setShowPreview(false)}
+            onQuote={addQuote}
           />
         ) : (
           <>
@@ -101,7 +111,10 @@ function ScriptPage() {
               <StoryboardPanel onClose={() => setShowLeft(false)} />
             )}
             {showPreview && (
-              <PreviewPanel onClose={() => setShowPreview(false)} />
+              <PreviewPanel
+                onClose={() => setShowPreview(false)}
+                onQuote={addQuote}
+              />
             )}
           </>
         )}
@@ -109,6 +122,8 @@ function ScriptPage() {
           <ChatPanel
             initialPrompt={prompt}
             onClose={() => setShowChat(false)}
+            quotes={quotes}
+            onRemoveQuote={removeQuote}
           />
         )}
       </div>
