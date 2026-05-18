@@ -1117,7 +1117,8 @@ function AudioCard({ name }: { name: string }) {
   );
 }
 
-function EditorPreviewPanel({ onClose }: { onClose: () => void }) {
+function EditorPreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: QuotedRef) => void }) {
+  const quoteCurrent = () => onQuote({ id: "Element_Sam_ref_img", name: "Element_Sam_ref_img", image: charSam });
   return (
     <div className="flex flex-1 min-w-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
       <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
