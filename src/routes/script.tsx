@@ -1138,7 +1138,11 @@ function EditorPreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote
         </div>
         <div className="absolute right-3 top-3 z-10 flex items-center gap-1">
           {[Quote, Download, Heart, Trash2, Maximize2].map((Icon, i) => (
-            <button key={i} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-black/40 hover:text-foreground">
+            <button
+              key={i}
+              onClick={i === 0 ? quoteCurrent : undefined}
+              className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-black/40 hover:text-foreground"
+            >
               <Icon className="h-3.5 w-3.5" />
             </button>
           ))}
