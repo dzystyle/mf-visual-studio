@@ -1018,18 +1018,20 @@ function TimelineWorkspace({
   showPreview,
   onCloseLeft,
   onClosePreview,
+  onQuote,
 }: {
   showLeft: boolean;
   showPreview: boolean;
   onCloseLeft: () => void;
   onClosePreview: () => void;
+  onQuote: (q: QuotedRef) => void;
 }) {
   return (
     <div className="flex flex-1 min-w-0 flex-col gap-2 overflow-hidden">
       {/* Top row: file area + preview */}
       <div className="flex flex-1 gap-2 overflow-hidden">
         {showLeft && <FileLibraryPanel onClose={onCloseLeft} />}
-        {showPreview && <EditorPreviewPanel onClose={onClosePreview} />}
+        {showPreview && <EditorPreviewPanel onClose={onClosePreview} onQuote={onQuote} />}
       </div>
       {/* Bottom: timeline track */}
       <TimelineBar />
