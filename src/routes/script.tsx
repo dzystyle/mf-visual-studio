@@ -467,9 +467,13 @@ const seedConversation: Msg[] = [
 function ChatPanel({
   initialPrompt,
   onClose,
+  quotes,
+  onRemoveQuote,
 }: {
   initialPrompt?: string;
   onClose: () => void;
+  quotes: QuotedRef[];
+  onRemoveQuote: (id: string) => void;
 }) {
   const [msgs] = useState<Msg[]>(() =>
     initialPrompt
@@ -506,7 +510,7 @@ function ChatPanel({
         )}
       </div>
 
-      <Composer />
+      <Composer quotes={quotes} onRemoveQuote={onRemoveQuote} />
     </div>
   );
 }
