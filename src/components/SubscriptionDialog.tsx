@@ -35,7 +35,7 @@ export function SubscriptionDialog({
               </div>
             </div>
 
-            <h1 className="text-2xl font-bold tracking-tight">Artrail - 价格与套餐</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Load the security issues from the scan results and fix the selected issues.</h1>
 
             <div className="mt-8 flex justify-center">
               <div className="flex border-b border-white/10 w-full max-w-md">
