@@ -334,17 +334,37 @@ function RatioItem({ label, icon, active, onClick }: { label: string; icon: Reac
   );
 }
 
-function MentionItem({ label, img, icon }: { label: string; img?: string; icon?: React.ReactNode }) {
+function MentionItem({ 
+  label, 
+  img, 
+  icon, 
+  active, 
+  onClick 
+}: { 
+  label: string; 
+  img?: string; 
+  icon?: React.ReactNode; 
+  active?: boolean; 
+  onClick?: () => void 
+}) {
   return (
-    <button className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-xs text-foreground transition hover:bg-accent/60">
-      <div className="h-8 w-8 overflow-hidden rounded-lg border border-border bg-muted/40">
+    <button 
+      onClick={onClick}
+      className={`flex w-full items-center gap-3 rounded-xl px-2 py-2 text-xs text-foreground transition hover:bg-accent/60 ${active ? 'bg-accent/80' : ''}`}
+    >
+      <div className="h-8 w-8 overflow-hidden rounded-lg border border-border bg-muted/40 relative">
         {img ? (
           <img src={img} alt={label} className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full w-full items-center justify-center">{icon}</div>
         )}
+        {active && (
+          <div className="absolute inset-0 bg-aurora-blue/20 flex items-center justify-center">
+            <div className="w-1.5 h-1.5 rounded-full bg-aurora-blue shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+          </div>
+        )}
       </div>
-      <span className="font-medium text-[13px]">{label}</span>
+      <span className={`font-medium text-[13px] ${active ? 'text-foreground' : 'text-foreground/80'}`}>{label}</span>
     </button>
   );
 }
