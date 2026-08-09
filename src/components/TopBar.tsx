@@ -5,7 +5,7 @@ export function TopBar({ title }: { title?: string }) {
     <div className="absolute right-6 top-4 z-20 flex items-center gap-3">
       <button className="flex items-center gap-2 rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-xs text-foreground backdrop-blur hover:bg-card">
         <BookOpen className="h-3.5 w-3.5 text-aurora-orange" />
-        <span className="font-medium">全新 MovieFlow 1.0 使用教程</span>
+        <span className="font-medium">全新 Artrail 1.0 使用教程</span>
       </button>
       <div className="flex items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1.5 text-xs backdrop-blur">
         <Coins className="h-3.5 w-3.5 text-aurora-orange" />
@@ -28,7 +28,7 @@ export function BrandMark() {
         <div className="rounded-[1px] bg-aurora-blue" />
         <div className="rounded-[1px] bg-foreground" />
       </div>
-      <span className="text-[15px] font-semibold tracking-tight">movieflow.ai</span>
+      <span className="text-[15px] font-semibold tracking-tight">artrail.ai</span>
     </div>
   );
 }
