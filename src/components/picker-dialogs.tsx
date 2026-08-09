@@ -59,6 +59,9 @@ export function ModelPicker({
 }) {
   const [activeTab, setActiveTab] = useState<keyof typeof modelData>("video");
   const selected = value ?? "Seedance 2.5";
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const isScrollingRef = useRef(false);
   
   const tabs = [
     { key: "image", label: "图片" },
@@ -66,6 +69,52 @@ export function ModelPicker({
     { key: "music", label: "音乐" },
     { key: "audio", label: "音频" },
   ];
+
+  const handleTabClick = (key: string) => {
+    setActiveTab(key as any);
+    const element = sectionRefs.current[key];
+    if (element && scrollRef.current) {
+      isScrollingRef.current = true;
+      element.scrollIntoView({ behavior: 'smooth' });
+      // Reset isScrollingRef after animation
+      setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 800);
+    }
+  };
+
+  const handleScroll = () => {
+    if (isScrollingRef.current || !scrollRef.current) return;
+    
+    const container = scrollRef.current;
+    const scrollTop = container.scrollTop;
+    const containerHeight = container.clientHeight;
+    
+    // Find which section is most visible
+    let currentTab = activeTab;
+    let maxVisibleHeight = 0;
+
+    tabs.forEach((tab) => {
+      const element = sectionRefs.current[tab.key];
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        
+        const visibleTop = Math.max(rect.top, containerRect.top);
+        const visibleBottom = Math.min(rect.bottom, containerRect.bottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        
+        if (visibleHeight > maxVisibleHeight) {
+          maxVisibleHeight = visibleHeight;
+          currentTab = tab.key as any;
+        }
+      }
+    });
+
+    if (currentTab !== activeTab) {
+      setActiveTab(currentTab);
+    }
+  };
 
   return (
     <div className="w-[580px] text-white">
@@ -78,7 +127,7 @@ export function ModelPicker({
           {tabs.map((t) => (
             <button
               key={t.key}
-              onMouseEnter={() => setActiveTab(t.key as any)}
+              onClick={() => handleTabClick(t.key)}
               className={`flex-1 rounded-full py-1.5 text-xs font-medium transition-all ${
                 activeTab === t.key ? "bg-white/10 text-white" : "text-white/40 hover:text-white/60"
               }`}
@@ -90,54 +139,68 @@ export function ModelPicker({
       </div>
 
       <div className="mt-4 px-6 pb-6">
-        <div className="mb-2 text-[10px] font-medium uppercase tracking-wider text-white/40">
-          {tabs.find(t => t.key === activeTab)?.label}
-        </div>
-        <div className="max-h-[400px] space-y-2 overflow-y-auto pr-2 scrollbar-hide text-white">
-          {modelData[activeTab].map((m: any) => {
-            const active = selected === m.name;
-            return (
-              <button
-                key={m.name}
-                onClick={() => onSelect?.(m.name)}
-                className={`group relative flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition-all ${
-                  active
-                    ? "border-white/20 bg-white/10"
-                    : "border-transparent bg-white/[0.02] hover:bg-white/[0.05]"
-                }`}
-              >
-                <div className={`mt-1 h-5 w-5 rounded-full border-2 ${active ? 'border-white bg-white' : 'border-white/20'} flex items-center justify-center`}>
-                  {active && <Check className="h-3 w-3 text-black stroke-[3px]" />}
-                </div>
-                
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-white">{m.name}</span>
-                    {m.badge && (
-                      <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] font-bold text-green-500">
-                        {m.badge}
-                      </span>
-                    )}
-                    {m.tag && (
-                      <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[8px] font-bold text-white">
-                        {m.tag}
-                      </span>
-                    )}
-                    {m.upgrade && (
-                      <span className="rounded bg-blue-500/20 px-1.5 py-0.5 text-[8px] font-bold text-blue-500">
-                        升级
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-1 text-[11px] leading-relaxed text-white/50">{m.desc}</p>
-                </div>
+        <div 
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="max-h-[400px] space-y-6 overflow-y-auto pr-2 scrollbar-hide text-white"
+        >
+          {tabs.map((tab) => (
+            <div 
+              key={tab.key}
+              ref={(el) => (sectionRefs.current[tab.key] = el)}
+              className="space-y-3"
+            >
+              <div className="text-[10px] font-medium uppercase tracking-wider text-white/40 sticky top-0 bg-[#0A0A0A]/95 py-1 z-10">
+                {tab.label}
+              </div>
+              <div className="space-y-2">
+                {modelData[tab.key as keyof typeof modelData].map((m: any) => {
+                  const active = selected === m.name;
+                  return (
+                    <button
+                      key={m.name}
+                      onClick={() => onSelect?.(m.name)}
+                      className={`group relative flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition-all ${
+                        active
+                          ? "border-white/20 bg-white/10"
+                          : "border-transparent bg-white/[0.02] hover:bg-white/[0.05]"
+                      }`}
+                    >
+                      <div className={`mt-1 h-5 w-5 rounded-full border-2 ${active ? 'border-white bg-white' : 'border-white/20'} flex items-center justify-center`}>
+                        {active && <Check className="h-3 w-3 text-black stroke-[3px]" />}
+                      </div>
+                      
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-bold text-white">{m.name}</span>
+                          {m.badge && (
+                            <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] font-bold text-green-500">
+                              {m.badge}
+                            </span>
+                          )}
+                          {m.tag && (
+                            <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[8px] font-bold text-white">
+                              {m.tag}
+                            </span>
+                          )}
+                          {m.upgrade && (
+                            <span className="rounded bg-blue-500/20 px-1.5 py-0.5 text-[8px] font-bold text-blue-500">
+                              升级
+                            </span>
+                          )}
+                        </div>
+                        <p className="mt-1 text-[11px] leading-relaxed text-white/50">{m.desc}</p>
+                      </div>
 
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Plus className="h-3 w-3" />
-                </div>
-              </button>
-            );
-          })}
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Plus className="h-3 w-3" />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
