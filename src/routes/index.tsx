@@ -121,27 +121,6 @@ function SkillsWithPreview() {
 
   return (
     <div className="relative">
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
-        {hotSkills.map((s) => (
-          <div
-            key={s.id}
-            onMouseMove={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              setPosition({
-                x: rect.left + rect.width / 2,
-                y: rect.top,
-              });
-            }}
-          >
-            <SkillCard
-              {...s}
-              onHover={() => setHovered(s.id)}
-              onLeave={() => setHovered(null)}
-            />
-          </div>
-        ))}
-      </div>
-
       {active && (
         <div
           className="fixed z-50 pointer-events-none -translate-x-1/2 -translate-y-[calc(100%+12px)] transition-all duration-200"
@@ -182,6 +161,27 @@ function SkillsWithPreview() {
           <div className="absolute left-1/2 -bottom-1.5 h-3 w-3 -translate-x-1/2 rotate-45 border-b border-r border-white/10 bg-[#161616]" />
         </div>
       )}
+
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+        {hotSkills.map((s) => (
+          <div
+            key={s.id}
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              setPosition({
+                x: rect.left + rect.width / 2,
+                y: rect.top,
+              });
+            }}
+          >
+            <SkillCard
+              {...s}
+              onHover={() => setHovered(s.id)}
+              onLeave={() => setHovered(null)}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
