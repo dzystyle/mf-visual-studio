@@ -96,29 +96,28 @@ export function SubscriptionDialog({
                     price={140} 
                     credits="2000 + 400" 
                     bonus="多送20%" 
-                    features={PERSONAL_FEATURES} 
-                    highlight="创作补贴"
+                    features={getPersonalFeatures(10)} 
                   />
                   <PersonalCard 
                     name="Basic" 
                     price={350} 
                     credits="5000 + 1500" 
                     bonus="多送30%" 
-                    features={PERSONAL_FEATURES}
+                    features={getPersonalFeatures(20)}
                   />
                   <PersonalCard 
                     name="Plus" 
                     price={700} 
                     credits="10000 + 4000" 
                     bonus="多送40%" 
-                    features={PERSONAL_FEATURES}
+                    features={getPersonalFeatures(50, true)}
                   />
                   <PersonalCard 
                     name="Pro" 
                     price={1400} 
                     credits="20000 + 10000" 
                     bonus="多送50%" 
-                    features={PERSONAL_FEATURES}
+                    features={getPersonalFeatures(80, true)}
                   />
                 </div>
               </>
