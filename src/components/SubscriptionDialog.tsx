@@ -390,47 +390,49 @@ function FaqItem({ id, num, title, content }: any) {
 
 const PERSONAL_FEATURES = [
   {
-    title: "创作补贴",
+    title: "制作补贴 (Production Subsidy)",
     items: [
-      { label: "注册奖励", value: "100 积分" },
-      { label: "探索使用奖励", value: "200 积分" },
+      { label: "注册奖励 (Registration Bonus)", value: "100 积分" },
+      { label: "探索使用奖励 (Exploration Bonus)", value: "200 积分" },
+      { label: "每日签到奖励 (Daily Check-in)", tag: "新" },
     ]
   },
   {
-    title: "模型权益",
+    title: "模型权益 (Model Rights)",
     items: [
-      { label: "大语言模型", info: true, tag: "无限免费" },
-      { label: "图生成模型", sub: "包含 Nano Banana 2 / GPT Image 2", value: "5-25 积分/张" },
-      { label: "视频模型 (480P/720P/1080P/4K)", sub: "包含 Seedance 2.5 (SOTA)", value: "5-135 积分/秒" },
+      { label: "大语言模型 (LLM)", info: true, tag: "无限免费" },
+      { label: "图生成模型 (Image Models)", sub: "包含 Nano Banana 2 / GPT Image 2", value: "5-25 积分/张" },
+      { label: "视频生成模型 (Video Models)", sub: "包含 Seedance 2.5 (SOTA)", value: "5-135 积分/秒" },
     ]
   },
   {
-    title: "使用权益",
+    title: "使用权益 (Usage Rights)",
     items: [
-      { label: "专享 Seedance 2.5 & 2.0 高并发", value: "10 到" },
-      { label: "资产库单素材快速生成", tag: "新" },
-      { label: "单模型并发", value: "5" },
+      { label: "专享 Seedance 2.5 高并发", value: "优先通道" },
+      { label: "资产库素材快速生成", tag: "新" },
+      { label: "最大并行生成数", value: "5" },
       { label: "授权人像容量", value: "2 个" },
+      { label: "专属会员标识", tag: "新" },
     ]
   }
 ];
 
 const TEAM_FEATURES = [
   {
-    title: "团队权益",
+    title: "团队管理 (Team Management)",
     items: [
-      { label: "创建并管理团队成员", tag: true },
-      { label: "项目及资产管控", tag: true },
-      { label: "积分用量管控", tag: true },
-      { label: "极速并发额", tag: true },
+      { label: "多成员协同工作", tag: "新" },
+      { label: "团队资产库共享", tag: "新" },
+      { label: "项目权限精细化管控", tag: "新" },
+      { label: "团队积分池统一分配", tag: "新" },
     ]
   },
   {
-    title: "模型权益",
+    title: "制作权益 (Production Rights)",
     items: [
-      { label: "大语言模型", tag: "无限免费" },
-      { label: "图生成模型", value: "5-25 积分/张" },
-      { label: "视频模型", value: "5-135 积分/秒" },
+      { label: "全量模型优先使用权", tag: "无限免费" },
+      { label: "企业级极速并发", value: "极速通道" },
+      { label: "4K/8K 超高清生成", value: "支持" },
     ]
   }
 ];
