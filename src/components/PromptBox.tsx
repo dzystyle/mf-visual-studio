@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   Plus,
   LayoutGrid,
@@ -12,6 +12,8 @@ import {
   X,
   ChevronDown,
   AtSign,
+  Search,
+  ChevronRight,
 } from "lucide-react";
 import {
   ModelPicker,
@@ -50,8 +52,22 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const [canvasMode, setCanvasMode] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
   const [assetsOpen, setAssetsOpen] = useState(false);
+  const [mentionOpen, setMentionOpen] = useState(false);
+  const [mentionFilter, setMentionFilter] = useState("");
+  const [cursorPos, setCursorPos] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pendingKind = useRef<Attachment["kind"]>("image");
+
+  useEffect(() => {
+    const lastChar = text[cursorPos - 1];
+    if (lastChar === "@") {
+      setMentionOpen(true);
+      setMentionFilter("");
+    } else if (mentionOpen && !text.slice(0, cursorPos).includes("@")) {
+      setMentionOpen(false);
+    }
+  }, [text, cursorPos]);
 
   const triggerPick = (kind: Attachment["kind"]) => {
     pendingKind.current = kind;
@@ -79,8 +95,28 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const remove = (id: string) =>
     setAttachments((prev) => prev.filter((a) => a.id !== id));
 
+  const handleMentionSelect = (name: string, kind: string, url?: string) => {
+    const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
+    const after = text.slice(cursorPos);
+    setText(`${before}@${name} ${after}`);
+    setMentionOpen(false);
+    
+    // Add to attachments if it's an image or video
+    if (url && (kind === "image" || kind === "video")) {
+      setAttachments(prev => [
+        ...prev,
+        {
+          id: `${Date.now()}-${name}`,
+          name,
+          kind: kind as any,
+          url
+        }
+      ]);
+    }
+  };
+
   return (
-    <div className="glass rounded-2xl p-5 shadow-2xl">
+    <div className="glass rounded-2xl p-5 shadow-2xl relative">
       {attachments.length > 0 && (
         <div className="mb-3 flex flex-wrap gap-2">
           {attachments.map((a) => (
@@ -89,23 +125,91 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
         </div>
       )}
 
-      <textarea
-        rows={3}
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            const v = text.trim();
-            if (v && onSubmit) {
-              onSubmit(v);
-              setText("");
+      <div className="relative">
+        <textarea
+          ref={textareaRef}
+          rows={3}
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+            setCursorPos(e.target.selectionStart);
+          }}
+          onKeyUp={(e) => {
+            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+          }}
+          onClick={(e) => {
+            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              const v = text.trim();
+              if (v && onSubmit) {
+                onSubmit(v);
+                setText("");
+                setAttachments([]);
+              }
             }
-          }
-        }}
-        placeholder="由一个想法或故事开始..."
-        className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
-      />
+          }}
+          placeholder="描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能"
+          className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+        />
+
+        {mentionOpen && (
+          <div className="absolute bottom-full left-0 mb-2 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
+            <div className="p-3 border-b border-white/5">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                <input 
+                  autoFocus
+                  type="text" 
+                  value={mentionFilter}
+                  onChange={(e) => setMentionFilter(e.target.value)}
+                  placeholder="搜索素材、角色、商品..."
+                  className="w-full bg-white/5 border-none rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:ring-1 focus:ring-white/10 focus:outline-none"
+                />
+              </div>
+            </div>
+            <div className="max-h-64 overflow-y-auto p-1.5 scrollbar-hide">
+              <div className="px-2 py-1.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">最近使用</div>
+              {[
+                { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
+                { name: "角色01", kind: "image", url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" },
+                { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
+              ].filter(i => i.name.includes(mentionFilter)).map((item, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleMentionSelect(item.name, item.kind, item.url)}
+                  className="flex w-full items-center gap-3 rounded-xl px-2 py-2 hover:bg-white/5 transition text-left group"
+                >
+                  <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-white/5 bg-white/5 relative">
+                    <img src={item.url} className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition" />
+                    {item.kind === "video" && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                        <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[6px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[13px] font-medium text-white truncate">{item.name}</div>
+                    <div className="text-[10px] text-muted-foreground capitalize">{item.kind === 'image' ? '图片' : '视频'}</div>
+                  </div>
+                  <ChevronRight className="h-3.5 w-3.5 text-white/20 group-hover:text-white/40" />
+                </button>
+              ))}
+            </div>
+            <div className="p-2 border-t border-white/5 bg-white/[0.02]">
+              <button 
+                onClick={() => { setAssetsOpen(true); setMentionOpen(false); }}
+                className="flex w-full items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium text-white/60 hover:text-white hover:bg-white/5 transition"
+              >
+                <LayoutGrid className="h-3.5 w-3.5" />
+                打开资产库
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="mt-4 flex items-center justify-between">
         <div className="flex flex-wrap items-center gap-2">
           <Popover open={plusOpen} onOpenChange={setPlusOpen}>
@@ -176,7 +280,12 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                   url
                 }
               ]);
-              setText(prev => prev ? `${prev} @${name}` : `@${name}`);
+              setText(prev => {
+                const mention = `@${name}`;
+                if (!prev) return mention;
+                if (prev.endsWith(' ')) return prev + mention;
+                return prev + ' ' + mention;
+              });
             }} 
           />
 
@@ -404,22 +513,36 @@ function MentionItem({
 function AttachmentChip({ a, onRemove }: { a: Attachment; onRemove: () => void }) {
   const Icon =
     a.kind === "image" ? ImageIcon : a.kind === "audio" ? AudioLines : a.kind === "video" ? Video : FileText;
+  
   return (
-    <div className="group relative flex items-center gap-2 rounded-lg border border-border bg-card/60 py-1.5 pl-1.5 pr-2 text-xs">
+    <div className="group relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-card/60 shadow-lg group">
       {a.kind === "image" && a.url ? (
-        <img src={a.url} alt={a.name} className="h-8 w-8 rounded object-cover" />
+        <img src={a.url} alt={a.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-110" />
       ) : (
-        <div className="flex h-8 w-8 items-center justify-center rounded bg-muted/40">
-          <Icon className="h-4 w-4 text-muted-foreground" />
+        <div className="flex h-full w-full items-center justify-center rounded bg-muted/40">
+          <Icon className="h-6 w-6 text-muted-foreground" />
         </div>
       )}
-      <span className="max-w-[140px] truncate text-foreground">{a.name}</span>
+      
+      {/* Icon Overlay for @ mention style */}
+      <div className="absolute top-1 left-1 h-4 w-4 rounded-full bg-black/60 flex items-center justify-center border border-white/10">
+        <AtSign className="h-2.5 w-2.5 text-white/80" />
+      </div>
+
+      {/* Remove Button */}
       <button
         onClick={onRemove}
-        className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-background/80 text-muted-foreground opacity-0 transition group-hover:opacity-100 hover:text-foreground"
+        className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-black/60 text-white/80 opacity-0 transition group-hover:opacity-100 hover:bg-black/80"
       >
-        <X className="h-3 w-3" />
+        <X className="h-2.5 w-2.5" />
       </button>
+
+      {/* Type Badge */}
+      {a.kind === 'video' && (
+        <div className="absolute bottom-1 right-1 bg-black/60 text-[8px] px-1 py-0.5 rounded text-white font-medium">
+          V
+        </div>
+      )}
     </div>
   );
 }
