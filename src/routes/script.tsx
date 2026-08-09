@@ -730,11 +730,14 @@ function Composer({
             <Popover>
               <PopoverTrigger asChild>
                 <button type="button">
-                  <MiniChip icon={Smile} label="元素" />
+                  <MiniChip icon={Smile} label="资产库" />
                 </button>
               </PopoverTrigger>
               <PopoverContent align="start" className="w-[820px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
-                <ElementsPicker onSelect={(name: string) => setElements((xs) => (xs.includes(name) ? xs : [...xs, name]))} />
+                <ElementsPicker onSelect={(name) => {
+                  setElements((xs) => (xs.includes(name) ? xs : [...xs, name]));
+                  setText(prev => prev ? `${prev} @${name}` : `@${name}`);
+                }} />
               </PopoverContent>
             </Popover>
           </div>
