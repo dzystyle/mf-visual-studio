@@ -161,11 +161,20 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           <Popover>
             <PopoverTrigger asChild>
               <button type="button">
-                <Chip icon={Smile} label="元素" />
+                <Chip icon={Smile} label="资产库" />
               </button>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-[820px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
-              <ElementsPicker onSelect={(name) => {
+              <ElementsPicker onSelect={(name, kind, url) => {
+                setAttachments(prev => [
+                  ...prev,
+                  {
+                    id: `${Date.now()}-${name}`,
+                    name,
+                    kind: (kind as any) || "image",
+                    url
+                  }
+                ]);
                 setText(prev => prev ? `${prev} @${name}` : `@${name}`);
               }} />
             </PopoverContent>

@@ -364,7 +364,7 @@ export function SkillPickerDialog({
   );
 }
 
-/* ---------------- Elements Picker ---------------- */
+/* ---------------- Assets Picker ---------------- */
 const elementTabs = [
   { key: "char", label: "角色", icon: Sparkles },
   { key: "scene", label: "场景", icon: ImageIcon },
@@ -376,13 +376,14 @@ const elementTabs = [
 const elementItems = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
   name: ["少女·夏野", "赛博都市", "黄昏海岸", "雪山追逐", "霓虹街角", "古风庭院", "未来太空站", "复古胶片", "雨夜东京", "极地极光", "森林精灵", "末日废土"][i],
+  img: `https://picsum.photos/seed/${i + 50}/200/200`
 }));
 
-export function ElementsPicker({ onSelect }: { onSelect?: (name: string) => void }) {
+export function ElementsPicker({ onSelect }: { onSelect?: (name: string; kind?: string; url?: string) => void }) {
   const [tab, setTab] = useState("char");
   return (
     <div className="w-[800px] p-6 text-white">
-      <h3 className="text-lg font-bold mb-4">选择元素</h3>
+      <h3 className="text-lg font-bold mb-4">资产库</h3>
       <div className="flex items-center gap-2 border-b border-white/10 pb-3 mb-4">
         {elementTabs.map((t) => {
           const Icon = t.icon;
