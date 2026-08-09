@@ -343,125 +343,105 @@ const seedConversation: Msg[] = [
   {
     kind: "bot",
     nodes: [
-      { type: "heading", text: "《超能替罪羊》第1集 · Seedance 逐帧分镜剧本" },
-      { type: "text", text: "全局设定:现代都市写字楼,冷色调工业风,压抑的蓝灰色主调,雨天外景,室内荧光灯惨白光线,全程手持镜头+快速剪辑,营造紧张窒息感。" },
-      { type: "text", text: "固定人物:萨姆 / 老板 / 卡特警探 / 小胖 / 丽莎 / 保安队长 / 马克 共 7 人。" },
-      { type: "shots", rows: scriptShots },
+      { type: "heading", text: "《音乐MV》第1集 · Seedance 逐帧分镜剧本" },
+      { type: "text", text: "简介内容: 用于通过已上传的音乐生成音乐视频。Nano Banana + Omnihuman + Seedance 2.5 480p。在关键阶段暂停以供用户确认；采用人机协作的单次（one-shot）流程。" },
       { type: "status", icon: "skill", label: "Skill 已完成" },
-      { type: "text", text: "好的,正在为您加载「剧本驱动型视频」技能,稍等片刻!" },
-      { type: "text", text: "技能加载完毕!现在让我建立项目规格文档,然后启动制作流程。" },
-      { type: "text", text: "技能「剧本驱动型视频」已加载,核心流程如下:" },
+      { type: "text", text: "好的,正在为您加载「音乐MV」技能,稍等片刻!" },
+      {
+        type: "mediaAssets",
+        title: "分析音乐资源",
+        badge: "已完成",
+        steps: [
+          {
+            title: "音乐分析",
+            desc: "已提取 BPM、节奏结构及歌词时间戳",
+            assets: [{ name: "Uploaded_Audio_Analysis.json" }]
+          }
+        ]
+      },
+      { type: "heading", text: "■ 项目规格 (Final_Video_Spec.md)" },
       {
         type: "list",
         items: [
-          { label: "工具组合:", sub: "Nano Banana(关键帧图像)+ Seedance 2.0(镜头视频)" },
-          { label: "制作节奏:", sub: "规格确认 → 故事板 → 角色参考图 → 逐镜头视频 → 音频层 → 最终剪辑,每个关键阶段暂停确认" },
-          { label: "人机协作模式:", sub: "一镜到底工作流,关键节点您可随时介入调整" },
+          { label: "视觉风格:", sub: "Cinematic MV, High Contrast, Neo-Noir elements" },
+          { label: "模型偏好:", sub: "Seedance 2.5 480p / OmniHuman 1.5" },
+          { label: "输出语言:", sub: "中文" },
         ],
       },
-      { type: "status", icon: "spec", label: "视频规格 已完成", tone: "warn" },
-      { type: "text", text: "项目规格已确立!现在开始设计故事板,将第1集的12个分镜全部结构化。" },
-      { type: "status", icon: "board", label: "故事板 已更新", tone: "accent" },
-      { type: "text", text: "故事板已就绪!5个长镜头(包含内部快剪)完整覆盖第1集60秒,7位角色全部定义完毕。" },
-      { type: "text", text: "现在进入 第一个关键阶段:故事板确认,请您查看上方的分镜结构。以下是当前故事板概览:", emphasis: true },
-      { type: "heading", text: "■ 镜头列表(共5组,每组含内部剪辑)" },
-      { type: "shots", rows: storyboardShots },
-      { type: "meta", icon: "🎭", label: "角色定义(7人):", value: "萨姆、老板、卡特警探、小胖、丽莎、保安队长、马克" },
-      { type: "meta", icon: "🎵", label: "音频层:", value: "全局60秒工业风电子配乐(含环境音采样)" },
-      { type: "text", text: "确认无误后,下一步将为7位角色各生成一张参考形象图,用于后续视频生成时保持角色一致性。" },
-    ],
-  },
-  { kind: "user", text: "故事板确认,开始生成角色参考图" },
-  {
-    kind: "bot",
-    nodes: [
-      { type: "text", text: "好的,故事板已确认!现在开始为7位角色生成参考形象图 🎬" },
+      { type: "status", icon: "board", label: "故事板设计中...", tone: "accent" },
+      { type: "text", text: "根据音乐节奏,我已为您规划了故事板镜头:" },
       {
-        type: "mediaAssets",
-        title: "首次生成图片",
-        badge: "+30",
-        cost: "-77",
-        steps: [
-          { title: "Agent分析完成", desc: "好的!开始为7位角色生成参考形象图。首先注册所有角色图像资产。" },
-          { title: "资产配置完成" },
-          { title: "Agent分析完成", desc: "资产注册完成!现在为所有7位角色同步撰写提示词。" },
-          {
-            title: "编写提示词完成",
-            desc: "Element_Sam_ref_img\n角色参考图——萨姆(Sam)。版面布局:左侧为半身特写,右侧依次为全身正面、侧面、背面四视图,白色中性背景,无阴影干扰。人物设定:28岁瘦…",
-          },
-          { title: "Agent分析完成", desc: "提示词已全部就绪!现在同步生成所有7位角色的参考形象图 🎬" },
-          {
-            title: "生成素材完成",
-            assets: [
-              { name: "Element_Sam_ref_img" },
-              { name: "Element_Boss_ref_img" },
-              { name: "Element_Detective_Cart..." },
-              { name: "Element_Xiao_Pang_ref..." },
-              { name: "Element_Lisa_ref_img" },
-              { name: "Element_Security_Chief..." },
-              { name: "Element_Mark_ref_img" },
-            ],
-          },
-          { title: "Agent分析完成" },
-        ],
+        type: "shots",
+        rows: [
+          { shot: "1", time: "0-1s 缓冲区", content: "前奏: 城市霓虹灯倒影在积水的路面,镜头缓慢平移" },
+          { shot: "2", time: "歌词行1", content: "中景: 角色登场,配合第一句歌词开始表演 (唇形同步)" },
+        ]
       },
-      { type: "text", text: "7位角色的参考形象图全部生成完毕!✅", emphasis: true },
-      { type: "text", text: "请查看上方每位角色的三视图参考图,确认外观是否符合预期:" },
       {
         type: "characterTable",
         rows: [
-          { icon: "🧑", name: "萨姆", features: "黑框眼镜、蓝格子衬衫、浓黑眼圈" },
-          { icon: "👨‍💼", name: "老板", features: "秃顶、深灰西装、金表、横肉脸" },
-          { icon: "🔪", name: "卡特警探", features: "寸头、左脸刀疤、黑色战术背心" },
-          { icon: "👀", name: "小胖", features: "圆框眼镜、灰色卫衣、含胸低头" },
-          { icon: "💃", name: "丽莎", features: "金色大波浪、黑色职业套装、红唇" },
-          { icon: "💪", name: "保安队长", features: "光头、肌肉发达、黑色制服、颈纹身" },
-          { icon: "🎧", name: "马克", features: "凌乱棕色长发、黑色连帽衫、耳机" },
-        ],
+          { icon: "🎭", name: "角色 A", features: "25岁女性,长发,身着银色亮片裙,舞台灯光背景" }
+        ]
       },
+      { type: "status", icon: "board", label: "等待确认", tone: "warn" },
+      { type: "text", text: "请确认故事板与角色设定,无误后我们将开始生成关键帧图像。" },
     ],
   },
-  { kind: "user", text: "角色确认,开始生成分镜视频" },
+  {
+    kind: "bot",
+    nodes: [
+      { type: "text", text: "好的,故事板已确认!现在开始生成关键帧图像 🎬" },
+      {
+        type: "mediaAssets",
+        title: "生成关键帧",
+        cost: "-45",
+        steps: [
+          {
+            title: "Nano Banana 2 图像生成",
+            desc: "已生成 Shot 1 与 Shot 2 的关键帧图像",
+            assets: [
+              { name: "Shot_1_Keyframe.jpg" },
+              { name: "Shot_2_Keyframe.jpg" }
+            ]
+          }
+        ]
+      },
+      { type: "text", text: "关键帧已生成完毕!✅ 现在准备进入最终视频生成阶段。" },
+      { type: "status", icon: "board", label: "等待确认", tone: "warn" },
+      { type: "text", text: "点击确认以启动 Seedance 2.5 与 OmniHuman 1.5 进行音画合成。" }
+    ]
+  },
   {
     kind: "bot",
     nodes: [
       {
         type: "mediaAssets",
-        title: "Media Assets",
-        cost: "-1260",
+        title: "最终视频合成",
+        cost: "-150",
         steps: [
           {
-            title: "Agent分析完成",
-            desc: "好的,萨姆的参考图已更新,现在将所有5个分镜的 prompt_id 复用,同时将萨姆替换为新版资源,一次性批量提交给 Seedance 2.0 生成!",
+            title: "Seedance 2.5 视频生成",
+            desc: "Shot 1 叙事场景生成完成",
+            assets: [{ name: "Shot_1_Final.mp4", duration: "00:05" }]
           },
           {
-            title: "生成素材完成",
-            assets: [
-              { name: "Shot_Late_And_Kicked...", duration: "00:12" },
-              { name: "Shot_Humiliation_final_...", duration: "00:10" },
-              { name: "Shot_Cursing_And_Flas...", duration: "00:12" },
-              { name: "Shot_Basement_Banish...", duration: "00:11" },
-              { name: "Shot_The_Thud_And_Bl...", duration: "00:15" },
-            ],
-          },
-          { title: "Agent分析完成" },
-        ],
+            title: "OmniHuman 1.5 唇形同步",
+            desc: "Shot 2 演唱场景合成完成",
+            assets: [{ name: "Shot_2_LipSync.mp4", duration: "00:08" }]
+          }
+        ]
       },
-      { type: "text", text: "5个分镜视频全部生成完毕!✅ 请在上方查看每个片段的效果。", emphasis: true },
+      { type: "text", text: "全部片段已生成并完成音画对齐!✅", emphasis: true },
       {
         type: "progressTable",
-        title: "当前进度一览:",
         rows: [
-          { shot: "Shot 1", content: "凌辱咖啡→同事旁观", status: "已生成" },
-          { shot: "Shot 2", content: "打卡机→萨姆冲进→老板踹+骂", status: "已生成" },
-          { shot: "Shot 3", content: "老板骂人主观视角→异能觉醒闪回", status: "已生成" },
-          { shot: "Shot 4", content: "老板发配地下室→萨姆背影", status: "已生成" },
-          { shot: "Shot 5", content: "走廊倒地声→萨姆转身冲楼梯→血迹", status: "已生成" },
-        ],
+          { shot: "Shot 1", content: "前奏叙事", status: "已完成" },
+          { shot: "Shot 2", content: "第一段歌词演唱", status: "已完成" }
+        ]
       },
-      { type: "text", text: "请仔细查看5个片段,如有需要调整的镜头告诉我。视频满意后,下一步将生成 60秒工业风背景配乐,然后进行最终剪辑合成 🎬" },
-    ],
-  },
+      { type: "text", text: "视频已就绪,您可以点击顶部「导出」按钮进行下载。" }
+    ]
+  }
 ];
 
 function ChatPanel({
