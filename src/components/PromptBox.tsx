@@ -118,13 +118,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
 
   return (
     <div className="glass rounded-2xl p-5 shadow-2xl relative">
-      {attachments.length > 0 && (
-        <div className="mb-3 flex flex-wrap gap-2">
-          {attachments.map((a) => (
-            <AttachmentChip key={a.id} a={a} onRemove={() => remove(a.id)} />
-          ))}
-        </div>
-      )}
 
       <div className="relative">
         <textarea
