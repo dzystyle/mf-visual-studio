@@ -294,8 +294,8 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
         ))}
       </div>
 
-      <button className="mt-6 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90">
-        购买
+      <button className="mt-6 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
+        立即订阅
       </button>
 
       <div className="mt-8 space-y-6 overflow-hidden">
