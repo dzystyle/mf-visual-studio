@@ -15,9 +15,9 @@ import {
   Pencil,
 } from "lucide-react";
 import {
-  ModelPickerDialog,
-  SkillPickerDialog,
-  ElementsPickerDialog,
+  ModelPickerContent,
+  SkillPickerContent,
+  ElementsPickerContent,
 } from "./picker-dialogs";
 import {
   Popover,
