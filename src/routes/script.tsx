@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ModelPickerDialog, SkillPickerDialog, ElementsPickerDialog } from "@/components/picker-dialogs";
+import { ModelPicker, SkillPicker, ElementsPicker } from "@/components/picker-dialogs";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Play,
   LayoutGrid,
@@ -654,9 +655,6 @@ function Composer({
   onRemoveQuote?: (id: string) => void;
 } = {}) {
   const [text, setText] = useState("");
-  const [modelOpen, setModelOpen] = useState(false);
-  const [skillOpen, setSkillOpen] = useState(false);
-  const [elemOpen, setElemOpen] = useState(false);
   const [model, setModel] = useState<string | null>(null);
   const [skill, setSkill] = useState<string | null>(null);
   const [elements, setElements] = useState<string[]>([]);
@@ -707,18 +705,44 @@ function Composer({
             <button className="flex h-6 w-6 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent">
               <Plus className="h-3 w-3" />
             </button>
-            <MiniChip icon={LayoutGrid} label="模型" badge="新" onClick={() => setModelOpen(true)} />
-            <MiniChip icon={Package} label="Skill" onClick={() => setSkillOpen(true)} />
-            <MiniChip icon={Smile} label="元素" onClick={() => setElemOpen(true)} />
+            <Popover>
+              <PopoverTrigger asChild>
+                <button type="button">
+                  <MiniChip icon={LayoutGrid} label={model ?? "模型"} badge={!model ? "新" : undefined} />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-[600px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+                <ModelPicker value={model ?? undefined} onSelect={setModel} />
+              </PopoverContent>
+            </Popover>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button type="button">
+                  <MiniChip icon={Package} label={skill ?? "Skill"} />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-[500px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+                <SkillPicker onSelect={setSkill} />
+              </PopoverContent>
+            </Popover>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button type="button">
+                  <MiniChip icon={Smile} label="元素" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-[820px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+                <ElementsPicker onSelect={(name: string) => setElements((xs) => (xs.includes(name) ? xs : [...xs, name]))} />
+              </PopoverContent>
+            </Popover>
           </div>
           <button className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground hover:bg-foreground hover:text-background">
             <ArrowUp className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>
-      <ModelPickerDialog open={modelOpen} onOpenChange={setModelOpen} value={model ?? undefined} onSelect={setModel} />
-      <SkillPickerDialog open={skillOpen} onOpenChange={setSkillOpen} onSelect={setSkill} />
-      <ElementsPickerDialog open={elemOpen} onOpenChange={setElemOpen} onSelect={(name) => setElements((xs) => (xs.includes(name) ? xs : [...xs, name]))} />
     </div>
   );
 }
