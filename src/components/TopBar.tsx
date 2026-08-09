@@ -1,3 +1,4 @@
+import * as React from "react";
 import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, LogOut, LayoutGrid } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -26,12 +27,22 @@ export function TopBar({ title }: { title?: string }) {
 }
 
 function UserMenu() {
+  const [open, setOpen] = React.useState(false);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button className="h-8 w-8 cursor-pointer rounded-full bg-gradient-to-br from-aurora-pink to-aurora-blue ring-offset-background transition-transform hover:scale-105 active:scale-95 ring-2 ring-transparent hover:ring-white/20" />
+        <button 
+          onMouseEnter={() => setOpen(true)}
+          className="h-8 w-8 cursor-pointer rounded-full bg-gradient-to-br from-aurora-pink to-aurora-blue ring-offset-background transition-transform hover:scale-105 active:scale-95 ring-2 ring-transparent hover:ring-white/20" 
+        />
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-[280px] overflow-hidden border-white/10 bg-[#1A1A1A]/95 p-0 text-foreground shadow-2xl backdrop-blur-2xl">
+      <PopoverContent 
+        align="end" 
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        className="w-[280px] overflow-hidden border-white/10 bg-[#1A1A1A]/95 p-0 text-foreground shadow-2xl backdrop-blur-2xl"
+      >
         <div className="p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
