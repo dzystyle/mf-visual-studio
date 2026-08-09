@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, Activity } from "lucide-react";
-
+import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye } from "lucide-react";
 import skillScript from "@/assets/skill-script.jpg";
 import skillStory from "@/assets/skill-story.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
@@ -56,31 +55,14 @@ export function ModelPickerDialog({
   onOpenChange,
   value,
   onSelect,
-  triggerId,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   value?: string;
   onSelect?: (name: string) => void;
-  triggerId?: string;
 }) {
-  const [activeTab, setActiveTab] = useState<keyof typeof modelData>("video");
-  const [position, setPosition] = useState<{ left: number; bottom: number } | null>(null);
+  const [activeTab, setActiveTab] = useState<keyof typeof modelData>("image");
   const selected = value ?? "Seedance 2.5";
-
-  useEffect(() => {
-    if (open && triggerId) {
-      const trigger = document.getElementById(triggerId);
-      if (trigger) {
-        const rect = trigger.getBoundingClientRect();
-        setPosition({
-          left: rect.left,
-          bottom: window.innerHeight - rect.top + 10,
-        });
-      }
-    }
-  }, [open, triggerId]);
-
   
   const handlePick = (name: string) => {
     onSelect?.(name);
@@ -96,23 +78,10 @@ export function ModelPickerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent 
-        className="fixed p-0 border-white/10 bg-[#0A0A0A]/95 text-white backdrop-blur-xl shadow-2xl overflow-hidden rounded-3xl"
-        style={position ? {
-          left: `${position.left}px`,
-          bottom: `${position.bottom}px`,
-          top: 'auto',
-          transform: 'none',
-          maxWidth: '440px',
-          width: 'calc(100vw - 40px)'
-        } : {
-          maxWidth: '440px'
-        }}
-      >
-        <DialogHeader className="px-6 pt-5">
-          <DialogTitle className="text-[17px] font-bold">模型</DialogTitle>
+      <DialogContent className="max-w-[580px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
+        <DialogHeader className="px-6 pt-6">
+          <DialogTitle className="text-lg font-bold">模型</DialogTitle>
         </DialogHeader>
-
         
         <div className="px-6 pt-4">
           <div className="flex w-full items-center gap-1 rounded-full bg-white/5 p-1">
@@ -130,11 +99,10 @@ export function ModelPickerDialog({
           </div>
         </div>
 
-        <div className="mt-4 px-6 pb-5">
-          <div className="mb-3 text-[11px] font-medium text-white/30">
+        <div className="mt-4 px-6 pb-6">
+          <div className="mb-2 text-[10px] font-medium uppercase tracking-wider text-white/40">
             {tabs.find(t => t.key === activeTab)?.label}
           </div>
-
           <div className="max-h-[500px] space-y-2 overflow-y-auto pr-2 scrollbar-hide">
             {modelData[activeTab].map((m: any) => {
               const active = selected === m.name;
@@ -142,16 +110,15 @@ export function ModelPickerDialog({
                 <button
                   key={m.name}
                   onClick={() => handlePick(m.name)}
-                  className={`group relative flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-all ${
+                  className={`group relative flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition-all ${
                     active
-                      ? "border-white/10 bg-white/5"
-                      : "border-transparent hover:bg-white/[0.04]"
+                      ? "border-white/20 bg-white/10"
+                      : "border-transparent bg-white/[0.02] hover:bg-white/[0.05]"
                   }`}
                 >
-                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${active ? 'bg-white/10' : 'bg-white/5'}`}>
-                    {activeTab === 'video' ? <Activity className={`h-5 w-5 ${active ? 'text-white' : 'text-white/40'}`} /> : <Sparkles className={`h-5 w-5 ${active ? 'text-white' : 'text-white/40'}`} />}
+                  <div className={`mt-1 h-5 w-5 rounded-full border-2 ${active ? 'border-white bg-white' : 'border-white/20'} flex items-center justify-center`}>
+                    {active && <Check className="h-3 w-3 text-black stroke-[3px]" />}
                   </div>
-
                   
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
@@ -175,10 +142,9 @@ export function ModelPickerDialog({
                     <p className="mt-1 text-[11px] leading-relaxed text-white/50">{m.desc}</p>
                   </div>
 
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Plus className="h-3.5 w-3.5" />
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Plus className="h-3 w-3" />
                   </div>
-
                 </button>
               );
             })}
@@ -203,29 +169,12 @@ export function SkillPickerDialog({
   open,
   onOpenChange,
   onSelect,
-  triggerId,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   onSelect?: (title: string) => void;
-  triggerId?: string;
 }) {
-  const [tab, setTab] = useState<"default" | "newbie" | "master" | "story">("default");
-  const [position, setPosition] = useState<{ left: number; bottom: number } | null>(null);
-
-  useEffect(() => {
-    if (open && triggerId) {
-      const trigger = document.getElementById(triggerId);
-      if (trigger) {
-        const rect = trigger.getBoundingClientRect();
-        setPosition({
-          left: rect.left,
-          bottom: window.innerHeight - rect.top + 10,
-        });
-      }
-    }
-  }, [open, triggerId]);
-
+  const [tab, setTab] = useState<"default" | "newbie" | "master" | "story">("newbie");
   
   const categories = [
     { key: "default", label: "默认调用" },
@@ -236,32 +185,31 @@ export function SkillPickerDialog({
 
   const skillList = [
     {
-      title: "音乐MV (需上传音乐)",
-      desc: "专为音乐MV制作设计的工作流, 根据上传的音乐驱动主角演唱表演。依托Omnihuman...",
-      img: skillMv,
-    },
-    {
-      title: "剧本生视频 (需上传剧本)",
-      desc: "分析上传的剧本 (图片/PDF/文本), 通过学习其电影语法——提取脚本、镜头结构、视觉...",
-      img: skillScript,
-    },
-    {
-      title: "剧情短片(音色参考)",
-      desc: "核心亮点：- 角色语音锚定：每个角色在元素阶段都有专属的参考音频, 确保整个过程中...",
+      title: "故事驱动型视频",
+      desc: "专为具有完整故事线的视频而设计。核心亮点：- 由 Seedance 2.5 480p (目前最强大...",
       img: skillStory,
     },
     {
-      title: "视频拉片复刻",
-      desc: "通过学习上传视频的电影语法 (提取其脚本、镜头结构、视觉语言和节奏), 围绕您自己...",
+      title: "古风甜宠短剧",
+      desc: "适用于古装甜宠短剧视频的创作。支持 AI 自动生成剧本或用户自提剧本，流程涵盖剧本...",
       img: skillReenact,
     },
     {
       title: "商品宣传短片",
-      desc: "快速创建AI商业广告短片, 为您的产品呈现专业级的视觉效果和创意故事。",
+      desc: "快速创建AI商业广告短片，为您的产品呈现专业级的视觉效果和创意故事。使用模型 Nan...",
       img: skillProduct,
     },
+    {
+      title: "视频拉片复刻",
+      desc: "通过学习上传视频的电影语法（提取其脚本、镜头结构、视觉语言和节奏），围绕您自己...",
+      img: skillReenact,
+    },
+    {
+      title: "剧情短片 (音色参考)",
+      desc: "核心亮点： - 角色语音锚定：每个角色有元素",
+      img: skillScript,
+    },
   ];
-
 
   const pick = (title: string) => {
     onSelect?.(title);
@@ -270,26 +218,13 @@ export function SkillPickerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent 
-        className="fixed p-0 border-white/10 bg-[#0A0A0A]/95 text-white backdrop-blur-xl shadow-2xl overflow-hidden rounded-3xl"
-        style={position ? {
-          left: `${position.left}px`,
-          bottom: `${position.bottom}px`,
-          top: 'auto',
-          transform: 'none',
-          maxWidth: '440px',
-          width: 'calc(100vw - 40px)'
-        } : {
-          maxWidth: '440px'
-        }}
-      >
-        <DialogHeader className="flex flex-row items-center justify-between px-6 pt-5">
-          <DialogTitle className="text-[17px] font-bold">Skill</DialogTitle>
+      <DialogContent className="max-w-[480px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
+        <DialogHeader className="flex flex-row items-center justify-between px-6 pt-6">
+          <DialogTitle className="text-lg font-bold">Skill</DialogTitle>
           <button className="flex items-center gap-0.5 text-xs text-white/40 hover:text-white/60">
             更多 <ChevronRight className="h-3 w-3" />
           </button>
         </DialogHeader>
-
 
         <div className="mt-4 px-6">
           <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
@@ -364,43 +299,15 @@ const elementItems = Array.from({ length: 12 }).map((_, i) => ({
   name: ["少女·夏野", "赛博都市", "黄昏海岸", "雪山追逐", "霓虹街角", "古风庭院", "未来太空站", "复古胶片", "雨夜东京", "极地极光", "森林精灵", "末日废土"][i],
 }));
 
-export function ElementsPickerDialog({ open, onOpenChange, onSelect, triggerId }: { open: boolean; onOpenChange: (v: boolean) => void; onSelect?: (name: string) => void; triggerId?: string }) {
+export function ElementsPickerDialog({ open, onOpenChange, onSelect }: { open: boolean; onOpenChange: (v: boolean) => void; onSelect?: (name: string) => void }) {
   const [tab, setTab] = useState("char");
-  const [position, setPosition] = useState<{ left: number; bottom: number } | null>(null);
-
-  useEffect(() => {
-    if (open && triggerId) {
-      const trigger = document.getElementById(triggerId);
-      if (trigger) {
-        const rect = trigger.getBoundingClientRect();
-        setPosition({
-          left: rect.left,
-          bottom: window.innerHeight - rect.top + 10,
-        });
-      }
-    }
-  }, [open, triggerId]);
-
   const pick = (name: string) => { onSelect?.(name); onOpenChange(false); };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent 
-        className="fixed p-0 border-white/10 bg-[#0A0A0A]/95 text-white backdrop-blur-xl shadow-2xl overflow-hidden rounded-3xl"
-        style={position ? {
-          left: `${position.left}px`,
-          bottom: `${position.bottom}px`,
-          top: 'auto',
-          transform: 'none',
-          maxWidth: '800px',
-          width: 'calc(100vw - 40px)'
-        } : {
-          maxWidth: '800px'
-        }}
-      >
-        <DialogHeader className="px-6 pt-5">
-          <DialogTitle className="text-[17px] font-bold">选择元素</DialogTitle>
+      <DialogContent className="max-w-4xl border-border bg-card/95 backdrop-blur-xl">
+        <DialogHeader>
+          <DialogTitle className="text-lg">选择元素</DialogTitle>
         </DialogHeader>
-
         <div className="flex items-center gap-2 border-b border-border pb-3">
           {elementTabs.map((t) => {
             const Icon = t.icon;

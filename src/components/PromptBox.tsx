@@ -129,29 +129,15 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             onChange={onFiles}
           />
 
-          <Chip 
-            id="model-chip-home"
-            icon={LayoutGrid} 
-            label={model} 
-            badge="新" 
-            onClick={() => setOpenModel(true)} 
-          />
+          <Chip icon={LayoutGrid} label={model} badge="新" onClick={() => setOpenModel(true)} />
           <Chip
-            id="skill-chip-home"
             icon={Package}
             label={skill ?? "Skill"}
             active={!!skill}
             onClick={() => setOpenSkill(true)}
             onClear={skill ? () => setSkill(null) : undefined}
           />
-          <Chip 
-            id="elements-chip-home"
-            icon={Smile} 
-            label="元素" 
-            onClick={() => setOpenElements(true)} 
-          />
-
-
+          <Chip icon={Smile} label="元素" onClick={() => setOpenElements(true)} />
         </div>
         <button
           onClick={() => {
@@ -167,26 +153,9 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
         </button>
       </div>
 
-      <ModelPickerDialog 
-        open={openModel} 
-        onOpenChange={setOpenModel} 
-        value={model} 
-        onSelect={setModel}
-        triggerId="model-chip-home"
-      />
-      <SkillPickerDialog 
-        open={openSkill} 
-        onOpenChange={setOpenSkill} 
-        onSelect={setSkill}
-        triggerId="skill-chip-home"
-      />
-      <ElementsPickerDialog 
-        open={openElements} 
-        onOpenChange={setOpenElements}
-        triggerId="elements-chip-home"
-
-      />
-
+      <ModelPickerDialog open={openModel} onOpenChange={setOpenModel} value={model} onSelect={setModel} />
+      <SkillPickerDialog open={openSkill} onOpenChange={setOpenSkill} onSelect={setSkill} />
+      <ElementsPickerDialog open={openElements} onOpenChange={setOpenElements} />
     </div>
   );
 }
@@ -235,7 +204,6 @@ function AttachmentChip({ a, onRemove }: { a: Attachment; onRemove: () => void }
 }
 
 function Chip({
-  id,
   icon: Icon,
   label,
   badge,
@@ -243,7 +211,6 @@ function Chip({
   active,
   onClear,
 }: {
-  id?: string;
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   badge?: string;
@@ -251,7 +218,6 @@ function Chip({
   active?: boolean;
   onClear?: () => void;
 }) {
-
   const baseCls = `flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs text-foreground transition ${
     active
       ? "border-aurora-blue/60 bg-aurora-blue/10"
@@ -270,18 +236,16 @@ function Chip({
   );
   if (!onClear) {
     return (
-      <button id={id} type="button" onClick={onClick} className={baseCls}>
+      <button type="button" onClick={onClick} className={baseCls}>
         {inner}
       </button>
-
     );
   }
   return (
-    <div id={id} className={baseCls}>
+    <div className={baseCls}>
       <button type="button" onClick={onClick} className="flex items-center gap-1.5">
         {inner}
       </button>
-
       <button
         type="button"
         onClick={onClear}
