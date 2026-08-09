@@ -18,6 +18,9 @@ import {
   ModelPickerContent,
   SkillPickerContent,
   ElementsPickerContent,
+  ModelPickerDialog,
+  SkillPickerDialog,
+  ElementsPickerDialog,
 } from "./picker-dialogs";
 import {
   Popover,
