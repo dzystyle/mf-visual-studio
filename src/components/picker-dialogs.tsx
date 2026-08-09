@@ -203,12 +203,29 @@ export function SkillPickerDialog({
   open,
   onOpenChange,
   onSelect,
+  triggerId,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   onSelect?: (title: string) => void;
+  triggerId?: string;
 }) {
-  const [tab, setTab] = useState<"default" | "newbie" | "master" | "story">("newbie");
+  const [tab, setTab] = useState<"default" | "newbie" | "master" | "story">("default");
+  const [position, setPosition] = useState<{ left: number; bottom: number } | null>(null);
+
+  useEffect(() => {
+    if (open && triggerId) {
+      const trigger = document.getElementById(triggerId);
+      if (trigger) {
+        const rect = trigger.getBoundingClientRect();
+        setPosition({
+          left: rect.left,
+          bottom: window.innerHeight - rect.top + 10,
+        });
+      }
+    }
+  }, [open, triggerId]);
+
   
   const categories = [
     { key: "default", label: "默认调用" },
