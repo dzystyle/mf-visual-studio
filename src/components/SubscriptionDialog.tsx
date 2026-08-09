@@ -212,8 +212,32 @@ export function SubscriptionDialog({
                   </div>
                 } 
               />
-              <FaqItem id="q2" num="2" title="积分在使用过程中如何扣除?" content={<div className="text-xs text-white/60">...</div>} />
-              <FaqItem id="q3" num="3" title="订阅是如何运作的?" content={<div className="text-xs text-white/60">...</div>} />
+              <FaqItem 
+                id="q2" 
+                num="2" 
+                title="积分在使用过程中如何扣除?" 
+                content={
+                  <div className="space-y-3 text-white/60 text-xs">
+                    <p>• 系统将根据不同任务的复杂程度扣除积分:</p>
+                    <ul className="pl-4 space-y-1">
+                      <li>• 文生图/图生图: 5-25 积分/张, 取决于选用的模型与分辨率;</li>
+                      <li>• 视频生成: 5-135 积分/秒, Seedance 2.5 满血版会消耗更多积分以换取顶级画质;</li>
+                      <li>• 音频/配音: 按照生成时长扣除积分。</li>
+                    </ul>
+                  </div>
+                } 
+              />
+              <FaqItem 
+                id="q3" 
+                num="3" 
+                title="订阅是如何运作的?" 
+                content={
+                  <div className="space-y-3 text-white/60 text-xs">
+                    <p>• 订阅会员后, 您将立即获得当前周期的积分额度。月度积分有效期为 30 天, 逾期将自动失效, 请及时使用。</p>
+                    <p>• 如果您在周期内耗尽积分, 可以通过手动购买积分包或升级套餐来继续创作。</p>
+                  </div>
+                } 
+              />
               <FaqItem id="q4" num="4" title="订阅会自动续费吗?" content={<div className="text-xs text-white/60">会。订阅将在每个计费周期结束时自动续费, 除非您在续费日前主动取消。</div>} />
             </Accordion>
 
