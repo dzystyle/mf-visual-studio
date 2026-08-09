@@ -9,34 +9,46 @@ import skillProduct from "@/assets/skill-product.jpg";
 import skillTravel from "@/assets/skill-travel.jpg";
 
 /* ---------------- Model Picker ---------------- */
-const modelGroups: { label: string; items: { name: string; tag?: string; desc: string; badge?: string }[] }[] = [
-  {
-    label: "视频模型",
-    items: [
-      { name: "Seedance 2", tag: "推荐", desc: "字节跳动 · 高质量电影级视频", badge: "新" },
-      { name: "Seedance 1.0 Pro", desc: "字节跳动 · 经典电影级版本" },
-      { name: "Kling 2.1 Master", desc: "可灵 · 长镜头与运镜表现优秀" },
-      { name: "Hailuo 02", desc: "MiniMax · 自然光影,人物细节" },
-      { name: "Veo 3", desc: "Google · 真实物理与音效同步" },
-      { name: "Sora Turbo", desc: "OpenAI · 多镜头复杂场景" },
-    ],
-  },
-  {
-    label: "图像模型",
-    items: [
-      { name: "Nano Banana", tag: "推荐", desc: "Google · 一致性角色生成" },
-      { name: "Seedream 4.0", desc: "字节跳动 · 商业摄影级出图" },
-      { name: "Flux 1.1 Pro", desc: "Black Forest Labs · 高细节通用模型" },
-    ],
-  },
-  {
-    label: "音频模型",
-    items: [
-      { name: "Suno v5", desc: "AI 音乐生成,支持中英文歌词" },
-      { name: "ElevenLabs v3", desc: "高拟真人声配音" },
-    ],
-  },
-];
+const modelData = {
+  image: [
+    { name: "GPT Image 2", badge: "新", tag: "SOTA", desc: "OpenAI 的模型，用于从文本或现有图像生成高质量图像。" },
+    { name: "Nano Banana 2", desc: "高品质 · 更快速 · 更低成本" },
+    { name: "Nano Banana Pro", desc: "Google Gemini 的精确自然语言处理驱动图像修改工具。" },
+    { name: "Seedream 5.0 Pro", badge: "新", desc: "字节跳动的图像模型，用于文本生成图像/编辑，在性能和速度方面表现更佳。" },
+    { name: "Seedream 4.5", desc: "字节跳动的图像模型，用于文本生成图像/编辑，在性能和速度方面表现更佳。" },
+    { name: "Midjourney", desc: "高精度模型，具有准确的提示、优质纹理和细节。" },
+  ],
+  video: [
+    { name: "Seedance 2.5", badge: "新", tag: "SOTA", upgrade: true, desc: "支持 4–30 秒视频生成、多模态参考、原生音频，以及符合条件的视频延长。" },
+    { name: "Seedance 2.0", badge: "新", upgrade: true, desc: "最强视频模型，图片及音视频全能参考，跨镜头强一致性保持和可控生成。" },
+    { name: "Seedance 2.0 - Fast", badge: "新", upgrade: true, desc: "最强性价比视频模型，兼具全能参考、跨镜头一致性和可控生成。" },
+    { name: "Seedance 2.0 Mini", badge: "新", upgrade: true, desc: "更轻量的 Seedance 2.0 视频模型，支持图片、视频、音频全能参考，以更低积分成本实现可控生成。" },
+    { name: "MiniMax H3", badge: "新", desc: "MiniMax 2K 视频模型，支持图片、视频和音频全能参考、原生音画同步及 4–15 秒可控生成。" },
+    { name: "HappyHorse 1.1", desc: "阿里旗下最新视频模型，超真实质感。" },
+    { name: "Seedance 1.5 Pro Audio", desc: "字节跳动最新视频模型：音画同步、高性价比。" },
+    { name: "Kling 3.0 Audio", desc: "Kling 3.0，全面升级的高质量视频生成模型。" },
+    { name: "Vidu Q3 Pro", desc: "最强智能切镜、音画直出，支持1-16S视频模型。" },
+    { name: "Grok Imagine Video", upgrade: true, desc: "xAI最新视频模型，超快生成速度，动作表现力好" },
+    { name: "Kling 3.0 Omni", desc: "多图驱动，一镜成片。Kling 3.0 Omni，图生视频新标杆。" },
+    { name: "Veo3.1-Fast", desc: "Veo 3.1 的快速模式 — 音画同步、生成迅速、性价比高" },
+    { name: "Gemini Omni Flash", badge: "新", desc: "Google Gemini 视频模型，支持通过文本提示词及图片/视频参考快速生成，并可输出原生音频。" },
+    { name: "Sora 2", desc: "OpenAI 的媒体生成模型，生成带同步音频的视频。" },
+    { name: "Wan 2.6", desc: "阿里通义最新多模态生成模型，支持多切镜叙事及音画同出。" },
+    { name: "MiniMax Hailuo 2.3", desc: "MiniMax 的高清视频模型，具有强大的动态效果 and 复杂指令处理能力。" },
+    { name: "Vidu Q3", desc: "生数科技的顶级模型，支持参考图像转视频。" },
+    { name: "OmniHuman 1.5", desc: "对口型视频生成模型，根据音频驱动人物图片生成说话视频。" },
+  ],
+  music: [
+    { name: "Suno", desc: "先进的AI音乐工具，具有丰富的声乐和广泛的音乐风格。" },
+    { name: "Mureka", desc: "第一梯队的音乐模型，兼具多元风格与自然人声" },
+  ],
+  audio: [
+    { name: "Seed-Audio 1.0", badge: "新", desc: "真正面向影视创作的多模态音频生成模型。支持文本、图片、音频多模态输入，一站式生成影视级音频内容。" },
+    { name: "ElevenLabs", desc: "领先的AI语音工具，提供高质量、可定制的语音。" },
+    { name: "MiniMax", badge: "新", desc: "MiniMax Speech 2.8 HD 音频模型，适合高质量旁白生成。" },
+    { name: "Doubao", desc: "字节跳动的语音模型，在自然中文音频生成方面表现出色。" },
+  ],
+};
 
 export function ModelPickerDialog({
   open,
@@ -49,64 +61,94 @@ export function ModelPickerDialog({
   value?: string;
   onSelect?: (name: string) => void;
 }) {
-  const selected = value ?? "Seedance 2";
+  const [activeTab, setActiveTab] = useState<keyof typeof modelData>("image");
+  const selected = value ?? "Seedance 2.5";
+  
   const handlePick = (name: string) => {
     onSelect?.(name);
     onOpenChange(false);
   };
+
+  const tabs = [
+    { key: "image", label: "图片" },
+    { key: "video", label: "视频" },
+    { key: "music", label: "音乐" },
+    { key: "audio", label: "音频" },
+  ];
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl border-border bg-card/95 backdrop-blur-xl">
-        <DialogHeader>
-          <DialogTitle className="text-lg">选择模型</DialogTitle>
+      <DialogContent className="max-w-[580px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
+        <DialogHeader className="px-6 pt-6">
+          <DialogTitle className="text-lg font-bold">模型</DialogTitle>
         </DialogHeader>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <input
-            placeholder="搜索模型名称…"
-            className="w-full rounded-full border border-border bg-background/40 py-2 pl-9 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-aurora-blue"
-          />
+        
+        <div className="px-6 pt-4">
+          <div className="flex w-full items-center gap-1 rounded-full bg-white/5 p-1">
+            {tabs.map((t) => (
+              <button
+                key={t.key}
+                onMouseEnter={() => setActiveTab(t.key as any)}
+                className={`flex-1 rounded-full py-1.5 text-xs font-medium transition-all ${
+                  activeTab === t.key ? "bg-white/10 text-white" : "text-white/40 hover:text-white/60"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="max-h-[60vh] space-y-5 overflow-y-auto pr-1">
-          {modelGroups.map((g) => (
-            <div key={g.label}>
-              <div className="mb-2 text-xs font-medium text-muted-foreground">{g.label}</div>
-              <div className="grid grid-cols-2 gap-2">
-                {g.items.map((m) => {
-                  const active = selected === m.name;
-                  return (
-                    <button
-                      key={m.name}
-                      onClick={() => handlePick(m.name)}
-                      className={`group relative rounded-xl border p-3 text-left transition ${
-                        active
-                          ? "border-aurora-blue bg-aurora-blue/10"
-                          : "border-border bg-background/40 hover:bg-accent/40"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{m.name}</span>
-                        <div className="flex items-center gap-1.5">
-                          {m.tag && (
-                            <span className="rounded-full bg-aurora-orange/20 px-1.5 py-0.5 text-[9px] font-medium text-aurora-orange">
-                              {m.tag}
-                            </span>
-                          )}
-                          {m.badge && (
-                            <span className="rounded-full bg-success/20 px-1.5 py-0.5 text-[9px] font-medium text-success">
-                              {m.badge}
-                            </span>
-                          )}
-                          {active && <Check className="h-3.5 w-3.5 text-aurora-blue" />}
-                        </div>
-                      </div>
-                      <p className="mt-1 text-xs text-muted-foreground">{m.desc}</p>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+
+        <div className="mt-4 px-6 pb-6">
+          <div className="mb-2 text-[10px] font-medium uppercase tracking-wider text-white/40">
+            {tabs.find(t => t.key === activeTab)?.label}
+          </div>
+          <div className="max-h-[500px] space-y-2 overflow-y-auto pr-2 scrollbar-hide">
+            {modelData[activeTab].map((m: any) => {
+              const active = selected === m.name;
+              return (
+                <button
+                  key={m.name}
+                  onClick={() => handlePick(m.name)}
+                  className={`group relative flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition-all ${
+                    active
+                      ? "border-white/20 bg-white/10"
+                      : "border-transparent bg-white/[0.02] hover:bg-white/[0.05]"
+                  }`}
+                >
+                  <div className={`mt-1 h-5 w-5 rounded-full border-2 ${active ? 'border-white bg-white' : 'border-white/20'} flex items-center justify-center`}>
+                    {active && <Check className="h-3 w-3 text-black stroke-[3px]" />}
+                  </div>
+                  
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold text-white">{m.name}</span>
+                      {m.badge && (
+                        <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] font-bold text-green-500">
+                          {m.badge}
+                        </span>
+                      )}
+                      {m.tag && (
+                        <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[8px] font-bold text-white">
+                          {m.tag}
+                        </span>
+                      )}
+                      {m.upgrade && (
+                        <span className="rounded bg-blue-500/20 px-1.5 py-0.5 text-[8px] font-bold text-blue-500">
+                          升级
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-1 text-[11px] leading-relaxed text-white/50">{m.desc}</p>
+                  </div>
+
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Plus className="h-3 w-3" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
