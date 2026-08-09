@@ -98,15 +98,16 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
     const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
     const after = text.slice(cursorPos);
+    // Keep the @name in text but we will also show the chip
     setText(`${before}@${name} ${after}`);
     setMentionOpen(false);
     
-    // Add to attachments if it's an image or video
     if (url && (kind === "image" || kind === "video")) {
+      const id = `${Date.now()}-${name}`;
       setAttachments(prev => [
         ...prev,
         {
-          id: `${Date.now()}-${name}`,
+          id,
           name,
           kind: kind as any,
           url
