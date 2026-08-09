@@ -195,60 +195,119 @@ export function SubscriptionDialog({
               <FaqItem 
                 id="q1" 
                 num="1" 
-                title="什么是积分 (credits), 我如何获得?" 
+                title="什么是积分（credits），我如何获得？" 
                 content={
                   <div className="space-y-3 text-white/60 text-xs">
-                    <p>• 积分是 Artrail 平台的标准计量单位。当您通过对话、故事板或其他创作工具开始创作时, 系统会根据所使用的模型类型、生成时长、分辨率及其他相关参数自动扣除相应积分。</p>
-                    <p>• 您可以通过两种方式获取积分:</p>
+                    <p>• 积分是 Artrail 平台的标准计量单位。当你通过对话、故事板或其他创作工具开始创作时，系统会根据所使用的模型类型、生成时长、分辨率及其他相关参数自动扣除相应积分。</p>
+                    <p>• 你可以通过两种方式获取积分：</p>
                     <div className="pl-4 space-y-2">
-                      <p>• <span className="text-white">订阅获取积分</span> 订阅任意会员后, 可获取固定额度的月度积分, 有效期为 30天;</p>
+                      <p>• <span className="text-white">订阅获取积分</span> 订阅任意会员后，可获取固定额度的月度积分，有效期为 30 天；</p>
                       <p>• <span className="text-white">免费与奖励积分</span></p>
                       <ul className="pl-4 space-y-1">
-                        <li>• 邀请奖励积分 (Invite Bonus Credits): 成功邀请用户注册后获取, 有效期 7天;</li>
-                        <li>• 探索使用奖励 (Exploration Bonus Credits): 使用 Artrail 制作视频, 在中间步骤可获得探索使用奖励, 有效期30天;</li>
-                        <li>• 超创奖励积分与活动奖励积分 (Super Creator / Event Bonus Credits): 其发放数量及有效期将根据具体的社区计划及运营活动规则进行设置。</li>
+                        <li>• 邀请奖励积分（Invite Bonus Credits）：成功邀请用户注册后获取，有效期 7 天；</li>
+                        <li>• 探索使用奖励（Exploration Bonus Credits）：使用 Artrail 制作视频，在中间步骤可获得探索使用奖励，有效期 30 天；</li>
+                        <li>• 超创奖励积分与活动奖励积分（Super Creator / Event Bonus Credits）：其发放数量及有效期将根据具体的社区计划及运营活动规则进行设置。</li>
                       </ul>
                     </div>
+                    <p className="mt-2 text-[10px] italic">⚠️ 积分规则、奖励政策及相关活动机制可能会根据运营需要进行调整，调整可在提前通知或不提前通知的情况下进行。在法律允许范围内，Artrail 保留相关规则的最终解释权。</p>
                   </div>
                 } 
               />
               <FaqItem 
                 id="q2" 
                 num="2" 
-                title="积分在使用过程中如何扣除?" 
+                title="积分在使用过程中如何扣除？" 
                 content={
                   <div className="space-y-3 text-white/60 text-xs">
-                    <p>• 系统将根据不同任务的复杂程度扣除积分:</p>
+                    <p>• <span className="text-white">积分计费规则：</span>积分的具体消耗以《模型价格表》为准。</p>
+                    <p>• <span className="text-white">访问方式：</span>鼠标悬停在右上角 → 管理账号 → 价格详情 → 模型价格表</p>
+                    <p>• <span className="text-white">积分扣除顺序：</span>系统将优先扣除更快到期的积分，以最大程度保障你的积分使用权益。</p>
+                    <p>• <span className="text-white">积分规则详情见“价格详情”，访问路径：</span></p>
                     <ul className="pl-4 space-y-1">
-                      <li>• 文生图/图生图: 5-25 积分/张, 取决于选用的模型与分辨率;</li>
-                      <li>• 视频生成: 5-135 积分/秒, Seedance 2.5 满血版会消耗更多积分以换取顶级画质;</li>
-                      <li>• 音频/配音: 按照生成时长扣除积分。</li>
+                      <li>• 右上角hover-查看用量-价格详情；</li>
+                      <li>• 右上角hover-管理账号-价格详情；</li>
                     </ul>
+                    <p className="mt-2 text-[10px] italic">⚠️ 免费使用期间将启用防刷与防自动化滥用机制，相关使用规则可能会根据平台稳定性与公平性需求进行动态调整。</p>
                   </div>
                 } 
               />
               <FaqItem 
                 id="q3" 
                 num="3" 
-                title="订阅是如何运作的?" 
+                title="订阅是如何运作的？" 
                 content={
                   <div className="space-y-3 text-white/60 text-xs">
-                    <p>• 订阅会员后, 您将立即获得当前周期的积分额度。月度积分有效期为 30 天, 逾期将自动失效, 请及时使用。</p>
-                    <p>• 如果您在周期内耗尽积分, 可以通过手动购买积分包或升级套餐来继续创作。</p>
+                    <p>Artrail 提供灵活的月度与年度订阅方案，每个方案都包含一定数量的积分，可用于对话、图像生成、视频生成、音乐与旁白生成、编辑等功能。</p>
+                    <p><span className="text-white">当你升级订阅时：</span></p>
+                    <ul className="pl-4 space-y-1">
+                      <li>• 旧套餐仅按已使用积分比例计费；</li>
+                      <li>• 剩余未使用的余额将自动扣抵至新套餐；</li>
+                      <li>• 你仅需支付补齐差价；</li>
+                      <li>• 新的订阅周期将从升级当日重新计算。</li>
+                    </ul>
                   </div>
                 } 
               />
-              <FaqItem id="q4" num="4" title="订阅会自动续费吗?" content={<div className="text-xs text-white/60">会。订阅将在每个计费周期结束时自动续费, 除非您在续费日前主动取消。</div>} />
+              <FaqItem 
+                id="q4" 
+                num="4" 
+                title="订阅会自动续费吗？" 
+                content={<div className="text-xs text-white/60">会的。订阅将在每个计费周期结束时自动续费，除非你在续费日前主动取消。</div>} 
+              />
+              <FaqItem 
+                id="q5" 
+                num="5" 
+                title="限时优惠活动如何生效？" 
+                content={
+                  <div className="space-y-3 text-white/60 text-xs">
+                    <ul className="pl-4 space-y-1">
+                      <li>• 在促销期间订阅，优惠权益会立即生效；</li>
+                      <li>• 若你取消订阅，相关促销权益将同步失效；</li>
+                      <li>• 如果你在同一促销期内重新订阅，剩余优惠权益将在符合规则的情况下予以恢复。</li>
+                    </ul>
+                  </div>
+                } 
+              />
+              <FaqItem 
+                id="q6" 
+                num="6" 
+                title="如何修改或取消订阅？" 
+                content={
+                  <div className="space-y-3 text-white/60 text-xs">
+                    <p>• <span className="text-white">你可以随时进行升级：</span>Starter → Basic → Pro；按月付费 → 按年付费；</p>
+                    <p>• <span className="text-white">取消订阅方式：</span></p>
+                    <ul className="pl-4 space-y-1">
+                      <li>1. 进入订阅页面；</li>
+                      <li>2. 点击 "Manage Subscription（管理订阅）"；</li>
+                      <li>3. 选择 "Cancel Subscription（取消订阅）"。</li>
+                    </ul>
+                    <p>取消后，你仍可在当前订阅周期内继续使用订阅权益；周期结束后订阅将自动失效，并不再进行自动续费。</p>
+                  </div>
+                } 
+              />
+              <FaqItem 
+                id="q7" 
+                num="7" 
+                title="我如何申请退款？" 
+                content={
+                  <div className="space-y-3 text-white/60 text-xs">
+                    <p>• 如果你在最近一次付款后未有任何生成行为（包括大语言模型、图生成、视频生成、音乐和旁白生成等），可在购买后 7天内申请全额退款。</p>
+                    <p>• 若因系统问题导致生成失败，我们将自动进行相应积分退还。</p>
+                    <p>• 若需申请退款，请联系 <span className="text-white">support@artrail.ai</span>。</p>
+                    <p>• 退款通常会在 5–10 个工作日内退回原支付方式。</p>
+                  </div>
+                } 
+              />
             </Accordion>
 
             <div className="mt-16 border-t border-white/5 pt-10">
               <div className="text-sm font-bold mb-4">免责声明与联系方式</div>
               <div className="flex items-center gap-2 text-xs text-white/40">
                 <MessageSquare className="h-3 w-3" />
-                如有关于订阅或积分的问题, 欢迎联系 support@artrail.ai
+                如有关于订阅或积分的问题，欢迎联系 support@artrail.ai
               </div>
               <div className="mt-2 text-[10px] leading-relaxed text-white/20">
-                <span className="text-yellow-500/50">⚠</span> Artrail 会根据产品优化与用户体验需要, 不断调整功能、价格、订阅方案及积分政策。上述内容仅供参考, 可能会在提前通知或不提前通知的情况下进行变更。如出现争议或不一致情况, 以官方服务条款、系统记录与实际账单数据为准。
+                <span className="text-yellow-500/50">⚠️</span> Artrail 会根据产品优化与用户体验需要，不断调整功能、价格、订阅方案及积分政策。上述内容仅供参考，可能会在提前通知或不提前通知的情况下进行变更。如出现争议或不一致情况，以官方服务条款、系统记录与实际账单数据为准。
               </div>
             </div>
           </div>
