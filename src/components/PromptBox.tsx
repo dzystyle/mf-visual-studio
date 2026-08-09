@@ -17,6 +17,7 @@ import {
   ModelPicker,
   SkillPicker,
   ElementsPicker,
+  ElementsPickerDialog,
 } from "./picker-dialogs";
 import {
   Popover,
@@ -48,6 +49,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const [duration, setDuration] = useState(179);
   const [canvasMode, setCanvasMode] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
+  const [assetsOpen, setAssetsOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const pendingKind = useRef<Attachment["kind"]>("image");
 
@@ -158,27 +160,26 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             </PopoverContent>
           </Popover>
 
-          <Popover>
-            <PopoverTrigger asChild>
-              <button type="button">
-                <Chip icon={Smile} label="资产库" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent align="start" className="w-[900px] p-0 border-none bg-white backdrop-blur-none rounded-[32px] shadow-2xl overflow-hidden text-black">
-              <ElementsPicker onSelect={(name, kind, url) => {
-                setAttachments(prev => [
-                  ...prev,
-                  {
-                    id: `${Date.now()}-${name}`,
-                    name,
-                    kind: (kind as any) || "image",
-                    url
-                  }
-                ]);
-                setText(prev => prev ? `${prev} @${name}` : `@${name}`);
-              }} />
-            </PopoverContent>
-          </Popover>
+          <button type="button" onClick={() => setAssetsOpen(true)}>
+            <Chip icon={Smile} label="资产库" />
+          </button>
+          <ElementsPickerDialog 
+            open={assetsOpen} 
+            onOpenChange={setAssetsOpen} 
+            onSelect={(name, kind, url) => {
+              setAttachments(prev => [
+                ...prev,
+                {
+                  id: `${Date.now()}-${name}`,
+                  name,
+                  kind: (kind as any) || "image",
+                  url
+                }
+              ]);
+              setText(prev => prev ? `${prev} @${name}` : `@${name}`);
+            }} 
+          />
+
 
           <div className="h-4 w-px bg-border/40 mx-1" />
 

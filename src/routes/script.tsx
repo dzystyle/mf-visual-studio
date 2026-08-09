@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ModelPicker, SkillPicker, ElementsPicker } from "@/components/picker-dialogs";
+import { ModelPicker, SkillPicker, ElementsPicker, ElementsPickerDialog } from "@/components/picker-dialogs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Play,
