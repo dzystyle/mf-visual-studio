@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X } from "lucide-react";
 import skillScript from "@/assets/skill-script.jpg";
 import skillStory from "@/assets/skill-story.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
@@ -351,67 +351,176 @@ export function SkillPickerDialog({
 }
 
 /* ---------------- Assets Picker ---------------- */
-const elementTabs = [
-  { key: "char", label: "角色", icon: Sparkles },
-  { key: "scene", label: "场景", icon: ImageIcon },
-  { key: "shot", label: "镜头", icon: Video },
-  { key: "music", label: "音乐", icon: Music },
-  { key: "script", label: "脚本", icon: FileText },
-];
+const assetTabs = [
+  { key: "works", label: "作品" },
+  { key: "history", label: "历史上传" },
+  { key: "char", label: "角色" },
+  { key: "product", label: "商品" },
+] as const;
 
-const elementItems = Array.from({ length: 12 }).map((_, i) => ({
-  id: i,
-  name: ["少女·夏野", "赛博都市", "黄昏海岸", "雪山追逐", "霓虹街角", "古风庭院", "未来太空站", "复古胶片", "雨夜东京", "极地极光", "森林精灵", "末日废土"][i],
-  img: `https://picsum.photos/seed/${i + 50}/200/200`
-}));
+const assetSubTabs = [
+  { key: "all", label: "全部" },
+  { key: "recent", label: "最近" },
+  { key: "image", label: "图片" },
+  { key: "video", label: "视频" },
+] as const;
+
+const assetItems = [
+  { id: 1, name: "画布生图", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&h=200&fit=crop", kind: "image" },
+  { id: 2, name: "S1.mp4", img: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=200&h=200&fit=crop", kind: "video", duration: "10s" },
+  { id: 3, name: "画布生图", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=200&h=200&fit=crop", kind: "image", selected: true },
+  { id: 4, name: "画布生图", img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200&h=200&fit=crop", kind: "image" },
+  { id: 5, name: "画布生图", img: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=200&h=200&fit=crop", kind: "image" },
+  { id: 6, name: "画布生图", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=200&h=200&fit=crop", kind: "image" },
+  { id: 7, name: "画布生图", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=200&h=200&fit=crop", kind: "image" },
+  { id: 8, name: "啊实打实大大叔大叔大叔的啊实...", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop", kind: "image" },
+  { id: 9, name: "画布生图", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop", kind: "image" },
+  { id: 10, name: "画布生图", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop", kind: "image" },
+];
 
 export function ElementsPicker({ 
   onSelect 
 }: { 
   onSelect?: (name: string, kind?: string, url?: string) => void 
 }) {
-  const [tab, setTab] = useState("char");
+  const [tab, setTab] = useState<typeof assetTabs[number]["key"]>("works");
+  const [subTab, setSubTab] = useState<typeof assetSubTabs[number]["key"]>("all");
+  const [selectedIds, setSelectedIds] = useState<number[]>([3]);
+
+  const toggleSelect = (id: number) => {
+    setSelectedIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleConfirm = () => {
+    const selected = assetItems.filter(item => selectedIds.includes(item.id));
+    selected.forEach(item => {
+      onSelect?.(item.name, item.kind as any, item.img);
+    });
+  };
+
   return (
-    <div className="w-[800px] p-6 text-white">
-      <h3 className="text-lg font-bold mb-4">资产库</h3>
-      <div className="flex items-center gap-2 border-b border-white/10 pb-3 mb-4">
-        {elementTabs.map((t) => {
-          const Icon = t.icon;
-          const active = tab === t.key;
-          return (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs transition ${
-                active ? "bg-white text-black" : "text-white/40 hover:bg-white/5"
-              }`}
-            >
-              <Icon className="h-3.5 w-3.5" />
-              {t.label}
-            </button>
-          );
-        })}
-      </div>
-      <div className="grid max-h-[50vh] grid-cols-4 gap-3 overflow-y-auto pr-1 scrollbar-hide">
-        <button className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-white/10 text-white/40 transition hover:border-white/40 hover:text-white">
-          <Plus className="h-5 w-5" />
-          <span className="text-xs">上传 / 创建</span>
-        </button>
-        {elementItems.map((it) => (
+    <div className="w-[900px] bg-white text-black overflow-hidden flex flex-col h-[640px]">
+      {/* Header Tabs */}
+      <div className="flex items-center gap-8 px-8 pt-6 border-b border-gray-100">
+        {assetTabs.map((t) => (
           <button
-            key={it.id}
-            onClick={() => onSelect?.(it.name, "image", it.img)}
-            className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent text-left transition hover:border-white/40"
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`pb-4 text-[15px] font-medium transition-all relative ${
+              tab === t.key ? "text-black" : "text-gray-400 hover:text-gray-600"
+            }`}
           >
-            <img src={it.img} alt={it.name} className="h-full w-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-              <span className="text-xs font-medium text-white">{it.name}</span>
-            </div>
-            <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-white/20 opacity-0 transition group-hover:opacity-100">
-              <Plus className="h-3 w-3" />
-            </div>
+            {t.label}
+            {tab === t.key && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-black" />
+            )}
           </button>
         ))}
+        <div className="flex-1" />
+        <button className="mb-4 flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100 transition">
+          <X className="h-4 w-4 text-gray-400" />
+        </button>
+      </div>
+
+      {/* Toolbar */}
+      <div className="flex items-center gap-2 px-8 py-4">
+        <div className="flex items-center gap-1 bg-gray-50 rounded-full p-1">
+          {assetSubTabs.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setSubTab(t.key)}
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition ${
+                subTab === t.key ? "bg-white shadow-sm text-black" : "text-gray-400 hover:text-gray-600"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        
+        <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-500 hover:text-black transition">
+          <div className="flex flex-col gap-0.5 scale-75">
+            <div className="w-3 h-0.5 bg-current" />
+            <div className="w-2 h-0.5 bg-current" />
+            <div className="w-1 h-0.5 bg-current" />
+          </div>
+          最新优先
+        </button>
+
+        <div className="flex-1" />
+
+        <div className="flex items-center gap-3">
+          <button className="flex items-center gap-1.5 px-4 py-1.5 bg-gray-50 rounded-full text-xs font-medium hover:bg-gray-100 transition">
+            <Plus className="h-3.5 w-3.5" />
+            新增
+          </button>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+            <input 
+              type="text" 
+              placeholder="搜索" 
+              className="pl-9 pr-4 py-1.5 bg-gray-50 rounded-full text-xs w-48 focus:outline-none focus:ring-1 focus:ring-black/5"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Grid */}
+      <div className="flex-1 overflow-y-auto px-8 pb-20 scrollbar-hide">
+        <div className="grid grid-cols-5 gap-x-4 gap-y-6">
+          {assetItems.map((item) => {
+            const isSelected = selectedIds.includes(item.id);
+            return (
+              <div key={item.id} className="group flex flex-col gap-2">
+                <div 
+                  onClick={() => toggleSelect(item.id)}
+                  className={`relative aspect-[1.6/1] rounded-xl overflow-hidden cursor-pointer transition-all border-2 ${
+                    isSelected ? "border-black" : "border-transparent bg-gray-50"
+                  }`}
+                >
+                  <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
+                  
+                  {/* Selection Indicator */}
+                  <div className={`absolute top-2 left-2 h-5 w-5 rounded-md border flex items-center justify-center transition ${
+                    isSelected ? "bg-black border-black" : "bg-white/80 border-gray-200"
+                  }`}>
+                    {isSelected && <Check className="h-3 w-3 text-white stroke-[3px]" />}
+                  </div>
+
+                  {/* Video Duration Badge */}
+                  {item.kind === "video" && item.duration && (
+                    <div className="absolute bottom-1.5 left-1.5 bg-black/50 backdrop-blur-sm text-white text-[8px] px-1.5 py-0.5 rounded font-medium">
+                      {item.duration}
+                    </div>
+                  )}
+                </div>
+                <span className="text-[12px] text-gray-500 truncate px-1">
+                  {item.name}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-8 py-4 flex items-center justify-between z-20">
+        <div className="text-sm text-gray-400">
+          已选 {selectedIds.length} 个素材
+        </div>
+        <div className="flex items-center gap-3">
+          <button className="px-6 py-2 text-sm font-medium text-gray-500 hover:text-black transition">
+            取消
+          </button>
+          <button 
+            onClick={handleConfirm}
+            className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-black/90 transition shadow-lg shadow-black/10"
+          >
+            添加 {selectedIds.length} 项
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -428,7 +537,7 @@ export function ElementsPickerDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
+      <DialogContent className="max-w-[900px] border-none bg-white p-0 text-black overflow-hidden rounded-[32px] shadow-2xl">
         <ElementsPicker onSelect={(name, kind, url) => { onSelect?.(name, kind, url); onOpenChange(false); }} />
       </DialogContent>
     </Dialog>

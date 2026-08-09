@@ -164,7 +164,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 <Chip icon={Smile} label="资产库" />
               </button>
             </PopoverTrigger>
-            <PopoverContent align="start" className="w-[820px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+            <PopoverContent align="start" className="w-[900px] p-0 border-none bg-white backdrop-blur-none rounded-[32px] shadow-2xl overflow-hidden text-black">
               <ElementsPicker onSelect={(name, kind, url) => {
                 setAttachments(prev => [
                   ...prev,
