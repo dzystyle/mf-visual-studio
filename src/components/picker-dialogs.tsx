@@ -174,53 +174,111 @@ export function SkillPickerDialog({
   onOpenChange: (v: boolean) => void;
   onSelect?: (title: string) => void;
 }) {
-  const [tab, setTab] = useState<"mine" | "featured">("mine");
+  const [tab, setTab] = useState<"default" | "newbie" | "master" | "story">("newbie");
+  
+  const categories = [
+    { key: "default", label: "默认调用" },
+    { key: "newbie", label: "新手必用" },
+    { key: "master", label: "大师美学" },
+    { key: "story", label: "剧情短片" },
+  ];
+
+  const skillList = [
+    {
+      title: "故事驱动型视频",
+      desc: "专为具有完整故事线的视频而设计。核心亮点：- 由 Seedance 2.5 480p (目前最强大...",
+      img: skillStory,
+    },
+    {
+      title: "古风甜宠短剧",
+      desc: "适用于古装甜宠短剧视频的创作。支持 AI 自动生成剧本或用户自提剧本，流程涵盖剧本...",
+      img: skillReenact,
+    },
+    {
+      title: "商品宣传短片",
+      desc: "快速创建AI商业广告短片，为您的产品呈现专业级的视觉效果和创意故事。使用模型 Nan...",
+      img: skillProduct,
+    },
+    {
+      title: "视频拉片复刻",
+      desc: "通过学习上传视频的电影语法（提取其脚本、镜头结构、视觉语言和节奏），围绕您自己...",
+      img: skillReenact,
+    },
+    {
+      title: "剧情短片 (音色参考)",
+      desc: "核心亮点： - 角色语音锚定：每个角色有元素",
+      img: skillScript,
+    },
+  ];
+
   const pick = (title: string) => {
     onSelect?.(title);
     onOpenChange(false);
   };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl border-border bg-card/95 backdrop-blur-xl">
-        <DialogHeader>
-          <DialogTitle className="text-lg">选择 Skill</DialogTitle>
+      <DialogContent className="max-w-[480px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
+        <DialogHeader className="flex flex-row items-center justify-between px-6 pt-6">
+          <DialogTitle className="text-lg font-bold">Skill</DialogTitle>
+          <button className="flex items-center gap-0.5 text-xs text-white/40 hover:text-white/60">
+            更多 <ChevronRight className="h-3 w-3" />
+          </button>
         </DialogHeader>
-        <div className="flex items-center justify-between">
-          <div className="flex rounded-full border border-border bg-background/40 p-1">
-            {(["mine", "featured"] as const).map((t) => (
+
+        <div className="mt-4 px-6">
+          <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
+            {categories.map((c) => (
               <button
-                key={t}
-                onClick={() => setTab(t)}
-                className={`rounded-full px-4 py-1 text-xs transition ${
-                  tab === t ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+                key={c.key}
+                onClick={() => setTab(c.key as any)}
+                className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium transition-all ${
+                  tab === c.key
+                    ? "bg-white/10 text-white"
+                    : "text-white/40 hover:text-white/60"
                 }`}
               >
-                {t === "mine" ? "我的 Skill" : "精选 Skill"}
+                {c.label}
+                {c.key === "default" && (
+                  <span className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-white/20 text-[8px]">i</span>
+                )}
               </button>
             ))}
           </div>
-          <button className="flex items-center gap-1.5 rounded-full border border-border bg-background/40 px-3 py-1.5 text-xs hover:bg-accent/40">
-            <Sparkles className="h-3.5 w-3.5 text-aurora-pink" />
-            创建 Skill
-          </button>
         </div>
-        <div className="grid max-h-[60vh] grid-cols-2 gap-3 overflow-y-auto pr-1">
-          {skills.map((s) => (
-            <button
-              key={s.title}
-              onClick={() => pick(s.title)}
-              className="group flex gap-3 rounded-xl border border-border bg-background/40 p-2.5 text-left transition hover:border-aurora-blue/60 hover:bg-accent/40"
-            >
-              <img src={s.img} alt={s.title} className="h-16 w-20 shrink-0 rounded-lg object-cover" />
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="truncate text-sm font-medium">{s.title}</span>
-                  <span className="shrink-0 text-[10px] text-muted-foreground">@{s.author}</span>
+
+        <div className="mt-2 max-h-[500px] overflow-y-auto px-6 pb-6 scrollbar-hide">
+          <div className="space-y-3">
+            {skillList.map((s) => (
+              <div
+                key={s.title}
+                className="group flex cursor-pointer items-start gap-3 rounded-xl py-1 transition-all"
+              >
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-white/5">
+                  <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
                 </div>
-                <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{s.desc}</p>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-[13px] font-bold text-white group-hover:text-white/90">{s.title}</h4>
+                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white">
+                        <Eye className="h-3 w-3" />
+                      </button>
+                      <button 
+                        onClick={() => pick(s.title)}
+                        className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white"
+                      >
+                        <Plus className="h-3 w-3" />
+                      </button>
+                    </div>
+                  </div>
+                  <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-white/40">
+                    {s.desc}
+                  </p>
+                </div>
               </div>
-            </button>
-          ))}
+            ))}
+          </div>
         </div>
       </DialogContent>
     </Dialog>

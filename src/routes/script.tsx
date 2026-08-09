@@ -343,45 +343,49 @@ const seedConversation: Msg[] = [
   {
     kind: "bot",
     nodes: [
-      { type: "heading", text: "《超能替罪羊》第1集 · Seedance 逐帧分镜剧本" },
-      { type: "text", text: "全局设定:现代都市写字楼,冷色调工业风,压抑的蓝灰色主调,雨天外景,室内荧光灯惨白光线,全程手持镜头+快速剪辑,营造紧张窒息感。" },
-      { type: "text", text: "固定人物:萨姆 / 老板 / 卡特警探 / 小胖 / 丽莎 / 保安队长 / 马克 共 7 人。" },
-      { type: "shots", rows: scriptShots },
+      { type: "heading", text: "《音乐MV》第1集 · Seedance 逐帧分镜剧本" },
+      { type: "text", text: "简介内容: 用于通过已上传的音乐生成音乐视频。Nano Banana + Omnihuman + Seedance 2.5 480p。在关键阶段暂停以供用户确认；采用人机协作的单次（one-shot）流程。" },
       { type: "status", icon: "skill", label: "Skill 已完成" },
-      { type: "text", text: "好的,正在为您加载「剧本驱动型视频」技能,稍等片刻!" },
-      { type: "text", text: "技能加载完毕!现在让我建立项目规格文档,然后启动制作流程。" },
-      { type: "text", text: "技能「剧本驱动型视频」已加载,核心流程如下:" },
+      { type: "text", text: "好的,正在为您加载「音乐MV」技能,稍等片刻!" },
+      {
+        type: "mediaAssets",
+        title: "分析音乐资源",
+        badge: "已完成",
+        steps: [
+          {
+            title: "音乐分析",
+            desc: "已提取 BPM、节奏结构及歌词时间戳",
+            assets: [{ name: "Uploaded_Audio_Analysis.json" }]
+          }
+        ]
+      },
+      { type: "heading", text: "■ 项目规格 (Final_Video_Spec.md)" },
       {
         type: "list",
         items: [
-          { label: "工具组合:", sub: "Nano Banana(关键帧图像)+ Seedance 2.0(镜头视频)" },
-          { label: "制作节奏:", sub: "规格确认 → 故事板 → 角色参考图 → 逐镜头视频 → 音频层 → 最终剪辑,每个关键阶段暂停确认" },
-          { label: "人机协作模式:", sub: "一镜到底工作流,关键节点您可随时介入调整" },
+          { label: "视觉风格:", sub: "Cinematic MV, High Contrast, Neo-Noir elements" },
+          { label: "模型偏好:", sub: "Seedance 2.5 480p / OmniHuman 1.5" },
+          { label: "输出语言:", sub: "中文" },
         ],
       },
-      { type: "status", icon: "spec", label: "视频规格 已完成", tone: "warn" },
-      { type: "text", text: "项目规格已确立!现在开始设计故事板,将第1集的12个分镜全部结构化。" },
-      { type: "status", icon: "board", label: "故事板 已更新", tone: "accent" },
-      { type: "text", text: "故事板已就绪!5个长镜头(包含内部快剪)完整覆盖第1集60秒,7位角色全部定义完毕。" },
-      { type: "text", text: "现在进入 第一个关键阶段:故事板确认,请您查看上方的分镜结构。以下是当前故事板概览:", emphasis: true },
-      { type: "heading", text: "■ 镜头列表(共5组,每组含内部剪辑)" },
-      { type: "shots", rows: storyboardShots },
-      { type: "meta", icon: "🎭", label: "角色定义(7人):", value: "萨姆、老板、卡特警探、小胖、丽莎、保安队长、马克" },
-      { type: "meta", icon: "🎵", label: "音频层:", value: "全局60秒工业风电子配乐(含环境音采样)" },
-      { type: "text", text: "确认无误后,下一步将为7位角色各生成一张参考形象图,用于后续视频生成时保持角色一致性。" },
-    ],
-  },
-  { kind: "user", text: "故事板确认,开始生成角色参考图" },
-  {
-    kind: "bot",
-    nodes: [
-      { type: "text", text: "好的,故事板已确认!现在开始为7位角色生成参考形象图 🎬" },
+      { type: "status", icon: "board", label: "故事板设计中...", tone: "accent" },
+      { type: "text", text: "根据音乐节奏,我已为您规划了故事板镜头:" },
       {
-        type: "mediaAssets",
-        title: "首次生成图片",
-        badge: "+30",
-        cost: "-77",
-        steps: [
+        type: "shots",
+        rows: [
+          { shot: "1", time: "0-1s 缓冲区", content: "前奏: 城市霓虹灯倒影在积水的路面,镜头缓慢平移" },
+          { shot: "2", time: "歌词行1", content: "中景: 角色登场,配合第一句歌词开始表演 (唇形同步)" },
+        ]
+      },
+      {
+        type: "characterTable",
+        rows: [
+          { icon: "🎭", name: "角色 A", features: "25岁女性,长发,身着银色亮片裙,舞台灯光背景" }
+        ]
+      },
+      { type: "status", icon: "board", label: "等待确认", tone: "warn" },
+      { type: "text", text: "请确认故事板与角色设定,无误后我们将开始生成关键帧图像。" },
+
           { title: "Agent分析完成", desc: "好的!开始为7位角色生成参考形象图。首先注册所有角色图像资产。" },
           { title: "资产配置完成" },
           { title: "Agent分析完成", desc: "资产注册完成!现在为所有7位角色同步撰写提示词。" },
