@@ -35,7 +35,7 @@ export function SubscriptionDialog({
               </div>
             </div>
 
-            <h1 className="text-2xl font-bold tracking-tight">Artrail - 订阅计划</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Artrail - 价格与套餐</h1>
 
             <div className="mt-8 flex justify-center">
               <div className="flex border-b border-white/10 w-full max-w-md">
@@ -96,29 +96,28 @@ export function SubscriptionDialog({
                     price={140} 
                     credits="2000 + 400" 
                     bonus="多送20%" 
-                    features={PERSONAL_FEATURES} 
-                    highlight="创作补贴"
+                    features={getPersonalFeatures(10)} 
                   />
                   <PersonalCard 
                     name="Basic" 
                     price={350} 
                     credits="5000 + 1500" 
                     bonus="多送30%" 
-                    features={PERSONAL_FEATURES}
+                    features={getPersonalFeatures(20)}
                   />
                   <PersonalCard 
                     name="Plus" 
                     price={700} 
                     credits="10000 + 4000" 
                     bonus="多送40%" 
-                    features={PERSONAL_FEATURES}
+                    features={getPersonalFeatures(50, true)}
                   />
                   <PersonalCard 
                     name="Pro" 
                     price={1400} 
                     credits="20000 + 10000" 
                     bonus="多送50%" 
-                    features={PERSONAL_FEATURES}
+                    features={getPersonalFeatures(80, true)}
                   />
                 </div>
               </>
@@ -471,31 +470,35 @@ function FaqItem({ id, num, title, content }: any) {
   );
 }
 
-const PERSONAL_FEATURES = [
+const getPersonalFeatures = (concurrency: number, vipStyle: boolean = false) => [
   {
-    title: "制作补贴 (Production Subsidy)",
+    title: "创作补贴",
     items: [
-      { label: "注册奖励 (Registration Bonus)", value: "100 积分" },
-      { label: "探索使用奖励 (Exploration Bonus)", value: "200 积分" },
-      { label: "每日签到奖励 (Daily Check-in)", tag: "新" },
+      { label: "注册奖励：100 积分" },
+      { label: "探索使用奖励：200 积分" },
     ]
   },
   {
-    title: "模型权益 (Model Rights)",
+    title: "模型权益",
     items: [
-      { label: "大语言模型 (LLM)", info: true, tag: "无限免费" },
-      { label: "图生成模型 (Image Models)", sub: "包含 Nano Banana 2 / GPT Image 2", value: "5-25 积分/张" },
-      { label: "视频生成模型 (Video Models)", sub: "包含 Seedance 2.5 (SOTA)", value: "5-135 积分/秒" },
+      { label: "大语言模型", tag: "无限免费" },
+      { label: "图生成模型", sub: "包含 Nano Banana 2 / GPT Image 2", value: "5-25 积分/张" },
+      { label: "视频模型(480P/720P/1080P/4K)", sub: "包含 Seedance 2.5 SOTA", value: "5-135 积分/秒" },
+      { label: "视频模型", sub: "包含 MiniMax H3", value: "8-39 积分/秒" },
+      { label: "音乐/旁白", value: "1-5 积分/生成" },
     ]
   },
   {
-    title: "使用权益 (Usage Rights)",
+    title: "使用权益",
     items: [
-      { label: "专享 Seedance 2.5 高并发", value: "优先通道" },
-      { label: "资产库素材快速生成", tag: "新" },
-      { label: "最大并行生成数", value: "5" },
-      { label: "授权人像容量", value: "2 个" },
-      { label: "专属会员标识", tag: "新" },
+      { label: `专享 Seedance 2.5 & 2.0 高并发：${concurrency}`, tag: "新" },
+      { label: "资产库单素材快速生成", tag: "新" },
+      { label: `单模型并发：${Math.floor(concurrency / 5 + 3)}` },
+      { label: `授权人像容量：${concurrency / 5 + 2} 个` },
+      { label: "去水印导出" },
+      { label: "商用授权" },
+      { label: "图片视频HD超清增强", tag: "新" },
+      ...(vipStyle ? [{ label: "尊享真人画风合规生成", tag: "新" }] : []),
     ]
   }
 ];
