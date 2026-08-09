@@ -147,7 +147,7 @@ export function ModelPicker({
           {tabs.map((tab) => (
             <div 
               key={tab.key}
-              ref={(el) => (sectionRefs.current[tab.key] = el)}
+              ref={(el) => { sectionRefs.current[tab.key] = el; }}
               className="space-y-3"
             >
               <div className="text-[10px] font-medium uppercase tracking-wider text-white/40 sticky top-0 bg-[#0A0A0A]/95 py-1 z-10">
