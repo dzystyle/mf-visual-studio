@@ -305,7 +305,22 @@ export function SkillPickerDialog({
   );
 }
 
+/* ---------------- Elements Picker ---------------- */
+const elementTabs = [
+  { key: "char", label: "角色", icon: Sparkles },
+  { key: "scene", label: "场景", icon: ImageIcon },
+  { key: "shot", label: "镜头", icon: Video },
+  { key: "music", label: "音乐", icon: Music },
+  { key: "script", label: "脚本", icon: FileText },
+];
+
+const elementItems = Array.from({ length: 12 }).map((_, i) => ({
+  id: i,
+  name: ["少女·夏野", "赛博都市", "黄昏海岸", "雪山追逐", "霓虹街角", "古风庭院", "未来太空站", "复古胶片", "雨夜东京", "极地极光", "森林精灵", "末日废土"][i],
+}));
+
 export function ElementsPickerContent({ 
+
   onSelect 
 }: { 
   onSelect?: (name: string) => void 
