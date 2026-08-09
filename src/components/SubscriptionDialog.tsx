@@ -159,28 +159,28 @@ export function SubscriptionDialog({
                     price={160} 
                     credits="2000 + 400" 
                     bonus="多送20%" 
-                    features={TEAM_FEATURES}
+                    features={getTeamFeatures(20, 7, 5)}
                   />
                   <TeamCard 
                     name="Basic Team" 
                     price={400} 
                     credits="5000 + 1500" 
                     bonus="多送30%" 
-                    features={TEAM_FEATURES}
+                    features={getTeamFeatures(40, 10, 10)}
                   />
                   <TeamCard 
                     name="Plus Team" 
                     price={800} 
                     credits="10000 + 4000" 
                     bonus="多送40%" 
-                    features={TEAM_FEATURES}
+                    features={getTeamFeatures(80, 15, 20)}
                   />
                   <TeamCard 
                     name="Pro Team" 
                     price={1600} 
                     credits="20000 + 10000" 
                     bonus="多送50%" 
-                    features={TEAM_FEATURES}
+                    features={getTeamFeatures(100, 20, 30)}
                   />
                 </div>
               </>
