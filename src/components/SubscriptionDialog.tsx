@@ -503,22 +503,39 @@ const getPersonalFeatures = (concurrency: number, vipStyle: boolean = false) => 
   }
 ];
 
-const TEAM_FEATURES = [
+const getTeamFeatures = (concurrency: number, singleModel: number, avatars: number) => [
   {
-    title: "团队管理 (Team Management)",
+    title: "团队权益",
     items: [
-      { label: "多成员协同工作", tag: "新" },
-      { label: "团队资产库共享", tag: "新" },
-      { label: "项目权限精细化管控", tag: "新" },
-      { label: "团队积分池统一分配", tag: "新" },
+      { label: "创建并管理团队成员", tag: "新" },
+      { label: "项目及资产管控", tag: "新" },
+      { label: "积分用量管控", tag: "新" },
+      { label: "极速开发票", tag: "新" },
     ]
   },
   {
-    title: "制作权益 (Production Rights)",
+    title: "模型权益",
     items: [
-      { label: "全量模型优先使用权", tag: "无限免费" },
-      { label: "企业级极速并发", value: "极速通道" },
-      { label: "4K/8K 超高清生成", value: "支持" },
+      { label: "大语言模型", tag: "无限免费" },
+      { label: "图生成模型", sub: "包含 Nano Banana 2 / GPT Image 2", value: "5-25 积分/张" },
+      { label: "视频模型(480P/720P/1080P/4K)", sub: "包含 Seedance 2.5SOTA", value: "5-135 积分/秒" },
+      { label: "视频模型", sub: "包含 MiniMax H3", value: "8-39 积分/秒" },
+      { label: "视频模型", sub: "包含 其他模型", value: "12-42 积分/秒" },
+      { label: "音乐/旁白", value: "1-5 积分/生成" },
+    ]
+  },
+  {
+    title: "使用权益",
+    items: [
+      { label: `专享 Seedance 2.5 & 2.0 高并发：${concurrency}`, tag: "新" },
+      { label: "快速生成功能，单素材自由创作", tag: "新" },
+      { label: `单模型并发：${singleModel}` },
+      { label: `授权人像容量：${avatars} 个` },
+      { label: "去水印导出" },
+      { label: "商用授权" },
+      { label: "尊享真人画风合规生成", tag: "新" },
     ]
   }
 ];
+
+const TEAM_FEATURES = []; // Keep for backward compatibility if needed, but we use getTeamFeatures now
