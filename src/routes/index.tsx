@@ -116,61 +116,72 @@ function Home() {
 
 function SkillsWithPreview() {
   const [hovered, setHovered] = useState<string | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const active = hotSkills.find((s) => s.id === hovered) ?? null;
 
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (active) {
-      v.currentTime = 0;
-      v.play().catch(() => {});
-    } else {
-      v.pause();
-    }
-  }, [active?.video]);
-
   return (
-    <div>
+    <div className="relative">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
         {hotSkills.map((s) => (
-          <SkillCard
+          <div
             key={s.id}
-            {...s}
-            onHover={() => setHovered(s.id)}
-            onLeave={() => setHovered((h) => (h === s.id ? null : h))}
-          />
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              setPosition({
+                x: rect.left + rect.width / 2,
+                y: rect.top,
+              });
+            }}
+          >
+            <SkillCard
+              {...s}
+              onHover={() => setHovered(s.id)}
+              onLeave={() => setHovered(null)}
+            />
+          </div>
         ))}
       </div>
-      <div
-        className={`mx-auto mt-4 overflow-hidden rounded-2xl border border-border bg-card/40 transition-all duration-300 ${
-          active ? "max-h-[480px] opacity-100" : "max-h-0 border-transparent opacity-0"
-        }`}
-        style={{ maxWidth: 880 }}
-      >
-        {active && (
-          <div className="flex items-stretch gap-4 p-3">
-            <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black">
+
+      {active && (
+        <div
+          className="fixed z-50 pointer-events-none -translate-x-1/2 -translate-y-[calc(100%+12px)] transition-all duration-200"
+          style={{
+            left: position.x,
+            top: position.y,
+          }}
+        >
+          <div className="w-[320px] overflow-hidden rounded-2xl border border-white/10 bg-[#161616] shadow-2xl shadow-black/50">
+            <div className="relative aspect-video w-full overflow-hidden bg-black">
               <video
-                ref={videoRef}
                 key={active.video}
                 src={active.video}
                 poster={active.image}
+                autoPlay
                 muted
                 loop
                 playsInline
                 className="h-full w-full object-cover"
               />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                <div className="text-sm font-semibold">{active.title}</div>
-                <div className="mt-0.5 text-[11px] text-foreground/70">
-                  {active.desc}
-                </div>
+              <div className="absolute top-2 right-2 rounded bg-black/60 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur">
+                MiniMax H3
+              </div>
+            </div>
+            <div className="p-4">
+              <div className="text-[10px] text-white/40 mb-1">@时见鹿小创</div>
+              <div className="text-sm font-bold text-white mb-2">{active.title}</div>
+              <div className="text-[11px] leading-relaxed text-white/60 mb-3">
+                {active.desc}
+              </div>
+              <div className="flex gap-2">
+                <span className="rounded-full bg-white/5 px-2 py-0.5 text-[9px] text-white/40">新手必用</span>
+                <span className="rounded-full bg-white/5 px-2 py-0.5 text-[9px] text-white/40">动漫游戏</span>
               </div>
             </div>
           </div>
-        )}
-      </div>
+          {/* Arrow */}
+          <div className="absolute left-1/2 -bottom-1.5 h-3 w-3 -translate-x-1/2 rotate-45 border-b border-r border-white/10 bg-[#161616]" />
+        </div>
+      )}
     </div>
   );
 }
