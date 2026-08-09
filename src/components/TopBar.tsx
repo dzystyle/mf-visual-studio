@@ -3,6 +3,7 @@ import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, L
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { SubscriptionDialog } from "./SubscriptionDialog";
 
 export function TopBar({ title }: { title?: string }) {
   return (
@@ -28,9 +29,12 @@ export function TopBar({ title }: { title?: string }) {
 
 function UserMenu() {
   const [open, setOpen] = React.useState(false);
+  const [showSubscription, setShowSubscription] = React.useState(false);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <>
+      <SubscriptionDialog open={showSubscription} onOpenChange={setShowSubscription} />
+      <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button 
           onMouseEnter={() => setOpen(true)}
@@ -52,7 +56,10 @@ function UserMenu() {
           </div>
           <div className="mt-1 text-sm text-white/40">yangdu776@gmail.com</div>
 
-          <button className="group mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#FF7E5F] to-[#FEB47B] py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90">
+          <button 
+            onClick={() => { setShowSubscription(true); setOpen(false); }}
+            className="group mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#FF7E5F] to-[#FEB47B] py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 cursor-pointer"
+          >
             <div className="flex h-4 w-4 items-center justify-center rounded-sm bg-white/20">
               <Play fill="white" className="h-2 w-2 text-white" />
             </div>
@@ -116,6 +123,7 @@ function UserMenu() {
         </div>
       </PopoverContent>
     </Popover>
+    </>
   );
 }
 
