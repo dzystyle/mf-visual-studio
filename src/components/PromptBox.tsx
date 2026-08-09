@@ -15,6 +15,9 @@ import {
   Pencil,
 } from "lucide-react";
 import {
+  ModelPickerContent,
+  SkillPickerContent,
+  ElementsPickerContent,
   ModelPickerDialog,
   SkillPickerDialog,
   ElementsPickerDialog,
@@ -136,15 +139,43 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             onChange={onFiles}
           />
 
-          <Chip icon={LayoutGrid} label={model} badge="新" onClick={() => setOpenModel(true)} />
-          <Chip
-            icon={Package}
-            label={skill ?? "Skill"}
-            active={!!skill}
-            onClick={() => setOpenSkill(true)}
-            onClear={skill ? () => setSkill(null) : undefined}
-          />
-          <Chip icon={Smile} label="元素" onClick={() => setOpenElements(true)} />
+          <Popover open={openModel} onOpenChange={setOpenModel}>
+            <PopoverTrigger asChild>
+              <button type="button">
+                <Chip icon={LayoutGrid} label={model} badge="新" active={openModel} />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent side="top" align="start" className="w-[580px] p-0 border-white/10 bg-[#0A0A0A]/95 text-white backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+              <ModelPickerContent value={model} onSelect={(val) => { setModel(val); setOpenModel(false); }} />
+            </PopoverContent>
+          </Popover>
+
+          <Popover open={openSkill} onOpenChange={setOpenSkill}>
+            <PopoverTrigger asChild>
+              <button type="button">
+                <Chip
+                  icon={Package}
+                  label={skill ?? "Skill"}
+                  active={!!skill || openSkill}
+                  onClear={skill ? () => setSkill(null) : undefined}
+                />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent side="top" align="start" className="w-[480px] p-0 border-white/10 bg-[#0A0A0A]/95 text-white backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+              <SkillPickerContent onSelect={(val) => { setSkill(val); setOpenSkill(false); }} />
+            </PopoverContent>
+          </Popover>
+
+          <Popover open={openElements} onOpenChange={setOpenElements}>
+            <PopoverTrigger asChild>
+              <button type="button">
+                <Chip icon={Smile} label="元素" active={openElements} />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent side="top" align="start" className="w-[800px] p-0 border-white/10 bg-[#0A0A0A]/95 text-white backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+              <ElementsPickerContent onSelect={() => setOpenElements(false)} />
+            </PopoverContent>
+          </Popover>
 
           <div className="h-4 w-px bg-border/40 mx-1" />
 
