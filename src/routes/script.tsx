@@ -655,9 +655,6 @@ function Composer({
   onRemoveQuote?: (id: string) => void;
 } = {}) {
   const [text, setText] = useState("");
-  const [modelOpen, setModelOpen] = useState(false);
-  const [skillOpen, setSkillOpen] = useState(false);
-  const [elemOpen, setElemOpen] = useState(false);
   const [model, setModel] = useState<string | null>(null);
   const [skill, setSkill] = useState<string | null>(null);
   const [elements, setElements] = useState<string[]>([]);
