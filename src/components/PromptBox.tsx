@@ -120,6 +120,22 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     <div className="glass rounded-2xl p-5 shadow-2xl relative">
 
       <div className="relative">
+        {attachments.length > 0 && (
+          <div className="mb-3 flex flex-wrap gap-2">
+            {attachments.map((a) => (
+              <AttachmentChip 
+                key={a.id} 
+                a={a} 
+                onRemove={() => remove(a.id)} 
+                onAtClick={() => {
+                  setMentionOpen(true);
+                  setMentionFilter("");
+                  textareaRef.current?.focus();
+                }}
+              />
+            ))}
+          </div>
+        )}
         <textarea
           ref={textareaRef}
           rows={3}
