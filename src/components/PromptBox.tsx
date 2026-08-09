@@ -656,7 +656,7 @@ function MentionListItem({
       </button>
 
       {showPreview && (
-        <div className="fixed z-[100] translate-x-72 -translate-y-12 pointer-events-none p-2 bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-left-2 duration-200">
+        <div className="absolute left-full top-0 ml-2 pointer-events-none p-2 bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-left-2 duration-200 z-[100]">
           <div className="space-y-2">
             <div className="text-[10px] text-muted-foreground px-1">{item.name} 预览</div>
             <img src={item.url} alt="Preview" className="w-[180px] h-[180px] rounded-xl object-cover" />
