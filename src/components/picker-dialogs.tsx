@@ -16,7 +16,7 @@ const modelData = {
     { name: "Nano Banana Pro", desc: "Google Gemini 的精确自然语言处理驱动图像修改工具。" },
     { name: "Seedream 5.0 Pro", badge: "新", desc: "字节跳动的图像模型，用于文本生成图像/编辑，在性能和速度方面表现更佳。" },
     { name: "Seedream 4.5", desc: "字节跳动的图像模型，用于文本生成图像/编辑，在性能和速度方面表现更佳。" },
-    { name: "Midjourney", desc: "高精度模型，具有准确的提示、优质纹理和细节。" },
+    { name: "Midjourney", desc: "高精度模型，具有准确的提示、优质纹理 and 细节。" },
   ],
   video: [
     { name: "Seedance 2.5", badge: "新", tag: "SOTA", upgrade: true, desc: "支持 4–30 秒视频生成、多模态参考、原生音频，以及符合条件的视频延长。" },
@@ -68,15 +68,14 @@ export function ModelPicker({
     { key: "video", label: "视频" },
     { key: "music", label: "音乐" },
     { key: "audio", label: "音频" },
-  ];
+  ] as const;
 
-  const handleTabClick = (key: string) => {
-    setActiveTab(key as any);
+  const handleTabClick = (key: keyof typeof modelData) => {
+    setActiveTab(key);
     const element = sectionRefs.current[key];
     if (element && scrollRef.current) {
       isScrollingRef.current = true;
       element.scrollIntoView({ behavior: 'smooth' });
-      // Reset isScrollingRef after animation
       setTimeout(() => {
         isScrollingRef.current = false;
       }, 800);
@@ -87,10 +86,8 @@ export function ModelPicker({
     if (isScrollingRef.current || !scrollRef.current) return;
     
     const container = scrollRef.current;
-    const scrollTop = container.scrollTop;
-    const containerHeight = container.clientHeight;
+    const containerRect = container.getBoundingClientRect();
     
-    // Find which section is most visible
     let currentTab = activeTab;
     let maxVisibleHeight = 0;
 
@@ -98,15 +95,13 @@ export function ModelPicker({
       const element = sectionRefs.current[tab.key];
       if (element) {
         const rect = element.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        
         const visibleTop = Math.max(rect.top, containerRect.top);
         const visibleBottom = Math.min(rect.bottom, containerRect.bottom);
         const visibleHeight = Math.max(0, visibleBottom - visibleTop);
         
         if (visibleHeight > maxVisibleHeight) {
           maxVisibleHeight = visibleHeight;
-          currentTab = tab.key as any;
+          currentTab = tab.key;
         }
       }
     });
@@ -150,11 +145,11 @@ export function ModelPicker({
               ref={(el) => { sectionRefs.current[tab.key] = el; }}
               className="space-y-3"
             >
-              <div className="text-[10px] font-medium uppercase tracking-wider text-white/40 sticky top-0 bg-[#0A0A0A]/95 py-1 z-10">
+              <div className="text-[10px] font-medium uppercase tracking-wider text-white/40 sticky top-0 bg-[#0A0A0A] py-1 z-10">
                 {tab.label}
               </div>
               <div className="space-y-2">
-                {modelData[tab.key as keyof typeof modelData].map((m: any) => {
+                {modelData[tab.key].map((m) => {
                   const active = selected === m.name;
                   return (
                     <button
@@ -173,17 +168,17 @@ export function ModelPicker({
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-bold text-white">{m.name}</span>
-                          {m.badge && (
+                          {"badge" in m && m.badge && (
                             <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] font-bold text-green-500">
                               {m.badge}
                             </span>
                           )}
-                          {m.tag && (
+                          {"tag" in m && m.tag && (
                             <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[8px] font-bold text-white">
                               {m.tag}
                             </span>
                           )}
-                          {m.upgrade && (
+                          {"upgrade" in m && m.upgrade && (
                             <span className="rounded bg-blue-500/20 px-1.5 py-0.5 text-[8px] font-bold text-blue-500">
                               升级
                             </span>
@@ -228,13 +223,39 @@ export function ModelPickerDialog({
 }
 
 /* ---------------- Skill Picker ---------------- */
-const skills = [
-  { title: "旅拍大师 V2.0", author: "Artrail", img: skillTravel, desc: "电影级唯美旅拍视频工作流" },
-  { title: "剧本驱动型视频", author: "Artrail", img: skillScript, desc: "上传剧本,生成多镜头电影叙事" },
-  { title: "商品宣传短片", author: "Artrail", img: skillProduct, desc: "AI 商业广告短片工作流" },
-  { title: "音乐 MV", author: "Artrail", img: skillMv, desc: "上传音乐,生成口型同步 MV" },
-  { title: "视频拉片复刻", author: "Artrail", img: skillReenact, desc: "学习参考视频的镜头语言并复刻" },
-  { title: "故事驱动型视频", author: "Artrail", img: skillStory, desc: "从一句话到完整短片" },
+const categories = [
+  { key: "default", label: "默认调用" },
+  { key: "newbie", label: "新手必用" },
+  { key: "master", label: "大师美学" },
+  { key: "story", label: "剧情短片" },
+] as const;
+
+const skillList = [
+  {
+    title: "故事驱动型视频",
+    desc: "专为具有完整故事线的视频而设计。核心亮点：- 由 Seedance 2.5 480p (目前最强大...",
+    img: skillStory,
+  },
+  {
+    title: "古风甜宠短剧",
+    desc: "适用于古装甜宠短剧视频的创作。支持 AI 自动生成剧本或用户自提剧本，流程涵盖剧本...",
+    img: skillReenact,
+  },
+  {
+    title: "商品宣传短片",
+    desc: "快速创建AI商业广告短片，为您的产品呈现专业级的视觉效果 and 创意故事。使用模型 Nan...",
+    img: skillProduct,
+  },
+  {
+    title: "视频拉片复刻",
+    desc: "通过学习上传视频的电影语法（提取其脚本、镜头结构、视觉语言 and 节奏），围绕您自己...",
+    img: skillReenact,
+  },
+  {
+    title: "剧情短片 (音色参考)",
+    desc: "核心亮点： - 角色语音锚定：每个角色有元素",
+    img: skillScript,
+  },
 ];
 
 export function SkillPicker({
@@ -242,43 +263,8 @@ export function SkillPicker({
 }: {
   onSelect?: (title: string) => void;
 }) {
-  const [tab, setTab] = useState<"default" | "newbie" | "master" | "story">("newbie");
+  const [tab, setTab] = useState<typeof categories[number]["key"]>("newbie");
   
-  const categories = [
-    { key: "default", label: "默认调用" },
-    { key: "newbie", label: "新手必用" },
-    { key: "master", label: "大师美学" },
-    { key: "story", label: "剧情短片" },
-  ];
-
-  const skillList = [
-    {
-      title: "故事驱动型视频",
-      desc: "专为具有完整故事线的视频而设计。核心亮点：- 由 Seedance 2.5 480p (目前最强大...",
-      img: skillStory,
-    },
-    {
-      title: "古风甜宠短剧",
-      desc: "适用于古装甜宠短剧视频的创作。支持 AI 自动生成剧本或用户自提剧本，流程涵盖剧本...",
-      img: skillReenact,
-    },
-    {
-      title: "商品宣传短片",
-      desc: "快速创建AI商业广告短片，为您的产品呈现专业级的视觉效果 and 创意故事。使用模型 Nan...",
-      img: skillProduct,
-    },
-    {
-      title: "视频拉片复刻",
-      desc: "通过学习上传视频的电影语法（提取其脚本、镜头结构、视觉语言 and 节奏），围绕您自己...",
-      img: skillReenact,
-    },
-    {
-      title: "剧情短片 (音色参考)",
-      desc: "核心亮点： - 角色语音锚定：每个角色有元素",
-      img: skillScript,
-    },
-  ];
-
   return (
     <div className="w-[480px] text-white">
       <div className="flex items-center justify-between px-6 pt-6">
@@ -293,7 +279,7 @@ export function SkillPicker({
           {categories.map((c) => (
             <button
               key={c.key}
-              onClick={() => setTab(c.key as any)}
+              onClick={() => setTab(c.key)}
               className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium transition-all ${
                 tab === c.key
                   ? "bg-white/10 text-white"
@@ -379,7 +365,11 @@ const elementItems = Array.from({ length: 12 }).map((_, i) => ({
   img: `https://picsum.photos/seed/${i + 50}/200/200`
 }));
 
-export function ElementsPicker({ onSelect }: { onSelect?: (name: string; kind?: string; url?: string) => void }) {
+export function ElementsPicker({ 
+  onSelect 
+}: { 
+  onSelect?: (name: string, kind?: string, url?: string) => void 
+}) {
   const [tab, setTab] = useState("char");
   return (
     <div className="w-[800px] p-6 text-white">
@@ -410,11 +400,15 @@ export function ElementsPicker({ onSelect }: { onSelect?: (name: string; kind?: 
         {elementItems.map((it) => (
           <button
             key={it.id}
-            onClick={() => onSelect?.(it.name)}
+            onClick={() => onSelect?.(it.name, "image", it.img)}
             className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent text-left transition hover:border-white/40"
           >
+            <img src={it.img} alt={it.name} className="h-full w-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
               <span className="text-xs font-medium text-white">{it.name}</span>
+            </div>
+            <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-white/20 opacity-0 transition group-hover:opacity-100">
+              <Plus className="h-3 w-3" />
             </div>
           </button>
         ))}
@@ -423,11 +417,19 @@ export function ElementsPicker({ onSelect }: { onSelect?: (name: string; kind?: 
   );
 }
 
-export function ElementsPickerDialog({ open, onOpenChange, onSelect }: { open: boolean; onOpenChange: (v: boolean) => void; onSelect?: (name: string) => void }) {
+export function ElementsPickerDialog({ 
+  open, 
+  onOpenChange, 
+  onSelect 
+}: { 
+  open: boolean; 
+  onOpenChange: (v: boolean) => void; 
+  onSelect?: (name: string, kind?: string, url?: string) => void 
+}) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
-        <ElementsPicker onSelect={(name) => { onSelect?.(name); onOpenChange(false); }} />
+        <ElementsPicker onSelect={(name, kind, url) => { onSelect?.(name, kind, url); onOpenChange(false); }} />
       </DialogContent>
     </Dialog>
   );
