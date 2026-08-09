@@ -299,50 +299,55 @@ const elementItems = Array.from({ length: 12 }).map((_, i) => ({
   name: ["少女·夏野", "赛博都市", "黄昏海岸", "雪山追逐", "霓虹街角", "古风庭院", "未来太空站", "复古胶片", "雨夜东京", "极地极光", "森林精灵", "末日废土"][i],
 }));
 
-export function ElementsPickerDialog({ open, onOpenChange, onSelect }: { open: boolean; onOpenChange: (v: boolean) => void; onSelect?: (name: string) => void }) {
+export function ElementsPicker({ onSelect }: { onSelect?: (name: string) => void }) {
   const [tab, setTab] = useState("char");
-  const pick = (name: string) => { onSelect?.(name); onOpenChange(false); };
+  return (
+    <div className="w-[800px] p-6 text-white">
+      <h3 className="text-lg font-bold mb-4">选择元素</h3>
+      <div className="flex items-center gap-2 border-b border-white/10 pb-3 mb-4">
+        {elementTabs.map((t) => {
+          const Icon = t.icon;
+          const active = tab === t.key;
+          return (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs transition ${
+                active ? "bg-white text-black" : "text-white/40 hover:bg-white/5"
+              }`}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+      <div className="grid max-h-[50vh] grid-cols-4 gap-3 overflow-y-auto pr-1 scrollbar-hide">
+        <button className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-white/10 text-white/40 transition hover:border-white/40 hover:text-white">
+          <Plus className="h-5 w-5" />
+          <span className="text-xs">上传 / 创建</span>
+        </button>
+        {elementItems.map((it) => (
+          <button
+            key={it.id}
+            onClick={() => onSelect?.(it.name)}
+            className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent text-left transition hover:border-white/40"
+          >
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+              <span className="text-xs font-medium text-white">{it.name}</span>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function ElementsPickerDialog({ open, onOpenChange, onSelect }: { open: boolean; onOpenChange: (v: boolean) => void; onSelect?: (name: string) => void }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl border-border bg-card/95 backdrop-blur-xl">
-        <DialogHeader>
-          <DialogTitle className="text-lg">选择元素</DialogTitle>
-        </DialogHeader>
-        <div className="flex items-center gap-2 border-b border-border pb-3">
-          {elementTabs.map((t) => {
-            const Icon = t.icon;
-            const active = tab === t.key;
-            return (
-              <button
-                key={t.key}
-                onClick={() => setTab(t.key)}
-                className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs transition ${
-                  active ? "bg-foreground text-background" : "text-muted-foreground hover:bg-accent/40"
-                }`}
-              >
-                <Icon className="h-3.5 w-3.5" />
-                {t.label}
-              </button>
-            );
-          })}
-        </div>
-        <div className="grid max-h-[55vh] grid-cols-4 gap-3 overflow-y-auto pr-1">
-          <button className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border text-muted-foreground transition hover:border-aurora-blue/60 hover:text-foreground">
-            <Plus className="h-5 w-5" />
-            <span className="text-xs">上传 / 创建</span>
-          </button>
-          {elementItems.map((it) => (
-            <button
-              key={it.id}
-              onClick={() => pick(it.name)}
-              className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-gradient-to-br from-aurora-pink/20 via-aurora-blue/20 to-aurora-orange/20 text-left transition hover:border-aurora-blue/60"
-            >
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                <span className="text-xs font-medium text-foreground">{it.name}</span>
-              </div>
-            </button>
-          ))}
-        </div>
+      <DialogContent className="max-w-4xl border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
+        <ElementsPicker onSelect={(name) => { onSelect?.(name); onOpenChange(false); }} />
       </DialogContent>
     </Dialog>
   );
