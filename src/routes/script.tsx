@@ -385,87 +385,63 @@ const seedConversation: Msg[] = [
       },
       { type: "status", icon: "board", label: "等待确认", tone: "warn" },
       { type: "text", text: "请确认故事板与角色设定,无误后我们将开始生成关键帧图像。" },
-
-          { title: "Agent分析完成", desc: "好的!开始为7位角色生成参考形象图。首先注册所有角色图像资产。" },
-          { title: "资产配置完成" },
-          { title: "Agent分析完成", desc: "资产注册完成!现在为所有7位角色同步撰写提示词。" },
-          {
-            title: "编写提示词完成",
-            desc: "Element_Sam_ref_img\n角色参考图——萨姆(Sam)。版面布局:左侧为半身特写,右侧依次为全身正面、侧面、背面四视图,白色中性背景,无阴影干扰。人物设定:28岁瘦…",
-          },
-          { title: "Agent分析完成", desc: "提示词已全部就绪!现在同步生成所有7位角色的参考形象图 🎬" },
-          {
-            title: "生成素材完成",
-            assets: [
-              { name: "Element_Sam_ref_img" },
-              { name: "Element_Boss_ref_img" },
-              { name: "Element_Detective_Cart..." },
-              { name: "Element_Xiao_Pang_ref..." },
-              { name: "Element_Lisa_ref_img" },
-              { name: "Element_Security_Chief..." },
-              { name: "Element_Mark_ref_img" },
-            ],
-          },
-          { title: "Agent分析完成" },
-        ],
-      },
-      { type: "text", text: "7位角色的参考形象图全部生成完毕!✅", emphasis: true },
-      { type: "text", text: "请查看上方每位角色的三视图参考图,确认外观是否符合预期:" },
-      {
-        type: "characterTable",
-        rows: [
-          { icon: "🧑", name: "萨姆", features: "黑框眼镜、蓝格子衬衫、浓黑眼圈" },
-          { icon: "👨‍💼", name: "老板", features: "秃顶、深灰西装、金表、横肉脸" },
-          { icon: "🔪", name: "卡特警探", features: "寸头、左脸刀疤、黑色战术背心" },
-          { icon: "👀", name: "小胖", features: "圆框眼镜、灰色卫衣、含胸低头" },
-          { icon: "💃", name: "丽莎", features: "金色大波浪、黑色职业套装、红唇" },
-          { icon: "💪", name: "保安队长", features: "光头、肌肉发达、黑色制服、颈纹身" },
-          { icon: "🎧", name: "马克", features: "凌乱棕色长发、黑色连帽衫、耳机" },
-        ],
-      },
     ],
   },
-  { kind: "user", text: "角色确认,开始生成分镜视频" },
+  {
+    kind: "bot",
+    nodes: [
+      { type: "text", text: "好的,故事板已确认!现在开始生成关键帧图像 🎬" },
+      {
+        type: "mediaAssets",
+        title: "生成关键帧",
+        cost: "-45",
+        steps: [
+          {
+            title: "Nano Banana 2 图像生成",
+            desc: "已生成 Shot 1 与 Shot 2 的关键帧图像",
+            assets: [
+              { name: "Shot_1_Keyframe.jpg" },
+              { name: "Shot_2_Keyframe.jpg" }
+            ]
+          }
+        ]
+      },
+      { type: "text", text: "关键帧已生成完毕!✅ 现在准备进入最终视频生成阶段。" },
+      { type: "status", icon: "board", label: "等待确认", tone: "warn" },
+      { type: "text", text: "点击确认以启动 Seedance 2.5 与 OmniHuman 1.5 进行音画合成。" }
+    ]
+  },
   {
     kind: "bot",
     nodes: [
       {
         type: "mediaAssets",
-        title: "Media Assets",
-        cost: "-1260",
+        title: "最终视频合成",
+        cost: "-150",
         steps: [
           {
-            title: "Agent分析完成",
-            desc: "好的,萨姆的参考图已更新,现在将所有5个分镜的 prompt_id 复用,同时将萨姆替换为新版资源,一次性批量提交给 Seedance 2.0 生成!",
+            title: "Seedance 2.5 视频生成",
+            desc: "Shot 1 叙事场景生成完成",
+            assets: [{ name: "Shot_1_Final.mp4", duration: "00:05" }]
           },
           {
-            title: "生成素材完成",
-            assets: [
-              { name: "Shot_Late_And_Kicked...", duration: "00:12" },
-              { name: "Shot_Humiliation_final_...", duration: "00:10" },
-              { name: "Shot_Cursing_And_Flas...", duration: "00:12" },
-              { name: "Shot_Basement_Banish...", duration: "00:11" },
-              { name: "Shot_The_Thud_And_Bl...", duration: "00:15" },
-            ],
-          },
-          { title: "Agent分析完成" },
-        ],
+            title: "OmniHuman 1.5 唇形同步",
+            desc: "Shot 2 演唱场景合成完成",
+            assets: [{ name: "Shot_2_LipSync.mp4", duration: "00:08" }]
+          }
+        ]
       },
-      { type: "text", text: "5个分镜视频全部生成完毕!✅ 请在上方查看每个片段的效果。", emphasis: true },
+      { type: "text", text: "全部片段已生成并完成音画对齐!✅", emphasis: true },
       {
         type: "progressTable",
-        title: "当前进度一览:",
         rows: [
-          { shot: "Shot 1", content: "凌辱咖啡→同事旁观", status: "已生成" },
-          { shot: "Shot 2", content: "打卡机→萨姆冲进→老板踹+骂", status: "已生成" },
-          { shot: "Shot 3", content: "老板骂人主观视角→异能觉醒闪回", status: "已生成" },
-          { shot: "Shot 4", content: "老板发配地下室→萨姆背影", status: "已生成" },
-          { shot: "Shot 5", content: "走廊倒地声→萨姆转身冲楼梯→血迹", status: "已生成" },
-        ],
+          { shot: "Shot 1", content: "前奏叙事", status: "已完成" },
+          { shot: "Shot 2", content: "第一段歌词演唱", status: "已完成" }
+        ]
       },
-      { type: "text", text: "请仔细查看5个片段,如有需要调整的镜头告诉我。视频满意后,下一步将生成 60秒工业风背景配乐,然后进行最终剪辑合成 🎬" },
-    ],
-  },
+      { type: "text", text: "视频已就绪,您可以点击顶部「导出」按钮进行下载。" }
+    ]
+  }
 ];
 
 function ChatPanel({
