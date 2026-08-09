@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { X, Check, Play, Info, ChevronDown, Minus, Plus as PlusIcon, HelpCircle } from "lucide-react";
+import { X, Check, Play, Info, ChevronDown, Minus, Plus as PlusIcon, HelpCircle, MessageSquare } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
