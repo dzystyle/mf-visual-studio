@@ -538,8 +538,12 @@ export function ElementsPickerDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[900px] border-none bg-white p-0 text-black overflow-hidden rounded-[32px] shadow-2xl">
-        <ElementsPicker onSelect={(name, kind, url) => { onSelect?.(name, kind, url); onOpenChange(false); }} />
+        <ElementsPicker onSelect={(name, kind, url) => { 
+          onSelect?.(name, kind, url); 
+          onOpenChange(false); 
+        }} />
       </DialogContent>
     </Dialog>
   );
 }
+
