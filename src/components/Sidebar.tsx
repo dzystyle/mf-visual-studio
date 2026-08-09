@@ -15,7 +15,7 @@ const items = [
   { to: "/quick", icon: Sparkles, label: "快速生成" },
   { to: "/elements", icon: Smile, label: "元素库" },
   { to: "/skill", icon: Package, label: "Skill" },
-  { to: "/tv", icon: Tv, label: "MovieFlowTV" },
+  { to: "/tv", icon: Tv, label: "ArtrailTV" },
 ];
 
 export function Sidebar() {

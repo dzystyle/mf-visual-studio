@@ -11,7 +11,7 @@ import skillTravel from "@/assets/skill-travel.jpg";
 export const Route = createFileRoute("/skill")({
   head: () => ({
     meta: [
-      { title: "Skill 库 — movieflow.ai" },
+      { title: "Skill 库 — artrail.ai" },
       { name: "description", content: "我的 Skill 与精选 Skill 工作流。" },
     ],
   }),
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/skill")({
 
 const mine = [
   { title: "旅拍大师 V2.0 | 唯美旅拍视频生成 Skill", img: skillTravel, on: true,
-    desc: "将用户任意模糊的旅拍主题、文案、散文、脚本或短视频创意,转译为  MovieFlow 可执行的电影级唯美旅拍工作流。作者..." },
+    desc: "将用户任意模糊的旅拍主题、文案、散文、脚本或短视频创意,转译为  Artrail 可执行的电影级唯美旅拍工作流。作者..." },
   { title: "剧本驱动型视频(需上传剧本)", img: skillScript, on: true,
     desc: "分析上传的剧本(图片/PDF/文本),通过学习其电影语法——提取脚本、镜头结构、视觉语言和节奏——围绕您的..." },
   { title: "商品宣传短片", img: skillProduct, on: true,
@@ -34,11 +34,11 @@ const mine = [
 const featured = [
   { title: "百万爆款羊毛毡动画 Skill", img: skillStory, author: "AI 创意研习社",
     desc: "AI 创意研习社动画羊毛毡同款创作 Skill,输入视频旁白即可生成高质量羊毛毡动画(竖屏)" },
-  { title: "旅拍大师 V2.0 | 唯美旅拍视频生成 Skill", img: skillTravel, author: "MovieFlow", added: true,
-    desc: "将用户任意模糊的旅拍主题、文案、散文、脚本或短视频创意,转译为  MovieFlow 可执行的电影级唯美旅拍工作流。作者..." },
+  { title: "旅拍大师 V2.0 | 唯美旅拍视频生成 Skill", img: skillTravel, author: "Artrail", added: true,
+    desc: "将用户任意模糊的旅拍主题、文案、散文、脚本或短视频创意,转译为  Artrail 可执行的电影级唯美旅拍工作流。作者..." },
   { title: "你的女友已上线 | 沉浸式 POV 互动视频", img: skillReenact, author: "黄鑫波",
     desc: "打造第一视角沉浸式互动影游体验,以\"你的女友 / 男友视角\"展开剧情。用户通过选择或自然语言输入设定场景,AI ..." },
-  { title: "剧本驱动型视频(需上传剧本)", img: skillScript, author: "MovieFlow", added: true,
+  { title: "剧本驱动型视频(需上传剧本)", img: skillScript, author: "Artrail", added: true,
     desc: "分析上传的剧本(图片/PDF/文本),通过学习其电影语法——提取脚本、镜头结构、视觉语言和节奏——围绕您的..." },
 ];
 
@@ -106,7 +106,7 @@ function MyRow({
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <h3 className="truncate text-sm font-semibold">{title}</h3>
-          <span className="shrink-0 text-[11px] text-muted-foreground">@ MovieFlow</span>
+          <span className="shrink-0 text-[11px] text-muted-foreground">@ Artrail</span>
         </div>
         <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
           {desc}

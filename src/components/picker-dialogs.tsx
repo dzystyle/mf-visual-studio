@@ -115,12 +115,12 @@ export function ModelPickerDialog({
 
 /* ---------------- Skill Picker ---------------- */
 const skills = [
-  { title: "旅拍大师 V2.0", author: "MovieFlow", img: skillTravel, desc: "电影级唯美旅拍视频工作流" },
-  { title: "剧本驱动型视频", author: "MovieFlow", img: skillScript, desc: "上传剧本,生成多镜头电影叙事" },
-  { title: "商品宣传短片", author: "MovieFlow", img: skillProduct, desc: "AI 商业广告短片工作流" },
-  { title: "音乐 MV", author: "MovieFlow", img: skillMv, desc: "上传音乐,生成口型同步 MV" },
-  { title: "视频拉片复刻", author: "MovieFlow", img: skillReenact, desc: "学习参考视频的镜头语言并复刻" },
-  { title: "故事驱动型视频", author: "MovieFlow", img: skillStory, desc: "从一句话到完整短片" },
+  { title: "旅拍大师 V2.0", author: "Artrail", img: skillTravel, desc: "电影级唯美旅拍视频工作流" },
+  { title: "剧本驱动型视频", author: "Artrail", img: skillScript, desc: "上传剧本,生成多镜头电影叙事" },
+  { title: "商品宣传短片", author: "Artrail", img: skillProduct, desc: "AI 商业广告短片工作流" },
+  { title: "音乐 MV", author: "Artrail", img: skillMv, desc: "上传音乐,生成口型同步 MV" },
+  { title: "视频拉片复刻", author: "Artrail", img: skillReenact, desc: "学习参考视频的镜头语言并复刻" },
+  { title: "故事驱动型视频", author: "Artrail", img: skillStory, desc: "从一句话到完整短片" },
 ];
 
 export function SkillPickerDialog({

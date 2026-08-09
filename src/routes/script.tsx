@@ -44,7 +44,7 @@ export const Route = createFileRoute("/script")({
     prompt: typeof s.prompt === "string" ? s.prompt : undefined,
   }),
   head: () => ({
-    meta: [{ title: "剧本视频制作 — MovieFlow" }],
+    meta: [{ title: "剧本视频制作 — Artrail" }],
   }),
   component: ScriptPage,
 });
