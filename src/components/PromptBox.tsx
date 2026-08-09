@@ -48,6 +48,10 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [model, setModel] = useState("Seedance 2");
   const [skill, setSkill] = useState<string | null>(null);
+  const [ratio, setRatio] = useState("16:9");
+  const [duration, setDuration] = useState(179);
+  const [canvasMode, setCanvasMode] = useState(false);
+  const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const pendingKind = useRef<Attachment["kind"]>("image");
 
@@ -147,55 +151,99 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           {/* Aspect Ratio Picker */}
           <Popover>
             <PopoverTrigger asChild>
-              <button className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card">
+              <button className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition">
                 <div className="w-3.5 h-2.5 border border-current rounded-[1px] flex items-center justify-center text-[8px] leading-none">
-                  <span className="scale-75">16:9</span>
+                  <span className="scale-75 uppercase">{ratio}</span>
                 </div>
                 <ChevronDown className="h-3 w-3 text-muted-foreground" />
               </button>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-40 p-1 border-border bg-card/95 backdrop-blur-xl rounded-xl">
-              <RatioItem label="自动" icon={<LayoutGrid className="w-3.5 h-3.5" />} />
-              <RatioItem label="16:9 (横屏)" active icon={<div className="w-3.5 h-2.5 border border-current rounded-[1px]" />} />
-              <RatioItem label="21:9 (电影)" icon={<div className="w-4 h-2 border border-current rounded-[1px]" />} />
-              <RatioItem label="9:16 (竖屏)" icon={<div className="w-2.5 h-4 border border-current rounded-[1px]" />} />
-              <RatioItem label="4:3" icon={<div className="w-3.5 h-3 border border-current rounded-[1px]" />} />
-              <RatioItem label="3:4" icon={<div className="w-3 h-3.5 border border-current rounded-[1px]" />} />
-              <RatioItem label="1:1" icon={<div className="w-3.5 h-3.5 border border-current rounded-[1px]" />} />
+              <RatioItem 
+                label="自动" 
+                icon={<LayoutGrid className="w-3.5 h-3.5" />} 
+                active={ratio === "自动"}
+                onClick={() => setRatio("自动")}
+              />
+              <RatioItem 
+                label="16:9 (横屏)" 
+                active={ratio === "16:9"} 
+                icon={<div className="w-3.5 h-2.5 border border-current rounded-[1px]" />} 
+                onClick={() => setRatio("16:9")}
+              />
+              <RatioItem 
+                label="21:9 (电影)" 
+                active={ratio === "21:9"}
+                icon={<div className="w-4 h-2 border border-current rounded-[1px]" />} 
+                onClick={() => setRatio("21:9")}
+              />
+              <RatioItem 
+                label="9:16 (竖屏)" 
+                active={ratio === "9:16"}
+                icon={<div className="w-2.5 h-4 border border-current rounded-[1px]" />} 
+                onClick={() => setRatio("9:16")}
+              />
+              <RatioItem 
+                label="4:3" 
+                active={ratio === "4:3"}
+                icon={<div className="w-3.5 h-3 border border-current rounded-[1px]" />} 
+                onClick={() => setRatio("4:3")}
+              />
+              <RatioItem 
+                label="3:4" 
+                active={ratio === "3:4"}
+                icon={<div className="w-3 h-3.5 border border-current rounded-[1px]" />} 
+                onClick={() => setRatio("3:4")}
+              />
+              <RatioItem 
+                label="1:1" 
+                active={ratio === "1:1"}
+                icon={<div className="w-3.5 h-3.5 border border-current rounded-[1px]" />} 
+                onClick={() => setRatio("1:1")}
+              />
             </PopoverContent>
           </Popover>
 
           {/* Character Mention */}
           <Popover>
             <PopoverTrigger asChild>
-              <button className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent hover:text-foreground">
+              <button className={`flex h-8 w-8 items-center justify-center rounded-full border border-border transition ${selectedCharacter ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'text-muted-foreground hover:bg-accent hover:text-foreground'}`}>
                 <AtSign className="h-4 w-4" />
               </button>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-56 p-2 border-border bg-card/95 backdrop-blur-xl rounded-xl">
-              <div className="text-[10px] text-muted-foreground px-2 py-1 mb-1">其他角色</div>
-              <MentionItem label="场景01" img="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" />
-              <MentionItem label="角色01" img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" />
-              <div className="text-[10px] text-muted-foreground px-2 py-1 mt-2 mb-1">推荐角色</div>
-              <MentionItem label="皮皮特PiPi" icon={<div className="w-full h-full bg-accent flex items-center justify-center text-[10px]">P</div>} />
-              <MentionItem label="萧衍" img="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop" />
-              <MentionItem label="西施" img="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop" />
+              <div className="text-[10px] text-muted-foreground px-2 py-1 mb-1 flex items-center justify-between">
+                <span>角色引用</span>
+                {selectedCharacter && (
+                  <button onClick={() => setSelectedCharacter(null)} className="hover:text-foreground">清除</button>
+                )}
+              </div>
+              <div className="text-[10px] text-muted-foreground px-2 py-1 mb-1 opacity-60">其他角色</div>
+              <MentionItem label="场景01" img="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" active={selectedCharacter === "场景01"} onClick={() => setSelectedCharacter("场景01")} />
+              <MentionItem label="角色01" img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" active={selectedCharacter === "角色01"} onClick={() => setSelectedCharacter("角色01")} />
+              <div className="text-[10px] text-muted-foreground px-2 py-1 mt-2 mb-1 opacity-60">推荐角色</div>
+              <MentionItem label="皮皮特PiPi" icon={<div className="w-full h-full bg-accent flex items-center justify-center text-[10px]">P</div>} active={selectedCharacter === "皮皮特PiPi"} onClick={() => setSelectedCharacter("皮皮特PiPi")} />
+              <MentionItem label="萧衍" img="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop" active={selectedCharacter === "萧衍"} onClick={() => setSelectedCharacter("萧衍")} />
+              <MentionItem label="西施" img="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop" active={selectedCharacter === "西施"} onClick={() => setSelectedCharacter("西施")} />
             </PopoverContent>
           </Popover>
 
           {/* Canvas Mode Toggle */}
           <div className="flex items-center gap-2 px-1">
-            <span className="text-xs text-foreground">画布</span>
-            <button className="w-9 h-5 rounded-full bg-muted/60 relative p-0.5 transition-colors hover:bg-muted">
-              <div className="w-4 h-4 bg-white rounded-full shadow-sm" />
+            <span className="text-xs text-foreground/80">画布</span>
+            <button 
+              onClick={() => setCanvasMode(!canvasMode)}
+              className={`w-9 h-5 rounded-full relative p-0.5 transition-all duration-300 ${canvasMode ? 'bg-aurora-blue/60' : 'bg-muted/60'}`}
+            >
+              <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-300 ${canvasMode ? 'translate-x-4' : 'translate-x-0'}`} />
             </button>
           </div>
 
           {/* Duration Picker */}
           <Popover>
             <PopoverTrigger asChild>
-              <button className="flex items-center gap-1.5 rounded-full bg-accent/60 px-3 py-1.5 text-xs text-foreground hover:bg-accent transition">
-                <span>179秒</span>
+              <button className="flex items-center gap-1.5 rounded-full bg-accent/60 px-3 py-1.5 text-xs text-foreground hover:bg-accent transition border border-border/40">
+                <span>{duration}秒</span>
                 <ChevronDown className="h-3 w-3 text-muted-foreground" />
               </button>
             </PopoverTrigger>
@@ -206,28 +254,29 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 <button className="flex-1 text-[11px] py-1.5 rounded-full text-muted-foreground hover:text-foreground">智能时长</button>
               </div>
               <div className="relative pt-2 pb-8">
-                <div className="h-1 bg-muted/60 rounded-full relative">
-                  <div className="absolute left-0 top-0 h-full w-[90%] bg-foreground/10 rounded-full" />
-                  <div className="absolute left-[90%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-md border border-black/5 cursor-pointer" />
-                </div>
+                <input 
+                  type="range" 
+                  min="4" 
+                  max="180" 
+                  value={duration} 
+                  onChange={(e) => setDuration(parseInt(e.target.value))}
+                  className="w-full h-1 bg-muted/60 rounded-full appearance-none cursor-pointer accent-foreground"
+                />
                 <div className="flex justify-between mt-3 text-[10px] text-muted-foreground">
                   <span>4</span>
                   <span>60</span>
                   <span>120</span>
                   <span>180</span>
                 </div>
-                <div className="absolute right-0 top-[-8px] bg-accent/80 px-2 py-1 rounded-lg text-xs font-medium border border-border">179 秒</div>
+                <div className="absolute right-0 top-[-8px] bg-accent/80 px-2 py-1 rounded-lg text-xs font-medium border border-border">
+                  {duration} 秒
+                </div>
               </div>
               <div className="text-[10px] text-muted-foreground/60 text-center italic">
-                会在提示词里附加“时长：179秒”
+                会在提示词里附加“时长：{duration}秒”
               </div>
             </PopoverContent>
           </Popover>
-
-          {/* Manual Edit Icon */}
-          <button className="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground">
-            <Pencil className="h-3.5 w-3.5" />
-          </button>
         </div>
         <button
           onClick={() => {
@@ -270,9 +319,12 @@ function AddItem({
   );
 }
 
-function RatioItem({ label, icon, active }: { label: string; icon: React.ReactNode; active?: boolean }) {
+function RatioItem({ label, icon, active, onClick }: { label: string; icon: React.ReactNode; active?: boolean; onClick?: () => void }) {
   return (
-    <button className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-2 text-xs text-foreground transition hover:bg-accent/60">
+    <button 
+      onClick={onClick}
+      className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-2 text-xs text-foreground transition hover:bg-accent/60"
+    >
       <div className="flex items-center gap-2">
         <span className="text-muted-foreground">{icon}</span>
         <span>{label}</span>
@@ -282,17 +334,37 @@ function RatioItem({ label, icon, active }: { label: string; icon: React.ReactNo
   );
 }
 
-function MentionItem({ label, img, icon }: { label: string; img?: string; icon?: React.ReactNode }) {
+function MentionItem({ 
+  label, 
+  img, 
+  icon, 
+  active, 
+  onClick 
+}: { 
+  label: string; 
+  img?: string; 
+  icon?: React.ReactNode; 
+  active?: boolean; 
+  onClick?: () => void 
+}) {
   return (
-    <button className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-xs text-foreground transition hover:bg-accent/60">
-      <div className="h-8 w-8 overflow-hidden rounded-lg border border-border bg-muted/40">
+    <button 
+      onClick={onClick}
+      className={`flex w-full items-center gap-3 rounded-xl px-2 py-2 text-xs text-foreground transition hover:bg-accent/60 ${active ? 'bg-accent/80' : ''}`}
+    >
+      <div className="h-8 w-8 overflow-hidden rounded-lg border border-border bg-muted/40 relative">
         {img ? (
           <img src={img} alt={label} className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full w-full items-center justify-center">{icon}</div>
         )}
+        {active && (
+          <div className="absolute inset-0 bg-aurora-blue/20 flex items-center justify-center">
+            <div className="w-1.5 h-1.5 rounded-full bg-aurora-blue shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+          </div>
+        )}
       </div>
-      <span className="font-medium text-[13px]">{label}</span>
+      <span className={`font-medium text-[13px] ${active ? 'text-foreground' : 'text-foreground/80'}`}>{label}</span>
     </button>
   );
 }
