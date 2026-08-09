@@ -623,3 +623,56 @@ function Chip({
   );
 }
 
+function MentionListItem({ 
+  item, 
+  onClick 
+}: { 
+  item: { name: string; kind: string; url: string }; 
+  onClick: () => void 
+}) {
+  const [showPreview, setShowPreview] = useState(false);
+  
+  return (
+    <div className="relative">
+      <button
+        onClick={onClick}
+        onMouseEnter={() => setShowPreview(true)}
+        onMouseLeave={() => setShowPreview(false)}
+        className="flex w-full items-center gap-3 rounded-xl px-2 py-2 hover:bg-white/5 transition text-left group"
+      >
+        <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-white/5 bg-white/5 relative">
+          <img src={item.url} className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition" />
+          {item.kind === "video" && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+              <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[6px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
+            </div>
+          )}
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="text-[13px] font-medium text-white truncate">{item.name}</div>
+          <div className="text-[10px] text-muted-foreground capitalize">{item.kind === 'image' ? '图片' : '视频'}</div>
+        </div>
+        <ChevronRight className="h-3.5 w-3.5 text-white/20 group-hover:text-white/40" />
+      </button>
+
+      {showPreview && (
+        <div className="fixed z-[100] translate-x-72 -translate-y-12 pointer-events-none p-2 bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-left-2 duration-200">
+          <div className="space-y-2">
+            <div className="text-[10px] text-muted-foreground px-1">{item.name} 预览</div>
+            <img src={item.url} alt="Preview" className="w-[180px] h-[180px] rounded-xl object-cover" />
+            {item.name === "画布生图" && (
+              <div className="grid grid-cols-3 gap-1 w-[180px] mt-2">
+                {[...Array(9)].map((_, i) => (
+                  <div key={i} className="aspect-square bg-white/5 rounded-sm overflow-hidden">
+                    <img src={item.url} className="w-full h-full object-cover opacity-60" />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
