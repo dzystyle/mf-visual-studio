@@ -30,7 +30,6 @@ type Attachment = {
   name: string;
   kind: "image" | "audio" | "video" | "text";
   url?: string;
-  isMentioned?: boolean;
 };
 
 const ACCEPT_MAP: Record<Attachment["kind"], string> = {
@@ -180,47 +179,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               setText(prev => prev ? `${prev} @${name}` : `@${name}`);
             }} 
           />
-
-          {text.includes("@") && (
-            <div className="absolute bottom-full left-5 mb-2 w-64 rounded-xl border border-white/10 bg-[#1A1A1A]/95 p-2 shadow-2xl backdrop-blur-xl z-50">
-              <div className="mb-2 px-2 text-[10px] text-white/40">资产库引用</div>
-              {attachments.filter(a => a.kind === "image").map(a => (
-                <button 
-                  key={a.id}
-                  onClick={() => {
-                    const lastAt = text.lastIndexOf("@");
-                    setText(text.substring(0, lastAt + 1) + a.name);
-                  }}
-                  className="flex w-full items-center gap-3 rounded-lg p-2 hover:bg-white/5 transition-colors"
-                >
-                  <img src={a.url} alt={a.name} className="h-8 w-8 rounded-lg object-cover" />
-                  <span className="text-xs text-white/80">{a.name}</span>
-                </button>
-              ))}
-              <div className="mt-1 h-px bg-white/5 mx-1" />
-              <button className="flex w-full items-center justify-between p-2 text-xs text-white/60 hover:text-white transition-colors">
-                <div className="flex items-center gap-2">
-                  <ImageIcon className="h-3.5 w-3.5" />
-                  <span>素材</span>
-                </div>
-                <ChevronDown className="h-3 w-3" />
-              </button>
-              <button className="flex w-full items-center justify-between p-2 text-xs text-white/60 hover:text-white transition-colors">
-                <div className="flex items-center gap-2">
-                  <AtSign className="h-3.5 w-3.5" />
-                  <span>角色</span>
-                </div>
-                <ChevronDown className="h-3 w-3" />
-              </button>
-              <button className="flex w-full items-center justify-between p-2 text-xs text-white/60 hover:text-white transition-colors">
-                <div className="flex items-center gap-2">
-                  <Package className="h-3.5 w-3.5" />
-                  <span>商品</span>
-                </div>
-                <ChevronDown className="h-3 w-3" />
-              </button>
-            </div>
-          )}
 
 
           <div className="h-4 w-px bg-border/40 mx-1" />
@@ -444,41 +402,24 @@ function MentionItem({
 }
 
 function AttachmentChip({ a, onRemove }: { a: Attachment; onRemove: () => void }) {
-  const [hovered, setHovered] = useState(false);
   const Icon =
     a.kind === "image" ? ImageIcon : a.kind === "audio" ? AudioLines : a.kind === "video" ? Video : FileText;
-    
   return (
-    <div 
-      className="group relative"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 py-1.5 pl-1.5 pr-2 text-xs transition-all hover:bg-white/10">
-        {a.kind === "image" && a.url ? (
-          <img src={a.url} alt={a.name} className="h-8 w-8 rounded-lg object-cover" />
-        ) : (
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5">
-            <Icon className="h-4 w-4 text-white/40" />
-          </div>
-        )}
-        <span className="max-w-[100px] truncate text-white/80">{a.name}</span>
-        <button
-          onClick={onRemove}
-          className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-white/60 transition hover:bg-white/20 hover:text-white"
-        >
-          <X className="h-3 w-3" />
-        </button>
-      </div>
-
-      {hovered && a.kind === "image" && a.url && (
-        <div className="absolute bottom-full left-0 mb-3 z-[60] animate-in fade-in zoom-in duration-200">
-          <div className="overflow-hidden rounded-2xl border border-white/20 bg-[#1A1A1A] p-1.5 shadow-2xl shadow-black/50">
-            <img src={a.url} alt={a.name} className="max-w-[240px] max-h-[240px] rounded-xl object-contain shadow-inner" />
-          </div>
-          <div className="absolute -bottom-1 left-4 w-2 h-2 rotate-45 bg-[#1A1A1A] border-r border-b border-white/20" />
+    <div className="group relative flex items-center gap-2 rounded-lg border border-border bg-card/60 py-1.5 pl-1.5 pr-2 text-xs">
+      {a.kind === "image" && a.url ? (
+        <img src={a.url} alt={a.name} className="h-8 w-8 rounded object-cover" />
+      ) : (
+        <div className="flex h-8 w-8 items-center justify-center rounded bg-muted/40">
+          <Icon className="h-4 w-4 text-muted-foreground" />
         </div>
       )}
+      <span className="max-w-[140px] truncate text-foreground">{a.name}</span>
+      <button
+        onClick={onRemove}
+        className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-background/80 text-muted-foreground opacity-0 transition group-hover:opacity-100 hover:text-foreground"
+      >
+        <X className="h-3 w-3" />
+      </button>
     </div>
   );
 }
