@@ -319,9 +319,12 @@ function AddItem({
   );
 }
 
-function RatioItem({ label, icon, active }: { label: string; icon: React.ReactNode; active?: boolean }) {
+function RatioItem({ label, icon, active, onClick }: { label: string; icon: React.ReactNode; active?: boolean; onClick?: () => void }) {
   return (
-    <button className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-2 text-xs text-foreground transition hover:bg-accent/60">
+    <button 
+      onClick={onClick}
+      className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-2 text-xs text-foreground transition hover:bg-accent/60"
+    >
       <div className="flex items-center gap-2">
         <span className="text-muted-foreground">{icon}</span>
         <span>{label}</span>
