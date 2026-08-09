@@ -178,16 +178,12 @@ const skills = [
   { title: "故事驱动型视频", author: "Artrail", img: skillStory, desc: "从一句话到完整短片" },
 ];
 
-export function SkillPickerDialog({
-  open,
-  onOpenChange,
+export function SkillPickerContent({
   onSelect,
 }: {
-  open: boolean;
-  onOpenChange: (v: boolean) => void;
   onSelect?: (title: string) => void;
 }) {
-  const [tab, setTab] = useState<"default" | "newbie" | "master" | "story">("newbie");
+  const [tab, setTab] = useState<"default" | "newbie" | "master" | "story" | "any">("newbie");
   
   const categories = [
     { key: "default", label: "默认调用" },
@@ -224,138 +220,155 @@ export function SkillPickerDialog({
     },
   ];
 
-  const pick = (title: string) => {
-    onSelect?.(title);
-    onOpenChange(false);
-  };
+  return (
+    <div className="flex flex-col">
+      <div className="flex items-center justify-between px-6 pt-6">
+        <h3 className="text-lg font-bold">Skill</h3>
+        <button className="flex items-center gap-0.5 text-xs text-white/40 hover:text-white/60">
+          更多 <ChevronRight className="h-3 w-3" />
+        </button>
+      </div>
 
+      <div className="mt-4 px-6">
+        <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
+          {categories.map((c) => (
+            <button
+              key={c.key}
+              onClick={() => setTab(c.key as any)}
+              className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium transition-all ${
+                tab === c.key
+                  ? "bg-white/10 text-white"
+                  : "text-white/40 hover:text-white/60"
+              }`}
+            >
+              {c.label}
+              {c.key === "default" && (
+                <span className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-white/20 text-[8px]">i</span>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-2 max-h-[500px] overflow-y-auto px-6 pb-6 scrollbar-hide">
+        <div className="space-y-3">
+          {skillList.map((s) => (
+            <div
+              key={s.title}
+              className="group flex cursor-pointer items-start gap-3 rounded-xl py-1 transition-all"
+            >
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-white/5">
+                <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-[13px] font-bold text-white group-hover:text-white/90">{s.title}</h4>
+                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white">
+                      <Eye className="h-3 w-3" />
+                    </button>
+                    <button 
+                      onClick={() => onSelect?.(s.title)}
+                      className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white"
+                    >
+                      <Plus className="h-3 w-3" />
+                    </button>
+                  </div>
+                </div>
+                <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-white/40">
+                  {s.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SkillPickerDialog({
+  open,
+  onOpenChange,
+  onSelect,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  onSelect?: (title: string) => void;
+}) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[480px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
-        <DialogHeader className="flex flex-row items-center justify-between px-6 pt-6">
-          <DialogTitle className="text-lg font-bold">Skill</DialogTitle>
-          <button className="flex items-center gap-0.5 text-xs text-white/40 hover:text-white/60">
-            更多 <ChevronRight className="h-3 w-3" />
-          </button>
-        </DialogHeader>
-
-        <div className="mt-4 px-6">
-          <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
-            {categories.map((c) => (
-              <button
-                key={c.key}
-                onClick={() => setTab(c.key as any)}
-                className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium transition-all ${
-                  tab === c.key
-                    ? "bg-white/10 text-white"
-                    : "text-white/40 hover:text-white/60"
-                }`}
-              >
-                {c.label}
-                {c.key === "default" && (
-                  <span className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-white/20 text-[8px]">i</span>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-2 max-h-[500px] overflow-y-auto px-6 pb-6 scrollbar-hide">
-          <div className="space-y-3">
-            {skillList.map((s) => (
-              <div
-                key={s.title}
-                className="group flex cursor-pointer items-start gap-3 rounded-xl py-1 transition-all"
-              >
-                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-white/5">
-                  <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-[13px] font-bold text-white group-hover:text-white/90">{s.title}</h4>
-                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white">
-                        <Eye className="h-3 w-3" />
-                      </button>
-                      <button 
-                        onClick={() => pick(s.title)}
-                        className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white"
-                      >
-                        <Plus className="h-3 w-3" />
-                      </button>
-                    </div>
-                  </div>
-                  <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-white/40">
-                    {s.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <DialogContent className="max-w-[480px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl overflow-hidden">
+        <SkillPickerContent onSelect={(val) => { onSelect?.(val); onOpenChange(false); }} />
       </DialogContent>
     </Dialog>
   );
 }
 
-/* ---------------- Elements Picker ---------------- */
-const elementTabs = [
-  { key: "char", label: "角色", icon: Sparkles },
-  { key: "scene", label: "场景", icon: ImageIcon },
-  { key: "shot", label: "镜头", icon: Video },
-  { key: "music", label: "音乐", icon: Music },
-  { key: "script", label: "脚本", icon: FileText },
-];
-
-const elementItems = Array.from({ length: 12 }).map((_, i) => ({
-  id: i,
-  name: ["少女·夏野", "赛博都市", "黄昏海岸", "雪山追逐", "霓虹街角", "古风庭院", "未来太空站", "复古胶片", "雨夜东京", "极地极光", "森林精灵", "末日废土"][i],
-}));
-
-export function ElementsPickerDialog({ open, onOpenChange, onSelect }: { open: boolean; onOpenChange: (v: boolean) => void; onSelect?: (name: string) => void }) {
+export function ElementsPickerContent({ 
+  onSelect 
+}: { 
+  onSelect?: (name: string) => void 
+}) {
   const [tab, setTab] = useState("char");
-  const pick = (name: string) => { onSelect?.(name); onOpenChange(false); };
+  const pick = (name: string) => { onSelect?.(name); };
+  return (
+    <div className="flex flex-col p-6">
+      <div className="mb-6 flex items-center justify-between">
+        <h3 className="text-lg font-bold">选择元素</h3>
+      </div>
+      <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+        {elementTabs.map((t) => {
+          const Icon = t.icon;
+          const active = tab === t.key;
+          return (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs transition ${
+                active ? "bg-white text-black" : "text-white/40 hover:bg-white/5"
+              }`}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+      <div className="grid max-h-[55vh] grid-cols-6 gap-3 overflow-y-auto pr-1 mt-4 scrollbar-hide">
+        <button className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-white/20 text-white/40 transition hover:border-white/40 hover:text-white">
+          <Plus className="h-5 w-5" />
+          <span className="text-[10px]">上传 / 创建</span>
+        </button>
+        {elementItems.map((it) => (
+          <button
+            key={it.id}
+            onClick={() => pick(it.name)}
+            className="group relative aspect-square overflow-hidden rounded-xl border border-white/5 bg-white/5 text-left transition hover:border-white/20"
+          >
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+              <span className="text-[10px] font-medium text-white">{it.name}</span>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function ElementsPickerDialog({ 
+  open, 
+  onOpenChange, 
+  onSelect 
+}: { 
+  open: boolean; 
+  onOpenChange: (v: boolean) => void; 
+  onSelect?: (name: string) => void 
+}) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl border-border bg-card/95 backdrop-blur-xl">
-        <DialogHeader>
-          <DialogTitle className="text-lg">选择元素</DialogTitle>
-        </DialogHeader>
-        <div className="flex items-center gap-2 border-b border-border pb-3">
-          {elementTabs.map((t) => {
-            const Icon = t.icon;
-            const active = tab === t.key;
-            return (
-              <button
-                key={t.key}
-                onClick={() => setTab(t.key)}
-                className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs transition ${
-                  active ? "bg-foreground text-background" : "text-muted-foreground hover:bg-accent/40"
-                }`}
-              >
-                <Icon className="h-3.5 w-3.5" />
-                {t.label}
-              </button>
-            );
-          })}
-        </div>
-        <div className="grid max-h-[55vh] grid-cols-4 gap-3 overflow-y-auto pr-1">
-          <button className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border text-muted-foreground transition hover:border-aurora-blue/60 hover:text-foreground">
-            <Plus className="h-5 w-5" />
-            <span className="text-xs">上传 / 创建</span>
-          </button>
-          {elementItems.map((it) => (
-            <button
-              key={it.id}
-              onClick={() => pick(it.name)}
-              className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-gradient-to-br from-aurora-pink/20 via-aurora-blue/20 to-aurora-orange/20 text-left transition hover:border-aurora-blue/60"
-            >
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                <span className="text-xs font-medium text-foreground">{it.name}</span>
-              </div>
-            </button>
-          ))}
-        </div>
+      <DialogContent className="max-w-5xl border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl overflow-hidden">
+        <ElementsPickerContent onSelect={(val) => { onSelect?.(val); onOpenChange(false); }} />
       </DialogContent>
     </Dialog>
   );
