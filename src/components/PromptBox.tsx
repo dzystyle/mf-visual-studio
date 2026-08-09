@@ -10,6 +10,9 @@ import {
   Video,
   FileText,
   X,
+  ChevronDown,
+  AtSign,
+  Pencil,
 } from "lucide-react";
 import {
   ModelPickerDialog,
