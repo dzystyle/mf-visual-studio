@@ -130,14 +130,14 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           />
 
           <Chip 
-            id="model-chip"
+            id="model-chip-home"
             icon={LayoutGrid} 
             label={model} 
             badge="新" 
             onClick={() => setOpenModel(true)} 
           />
           <Chip
-            id="skill-chip"
+            id="skill-chip-home"
             icon={Package}
             label={skill ?? "Skill"}
             active={!!skill}
@@ -145,11 +145,12 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             onClear={skill ? () => setSkill(null) : undefined}
           />
           <Chip 
-            id="elements-chip"
+            id="elements-chip-home"
             icon={Smile} 
             label="元素" 
             onClick={() => setOpenElements(true)} 
           />
+
 
         </div>
         <button
@@ -171,18 +172,19 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
         onOpenChange={setOpenModel} 
         value={model} 
         onSelect={setModel}
-        triggerId="model-chip"
+        triggerId="model-chip-home"
       />
       <SkillPickerDialog 
         open={openSkill} 
         onOpenChange={setOpenSkill} 
         onSelect={setSkill}
-        triggerId="skill-chip"
+        triggerId="skill-chip-home"
       />
       <ElementsPickerDialog 
         open={openElements} 
         onOpenChange={setOpenElements}
-        triggerId="elements-chip"
+        triggerId="elements-chip-home"
+
       />
 
     </div>
