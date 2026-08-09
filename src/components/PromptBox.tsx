@@ -511,12 +511,17 @@ function MentionItem({
   );
 }
 
-function AttachmentChip({ a, onRemove }: { a: Attachment; onRemove: () => void }) {
+function AttachmentChip({ a, onRemove, onAtClick }: { a: Attachment; onRemove: () => void; onAtClick?: () => void }) {
+  const [showPreview, setShowPreview] = useState(false);
   const Icon =
     a.kind === "image" ? ImageIcon : a.kind === "audio" ? AudioLines : a.kind === "video" ? Video : FileText;
   
   return (
-    <div className="group relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-card/60 shadow-lg group">
+    <div 
+      className="group relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-card/60 shadow-lg"
+      onMouseEnter={() => setShowPreview(true)}
+      onMouseLeave={() => setShowPreview(false)}
+    >
       {a.kind === "image" && a.url ? (
         <img src={a.url} alt={a.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-110" />
       ) : (
@@ -526,13 +531,22 @@ function AttachmentChip({ a, onRemove }: { a: Attachment; onRemove: () => void }
       )}
       
       {/* Icon Overlay for @ mention style */}
-      <div className="absolute top-1 left-1 h-4 w-4 rounded-full bg-black/60 flex items-center justify-center border border-white/10">
+      <button 
+        onClick={(e) => {
+          e.stopPropagation();
+          onAtClick?.();
+        }}
+        className="absolute top-1 left-1 h-4 w-4 rounded-full bg-black/60 flex items-center justify-center border border-white/10 hover:bg-black/80 transition"
+      >
         <AtSign className="h-2.5 w-2.5 text-white/80" />
-      </div>
+      </button>
 
       {/* Remove Button */}
       <button
-        onClick={onRemove}
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove();
+        }}
         className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-black/60 text-white/80 opacity-0 transition group-hover:opacity-100 hover:bg-black/80"
       >
         <X className="h-2.5 w-2.5" />
@@ -542,6 +556,18 @@ function AttachmentChip({ a, onRemove }: { a: Attachment; onRemove: () => void }
       {a.kind === 'video' && (
         <div className="absolute bottom-1 right-1 bg-black/60 text-[8px] px-1 py-0.5 rounded text-white font-medium">
           V
+        </div>
+      )}
+
+      {/* Hover Preview Tooltip */}
+      {showPreview && a.url && (
+        <div className="fixed z-[100] pointer-events-none p-1 bg-[#1A1A1A] border border-white/10 rounded-lg shadow-2xl animate-in fade-in zoom-in-95 duration-100"
+             style={{ 
+               left: '50%', 
+               bottom: 'calc(100% + 20px)',
+               transform: 'translateX(-50%)'
+             }}>
+          <img src={a.url} alt="Preview" className="max-w-[120px] max-h-[120px] rounded-md object-contain" />
         </div>
       )}
     </div>
