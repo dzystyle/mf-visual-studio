@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye } from "lucide-react";
 import skillScript from "@/assets/skill-script.jpg";
