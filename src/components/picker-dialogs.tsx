@@ -50,6 +50,100 @@ const modelData = {
   ],
 };
 
+export function ModelPicker({
+  value,
+  onSelect,
+}: {
+  value?: string;
+  onSelect?: (name: string) => void;
+}) {
+  const [activeTab, setActiveTab] = useState<keyof typeof modelData>("video");
+  const selected = value ?? "Seedance 2.5";
+  
+  const tabs = [
+    { key: "image", label: "图片" },
+    { key: "video", label: "视频" },
+    { key: "music", label: "音乐" },
+    { key: "audio", label: "音频" },
+  ];
+
+  return (
+    <div className="w-[580px] text-white">
+      <div className="px-6 pt-6">
+        <h3 className="text-lg font-bold">模型</h3>
+      </div>
+      
+      <div className="px-6 pt-4">
+        <div className="flex w-full items-center gap-1 rounded-full bg-white/5 p-1">
+          {tabs.map((t) => (
+            <button
+              key={t.key}
+              onMouseEnter={() => setActiveTab(t.key as any)}
+              className={`flex-1 rounded-full py-1.5 text-xs font-medium transition-all ${
+                activeTab === t.key ? "bg-white/10 text-white" : "text-white/40 hover:text-white/60"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-4 px-6 pb-6">
+        <div className="mb-2 text-[10px] font-medium uppercase tracking-wider text-white/40">
+          {tabs.find(t => t.key === activeTab)?.label}
+        </div>
+        <div className="max-h-[400px] space-y-2 overflow-y-auto pr-2 scrollbar-hide text-white">
+          {modelData[activeTab].map((m: any) => {
+            const active = selected === m.name;
+            return (
+              <button
+                key={m.name}
+                onClick={() => onSelect?.(m.name)}
+                className={`group relative flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition-all ${
+                  active
+                    ? "border-white/20 bg-white/10"
+                    : "border-transparent bg-white/[0.02] hover:bg-white/[0.05]"
+                }`}
+              >
+                <div className={`mt-1 h-5 w-5 rounded-full border-2 ${active ? 'border-white bg-white' : 'border-white/20'} flex items-center justify-center`}>
+                  {active && <Check className="h-3 w-3 text-black stroke-[3px]" />}
+                </div>
+                
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-white">{m.name}</span>
+                    {m.badge && (
+                      <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] font-bold text-green-500">
+                        {m.badge}
+                      </span>
+                    )}
+                    {m.tag && (
+                      <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[8px] font-bold text-white">
+                        {m.tag}
+                      </span>
+                    )}
+                    {m.upgrade && (
+                      <span className="rounded bg-blue-500/20 px-1.5 py-0.5 text-[8px] font-bold text-blue-500">
+                        升级
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-1 text-[11px] leading-relaxed text-white/50">{m.desc}</p>
+                </div>
+
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Plus className="h-3 w-3" />
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ModelPickerDialog({
   open,
   onOpenChange,
@@ -61,95 +155,10 @@ export function ModelPickerDialog({
   value?: string;
   onSelect?: (name: string) => void;
 }) {
-  const [activeTab, setActiveTab] = useState<keyof typeof modelData>("image");
-  const selected = value ?? "Seedance 2.5";
-  
-  const handlePick = (name: string) => {
-    onSelect?.(name);
-    onOpenChange(false);
-  };
-
-  const tabs = [
-    { key: "image", label: "图片" },
-    { key: "video", label: "视频" },
-    { key: "music", label: "音乐" },
-    { key: "audio", label: "音频" },
-  ];
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[580px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
-        <DialogHeader className="px-6 pt-6">
-          <DialogTitle className="text-lg font-bold">模型</DialogTitle>
-        </DialogHeader>
-        
-        <div className="px-6 pt-4">
-          <div className="flex w-full items-center gap-1 rounded-full bg-white/5 p-1">
-            {tabs.map((t) => (
-              <button
-                key={t.key}
-                onMouseEnter={() => setActiveTab(t.key as any)}
-                className={`flex-1 rounded-full py-1.5 text-xs font-medium transition-all ${
-                  activeTab === t.key ? "bg-white/10 text-white" : "text-white/40 hover:text-white/60"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-4 px-6 pb-6">
-          <div className="mb-2 text-[10px] font-medium uppercase tracking-wider text-white/40">
-            {tabs.find(t => t.key === activeTab)?.label}
-          </div>
-          <div className="max-h-[500px] space-y-2 overflow-y-auto pr-2 scrollbar-hide">
-            {modelData[activeTab].map((m: any) => {
-              const active = selected === m.name;
-              return (
-                <button
-                  key={m.name}
-                  onClick={() => handlePick(m.name)}
-                  className={`group relative flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition-all ${
-                    active
-                      ? "border-white/20 bg-white/10"
-                      : "border-transparent bg-white/[0.02] hover:bg-white/[0.05]"
-                  }`}
-                >
-                  <div className={`mt-1 h-5 w-5 rounded-full border-2 ${active ? 'border-white bg-white' : 'border-white/20'} flex items-center justify-center`}>
-                    {active && <Check className="h-3 w-3 text-black stroke-[3px]" />}
-                  </div>
-                  
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-white">{m.name}</span>
-                      {m.badge && (
-                        <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] font-bold text-green-500">
-                          {m.badge}
-                        </span>
-                      )}
-                      {m.tag && (
-                        <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[8px] font-bold text-white">
-                          {m.tag}
-                        </span>
-                      )}
-                      {m.upgrade && (
-                        <span className="rounded bg-blue-500/20 px-1.5 py-0.5 text-[8px] font-bold text-blue-500">
-                          升级
-                        </span>
-                      )}
-                    </div>
-                    <p className="mt-1 text-[11px] leading-relaxed text-white/50">{m.desc}</p>
-                  </div>
-
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Plus className="h-3 w-3" />
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+      <DialogContent className="max-w-[600px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
+        <ModelPicker value={value} onSelect={(name) => { onSelect?.(name); onOpenChange(false); }} />
       </DialogContent>
     </Dialog>
   );
