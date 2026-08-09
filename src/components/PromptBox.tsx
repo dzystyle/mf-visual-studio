@@ -13,6 +13,7 @@ import {
   ChevronDown,
   AtSign,
   Search,
+  ChevronRight,
 } from "lucide-react";
 import {
   ModelPicker,
