@@ -174,13 +174,9 @@ const skills = [
   { title: "故事驱动型视频", author: "Artrail", img: skillStory, desc: "从一句话到完整短片" },
 ];
 
-export function SkillPickerDialog({
-  open,
-  onOpenChange,
+export function SkillPicker({
   onSelect,
 }: {
-  open: boolean;
-  onOpenChange: (v: boolean) => void;
   onSelect?: (title: string) => void;
 }) {
   const [tab, setTab] = useState<"default" | "newbie" | "master" | "story">("newbie");
@@ -205,12 +201,12 @@ export function SkillPickerDialog({
     },
     {
       title: "商品宣传短片",
-      desc: "快速创建AI商业广告短片，为您的产品呈现专业级的视觉效果和创意故事。使用模型 Nan...",
+      desc: "快速创建AI商业广告短片，为您的产品呈现专业级的视觉效果 and 创意故事。使用模型 Nan...",
       img: skillProduct,
     },
     {
       title: "视频拉片复刻",
-      desc: "通过学习上传视频的电影语法（提取其脚本、镜头结构、视觉语言和节奏），围绕您自己...",
+      desc: "通过学习上传视频的电影语法（提取其脚本、镜头结构、视觉语言 and 节奏），围绕您自己...",
       img: skillReenact,
     },
     {
@@ -220,75 +216,86 @@ export function SkillPickerDialog({
     },
   ];
 
-  const pick = (title: string) => {
-    onSelect?.(title);
-    onOpenChange(false);
-  };
+  return (
+    <div className="w-[480px] text-white">
+      <div className="flex items-center justify-between px-6 pt-6">
+        <h3 className="text-lg font-bold">Skill</h3>
+        <button className="flex items-center gap-0.5 text-xs text-white/40 hover:text-white/60">
+          更多 <ChevronRight className="h-3 w-3" />
+        </button>
+      </div>
 
+      <div className="mt-4 px-6">
+        <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
+          {categories.map((c) => (
+            <button
+              key={c.key}
+              onClick={() => setTab(c.key as any)}
+              className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium transition-all ${
+                tab === c.key
+                  ? "bg-white/10 text-white"
+                  : "text-white/40 hover:text-white/60"
+              }`}
+            >
+              {c.label}
+              {c.key === "default" && (
+                <span className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-white/20 text-[8px]">i</span>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-2 max-h-[400px] overflow-y-auto px-6 pb-6 scrollbar-hide">
+        <div className="space-y-3">
+          {skillList.map((s) => (
+            <div
+              key={s.title}
+              className="group flex cursor-pointer items-start gap-3 rounded-xl py-1 transition-all"
+            >
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-white/5">
+                <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-[13px] font-bold text-white group-hover:text-white/90">{s.title}</h4>
+                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white">
+                      <Eye className="h-3 w-3" />
+                    </button>
+                    <button 
+                      onClick={() => onSelect?.(s.title)}
+                      className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white"
+                    >
+                      <Plus className="h-3 w-3" />
+                    </button>
+                  </div>
+                </div>
+                <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-white/40">
+                  {s.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SkillPickerDialog({
+  open,
+  onOpenChange,
+  onSelect,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  onSelect?: (title: string) => void;
+}) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[480px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
-        <DialogHeader className="flex flex-row items-center justify-between px-6 pt-6">
-          <DialogTitle className="text-lg font-bold">Skill</DialogTitle>
-          <button className="flex items-center gap-0.5 text-xs text-white/40 hover:text-white/60">
-            更多 <ChevronRight className="h-3 w-3" />
-          </button>
-        </DialogHeader>
-
-        <div className="mt-4 px-6">
-          <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
-            {categories.map((c) => (
-              <button
-                key={c.key}
-                onClick={() => setTab(c.key as any)}
-                className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium transition-all ${
-                  tab === c.key
-                    ? "bg-white/10 text-white"
-                    : "text-white/40 hover:text-white/60"
-                }`}
-              >
-                {c.label}
-                {c.key === "default" && (
-                  <span className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-white/20 text-[8px]">i</span>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-2 max-h-[500px] overflow-y-auto px-6 pb-6 scrollbar-hide">
-          <div className="space-y-3">
-            {skillList.map((s) => (
-              <div
-                key={s.title}
-                className="group flex cursor-pointer items-start gap-3 rounded-xl py-1 transition-all"
-              >
-                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-white/5">
-                  <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-[13px] font-bold text-white group-hover:text-white/90">{s.title}</h4>
-                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white">
-                        <Eye className="h-3 w-3" />
-                      </button>
-                      <button 
-                        onClick={() => pick(s.title)}
-                        className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white"
-                      >
-                        <Plus className="h-3 w-3" />
-                      </button>
-                    </div>
-                  </div>
-                  <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-white/40">
-                    {s.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <DialogContent className="max-w-[500px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
+        <SkillPicker onSelect={(title) => { onSelect?.(title); onOpenChange(false); }} />
       </DialogContent>
     </Dialog>
   );
