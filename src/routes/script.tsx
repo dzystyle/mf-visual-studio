@@ -707,12 +707,10 @@ function Composer({
             <button className="flex h-6 w-6 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent">
               <Plus className="h-3 w-3" />
             </button>
-            <ComposerMenu />
             <MiniChip icon={LayoutGrid} label="模型" badge="新" onClick={() => setModelOpen(true)} />
             <MiniChip icon={Package} label="Skill" onClick={() => setSkillOpen(true)} />
             <MiniChip icon={Smile} label="元素" onClick={() => setElemOpen(true)} />
           </div>
-
           <button className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground hover:bg-foreground hover:text-background">
             <ArrowUp className="h-3.5 w-3.5" />
           </button>
@@ -758,68 +756,6 @@ function MiniChip({
     </button>
   );
 }
-
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Check, AtSign, Smartphone, Square } from "lucide-react";
-
-function ComposerMenu() {
-  const [selected, setSelected] = useState("16:9");
-  const [open, setOpen] = useState(false);
-
-  const options = [
-    { label: "自动", icon: LayoutGrid, value: "auto" },
-    { label: "16:9 (横屏)", icon: Video, value: "16:9", checked: true },
-    { label: "21:9 (电影)", icon: Video, value: "21:9" },
-    { label: "9:16 (竖屏)", icon: Smartphone, value: "9:16" },
-    { label: "4:3", icon: Square, value: "4:3" },
-    { label: "3:4", icon: Square, value: "3:4" },
-    { label: "1:1", icon: Square, value: "1:1" },
-  ];
-
-  return (
-    <div className="flex items-center gap-1">
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <button className="flex h-6 items-center gap-1 rounded-full border border-border bg-card/40 px-2 text-[10px] text-foreground transition hover:bg-card">
-            <Video className="h-3 w-3 text-muted-foreground" />
-            <span>{selected}</span>
-            <ChevronDown className={`h-2.5 w-2.5 text-muted-foreground transition ${open ? "rotate-180" : ""}`} />
-          </button>
-        </PopoverTrigger>
-        <PopoverContent align="start" className="w-44 overflow-hidden border-border/60 bg-card/95 p-1 backdrop-blur-xl">
-          {options.map((opt) => (
-            <button
-              key={opt.value}
-              onClick={() => {
-                setSelected(opt.value);
-                setOpen(false);
-              }}
-              className="flex w-full items-center justify-between rounded-lg px-3 py-1.5 text-[11px] text-foreground transition hover:bg-accent"
-            >
-              <div className="flex items-center gap-2.5">
-                <opt.icon className="h-3.5 w-3.5 text-muted-foreground" />
-                <span>{opt.label}</span>
-              </div>
-              {selected === opt.value && <Check className="h-3 w-3 text-foreground" />}
-            </button>
-          ))}
-        </PopoverContent>
-      </Popover>
-
-      <button className="flex h-6 w-6 items-center justify-center rounded-full border border-border bg-card/40 text-muted-foreground transition hover:bg-card hover:text-foreground">
-        <AtSign className="h-3.5 w-3.5" />
-      </button>
-
-      <div className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-2 py-0.5">
-        <span className="text-[9px] text-muted-foreground">画布</span>
-        <div className="h-2.5 w-5 rounded-full bg-muted/40 p-0.5 transition-colors">
-          <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 
 
 function MediaAssetsCard({
