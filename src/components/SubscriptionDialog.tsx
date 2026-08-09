@@ -35,7 +35,7 @@ export function SubscriptionDialog({
               </div>
             </div>
 
-            <h1 className="text-2xl font-bold tracking-tight">Artrail - 价格与套餐</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Artrail - 订阅计划</h1>
 
             <div className="mt-8 flex justify-center">
               <div className="flex border-b border-white/10 w-full max-w-md">
@@ -212,8 +212,32 @@ export function SubscriptionDialog({
                   </div>
                 } 
               />
-              <FaqItem id="q2" num="2" title="积分在使用过程中如何扣除?" content={<div className="text-xs text-white/60">...</div>} />
-              <FaqItem id="q3" num="3" title="订阅是如何运作的?" content={<div className="text-xs text-white/60">...</div>} />
+              <FaqItem 
+                id="q2" 
+                num="2" 
+                title="积分在使用过程中如何扣除?" 
+                content={
+                  <div className="space-y-3 text-white/60 text-xs">
+                    <p>• 系统将根据不同任务的复杂程度扣除积分:</p>
+                    <ul className="pl-4 space-y-1">
+                      <li>• 文生图/图生图: 5-25 积分/张, 取决于选用的模型与分辨率;</li>
+                      <li>• 视频生成: 5-135 积分/秒, Seedance 2.5 满血版会消耗更多积分以换取顶级画质;</li>
+                      <li>• 音频/配音: 按照生成时长扣除积分。</li>
+                    </ul>
+                  </div>
+                } 
+              />
+              <FaqItem 
+                id="q3" 
+                num="3" 
+                title="订阅是如何运作的?" 
+                content={
+                  <div className="space-y-3 text-white/60 text-xs">
+                    <p>• 订阅会员后, 您将立即获得当前周期的积分额度。月度积分有效期为 30 天, 逾期将自动失效, 请及时使用。</p>
+                    <p>• 如果您在周期内耗尽积分, 可以通过手动购买积分包或升级套餐来继续创作。</p>
+                  </div>
+                } 
+              />
               <FaqItem id="q4" num="4" title="订阅会自动续费吗?" content={<div className="text-xs text-white/60">会。订阅将在每个计费周期结束时自动续费, 除非您在续费日前主动取消。</div>} />
             </Accordion>
 
@@ -270,8 +294,8 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
         ))}
       </div>
 
-      <button className="mt-6 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90">
-        购买
+      <button className="mt-6 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
+        立即订阅
       </button>
 
       <div className="mt-8 space-y-6 overflow-hidden">
@@ -342,8 +366,8 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
         </div>
       </div>
 
-      <button className="mt-4 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90">
-        购买 {seats} 席位
+      <button className="mt-4 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
+        立即订阅 {seats} 席位
       </button>
 
       <div className="mt-8 space-y-6 overflow-hidden">
@@ -390,47 +414,49 @@ function FaqItem({ id, num, title, content }: any) {
 
 const PERSONAL_FEATURES = [
   {
-    title: "创作补贴",
+    title: "制作补贴 (Production Subsidy)",
     items: [
-      { label: "注册奖励", value: "100 积分" },
-      { label: "探索使用奖励", value: "200 积分" },
+      { label: "注册奖励 (Registration Bonus)", value: "100 积分" },
+      { label: "探索使用奖励 (Exploration Bonus)", value: "200 积分" },
+      { label: "每日签到奖励 (Daily Check-in)", tag: "新" },
     ]
   },
   {
-    title: "模型权益",
+    title: "模型权益 (Model Rights)",
     items: [
-      { label: "大语言模型", info: true, tag: "无限免费" },
-      { label: "图生成模型", sub: "包含 Nano Banana 2 / GPT Image 2", value: "5-25 积分/张" },
-      { label: "视频模型 (480P/720P/1080P/4K)", sub: "包含 Seedance 2.5 (SOTA)", value: "5-135 积分/秒" },
+      { label: "大语言模型 (LLM)", info: true, tag: "无限免费" },
+      { label: "图生成模型 (Image Models)", sub: "包含 Nano Banana 2 / GPT Image 2", value: "5-25 积分/张" },
+      { label: "视频生成模型 (Video Models)", sub: "包含 Seedance 2.5 (SOTA)", value: "5-135 积分/秒" },
     ]
   },
   {
-    title: "使用权益",
+    title: "使用权益 (Usage Rights)",
     items: [
-      { label: "专享 Seedance 2.5 & 2.0 高并发", value: "10 到" },
-      { label: "资产库单素材快速生成", tag: "新" },
-      { label: "单模型并发", value: "5" },
+      { label: "专享 Seedance 2.5 高并发", value: "优先通道" },
+      { label: "资产库素材快速生成", tag: "新" },
+      { label: "最大并行生成数", value: "5" },
       { label: "授权人像容量", value: "2 个" },
+      { label: "专属会员标识", tag: "新" },
     ]
   }
 ];
 
 const TEAM_FEATURES = [
   {
-    title: "团队权益",
+    title: "团队管理 (Team Management)",
     items: [
-      { label: "创建并管理团队成员", tag: true },
-      { label: "项目及资产管控", tag: true },
-      { label: "积分用量管控", tag: true },
-      { label: "极速并发额", tag: true },
+      { label: "多成员协同工作", tag: "新" },
+      { label: "团队资产库共享", tag: "新" },
+      { label: "项目权限精细化管控", tag: "新" },
+      { label: "团队积分池统一分配", tag: "新" },
     ]
   },
   {
-    title: "模型权益",
+    title: "制作权益 (Production Rights)",
     items: [
-      { label: "大语言模型", tag: "无限免费" },
-      { label: "图生成模型", value: "5-25 积分/张" },
-      { label: "视频模型", value: "5-135 积分/秒" },
+      { label: "全量模型优先使用权", tag: "无限免费" },
+      { label: "企业级极速并发", value: "极速通道" },
+      { label: "4K/8K 超高清生成", value: "支持" },
     ]
   }
 ];
