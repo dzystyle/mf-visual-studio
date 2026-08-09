@@ -270,6 +270,33 @@ function AddItem({
   );
 }
 
+function RatioItem({ label, icon, active }: { label: string; icon: React.ReactNode; active?: boolean }) {
+  return (
+    <button className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-2 text-xs text-foreground transition hover:bg-accent/60">
+      <div className="flex items-center gap-2">
+        <span className="text-muted-foreground">{icon}</span>
+        <span>{label}</span>
+      </div>
+      {active && <div className="h-1.5 w-1.5 rounded-full bg-foreground" />}
+    </button>
+  );
+}
+
+function MentionItem({ label, img, icon }: { label: string; img?: string; icon?: React.ReactNode }) {
+  return (
+    <button className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-xs text-foreground transition hover:bg-accent/60">
+      <div className="h-8 w-8 overflow-hidden rounded-lg border border-border bg-muted/40">
+        {img ? (
+          <img src={img} alt={label} className="h-full w-full object-cover" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">{icon}</div>
+        )}
+      </div>
+      <span className="font-medium text-[13px]">{label}</span>
+    </button>
+  );
+}
+
 function AttachmentChip({ a, onRemove }: { a: Attachment; onRemove: () => void }) {
   const Icon =
     a.kind === "image" ? ImageIcon : a.kind === "audio" ? AudioLines : a.kind === "video" ? Video : FileText;
