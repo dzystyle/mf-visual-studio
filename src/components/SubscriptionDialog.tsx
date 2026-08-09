@@ -419,7 +419,7 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
           </div>
         </div>
         <div className="mt-3 flex items-center justify-between border-t border-white/5 pt-3">
-          <div className="text-[9px] text-white/30">总积分 {2000 * seats}/月</div>
+          <div className="text-[9px] text-white/30">总积分 {(parseInt(credits.split(' ')[0]) + parseInt(credits.split(' ')[2])) * seats}/月</div>
           <div className="text-[9px] text-white/30">总价 ¥{price * seats}/月</div>
         </div>
       </div>
