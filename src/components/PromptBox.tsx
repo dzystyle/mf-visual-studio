@@ -98,11 +98,13 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
     const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
     const after = text.slice(cursorPos);
-    // Keep the @name in text but we will also show the chip
     setText(`${before}@${name} ${after}`);
     setMentionOpen(false);
     
-    if (url && (kind === "image" || kind === "video")) {
+    // Check if this is already an attachment
+    const isAlreadyAttached = attachments.some(a => a.url === url || a.name === name);
+    
+    if (url && (kind === "image" || kind === "video") && !isAlreadyAttached) {
       const id = `${Date.now()}-${name}`;
       setAttachments(prev => [
         ...prev,
@@ -186,7 +188,8 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
                 { name: "角色01", kind: "image", url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" },
                 { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
-              ].filter(i => i.name.includes(mentionFilter)).map((item, idx) => (
+                ...attachments.map(a => ({ name: a.name, kind: a.kind, url: a.url, isAttachment: true }))
+              ].filter(i => i.name.toLowerCase().includes(mentionFilter.toLowerCase())).map((item, idx) => (
                 <MentionListItem 
                   key={idx}
                   item={item}
