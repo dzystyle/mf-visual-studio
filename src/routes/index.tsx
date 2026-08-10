@@ -128,6 +128,8 @@ function SkillsWithPreview() {
             left: position.x,
             top: position.y,
           }}
+          onMouseEnter={() => setHovered(active.id)}
+          onMouseLeave={() => setHovered(null)}
         >
           <div className="w-[320px] overflow-hidden rounded-2xl border border-white/10 bg-[#161616] shadow-2xl shadow-black/50">
             <div className="relative aspect-video w-full overflow-hidden bg-black">
