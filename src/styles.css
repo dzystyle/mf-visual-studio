@@ -89,6 +89,96 @@
   );
 }
 
+.light {
+  --radius: 0.75rem;
+  --background: #ffffff;
+  --foreground: #0f0f12;
+  --card: #f4f4f5;
+  --card-foreground: #0f0f12;
+  --popover: #ffffff;
+  --popover-foreground: #0f0f12;
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #0f0f12;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #0f0f12;
+  --success: #22c55e;
+  --destructive: #ef4444;
+  --border: rgba(0, 0, 0, 0.08);
+  --input: rgba(0, 0, 0, 0.05);
+  --ring: #8b5cf6;
+  --sidebar: #f9f9fb;
+  --sidebar-foreground: #71717a;
+
+  --aurora-pink: #d946ef;
+  --aurora-orange: #f97316;
+  --aurora-blue: #3b82f6;
+
+  --gradient-aurora: radial-gradient(
+      ellipse 80% 60% at 20% 0%,
+      rgba(217, 70, 239, 0.05) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 70% 55% at 55% -10%,
+      rgba(249, 115, 22, 0.03) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 90% 70% at 90% 0%,
+      rgba(59, 130, 246, 0.05) 0%,
+      transparent 60%
+    );
+}
+
+.dark {
+  --radius: 0.75rem;
+  --background: #0f0f12;
+  --foreground: #ffffff;
+  --card: #18181b;
+  --card-foreground: #ffffff;
+  --popover: #18181b;
+  --popover-foreground: #ffffff;
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #27272a;
+  --secondary-foreground: #ffffff;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #ffffff;
+  --success: #22c55e;
+  --destructive: #ef4444;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: #8b5cf6;
+  --sidebar: #0f0f12;
+  --sidebar-foreground: #a1a1aa;
+
+  --aurora-pink: #d946ef;
+  --aurora-orange: #f97316;
+  --aurora-blue: #3b82f6;
+
+  --gradient-aurora: radial-gradient(
+      ellipse 80% 60% at 20% 0%,
+      rgba(217, 70, 239, 0.15) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 70% 55% at 55% -10%,
+      rgba(249, 115, 22, 0.1) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 90% 70% at 90% 0%,
+      rgba(59, 130, 246, 0.15) 0%,
+      transparent 60%
+    );
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
