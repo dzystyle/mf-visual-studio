@@ -23,30 +23,50 @@ export function TopBar({ title }: { title?: string }) {
 
 function UserMenuContainer() {
   const [open, setOpen] = React.useState(false);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setOpen(false);
+    }, 150);
+  };
   
   return (
     <div 
-      className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-white/10 group cursor-pointer"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-white/10 group cursor-pointer relative"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="flex items-center gap-2 pr-2 border-r border-white/10">
         <FilmIconGradient />
         <span className="font-bold text-white tracking-tight">2,081</span>
       </div>
 
-
-      
       <div className="flex items-center gap-2 px-1">
         <span className="font-bold text-white tracking-tight">Free</span>
       </div>
 
-      <UserMenu open={open} setOpen={setOpen} />
+      <UserMenu open={open} setOpen={setOpen} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
     </div>
   );
 }
 
-function UserMenu({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
+function UserMenu({ 
+  open, 
+  setOpen, 
+  onMouseEnter, 
+  onMouseLeave 
+}: { 
+  open: boolean; 
+  setOpen: (v: boolean) => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}) {
   const [showSubscription, setShowSubscription] = React.useState(false);
 
   return (
@@ -61,8 +81,9 @@ function UserMenu({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => v
 
       <PopoverContent 
         align="end" 
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+        sideOffset={8}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         className="w-[280px] overflow-hidden border-white/10 bg-[#1A1A1A]/95 p-0 text-foreground shadow-2xl backdrop-blur-2xl"
       >
         <div className="p-5">
