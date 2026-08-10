@@ -114,6 +114,10 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     setAttachments((prev) => prev.filter((a) => a.id !== id));
 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
+    const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
+    const after = text.slice(cursorPos);
+    // Keep the @name in text but we will also show the chip
+    setText(`${before}@${name} ${after}`);
     setMentionOpen(false);
     
     if (url && (kind === "image" || kind === "video")) {
@@ -127,17 +131,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           url
         }
       ]);
-      
-      const beforeStr = text.slice(0, cursorPos);
-      const atMatch = beforeStr.match(/@\S*$/);
-      if (atMatch) {
-        const atIndex = beforeStr.lastIndexOf(atMatch[0]);
-        const before = text.slice(0, atIndex);
-        const after = text.slice(cursorPos);
-        
-        // Use a non-standard marker that we'll render as a small image chip
-        setText(`${before}[${name}]${after}`);
-      }
     }
   };
 
@@ -159,7 +152,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 </button>
               </div>
             )}
-            {attachments.filter(a => !text.includes(`[${a.name}]`)).map((a) => (
+            {attachments.map((a) => (
               <AttachmentChip 
                 key={a.id} 
                 a={a} 
@@ -173,56 +166,34 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             ))}
           </div>
         )}
-        <div className="relative flex items-start gap-2 min-h-[72px]">
-          <div className="flex-1 relative">
-            <div className="absolute inset-0 pointer-events-none whitespace-pre-wrap break-words text-[15px] py-1 text-transparent overflow-hidden">
-              {text.split(/(\[.*?\])/g).map((part, i) => {
-                const match = part.match(/^\[(.*?)\]$/);
-                if (match) {
-                  const name = match[1];
-                  const attachment = attachments.find(a => a.name === name);
-                  if (attachment?.url) {
-                    return (
-                      <span key={i} className="inline-flex align-middle bg-white/10 rounded px-1 py-0.5 mx-0.5 border border-white/5">
-                        <img src={attachment.url} className="w-4 h-4 rounded-sm object-cover mr-1" />
-                        <span className="text-white/60 text-[10px]">{name}</span>
-                      </span>
-                    );
-                  }
-                }
-                return part;
-              })}
-            </div>
-            <textarea
-              ref={textareaRef}
-              rows={3}
-              value={text}
-              onChange={(e) => {
-                setText(e.target.value);
-                setCursorPos(e.target.selectionStart ?? 0);
-              }}
-              onKeyUp={(e) => {
-                setCursorPos((e.target as HTMLTextAreaElement).selectionStart ?? 0);
-              }}
-              onClick={(e) => {
-                setCursorPos((e.target as HTMLTextAreaElement).selectionStart ?? 0);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  const v = text.trim();
-                  if (v && onSubmit) {
-                    onSubmit(v);
-                    setText("");
-                    setAttachments([]);
-                  }
-                }
-              }}
-              placeholder="输入提示词,或输入 @ 引用资产库中的角色、素材..."
-              className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none py-1 relative z-[1]"
-            />
-          </div>
-        </div>
+        <textarea
+          ref={textareaRef}
+          rows={3}
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+            setCursorPos(e.target.selectionStart);
+          }}
+          onKeyUp={(e) => {
+            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+          }}
+          onClick={(e) => {
+            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              const v = text.trim();
+              if (v && onSubmit) {
+                onSubmit(v);
+                setText("");
+                setAttachments([]);
+              }
+            }
+          }}
+          placeholder="输入提示词,或输入 @ 引用资产库中的角色、素材..."
+          className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+        />
 
         {mentionOpen && (
           <div className="absolute top-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
