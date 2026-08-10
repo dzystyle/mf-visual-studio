@@ -459,6 +459,8 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           ))}
         </div>
       )}
+
+      <div className="absolute right-5 bottom-5">
         <button
           onClick={() => {
             const v = text.trim();
@@ -471,6 +473,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
         >
           <ArrowUp className="h-4 w-4" />
         </button>
+      </div>
       </div>
 
     </div>
