@@ -875,7 +875,7 @@ function Composer({
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="请输入你的消息..."
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个是画布模式,是根据底部的这个菜单来进行切换画布模式和列表模式.`}
           className="w-full bg-transparent text-[13px] text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
         />
         <div className="mt-2.5 flex items-center justify-between">
@@ -1355,7 +1355,7 @@ function EditorPreviewPanel({ onClose, onQuote, mode, setMode }: { onClose: () =
         </div>
         <div className="flex items-center gap-2 border-t border-border/60 p-3">
           <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
-            <input placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            页面的整体配色我希望按照上图的这个配色走.`} className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
+            <input placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个是画布模式,是根据底部的这个菜单来进行切换画布模式和列表模式.`} className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
             <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
               <ArrowUp className="h-3 w-3" />
             </button>
