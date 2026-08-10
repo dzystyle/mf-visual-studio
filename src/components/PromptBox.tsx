@@ -203,9 +203,9 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 打开资产库
               </button>
             </div>
-          </div>
         )}
       </div>
+
       <div className="mt-4 flex items-center justify-between">
         <div className="flex flex-wrap items-center gap-2">
           <Popover open={plusOpen} onOpenChange={setPlusOpen}>
