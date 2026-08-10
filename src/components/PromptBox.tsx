@@ -192,7 +192,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               <AttachmentChip 
                 key={a.id} 
                 a={a} 
-                onRemove={() => remove(a.id)} 
+                onRemove={() => remove(a.id, a.name)} 
                 onAtClick={() => {
                   setMentionOpen(true);
                   setMentionFilter("");
