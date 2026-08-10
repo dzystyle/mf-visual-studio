@@ -307,6 +307,8 @@ export function SkillPicker({
             <div
               key={s.title}
               className="group flex cursor-pointer items-start gap-3 rounded-xl py-1 transition-all"
+              onClick={() => onSelect?.(s.title)}
+
             >
               <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-white/5">
                 <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
