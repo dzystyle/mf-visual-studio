@@ -114,11 +114,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     setAttachments((prev) => prev.filter((a) => a.id !== id));
 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
-    const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
-    const after = text.slice(cursorPos);
-    
-    // Replace text trigger with a space if needed
-    setText(`${before} ${after}`);
     setMentionOpen(false);
     
     if (url && (kind === "image" || kind === "video")) {
@@ -132,6 +127,19 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           url
         }
       ]);
+      
+      // Calculate cursor position before the "@" match
+      const beforeStr = text.slice(0, cursorPos);
+      const atMatch = beforeStr.match(/@\S*$/);
+      if (atMatch) {
+        const atIndex = beforeStr.lastIndexOf(atMatch[0]);
+        const before = text.slice(0, atIndex);
+        const after = text.slice(cursorPos);
+        
+        // Use a hidden character or zero-width space to represent the image in the textarea
+        // but visually we show the chip above.
+        setText(`${before} ${after}`);
+      }
     }
   };
 
