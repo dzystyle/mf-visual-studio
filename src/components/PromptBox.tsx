@@ -278,13 +278,9 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                   url
                 }
               ]);
-              setText(prev => {
-                const mention = `@${name}`;
-                if (!prev) return mention;
-                if (prev.endsWith(' ')) return prev + mention;
-                return prev + ' ' + mention;
-              });
+              setText(prev => prev);
             }} 
+
           />
 
 
