@@ -60,6 +60,15 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const pendingKind = useRef<Attachment["kind"]>("image");
 
   useEffect(() => {
+    const handleSelectSkill = (e: any) => {
+      const skillTitle = e.detail;
+      setSkill(skillTitle);
+    };
+    window.addEventListener('select-skill', handleSelectSkill);
+    return () => window.removeEventListener('select-skill', handleSelectSkill);
+  }, []);
+
+  useEffect(() => {
     const lastChar = text[cursorPos - 1];
     if (lastChar === "@") {
       setMentionOpen(true);
@@ -120,8 +129,20 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     <div className="glass rounded-2xl p-5 shadow-2xl relative">
 
       <div className="relative">
-        {attachments.length > 0 && (
+        {(attachments.length > 0 || skill) && (
           <div className="mb-3 flex flex-wrap gap-2">
+            {skill && (
+              <div className="flex items-center gap-1.5 rounded-lg bg-white/5 border border-white/10 px-2 py-1 text-xs text-white/80 group">
+                <Package className="h-3 w-3 text-white/40" />
+                <span>{skill}</span>
+                <button 
+                  onClick={() => setSkill(null)}
+                  className="hover:text-white transition-colors"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            )}
             {attachments.map((a) => (
               <AttachmentChip 
                 key={a.id} 
@@ -161,7 +182,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门的skill再加1个.`}
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门Skills鼠标移动到上面会显示试一试点击试一试会跟图2一样把这个选中到输入框内.`}
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 

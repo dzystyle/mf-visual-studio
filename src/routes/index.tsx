@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useRef, useState, useEffect } from "react";
-import { Plus, ChevronRight, Play } from "lucide-react";
+import { Plus, ChevronRight, Play, ArrowUpRight } from "lucide-react";
 import { PromoBanner } from "@/components/PromoBanner";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
@@ -123,11 +123,13 @@ function SkillsWithPreview() {
     <div className="relative">
       {active && (
         <div
-          className="fixed z-[60] pointer-events-none -translate-x-1/2 -translate-y-[calc(100%+12px)] transition-all duration-200"
+          className="fixed z-[60] -translate-x-1/2 -translate-y-[calc(100%+12px)] transition-all duration-200"
           style={{
             left: position.x,
             top: position.y,
           }}
+          onMouseEnter={() => setHovered(active.id)}
+          onMouseLeave={() => setHovered(null)}
         >
           <div className="w-[320px] overflow-hidden rounded-2xl border border-white/10 bg-[#161616] shadow-2xl shadow-black/50">
             <div className="relative aspect-video w-full overflow-hidden bg-black">
@@ -149,6 +151,26 @@ function SkillsWithPreview() {
                 )}
                 <div className="rounded bg-black/60 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur">
                   {active.model}
+                </div>
+              </div>
+              
+              {/* Try it button overlay */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/20 backdrop-blur-[2px]">
+                <button 
+                  onClick={() => {
+                    const event = new CustomEvent('select-skill', { detail: active.title });
+                    window.dispatchEvent(event);
+                    setHovered(null);
+                  }}
+                  className="pointer-events-auto flex items-center gap-2 rounded-full bg-white/10 px-6 py-2 text-sm font-medium text-white backdrop-blur-md border border-white/20 transition hover:bg-white/20"
+                >
+                  试一试
+                </button>
+                <div className="absolute bottom-4 left-0 w-full px-4 text-center">
+                  <div className="flex items-center justify-center gap-1.5 text-[11px] text-white/80">
+                    <span>适用：1-5分钟短片 · 视觉/声...</span>
+                    <ArrowUpRight className="h-3 w-3" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -190,17 +212,26 @@ function SkillsWithPreview() {
           <div
             key={s.id}
             onMouseMove={(e) => {
+              if (hovered === s.id) {
+                const rect = e.currentTarget.getBoundingClientRect();
+                setPosition({
+                  x: rect.left + rect.width / 2,
+                  y: rect.top,
+                });
+              }
+            }}
+            onMouseEnter={(e) => {
               const rect = e.currentTarget.getBoundingClientRect();
               setPosition({
                 x: rect.left + rect.width / 2,
                 y: rect.top,
               });
+              setHovered(s.id);
             }}
+            onMouseLeave={() => setHovered(null)}
           >
             <SkillCard
               {...s}
-              onHover={() => setHovered(s.id)}
-              onLeave={() => setHovered(null)}
             />
           </div>
         ))}
