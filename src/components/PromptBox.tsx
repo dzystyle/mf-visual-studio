@@ -716,10 +716,13 @@ function MentionListItem({
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="text-[13px] font-medium text-white truncate">{item.name}</div>
-          <div className="text-[10px] text-muted-foreground capitalize">{item.kind === 'image' ? '图片' : '视频'}</div>
+          <div className="text-[14px] font-normal text-white truncate">{item.name}</div>
         </div>
-        <ChevronRight className="h-3.5 w-3.5 text-white/20 group-hover:text-white/40" />
+        {item.kind === 'folder' ? (
+          <ChevronRight className="h-4 w-4 text-white/40 group-hover:text-white/60" />
+        ) : (
+          <ChevronRight className="h-3.5 w-3.5 text-white/20 group-hover:text-white/40" />
+        )}
       </button>
 
       {showPreview && (
