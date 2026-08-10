@@ -64,6 +64,12 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     const handleSelectSkill = (e: any) => {
       const skillTitle = e.detail;
       setSkill(skillTitle);
+      setText(prev => {
+        const mention = `@${skillTitle}`;
+        if (!prev) return mention;
+        if (prev.endsWith(' ')) return prev + mention;
+        return prev + ' ' + mention;
+      });
     };
     window.addEventListener('select-skill', handleSelectSkill);
     return () => window.removeEventListener('select-skill', handleSelectSkill);
@@ -110,8 +116,20 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     setAttachments((prev) => [...prev, ...next]);
   };
 
-  const remove = (id: string) =>
+  const remove = (id: string, name?: string) => {
     setAttachments((prev) => prev.filter((a) => a.id !== id));
+    if (name) {
+      setText(prev => {
+        const mention = `@${name}`;
+        // Find if the mention exists in the text
+        if (prev.includes(mention)) {
+          // Replace the first occurrence of the mention (and potentially a following space)
+          return prev.replace(new RegExp(`@${name}\\s?`), "");
+        }
+        return prev;
+      });
+    }
+  };
 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
     const textBeforeCursor = text.slice(0, cursorPos);
@@ -125,6 +143,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
       const after = text.slice(cursorPos);
       newText = `${before}@${name} ${after}`;
       newCursorPos = before.length + name.length + 2;
+
     } else {
       const before = text.slice(0, cursorPos);
       const after = text.slice(cursorPos);
@@ -169,18 +188,22 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 <Package className="h-3 w-3 text-white/40" />
                 <span>{skill}</span>
                 <button 
-                  onClick={() => setSkill(null)}
+                  onClick={() => {
+                    setSkill(null);
+                    setText(prev => prev.replace(new RegExp(`@${skill}\\s?`), ""));
+                  }}
                   className="hover:text-white transition-colors"
                 >
                   <X className="h-3 w-3" />
                 </button>
               </div>
             )}
+
             {attachments.map((a) => (
               <AttachmentChip 
                 key={a.id} 
                 a={a} 
-                onRemove={() => remove(a.id)} 
+                onRemove={() => remove(a.id, a.name)} 
                 onAtClick={() => {
                   setMentionOpen(true);
                   setMentionFilter("");
@@ -306,8 +329,14 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                   icon={Package}
                   label={skill ?? "Skill"}
                   active={!!skill}
+                  onClear={skill ? () => {
+                    setSkill(null);
+                    setText(prev => prev.replace(new RegExp(`@${skill}\\s?`), ""));
+                  } : undefined}
+
                 />
               </button>
+
             </PopoverTrigger>
             <PopoverContent align="start" className="w-[500px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
               <SkillPicker onSelect={setSkill} />
