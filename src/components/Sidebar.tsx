@@ -8,6 +8,7 @@ import {
   Tv,
   BookOpen,
 } from "lucide-react";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 const items = [
   { to: "/", icon: Home, label: "首页" },
