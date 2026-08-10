@@ -322,7 +322,11 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                   icon={Package}
                   label={skill ?? "Skill"}
                   active={!!skill}
-                  onClear={skill ? () => setSkill(null) : undefined}
+                  onClear={skill ? () => {
+                    setSkill(null);
+                    setText(prev => prev.replace(new RegExp(`@${skill}\\s?`), ""));
+                  } : undefined}
+
                 />
               </button>
 
