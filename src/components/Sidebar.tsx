@@ -26,12 +26,7 @@ export function Sidebar() {
     <aside className="fixed left-0 top-0 z-40 flex h-screen w-[72px] flex-col items-center justify-between border-r border-border/40 bg-sidebar py-4">
       <div className="flex flex-col items-center gap-1">
         <Link to="/" className="mb-3 flex h-10 w-10 items-center justify-center">
-          <div className="grid h-7 w-7 grid-cols-2 gap-[2px]">
-            <div className="rounded-[2px] bg-aurora-pink" />
-            <div className="rounded-[2px] bg-aurora-orange" />
-            <div className="rounded-[2px] bg-aurora-blue" />
-            <div className="rounded-[2px] bg-foreground" />
-          </div>
+          <img src={logoAsset.url} alt="Logo" className="h-7 w-7" />
         </Link>
 
         {items.map((item) => {
