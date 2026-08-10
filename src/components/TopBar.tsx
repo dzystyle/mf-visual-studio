@@ -30,9 +30,10 @@ function UserMenuContainer() {
       onMouseLeave={() => setOpen(false)}
     >
       <div className="flex items-center gap-2 pr-2 border-r border-white/10">
-        <Film className="h-3.5 w-3.5 text-[#FFB800]" />
+        <FilmIconGradient />
         <span className="font-bold text-white tracking-tight">2,081</span>
       </div>
+
 
       
       <div className="flex items-center gap-2 px-1">
