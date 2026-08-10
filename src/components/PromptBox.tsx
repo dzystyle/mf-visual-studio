@@ -129,8 +129,20 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     <div className="glass rounded-2xl p-5 shadow-2xl relative">
 
       <div className="relative">
-        {attachments.length > 0 && (
+        {(attachments.length > 0 || skill) && (
           <div className="mb-3 flex flex-wrap gap-2">
+            {skill && (
+              <div className="flex items-center gap-1.5 rounded-lg bg-white/5 border border-white/10 px-2 py-1 text-xs text-white/80 group">
+                <Package className="h-3 w-3 text-white/40" />
+                <span>{skill}</span>
+                <button 
+                  onClick={() => setSkill(null)}
+                  className="hover:text-white transition-colors"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            )}
             {attachments.map((a) => (
               <AttachmentChip 
                 key={a.id} 
