@@ -195,96 +195,154 @@ function TabBtn({
 }
 
 function StoryboardPanel({ onClose }: { onClose: () => void }) {
+  const [activeTab, setActiveTab] = useState<"storyboard" | "elements">("elements");
+
   return (
-    <div className="flex w-[300px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
-      <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
-        <div className="flex items-center gap-1.5 text-xs text-foreground">
-          <LayoutGrid className="h-3.5 w-3.5" />
+    <div className="flex w-[320px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-[#0f0f12]">
+      {/* Header */}
+      <div className="flex h-11 items-center justify-between border-b border-border/60 px-3">
+        <div className="flex items-center gap-1.5 text-sm font-medium text-foreground/90">
+          <ChevronDown className="h-4 w-4 text-muted-foreground" />
           故事板
         </div>
         <div className="flex items-center gap-1">
-          <button className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground">
-            <MoreHorizontal className="h-3.5 w-3.5" />
+          <button className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent/50 hover:text-foreground">
+            <Plus className="h-4 w-4" />
           </button>
-          <button
-            onClick={onClose}
-            className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground"
-          >
-            <X className="h-3.5 w-3.5" />
+          <button className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent/50 hover:text-foreground">
+            <MoreHorizontal className="h-4 w-4" />
           </button>
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <div className="py-3 text-center text-xs text-muted-foreground">
-          -- 关键元素 --
+
+      {/* Tabs / Sub-Header */}
+      <div className="flex flex-col border-b border-border/40 bg-card/10">
+        <div className="flex items-center gap-1.5 px-3 py-2 text-[13px] font-medium text-foreground/90">
+          <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+          关键元素
         </div>
+      </div>
+
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="flex flex-col">
           {initialElements.map((el) => (
-            <ElementRow key={el.name} el={el} />
+            <ElementItem key={el.name} el={el} />
           ))}
+        </div>
+        
+        {/* Other Sections Placeholder */}
+        <div className="flex flex-col border-t border-border/40">
+           <div className="flex items-center justify-between px-3 py-2.5 hover:bg-card/40">
+              <div className="flex items-center gap-1.5 text-[13px] font-medium text-foreground/90">
+                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                分镜
+              </div>
+           </div>
+           <div className="flex items-center justify-between px-3 py-2.5 border-t border-border/40 hover:bg-card/40">
+              <div className="flex items-center gap-1.5 text-[13px] font-medium text-foreground/90">
+                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                音频层
+              </div>
+           </div>
+           <div className="flex items-center justify-between px-3 py-2.5 border-t border-border/40 hover:bg-card/40">
+              <div className="flex items-center gap-1.5 text-[13px] font-medium text-foreground/90">
+                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                未归类素材
+              </div>
+           </div>
+        </div>
+      </div>
+
+      {/* Bottom Floating Menu */}
+      <div className="mt-auto border-t border-border/60 p-2">
+        <div className="flex h-10 items-center gap-1 rounded-xl bg-card/60 p-1">
+          <button 
+            onClick={() => setActiveTab("storyboard")}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-lg text-xs font-medium transition ${activeTab === "storyboard" ? "bg-accent/50 text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+          >
+            <LayoutGrid className="h-3.5 w-3.5" />
+          </button>
+          <button 
+            onClick={() => setActiveTab("elements")}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-lg text-xs font-medium transition ${activeTab === "elements" ? "bg-accent/50 text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+          >
+            <div className="flex flex-col gap-0.5 items-center">
+              <div className="flex gap-0.5"><div className="h-1 w-1 rounded-full bg-current"/><div className="h-1 w-1 rounded-full bg-current"/></div>
+              <div className="flex gap-0.5"><div className="h-1 w-1 rounded-full bg-current"/><div className="h-1 w-1 rounded-full bg-current"/></div>
+            </div>
+          </button>
+          <div className="h-4 w-px bg-border/60 mx-1" />
+          <div className="flex flex-1 items-center justify-center gap-2 text-xs text-muted-foreground">
+             <button className="h-6 w-6 flex items-center justify-center rounded hover:bg-accent/50">-</button>
+             <span className="min-w-[40px] text-center">100%</span>
+             <button className="h-6 w-6 flex items-center justify-center rounded hover:bg-accent/50">+</button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function ElementRow({ el }: { el: Element }) {
+function ElementItem({ el }: { el: Element }) {
   const [open, setOpen] = useState(el.expanded !== false);
   const hasThumbs = (el.thumbs?.length ?? 0) > 0;
+  
   return (
-    <div className="group border-t border-border/40 px-4 py-3.5 hover:bg-card/40">
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex min-w-0 flex-1 items-start gap-2">
-          <div className="mt-1 hidden h-3 w-2 flex-col justify-between opacity-0 group-hover:opacity-60">
-            <div className="flex gap-0.5"><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/></div>
-            <div className="flex gap-0.5"><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/></div>
-            <div className="flex gap-0.5"><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/><span className="h-0.5 w-0.5 rounded-full bg-muted-foreground"/></div>
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-[13px] font-semibold text-foreground">{el.name}</div>
-            {open && el.desc && (
-              <div className="mt-1.5 text-[11.5px] leading-relaxed text-muted-foreground">
-                {el.desc}
-              </div>
-            )}
-            {open && hasThumbs && (
-              <div className="mt-2.5 flex items-center gap-1.5">
-                {el.thumbs!.slice(0, 2).map((src, i) => (
-                  <div key={i} className="relative h-16 w-16 overflow-hidden rounded-md border border-border/60 bg-muted">
-                    <img src={src} alt={el.name} loading="lazy" className="h-full w-full object-cover" />
-                  </div>
-                ))}
-              </div>
-            )}
-            {open && el.refId && (
-              <div className="mt-2 flex items-center gap-1.5">
-                <div className="inline-flex items-center gap-1 rounded-md border border-border/60 bg-card/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                  <span className="rounded bg-muted/60 px-1 text-[9px] text-foreground/80">图片</span>
-                  <span className="max-w-[110px] truncate">{el.refId}</span>
-                  {el.count && el.count > 1 && (
-                    <span className="rounded bg-success/20 px-1 text-[9px] text-success">x{el.count}</span>
-                  )}
-                  <ChevronRight className="h-2.5 w-2.5" />
-                </div>
-                <button className="flex h-5 w-5 items-center justify-center rounded border border-dashed border-border text-muted-foreground hover:border-foreground hover:text-foreground">
-                  <Plus className="h-2.5 w-2.5" />
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="mt-0.5 text-muted-foreground transition hover:text-foreground"
-        >
-          <ChevronDown
-            className={`h-4 w-4 transition ${open ? "" : "-rotate-90"}`}
-          />
+    <div className="group border-b border-border/20 last:border-0">
+      <div 
+        className="flex items-center gap-2 px-3 py-2 hover:bg-card/40 cursor-pointer"
+        onClick={() => setOpen(!open)}
+      >
+        <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition ${open ? "" : "-rotate-90"}`} />
+        <span className="text-[13px] font-medium text-foreground/90">{el.name}</span>
+        <button className="ml-auto opacity-0 group-hover:opacity-100 p-1 text-muted-foreground hover:text-foreground">
+          <MoreHorizontal className="h-3.5 w-3.5" />
         </button>
       </div>
+      
+      {open && (
+        <div className="px-6 pb-3 pt-1 space-y-3">
+          {el.desc && (
+            <p className="text-[12px] leading-relaxed text-muted-foreground/90">
+              {el.desc}
+            </p>
+          )}
+          
+          {hasThumbs && (
+            <div className="flex flex-wrap gap-2">
+              {el.thumbs!.map((src, i) => (
+                <div key={i} className="group/thumb relative aspect-square w-20 overflow-hidden rounded-lg border border-border/60 bg-muted shadow-sm">
+                  <img src={src} alt="" className="h-full w-full object-cover" />
+                  {i === 0 && (
+                     <div className="absolute inset-0 border-2 border-success/60 rounded-lg pointer-events-none" />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {el.refId && (
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-1 rounded-md border border-success/40 bg-success/10 px-2 py-1.5">
+                 <div className="flex h-5 items-center gap-1 rounded bg-success/20 px-1.5 text-[10px] text-success">
+                   图片
+                 </div>
+                 <span className="text-[11px] text-foreground/80 truncate font-mono">{el.refId}</span>
+                 <div className="ml-auto flex items-center gap-1 text-[10px] text-muted-foreground">
+                    <ChevronDown className="h-3 w-3 rotate-90" />
+                 </div>
+              </div>
+              <button className="flex h-8 w-8 items-center justify-center rounded-md border border-dashed border-border text-muted-foreground hover:border-foreground hover:text-foreground">
+                <Plus className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
+
 
 type Msg =
   | { kind: "user"; text: string }
