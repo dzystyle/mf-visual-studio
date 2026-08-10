@@ -945,7 +945,7 @@ function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: 
           <div className="flex items-center gap-2 border-t border-border/60 p-3">
             <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
               <input
-                placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            输入上传完素材后输入框会显示图片,我希望@这个图片后会自动把这个图片显示到下方,不是上传完图片就自动@这个图片名字.`}
+                placeholder={`描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能`}
                 className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none"
               />
               <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
