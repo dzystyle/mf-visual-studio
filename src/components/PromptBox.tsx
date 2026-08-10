@@ -175,34 +175,48 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             ))}
           </div>
         )}
-        <textarea
-          ref={textareaRef}
-          rows={3}
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-            setCursorPos(e.target.selectionStart);
-          }}
-          onKeyUp={(e) => {
-            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-          }}
-          onClick={(e) => {
-            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              const v = text.trim();
-              if (v && onSubmit) {
-                onSubmit(v);
-                setText("");
-                setAttachments([]);
+        <div className="relative flex items-start gap-2 min-h-[72px]">
+          {attachments.some(a => text.includes(`[${a.name}]`)) && (
+            <div className="flex flex-wrap gap-2 pt-1 pointer-events-none">
+              {attachments.filter(a => text.includes(`[${a.name}]`)).map(a => (
+                <div key={a.id} className="w-8 h-8 rounded-md overflow-hidden border border-white/10 shadow-sm opacity-60">
+                  <img src={a.url} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          )}
+          <textarea
+            ref={textareaRef}
+            rows={3}
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+              setCursorPos(e.target.selectionStart);
+            }}
+            onKeyUp={(e) => {
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+            }}
+            onSelectionChange={(e) => {
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+            }}
+            onClick={(e) => {
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                const v = text.trim();
+                if (v && onSubmit) {
+                  onSubmit(v);
+                  setText("");
+                  setAttachments([]);
+                }
               }
-            }
-          }}
-          placeholder="输入提示词,或输入 @ 引用资产库中的角色、素材..."
-          className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
-        />
+            }}
+            placeholder="输入提示词,或输入 @ 引用资产库中的角色、素材..."
+            className="flex-1 resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none py-1"
+          />
+        </div>
 
         {mentionOpen && (
           <div className="absolute top-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
