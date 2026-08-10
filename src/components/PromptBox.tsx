@@ -98,22 +98,27 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
     const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
     const after = text.slice(cursorPos);
-    // Keep the @name in text but we will also show the chip
-    setText(`${before}@${name} ${after}`);
-    setMentionOpen(false);
     
-    if (url && (kind === "image" || kind === "video")) {
+    // Check if it's already in attachments
+    const exists = attachments.find(a => a.name === name);
+    let newAttachments = attachments;
+    
+    if (!exists && url) {
       const id = `${Date.now()}-${name}`;
-      setAttachments(prev => [
-        ...prev,
+      newAttachments = [
+        ...attachments,
         {
           id,
           name,
           kind: kind as any,
           url
         }
-      ]);
+      ];
+      setAttachments(newAttachments);
     }
+    
+    setText(`${before} ${after}`.trim());
+    setMentionOpen(false);
   };
 
   return (
