@@ -127,16 +127,19 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     <div className="glass rounded-2xl p-5 shadow-2xl relative">
 
       <div className="relative">
-        {attachments.length > 0 && (
+        {attachments.some(a => !a.isMentioned) && (
           <div className="mb-3 flex flex-wrap gap-2">
-            {attachments.map((a) => (
+            {attachments.filter(a => !a.isMentioned).map((a) => (
               <AttachmentChip 
                 key={a.id} 
                 a={a} 
                 onRemove={() => remove(a.id)} 
                 onAtClick={() => {
-                  setMentionOpen(true);
-                  setMentionFilter("");
+                  // Manually trigger @ name insertion
+                  const before = text.slice(0, cursorPos);
+                  const after = text.slice(cursorPos);
+                  setText(`${before}@${a.name} ${after}`);
+                  setAttachments(prev => prev.map(item => item.id === a.id ? { ...item, isMentioned: true } : item));
                   textareaRef.current?.focus();
                 }}
               />
