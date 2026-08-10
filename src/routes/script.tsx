@@ -77,11 +77,13 @@ const initialElements: Element[] = [
 ];
 
 type Mode = "storyboard" | "timeline";
+type ViewMode = "canvas" | "list";
 export type QuotedRef = { id: string; name: string; image: string };
 
 function ScriptPage() {
   const { prompt } = Route.useSearch();
   const [mode, setMode] = useState<Mode>("storyboard");
+  const [viewMode, setViewMode] = useState<ViewMode>("canvas");
   const [showLeft, setShowLeft] = useState(true);
   const [showPreview, setShowPreview] = useState(true);
   const [showChat, setShowChat] = useState(true);
@@ -97,7 +99,7 @@ function ScriptPage() {
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
       <TitleBar mode={mode} setMode={setMode} />
-      <div className="flex flex-1 gap-2 overflow-hidden px-2 pb-2">
+      <div className="flex flex-1 gap-2 overflow-hidden px-2 pb-2 relative">
         {mode === "timeline" ? (
           <TimelineWorkspace
             showLeft={showLeft}
@@ -105,18 +107,23 @@ function ScriptPage() {
             onCloseLeft={() => setShowLeft(false)}
             onClosePreview={() => setShowPreview(false)}
             onQuote={addQuote}
+            mode={mode}
+            setMode={setMode}
           />
         ) : (
           <>
             {showLeft && (
-              <StoryboardPanel onClose={() => setShowLeft(false)} />
+              <StoryboardPanel onClose={() => setShowLeft(false)} viewMode={viewMode} />
             )}
-            {showPreview && (
+            {showPreview && viewMode === "list" && (
               <PreviewPanel
                 onClose={() => setShowPreview(false)}
                 onQuote={addQuote}
+                mode={mode}
+                setMode={setMode}
               />
             )}
+
           </>
         )}
         {showChat && (
@@ -127,10 +134,84 @@ function ScriptPage() {
             onRemoveQuote={removeQuote}
           />
         )}
+        
+        {/* Floating Bottom Toolbar */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40">
+          <BottomToolbar 
+            viewMode={viewMode} 
+            setViewMode={setViewMode}
+            mode={mode}
+            setMode={setMode}
+          />
+        </div>
       </div>
     </div>
   );
 }
+
+import { Menu, RotateCcw, Columns, Keyboard } from "lucide-react";
+
+function BottomToolbar({ 
+  viewMode, 
+  setViewMode,
+  mode,
+  setMode 
+}: { 
+  viewMode: ViewMode; 
+  setViewMode: (v: ViewMode) => void;
+  mode: Mode;
+  setMode: (m: Mode) => void;
+}) {
+  return (
+    <div className="flex items-center gap-4 px-4 py-2 rounded-full bg-black/80 border border-white/10 backdrop-blur-xl shadow-2xl">
+      <div className="flex items-center gap-1 rounded-lg bg-white/5 p-1">
+        <button 
+          onClick={() => setViewMode("canvas")}
+          className={`flex h-8 w-8 items-center justify-center rounded-md transition-all ${viewMode === "canvas" ? "bg-white text-black" : "text-muted-foreground hover:text-foreground"}`}
+        >
+          <LayoutGrid className="h-4 w-4" />
+        </button>
+        <button 
+          onClick={() => setViewMode("list")}
+          className={`flex h-8 w-8 items-center justify-center rounded-md transition-all ${viewMode === "list" ? "bg-white text-black" : "text-muted-foreground hover:text-foreground"}`}
+        >
+          <Menu className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="flex items-center gap-3 px-2 border-l border-r border-white/10">
+        <button className="text-muted-foreground hover:text-foreground"><Plus className="h-4 w-4" /></button>
+        <div className="text-[13px] font-medium text-foreground w-12 text-center">51%</div>
+        <button className="text-muted-foreground hover:text-foreground"><Plus className="h-4 w-4" /></button>
+      </div>
+
+      <div className="flex items-center gap-1">
+        <button className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <Undo2 className="h-4 w-4" />
+        </button>
+        <button className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <Redo2 className="h-4 w-4" />
+        </button>
+        <button className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <Columns className="h-4 w-4" />
+        </button>
+        <button className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <RotateCcw className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="flex items-center gap-1 ml-2">
+        <button className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <ChevronUp className="h-4 w-4" />
+        </button>
+        <button className="flex h-8 w-8 items-center justify-center rounded-md bg-white/10 text-foreground hover:bg-white/20">
+          <Keyboard className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 
 function TitleBar({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void }) {
   return (
@@ -194,7 +275,73 @@ function TabBtn({
   );
 }
 
-function StoryboardPanel({ onClose }: { onClose: () => void }) {
+function StoryboardPanel({ onClose, viewMode }: { onClose: () => void; viewMode?: ViewMode }) {
+  if (viewMode === "canvas") {
+    return (
+      <div className="flex-1 overflow-auto bg-[#0A0A0A] relative scrollbar-hide">
+        <div className="min-w-[1200px] p-8 space-y-12">
+          {/* Key Elements Section */}
+          <section>
+            <div className="flex items-center gap-2 mb-4 text-[13px] text-muted-foreground">
+              <Smile className="h-4 w-4" /> 关键元素
+            </div>
+            <div className="grid grid-cols-4 gap-4">
+              {initialElements.slice(0, 4).map((el, i) => (
+                <CanvasNode key={i} title={el.name} content={el.desc} images={el.thumbs} />
+              ))}
+            </div>
+          </section>
+
+          {/* Shots Section */}
+          <section>
+            <div className="flex items-center gap-2 mb-4 text-[13px] text-muted-foreground">
+              <LayoutGrid className="h-4 w-4" /> 分镜
+            </div>
+            <div className="flex gap-6 relative">
+              {storyboardShots.map((s, i) => (
+                <div key={i} className="flex items-center gap-6">
+                  <CanvasNode 
+                    title={s.shot} 
+                    content={s.content} 
+                    images={[charSam]} 
+                    subtitle={s.time}
+                  />
+                  {i < storyboardShots.length - 1 && (
+                    <div className="flex flex-col items-center gap-1 opacity-40">
+                      <div className="w-8 h-px bg-white/40" />
+                      <ChevronRight className="h-3 w-3 text-white" />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Audio Section */}
+          <section>
+            <div className="flex items-center gap-2 mb-4 text-[13px] text-muted-foreground">
+              <Music2 className="h-4 w-4" /> 音频层
+            </div>
+            <div className="w-[300px]">
+              <div className="glass rounded-xl p-4 border border-white/10">
+                <div className="text-[12px] font-medium mb-2">Audio_BGM_Industrial_Tense</div>
+                <div className="flex h-12 items-center justify-around gap-1">
+                  {Array.from({ length: 30 }).map((_, i) => (
+                    <div 
+                      key={i} 
+                      className="w-0.5 rounded-full bg-aurora-blue/60" 
+                      style={{ height: `${20 + Math.random() * 80}%` }} 
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex w-[300px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
       <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
@@ -227,6 +374,35 @@ function StoryboardPanel({ onClose }: { onClose: () => void }) {
     </div>
   );
 }
+
+function CanvasNode({ title, content, images, subtitle }: { title: string; content: string; images?: string[]; subtitle?: string }) {
+  return (
+    <div className="w-[280px] glass rounded-xl border border-white/10 overflow-hidden flex flex-col group transition-all hover:border-white/20 hover:shadow-xl">
+      <div className="p-3 border-b border-white/5 bg-white/[0.02]">
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-[12px] font-semibold text-foreground">{title}</span>
+          {subtitle && <span className="text-[10px] text-muted-foreground">{subtitle}</span>}
+        </div>
+        <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
+          {content}
+        </p>
+      </div>
+      {images && images.length > 0 && (
+        <div className="p-3 bg-black/20 flex gap-2 overflow-x-auto scrollbar-hide">
+          {images.map((img, i) => (
+            <div key={i} className="w-16 h-16 rounded-md overflow-hidden border border-white/10 shrink-0">
+              <img src={img} alt="" className="w-full h-full object-cover" />
+            </div>
+          ))}
+          <button className="w-8 h-8 rounded-full border border-dashed border-white/20 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-white/40 self-center ml-1">
+            <Plus className="h-3 w-3" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 function ElementRow({ el }: { el: Element }) {
   const [open, setOpen] = useState(el.expanded !== false);
@@ -699,7 +875,7 @@ function Composer({
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="请输入你的消息..."
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个是画布模式,是根据底部的这个菜单来进行切换画布模式和列表模式.`}
           className="w-full bg-transparent text-[13px] text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
         />
         <div className="mt-2.5 flex items-center justify-between">
@@ -891,7 +1067,7 @@ const fileAssets: { name: string; src: string; isVideo?: boolean }[] = [
   { name: "", src: charSam, isVideo: true },
 ];
 
-function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: QuotedRef) => void }) {
+function PreviewPanel({ onClose, onQuote, mode, setMode }: { onClose: () => void; onQuote: (q: QuotedRef) => void; mode: Mode; setMode: (m: Mode) => void }) {
   const quoteCurrent = () => onQuote({ id: "Element_Sam_ref_img", name: "Element_Sam_ref_img", image: charSam });
   return (
     <div className="flex flex-1 min-w-0 flex-col gap-2 overflow-hidden">
@@ -945,11 +1121,25 @@ function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: 
           <div className="flex items-center gap-2 border-t border-border/60 p-3">
             <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
               <input
-              placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            输入框@后会被热门的skills盖住,修复一下.`}
+                placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个是画布模式,是根据底部的这个菜单来进行切换画布模式和列表模式.`}
                 className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none"
               />
               <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
                 <ArrowUp className="h-3 w-3" />
+              </button>
+            </div>
+            <div className="flex items-center gap-1 rounded-full bg-accent/30 p-1">
+              <button
+                onClick={() => setMode("storyboard")}
+                className={`flex h-7 w-7 items-center justify-center rounded-full transition-all ${mode === "storyboard" ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => setMode("timeline")}
+                className={`flex h-7 w-7 items-center justify-center rounded-full transition-all ${mode === "timeline" ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                <LayoutGrid className="h-4 w-4 rotate-90" />
               </button>
             </div>
             <button className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-[12px] text-foreground hover:bg-card">
@@ -961,6 +1151,7 @@ function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: 
           </div>
         </div>
       </div>
+
 
       {/* File area */}
       <div className="flex h-[260px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
@@ -1027,19 +1218,23 @@ function TimelineWorkspace({
   onCloseLeft,
   onClosePreview,
   onQuote,
+  mode,
+  setMode,
 }: {
   showLeft: boolean;
   showPreview: boolean;
   onCloseLeft: () => void;
   onClosePreview: () => void;
   onQuote: (q: QuotedRef) => void;
+  mode: Mode;
+  setMode: (m: Mode) => void;
 }) {
   return (
     <div className="flex flex-1 min-w-0 flex-col gap-2 overflow-hidden">
       {/* Top row: file area + preview */}
       <div className="flex flex-1 gap-2 overflow-hidden">
         {showLeft && <FileLibraryPanel onClose={onCloseLeft} />}
-        {showPreview && <EditorPreviewPanel onClose={onClosePreview} onQuote={onQuote} />}
+        {showPreview && <EditorPreviewPanel onClose={onClosePreview} onQuote={onQuote} mode={mode} setMode={setMode} />}
       </div>
       {/* Bottom: timeline track */}
       <TimelineBar />
@@ -1125,7 +1320,7 @@ function AudioCard({ name }: { name: string }) {
   );
 }
 
-function EditorPreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: QuotedRef) => void }) {
+function EditorPreviewPanel({ onClose, onQuote, mode, setMode }: { onClose: () => void; onQuote: (q: QuotedRef) => void; mode: Mode; setMode: (m: Mode) => void }) {
   const quoteCurrent = () => onQuote({ id: "Element_Sam_ref_img", name: "Element_Sam_ref_img", image: charSam });
   return (
     <div className="flex flex-1 min-w-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
@@ -1160,7 +1355,7 @@ function EditorPreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote
         </div>
         <div className="flex items-center gap-2 border-t border-border/60 p-3">
           <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
-            <input placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            页面的整体配色我希望按照上图的这个配色走.`} className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
+            <input placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个是画布模式,是根据底部的这个菜单来进行切换画布模式和列表模式.`} className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
             <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
               <ArrowUp className="h-3 w-3" />
             </button>
