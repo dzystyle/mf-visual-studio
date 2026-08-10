@@ -431,10 +431,10 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           <ArrowUp className="h-4 w-4" />
         </button>
       </div>
-
     </div>
   );
 }
+
 
 function AddItem({
   icon: Icon,
