@@ -27,7 +27,7 @@ export const hotSkills = [
     version: "V2",
     model: "Seedance 2.5",
     desc: "把任何一张图片（人物、场景、物件都行）变成一段 30 秒的 JOJO 动画风格短片：厚描边、硬阴影、高饱和和平涂、满屏...",
-    image: "https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=800&auto=format&fit=crop",
+    image: skillJojo.url,
     video: SAMPLES.bunny,
     tags: ["动漫游戏", "新手必用"],
     default: false
