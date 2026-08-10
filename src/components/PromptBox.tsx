@@ -14,6 +14,7 @@ import {
   AtSign,
   Search,
   ChevronRight,
+  Mic,
 } from "lucide-react";
 import {
   ModelPicker,
@@ -182,7 +183,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门Skills鼠标移动到上面会显示试一试点击试一试会跟图2一样把这个选中到输入框内.`}
+          placeholder="输入提示词,或输入 @ 引用资产库中的角色、素材..."
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
@@ -439,18 +440,30 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             </PopoverContent>
           </Popover>
         </div>
-        <button
-          onClick={() => {
-            const v = text.trim();
-            if (v && onSubmit) {
-              onSubmit(v);
-              setText("");
-            }
-          }}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
-        >
-          <ArrowUp className="h-4 w-4" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition hover:bg-accent hover:text-foreground"
+            onClick={() => {
+              // Voice input logic would go here
+              console.log("Voice input triggered");
+            }}
+          >
+            <Mic className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => {
+              const v = text.trim();
+              if (v && onSubmit) {
+                onSubmit(v);
+                setText("");
+              }
+            }}
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
+          >
+            <ArrowUp className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
     </div>
