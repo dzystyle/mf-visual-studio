@@ -174,43 +174,54 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           </div>
         )}
         <div className="relative flex items-start gap-2 min-h-[72px]">
-          {attachments.some(a => text.includes(`[${a.name}]`)) && (
-            <div className="flex flex-wrap gap-2 pt-1.5 pointer-events-none">
-              {attachments.filter(a => text.includes(`[${a.name}]`)).map(a => (
-                <div key={a.id} className="w-6 h-6 rounded border border-white/10 shadow-sm overflow-hidden flex-shrink-0">
-                  <img src={a.url} className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
-          )}
-          <textarea
-            ref={textareaRef}
-            rows={3}
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-              setCursorPos(e.target.selectionStart ?? 0);
-            }}
-            onKeyUp={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart ?? 0);
-            }}
-            onClick={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart ?? 0);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                const v = text.trim();
-                if (v && onSubmit) {
-                  onSubmit(v);
-                  setText("");
-                  setAttachments([]);
+          <div className="flex-1 relative">
+            <div className="absolute inset-0 pointer-events-none whitespace-pre-wrap break-words text-[15px] py-1 text-transparent overflow-hidden">
+              {text.split(/(\[.*?\])/g).map((part, i) => {
+                const match = part.match(/^\[(.*?)\]$/);
+                if (match) {
+                  const name = match[1];
+                  const attachment = attachments.find(a => a.name === name);
+                  if (attachment?.url) {
+                    return (
+                      <span key={i} className="inline-flex align-middle bg-white/10 rounded px-1 py-0.5 mx-0.5 border border-white/5">
+                        <img src={attachment.url} className="w-4 h-4 rounded-sm object-cover mr-1" />
+                        <span className="text-white/60 text-[10px]">{name}</span>
+                      </span>
+                    );
+                  }
                 }
-              }
-            }}
-            placeholder="输入提示词,或输入 @ 引用资产库中的角色、素材..."
-            className="flex-1 resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none py-1"
-          />
+                return part;
+              })}
+            </div>
+            <textarea
+              ref={textareaRef}
+              rows={3}
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
+                setCursorPos(e.target.selectionStart ?? 0);
+              }}
+              onKeyUp={(e) => {
+                setCursorPos((e.target as HTMLTextAreaElement).selectionStart ?? 0);
+              }}
+              onClick={(e) => {
+                setCursorPos((e.target as HTMLTextAreaElement).selectionStart ?? 0);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  const v = text.trim();
+                  if (v && onSubmit) {
+                    onSubmit(v);
+                    setText("");
+                    setAttachments([]);
+                  }
+                }
+              }}
+              placeholder="输入提示词,或输入 @ 引用资产库中的角色、素材..."
+              className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none py-1 relative z-[1]"
+            />
+          </div>
         </div>
 
         {mentionOpen && (
