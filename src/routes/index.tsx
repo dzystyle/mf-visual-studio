@@ -232,6 +232,10 @@ function SkillsWithPreview() {
           >
             <SkillCard
               {...s}
+              onTry={() => {
+                const event = new CustomEvent('select-skill', { detail: s.title });
+                window.dispatchEvent(event);
+              }}
             />
           </div>
         ))}

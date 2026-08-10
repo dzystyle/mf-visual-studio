@@ -90,19 +90,19 @@ export function SkillCard({
   image,
   onHover,
   onLeave,
+  onTry,
 }: {
   title: string;
   desc: string;
   image: string;
   onHover?: () => void;
   onLeave?: () => void;
+  onTry?: () => void;
 }) {
   return (
-    <button
+    <div
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
-      onFocus={onHover}
-      onBlur={onLeave}
       className="group relative flex w-full items-center gap-3 overflow-hidden rounded-xl border border-border bg-card/60 p-2.5 text-left transition hover:border-border/80 hover:bg-card"
     >
       <img
@@ -117,6 +117,19 @@ export function SkillCard({
         </div>
         <div className="truncate text-[11px] text-muted-foreground">{desc}</div>
       </div>
-    </button>
+      
+      {/* "Try it" button overlay on hover */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 backdrop-blur-[2px] transition-opacity group-hover:opacity-100">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onTry?.();
+          }}
+          className="rounded-full bg-white/20 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-md border border-white/20 transition hover:bg-white/40"
+        >
+          试一试
+        </button>
+      </div>
+    </div>
   );
 }
