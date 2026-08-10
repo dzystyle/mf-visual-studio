@@ -143,6 +143,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
       const after = text.slice(cursorPos);
       newText = `${before}@${name} ${after}`;
       newCursorPos = before.length + name.length + 2;
+
     } else {
       const before = text.slice(0, cursorPos);
       const after = text.slice(cursorPos);
