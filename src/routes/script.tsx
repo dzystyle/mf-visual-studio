@@ -945,7 +945,7 @@ function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: 
           <div className="flex items-center gap-2 border-t border-border/60 p-3">
             <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
               <input
-                placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            @这个弹窗还是被盖住了.`}
+                placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            看上图我希望这个@是文字和图片的,我需要你跟上图保持100%一致性.`}
                 className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none"
               />
               <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
@@ -1160,7 +1160,7 @@ function EditorPreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote
         </div>
         <div className="flex items-center gap-2 border-t border-border/60 p-3">
           <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
-            <input placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            @这个弹窗还是被盖住了.`} className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
+            <input placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            看上图我希望这个@是文字和图片的,我需要你跟上图保持100%一致性.`} className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
             <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
               <ArrowUp className="h-3 w-3" />
             </button>
