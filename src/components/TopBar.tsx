@@ -1,10 +1,11 @@
 import * as React from "react";
-import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, LogOut, LayoutGrid, Film } from "lucide-react";
+import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, LogOut, LayoutGrid, Film, Gift, Sun, Moon, Monitor, Key, Languages } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { SubscriptionDialog } from "./SubscriptionDialog";
 import logoAsset from "@/assets/logo.png.asset.json";
+import { cn } from "@/lib/utils";
 
 export function TopBar({ title }: { title?: string }) {
   return (
@@ -109,6 +110,28 @@ function UserMenu({
         <div className="space-y-0.5 px-2 pb-2">
           <MenuItem icon={LayoutGrid} label="切换为团队版" />
           <MenuItem icon={Users} label="团队管理" />
+          <MenuItem icon={Gift} label="兑换码" />
+
+          <div className="my-2 border-t border-white/5" />
+
+          {/* Theme Selector */}
+          <div className="px-3 py-2">
+            <div className="text-[10px] font-medium text-white/30 uppercase tracking-wider mb-2">外观</div>
+            <div className="flex p-1 bg-white/5 rounded-lg gap-1">
+              <ThemeButton icon={Sun} label="亮色" active={false} />
+              <ThemeButton icon={Moon} label="暗色" active={true} />
+              <ThemeButton icon={Monitor} label="跟随" active={false} />
+            </div>
+          </div>
+
+          {/* Language Selector */}
+          <div className="px-3 py-2">
+            <div className="text-[10px] font-medium text-white/30 uppercase tracking-wider mb-2">语言</div>
+            <div className="flex p-1 bg-white/5 rounded-lg gap-1">
+              <LanguageButton label="中文" active={true} icon={Languages} />
+              <LanguageButton label="English" active={false} icon={Languages} />
+            </div>
+          </div>
 
           <div className="my-2 border-t border-white/5" />
 
@@ -128,41 +151,40 @@ function UserMenu({
             </div>
           </div>
 
-          <div className="px-3 py-2">
-            <div className="flex items-center justify-between text-xs text-white/40">
-              <div className="flex items-center gap-2">
-                <div className="flex h-3.5 w-3.5 items-center justify-center rounded-sm bg-white/10">
-                  <div className="h-1.5 w-1.5 rounded-full border border-white/40" />
-                </div>
-                <span>奖励积分</span>
-              </div>
-              <span>0</span>
-            </div>
-            <div className="mt-1.5 pl-5.5 text-[11px] text-white/30">
-              <div className="flex justify-between"><span>邀请奖励</span><span>0</span></div>
-            </div>
-          </div>
-
-          <div className="px-2 pt-2">
-            <button className="w-full rounded-lg bg-white/5 py-2 text-xs font-medium text-white/60 hover:bg-white/10">
-              查看用量
-            </button>
-          </div>
-
-          <div className="my-2 border-t border-white/5" />
-
-          <MenuItem
-            icon={Globe}
-            label="语言"
-            rightContent={<span className="text-[11px] text-white/30">简体中文</span>}
-            hasChevron
-          />
-          <MenuItem icon={MessageSquare} label="反馈" />
-          <MenuItem icon={Settings} label="管理账户" />
+          <MenuItem icon={Key} label="修改密码" />
+          <MenuItem icon={LogOut} label="退出登录" className="text-red-400/80 hover:text-red-400 hover:bg-red-400/5" />
         </div>
       </PopoverContent>
     </Popover>
     </>
+  );
+}
+
+function ThemeButton({ icon: Icon, label, active }: { icon: any, label: string, active: boolean }) {
+  return (
+    <button className={cn(
+      "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-[11px] font-medium transition-all",
+      active 
+        ? "bg-white/10 text-white shadow-sm" 
+        : "text-white/40 hover:text-white/60 hover:bg-white/[0.02]"
+    )}>
+      <Icon className="h-3.5 w-3.5" />
+      {label}
+    </button>
+  );
+}
+
+function LanguageButton({ label, active, icon: Icon }: { label: string, active: boolean, icon: any }) {
+  return (
+    <button className={cn(
+      "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-[11px] font-medium transition-all",
+      active 
+        ? "bg-white/10 text-white shadow-sm" 
+        : "text-white/40 hover:text-white/60 hover:bg-white/[0.02]"
+    )}>
+      <Icon className="h-3 w-3" />
+      {label}
+    </button>
   );
 }
 
@@ -171,14 +193,19 @@ function MenuItem({
   label,
   rightContent,
   hasChevron,
+  className,
 }: {
   icon: any;
   label: string;
   rightContent?: React.ReactNode;
   hasChevron?: boolean;
+  className?: string;
 }) {
   return (
-    <button className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-white/5 group">
+    <button className={cn(
+      "flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-white/5 group",
+      className
+    )}>
       <div className="flex items-center gap-3">
         <Icon className="h-4 w-4 text-white/60 group-hover:text-white" />
         <span className="text-white/80 group-hover:text-white">{label}</span>
