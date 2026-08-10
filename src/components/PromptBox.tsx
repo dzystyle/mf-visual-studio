@@ -70,6 +70,13 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
 
   useEffect(() => {
     const lastChar = text[cursorPos - 1];
+    if (lastChar === "@") {
+      setMentionOpen(true);
+      setMentionFilter("");
+    } else if (mentionOpen && !text.slice(0, cursorPos).includes("@")) {
+      setMentionOpen(false);
+    }
+  }, [text, cursorPos]);
 
   const triggerPick = (kind: Attachment["kind"]) => {
     pendingKind.current = kind;
