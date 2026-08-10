@@ -161,7 +161,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            @这个弹窗还是被盖住了.`}
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            改成点击之后会放大,参考图2.`}
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
@@ -508,17 +508,19 @@ function MentionItem({
 
 function AttachmentChip({ a, onRemove, onAtClick }: { a: Attachment; onRemove: () => void; onAtClick?: () => void }) {
   const [showPreview, setShowPreview] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
   const Icon =
     a.kind === "image" ? ImageIcon : a.kind === "audio" ? AudioLines : a.kind === "video" ? Video : FileText;
   
   return (
     <div 
-      className="group relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-card/60 shadow-lg"
-      onMouseEnter={() => setShowPreview(true)}
+      className="group relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-card/60 shadow-lg cursor-pointer"
+      onMouseEnter={() => !isZoomed && setShowPreview(true)}
       onMouseLeave={() => setShowPreview(false)}
+      onClick={() => a.url && setIsZoomed(true)}
     >
       {a.kind === "image" && a.url ? (
-        <img src={a.url} alt={a.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-110" />
+        <img src={a.url} alt={a.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
       ) : (
         <div className="flex h-full w-full items-center justify-center rounded bg-muted/40">
           <Icon className="h-6 w-6 text-muted-foreground" />
@@ -563,6 +565,30 @@ function AttachmentChip({ a, onRemove, onAtClick }: { a: Attachment; onRemove: (
                transform: 'translateX(-50%)'
              }}>
           <img src={a.url} alt="Preview" className="max-w-[120px] max-h-[120px] rounded-md object-contain" />
+        </div>
+      )}
+      {/* Zoomed Modal */}
+      {isZoomed && a.url && (
+        <div 
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsZoomed(false);
+          }}
+        >
+          <div className="relative max-w-[90vw] max-h-[90vh] overflow-hidden rounded-2xl border border-white/10 bg-[#1A1A1A] shadow-2xl animate-in zoom-in-95 duration-200">
+            <img 
+              src={a.url} 
+              alt="Zoomed preview" 
+              className="max-w-full max-h-full object-contain" 
+            />
+            <button 
+              className="absolute top-4 right-4 h-8 w-8 rounded-full bg-black/60 flex items-center justify-center text-white/80 hover:bg-black/80 transition border border-white/10"
+              onClick={() => setIsZoomed(false)}
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       )}
     </div>
