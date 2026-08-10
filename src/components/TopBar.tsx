@@ -1,10 +1,11 @@
 import * as React from "react";
-import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, LogOut, LayoutGrid, Film } from "lucide-react";
+import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, LogOut, LayoutGrid, Film, Gift, Sun, Moon, Monitor, Key, Languages } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { SubscriptionDialog } from "./SubscriptionDialog";
 import logoAsset from "@/assets/logo.png.asset.json";
+import { cn } from "@/lib/utils";
 
 export function TopBar({ title }: { title?: string }) {
   return (
