@@ -110,8 +110,20 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     setAttachments((prev) => [...prev, ...next]);
   };
 
-  const remove = (id: string) =>
+  const remove = (id: string, name?: string) => {
     setAttachments((prev) => prev.filter((a) => a.id !== id));
+    if (name) {
+      setText(prev => {
+        const mention = `@${name}`;
+        // Find if the mention exists in the text
+        if (prev.includes(mention)) {
+          // Replace the first occurrence of the mention (and potentially a following space)
+          return prev.replace(new RegExp(`@${name}\\s?`), "");
+        }
+        return prev;
+      });
+    }
+  };
 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
     const textBeforeCursor = text.slice(0, cursorPos);
