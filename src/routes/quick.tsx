@@ -258,7 +258,7 @@ function Composer({
               }
             }}
             rows={2}
-            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            @这个弹窗还是被盖住了.`}
+            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            改成点击之后会放大,参考图2.`}
             className="min-h-16 flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
           />
         </div>
