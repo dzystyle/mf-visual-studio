@@ -98,8 +98,10 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
     const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
     const after = text.slice(cursorPos);
-    // Keep the @name in text but we will also show the chip
-    setText(`${before}@${name} ${after}`);
+    
+    // As per requirement: "不要显示@显示文字", so we don't insert @name text
+    // Instead we rely on the visual chip.
+    setText(`${before}${after}`);
     setMentionOpen(false);
     
     if (url && (kind === "image" || kind === "video")) {
