@@ -1,3 +1,5 @@
+import skillJojo from "@/assets/skill-jojo.png.asset.json";
+import skillDimension from "@/assets/skill-dimension.png.asset.json";
 import skillScript from "@/assets/skill-script.jpg";
 import skillStory from "@/assets/skill-story.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
