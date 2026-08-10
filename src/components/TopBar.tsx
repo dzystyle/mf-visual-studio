@@ -187,7 +187,26 @@ function Play({ className, fill, ...props }: any) {
 }
 
 
+function FilmIconGradient() {
+  return (
+    <div className="relative h-4 w-4 overflow-hidden rounded-[2px] bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 flex items-center justify-center">
+      <div className="grid grid-cols-1 gap-[1px]">
+        <div className="flex gap-[1px]">
+          <div className="h-[2px] w-[2px] bg-[#1A1A1A]" />
+          <div className="h-[2px] w-[2px] bg-[#1A1A1A]" />
+        </div>
+        <div className="h-1.5 w-2.5 rounded-[1px] bg-transparent border-[1.5px] border-[#1A1A1A]" />
+        <div className="flex gap-[1px]">
+          <div className="h-[2px] w-[2px] bg-[#1A1A1A]" />
+          <div className="h-[2px] w-[2px] bg-[#1A1A1A]" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function BrandMark() {
+
   return (
     <div className="absolute left-6 top-5 z-20 flex items-center gap-2">
       <div className="grid h-5 w-5 grid-cols-2 gap-[2px]">
