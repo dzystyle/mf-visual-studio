@@ -1,9 +1,9 @@
 import skillJojo from "@/assets/skill-jojo.png.asset.json";
 import skillDimension from "@/assets/skill-dimension.png.asset.json";
+import skillDestiny from "@/assets/skill-destiny.png.asset.json";
 import skillScript from "@/assets/skill-script.jpg";
 import skillStory from "@/assets/skill-story.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
-import skillMv from "@/assets/skill-mv.jpg";
 import skillProduct from "@/assets/skill-product.jpg";
 
 const SAMPLES = {
@@ -21,6 +21,18 @@ const SAMPLES = {
 
 export const hotSkills = [
   {
+    id: "destiny",
+    title: "百万主角登场动效",
+    author: "@时见鹿小创",
+    version: "V6",
+    model: "MiniMax H3",
+    desc: "主角高燃登场视频生成：用户上传主角人物图和结算画面图，基于案例提示词模板替换画风，保留极限镜头语言，并...",
+    image: skillDestiny.url,
+    video: SAMPLES.elephant,
+    tags: ["动漫游戏", "新手必用"],
+    default: false
+  },
+  {
     id: "jojo",
     title: "JOJO 风格变身玩法",
     author: "@Seast Zhu",
@@ -35,7 +47,7 @@ export const hotSkills = [
   {
     id: "gta6",
     title: "GTA 6 风格演示 (玩转我的人生)",
-    author: "@やはたうみり",
+    author: "@やはたう米り",
     version: "V10",
     model: "Seedance 2.5",
     desc: "受 GTA6 官方公开素材启发的主题视频、分镜、提示词和视觉审查。只借鉴公开素材里的视觉语法、城市气质、镜头组...",
