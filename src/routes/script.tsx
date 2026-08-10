@@ -699,7 +699,7 @@ function Composer({
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="请输入你的消息..."
+          placeholder={`描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能`}
           className="w-full bg-transparent text-[13px] text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
         />
         <div className="mt-2.5 flex items-center justify-between">
