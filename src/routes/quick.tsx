@@ -258,7 +258,7 @@ function Composer({
               }
             }}
             rows={2}
-            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门的skill再加1个.`}
+            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门Skills鼠标移动到上面会显示试一试点击试一试会跟图2一样把这个选中到输入框内.`}
             className="min-h-16 flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
           />
         </div>

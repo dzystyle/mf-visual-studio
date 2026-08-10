@@ -60,14 +60,16 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const pendingKind = useRef<Attachment["kind"]>("image");
 
   useEffect(() => {
+    const handleSelectSkill = (e: any) => {
+      const skillTitle = e.detail;
+      setSkill(skillTitle);
+    };
+    window.addEventListener('select-skill', handleSelectSkill);
+    return () => window.removeEventListener('select-skill', handleSelectSkill);
+  }, []);
+
+  useEffect(() => {
     const lastChar = text[cursorPos - 1];
-    if (lastChar === "@") {
-      setMentionOpen(true);
-      setMentionFilter("");
-    } else if (mentionOpen && !text.slice(0, cursorPos).includes("@")) {
-      setMentionOpen(false);
-    }
-  }, [text, cursorPos]);
 
   const triggerPick = (kind: Attachment["kind"]) => {
     pendingKind.current = kind;
@@ -161,7 +163,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门的skill再加1个.`}
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门Skills鼠标移动到上面会显示试一试点击试一试会跟图2一样把这个选中到输入框内.`}
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
