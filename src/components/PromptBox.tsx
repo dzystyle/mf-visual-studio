@@ -568,27 +568,28 @@ function AttachmentChip({ a, onRemove, onAtClick }: { a: Attachment; onRemove: (
         </div>
       )}
       
-      {/* Icon Overlay for @ mention style */}
-      <button 
-        onClick={(e) => {
-          e.stopPropagation();
-          onAtClick?.();
-        }}
-        className="absolute top-1 left-1 h-4 w-4 rounded-full bg-black/60 flex items-center justify-center border border-white/10 hover:bg-black/80 transition"
-      >
-        <AtSign className="h-2.5 w-2.5 text-white/80" />
-      </button>
+      {/* Icon Overlay for @ mention style (Fig 3) */}
+      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            onAtClick?.();
+          }}
+          className="h-6 w-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-white/40 transition"
+        >
+          <AtSign className="h-3.5 w-3.5 text-white" />
+        </button>
 
-      {/* Remove Button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onRemove();
-        }}
-        className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-black/60 text-white/80 opacity-0 transition group-hover:opacity-100 hover:bg-black/80"
-      >
-        <X className="h-2.5 w-2.5" />
-      </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
+          className="h-6 w-6 items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white border border-white/20 hover:bg-white/40 transition flex"
+        >
+          <X className="h-3.5 w-3.5" />
+        </button>
+      </div>
 
       {/* Type Badge */}
       {a.kind === 'video' && (
