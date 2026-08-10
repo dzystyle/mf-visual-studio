@@ -1,3 +1,5 @@
+import skillJojo from "@/assets/skill-jojo.png.asset.json";
+import skillDimension from "@/assets/skill-dimension.png.asset.json";
 import skillScript from "@/assets/skill-script.jpg";
 import skillStory from "@/assets/skill-story.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
@@ -25,7 +27,7 @@ export const hotSkills = [
     version: "V2",
     model: "Seedance 2.5",
     desc: "把任何一张图片（人物、场景、物件都行）变成一段 30 秒的 JOJO 动画风格短片：厚描边、硬阴影、高饱和和平涂、满屏...",
-    image: "https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=800&auto=format&fit=crop",
+    image: skillJojo.url,
     video: SAMPLES.bunny,
     tags: ["动漫游戏", "新手必用"],
     default: false
@@ -63,7 +65,7 @@ export const hotSkills = [
     model: "Seedance 2.5",
     subModel: "GPT Image 2",
     desc: "打破屏幕让自己喜欢的角色来到现实世界或者去到他们的世界。",
-    image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=800&auto=format&fit=crop",
+    image: skillDimension.url,
     video: SAMPLES.escape,
     tags: ["新手必用", "动漫游戏"],
     default: true
