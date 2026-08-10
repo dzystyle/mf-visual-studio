@@ -275,7 +275,6 @@ function TabBtn({
 }
 
 function StoryboardPanel({ onClose, viewMode }: { onClose: () => void; viewMode?: ViewMode }) {
-  return (
   if (viewMode === "canvas") {
     return (
       <div className="flex-1 overflow-auto bg-[#0A0A0A] relative scrollbar-hide">
