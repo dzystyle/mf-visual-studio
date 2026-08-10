@@ -169,7 +169,7 @@ function SkillsWithPreview() {
                 <div className="absolute bottom-4 left-0 w-full px-4 text-center">
                   <div className="flex items-center justify-center gap-1.5 text-[11px] text-white/80">
                     <span>适用：1-5分钟短片 · 视觉/声...</span>
-                    <Play className="h-3 w-3 rotate-[-45deg]" />
+                    <ArrowUpRight className="h-3 w-3" />
                   </div>
                 </div>
               </div>
