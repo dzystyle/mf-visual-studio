@@ -258,7 +258,7 @@ function Composer({
               }
             }}
             rows={2}
-            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            页面的整体配色我希望按照上图的这个配色走.`}
+            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            点击资产显示的弹窗默认选中作品,下面的tab切换全部改成项目下拉菜单可以选择这个项目.`}
             className="min-h-16 flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
           />
         </div>
