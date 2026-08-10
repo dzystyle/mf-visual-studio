@@ -737,8 +737,10 @@ function Composer({
               onOpenChange={setAssetsOpen} 
               onSelect={(name) => {
                 setElements((xs) => (xs.includes(name) ? xs : [...xs, name]));
-                setText(prev => prev ? `${prev} @${name}` : `@${name}`);
+                // Removed insertion of @name text in composer
+                // setText(prev => prev ? `${prev} @${name}` : `@${name}`);
               }} 
+
             />
           </div>
           <button className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground hover:bg-foreground hover:text-background">
