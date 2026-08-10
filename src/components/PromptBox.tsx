@@ -135,7 +135,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   };
 
   return (
-    <div className="glass rounded-2xl p-5 shadow-2xl relative">
+    <div className="glass rounded-2xl p-5 shadow-2xl relative z-20">
 
       <div className="relative">
         {(attachments.length > 0 || skill) && (
