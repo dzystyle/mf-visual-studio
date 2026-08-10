@@ -318,7 +318,8 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                   icon={Package}
                   label={skill ?? "Skill"}
                   active={!!skill}
-                />
+                  onClear={skill ? () => setSkill(null) : undefined}
+
               </button>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-[500px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
