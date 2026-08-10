@@ -705,10 +705,18 @@ function MentionListItem({
         onClick={onClick}
         onMouseEnter={() => setShowPreview(true)}
         onMouseLeave={() => setShowPreview(false)}
-        className="flex w-full items-center gap-3 rounded-xl px-2 py-2 hover:bg-white/5 transition text-left group"
+        className="flex w-full items-center gap-3 rounded-xl px-2 py-2 hover:bg-white/10 transition text-left group"
       >
         <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-white/5 bg-white/5 relative">
-          <img src={item.url} className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition" />
+          {item.kind === 'folder' ? (
+             <div className="h-full w-full flex items-center justify-center bg-white/5">
+                {item.name === "素材" ? <ImageIcon className="h-5 w-5 text-white/60" /> : 
+                 item.name === "角色" ? <AtSign className="h-5 w-5 text-white/60" /> :
+                 <Package className="h-5 w-5 text-white/60" />}
+             </div>
+          ) : (
+            <img src={item.url} className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition" />
+          )}
           {item.kind === "video" && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/20">
               <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[6px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
