@@ -163,7 +163,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            上面上个图是上传资产库的所有流程,100%跟上面一致,颜色可以继续用现有系统的主题色.`}
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            上传图片后图片会显示到第一行,然后在下面的输入框@其实是应用上面上传的图片然后@会把这个图片引用下面,鼠标移动到这个图片上面会显示这个.预览.参考上图我需要保证100%一致.`}
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
