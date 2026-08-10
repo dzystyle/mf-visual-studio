@@ -159,7 +159,8 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           }}
           placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            错了,上的图片还是不动.这个@文字换成这种文字加图片的形式.`}
           className="flex-1 min-w-[120px] resize-none bg-transparent text-[14px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none py-1"
-        />
+        </div>
+
 
 
         {mentionOpen && (
