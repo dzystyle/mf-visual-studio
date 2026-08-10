@@ -308,13 +308,13 @@ export function SkillPicker({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
                   <h4 className="text-[13px] font-bold text-white group-hover:text-white/90">{s.title}</h4>
-                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white">
+                  <div className="flex items-center gap-2 transition-opacity">
+                    <button className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white transition-colors">
                       <Eye className="h-3 w-3" />
                     </button>
                     <button 
                       onClick={() => onSelect?.(s.title)}
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white"
+                      className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white transition-colors"
                     >
                       <Plus className="h-3 w-3" />
                     </button>
