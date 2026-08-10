@@ -123,7 +123,7 @@ function SkillsWithPreview() {
     <div className="relative">
       {active && (
         <div
-          className="fixed z-50 pointer-events-none -translate-x-1/2 -translate-y-[calc(100%+12px)] transition-all duration-200"
+          className="fixed z-[60] pointer-events-none -translate-x-1/2 -translate-y-[calc(100%+12px)] transition-all duration-200"
           style={{
             left: position.x,
             top: position.y,
