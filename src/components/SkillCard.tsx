@@ -19,40 +19,55 @@ const SAMPLES = {
 
 export const hotSkills = [
   {
-    id: "script",
-    title: "剧本驱动型视频",
-    desc: "上传脚本生成短剧视频。",
-    image: skillScript,
+    id: "jojo",
+    title: "JOJO 风格变身玩法",
+    author: "@Seast Zhu",
+    version: "V2",
+    model: "Seedance 2.5",
+    desc: "把任何一张图片（人物、场景、物件都行）变成一段 30 秒的 JOJO 动画风格短片：厚描边、硬阴影、高饱和和平涂、满屏...",
+    image: "https://images.unsplash.com/photo-1578632738980-432a8b889d3a?q=80&w=800&auto=format&fit=crop",
     video: SAMPLES.bunny,
+    tags: ["动漫游戏", "新手必用"],
+    default: false
   },
   {
-    id: "story",
-    title: "故事驱动型视频",
-    desc: "适用于所有故事驱动型视频。",
-    image: skillStory,
+    id: "gta6",
+    title: "GTA 6 风格演示 (玩转我的人生)",
+    author: "@やはたうみり",
+    version: "V10",
+    model: "Seedance 2.5",
+    desc: "受 GTA6 官方公开素材启发的主题视频、分镜、提示词和视觉审查。只借鉴公开素材里的视觉语法、城市气质、镜头组...",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
     video: SAMPLES.elephant,
+    tags: ["新手必用", "动漫游戏"],
+    default: true
   },
   {
-    id: "reenact",
-    title: "视频拉片复刻",
-    desc: "参考现有视频以生成最终视频...",
-    image: skillReenact,
+    id: "3d-horror",
+    title: "经典 3D 日式怪谈风",
+    author: "@みお",
+    version: "V9",
+    model: "Seedance 2.5",
+    subModel: "GPT Image 2",
+    desc: "专用于生成具有日式恐怖（如《死魂曲》《零》）风格的写实 3D 游戏恐怖视频。聚焦于阴雨浓雾下的旧校舍、民居、生...",
+    image: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=800&auto=format&fit=crop",
     video: SAMPLES.blazes,
+    tags: ["大师美学", "动漫游戏"],
+    default: false
   },
   {
-    id: "mv",
-    title: "音乐 MV",
-    desc: "用于通过已上传的音乐生成音...",
-    image: skillMv,
+    id: "dimension",
+    title: "次元破壁互动玩法",
+    author: "@みお",
+    version: "V8",
+    model: "Seedance 2.5",
+    subModel: "GPT Image 2",
+    desc: "打破屏幕让自己喜欢的角色来到现实世界或者去到他们的世界。",
+    image: "https://images.unsplash.com/photo-1560169897-bb334ee5b30a?q=80&w=800&auto=format&fit=crop",
     video: SAMPLES.escape,
-  },
-  {
-    id: "product",
-    title: "商品宣传短片",
-    desc: "基于上传的产品图片制作商业...",
-    image: skillProduct,
-    video: SAMPLES.fun,
-  },
+    tags: ["新手必用", "动漫游戏"],
+    default: true
+  }
 ];
 
 export function SkillCard({
