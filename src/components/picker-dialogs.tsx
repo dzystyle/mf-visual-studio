@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X } from "lucide-react";
+import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X, Code, Calendar } from "lucide-react";
 import skillScript from "@/assets/skill-script.jpg";
 import skillStory from "@/assets/skill-story.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
@@ -269,6 +269,7 @@ export function SkillPicker({
   onSelect?: (title: string) => void;
 }) {
   const [tab, setTab] = useState<typeof categories[number]["key"]>("newbie");
+  const [previewSkill, setPreviewSkill] = useState<typeof skillList[number] | null>(null);
   
   return (
     <div className="w-[480px] text-white">
@@ -314,7 +315,10 @@ export function SkillPicker({
                 <div className="flex items-center justify-between">
                   <h4 className="text-[13px] font-bold text-white group-hover:text-white/90">{s.title}</h4>
                   <div className="flex items-center gap-2 transition-opacity">
-                    <button className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white transition-colors">
+                    <button 
+                      onClick={() => setPreviewSkill(s)}
+                      className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white transition-colors"
+                    >
                       <Eye className="h-3 w-3" />
                     </button>
                     <button 
@@ -333,6 +337,94 @@ export function SkillPicker({
           ))}
         </div>
       </div>
+
+      {/* Skill Detail Preview Modal */}
+      <Dialog open={!!previewSkill} onOpenChange={(open) => !open && setPreviewSkill(null)}>
+        <DialogContent className="max-w-[560px] p-0 border-white/10 bg-[#121212] overflow-hidden rounded-3xl shadow-2xl">
+          <div className="relative">
+            {/* Header Image */}
+            <div className="relative aspect-[16/9] w-full overflow-hidden">
+              <img src={previewSkill?.img} className="w-full h-full object-cover" alt={previewSkill?.title} />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent" />
+              
+              {/* Top Controls */}
+              <div className="absolute top-4 left-4">
+                <div className="rounded-full bg-black/40 backdrop-blur px-3 py-1 text-[11px] text-white/80">
+                  Seedance 2.5
+                </div>
+              </div>
+              <button 
+                onClick={() => setPreviewSkill(null)}
+                className="absolute top-4 right-4 h-7 w-7 flex items-center justify-center rounded-full bg-black/40 backdrop-blur text-white/60 hover:text-white transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+
+              {/* Title */}
+              <div className="absolute bottom-6 left-6 pr-6">
+                <h2 className="text-xl font-bold text-white tracking-tight">{previewSkill?.title}</h2>
+              </div>
+            </div>
+
+            {/* Content Area */}
+            <div className="px-6 pb-6">
+              <div className="flex border-b border-white/5 mb-6">
+                <button className="px-1 pb-3 text-sm font-medium text-white border-b-2 border-white">内容</button>
+              </div>
+
+              <div className="relative rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-[15px] font-bold text-white">流程规划：</div>
+                  <div className="flex items-center gap-1.5 p-0.5 rounded-lg bg-white/5">
+                    <button className="p-2 rounded-md bg-white/10 text-white shadow-sm">
+                      <Eye className="h-4 w-4" />
+                    </button>
+                    <button className="p-2 rounded-md text-white/40 hover:text-white/60">
+                      <Code className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-4 text-[13px] leading-relaxed text-white/60">
+                  <p className="font-medium text-white/80">全流程规划逻辑与依赖关系：</p>
+                  <ol className="space-y-4 list-decimal pl-4">
+                    <li>
+                      <span className="font-medium text-white/80">全局设定初始化：</span> 创建并锁定 Final_Video_Spec.md (明确画面比例默认为 16:9; 受开放世界犯罪/街头题材启发的主题视频、分镜、提示词和视觉审查。只借鉴其视觉语法、城市气质、镜头组织和角色类型，不复刻官方镜头、Logo、UI、商标、车牌或具体台词。) → text_editor。
+                      <ul className="mt-2 list-disc pl-4 space-y-2 opacity-80">
+                        <li>视觉风格不是单纯“霓虹犯罪”，而是“热带度假广告 + 真实犯罪纪录片 + 社交媒体荒诞短视频 + 开放世界城市展示”的混合体。画面表层热闹、性感、阳光、夸张；底层始终有追捕、债务、人情、走私、音乐产业、帮派和情侣逃亡的压力。</li>
+                      </ul>
+                    </li>
+                    <li>
+                      <span className="font-medium text-white/80">分镜大纲设计：</span> 设计完整故事分镜脚本 (时长默认控制在30-60s的小篇幅游戏机展示demo，除非用户有明确的长故事需求)，包含 key_elements (角色、场景、道具) 及 shot 列表。此处提供两种角色创作路径，由用户进行选择:
+                    </li>
+                  </ol>
+                </div>
+              </div>
+
+              <div className="mt-8 flex items-center justify-between text-[11px] text-white/20">
+                <div className="flex items-center gap-1.5">
+                  最近一次更新时间 2026-08-10 20:22
+                </div>
+              </div>
+              
+              <div className="h-px bg-white/5 my-6" />
+
+              <div className="flex justify-center">
+                <button 
+                  onClick={() => {
+                    if (previewSkill) onSelect?.(previewSkill.title);
+                    setPreviewSkill(null);
+                  }}
+                  className="flex items-center gap-2 rounded-full bg-white px-8 py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-all shadow-xl shadow-white/5"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  去使用 Skill
+                </button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
