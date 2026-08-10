@@ -258,7 +258,7 @@ function Composer({
               }
             }}
             rows={2}
-            placeholder="使用@ 快速调用参考能力,支持文本、图片、音频、视频全能参考,例如:@图片1 参考 @音频1 的音色,模仿@视频1 的动作"
+            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个被遮盖住了,需要修复一下。`}
             className="min-h-16 flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
           />
         </div>
