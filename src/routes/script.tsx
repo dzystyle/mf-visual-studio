@@ -945,11 +945,25 @@ function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: 
           <div className="flex items-center gap-2 border-t border-border/60 p-3">
             <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
               <input
-              placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            输入框@后会被热门的skills盖住,修复一下.`}
+                placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个是画布模式,是根据底部的这个菜单来进行切换画布模式和列表模式.`}
                 className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none"
               />
               <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
                 <ArrowUp className="h-3 w-3" />
+              </button>
+            </div>
+            <div className="flex items-center gap-1 rounded-full bg-accent/30 p-1">
+              <button
+                onClick={() => setMode("storyboard")}
+                className={`flex h-7 w-7 items-center justify-center rounded-full transition-all ${mode === "storyboard" ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => setMode("timeline")}
+                className={`flex h-7 w-7 items-center justify-center rounded-full transition-all ${mode === "timeline" ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                <LayoutGrid className="h-4 w-4 rotate-90" />
               </button>
             </div>
             <button className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-[12px] text-foreground hover:bg-card">
@@ -961,6 +975,7 @@ function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: 
           </div>
         </div>
       </div>
+
 
       {/* File area */}
       <div className="flex h-[260px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
