@@ -440,18 +440,30 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             </PopoverContent>
           </Popover>
         </div>
-        <button
-          onClick={() => {
-            const v = text.trim();
-            if (v && onSubmit) {
-              onSubmit(v);
-              setText("");
-            }
-          }}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
-        >
-          <ArrowUp className="h-4 w-4" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition hover:bg-accent hover:text-foreground"
+            onClick={() => {
+              // Voice input logic would go here
+              console.log("Voice input triggered");
+            }}
+          >
+            <Mic className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => {
+              const v = text.trim();
+              if (v && onSubmit) {
+                onSubmit(v);
+                setText("");
+              }
+            }}
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
+          >
+            <ArrowUp className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
     </div>
