@@ -117,23 +117,30 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     const textBeforeCursor = text.slice(0, cursorPos);
     const lastAtPos = textBeforeCursor.lastIndexOf("@");
     
-    if (lastAtPos !== -1) {
+    let newText: string;
+    let newCursorPos: number;
+
+    if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
-      // Ensure there's a space after the mention
-      const newText = `${before}@${name} ${after}`;
-      setText(newText);
-      
-      // Update cursor position to be after the mention and space
-      const newCursorPos = before.length + name.length + 2;
-      setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.focus();
-          textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
-          setCursorPos(newCursorPos);
-        }
-      }, 0);
+      newText = `${before}@${name} ${after}`;
+      newCursorPos = before.length + name.length + 2;
+    } else {
+      const before = text.slice(0, cursorPos);
+      const after = text.slice(cursorPos);
+      const prefix = before.endsWith(" ") || before === "" ? "" : " ";
+      newText = `${before}${prefix}@${name} ${after}`;
+      newCursorPos = before.length + prefix.length + name.length + 2;
     }
+
+    setText(newText);
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
+        setCursorPos(newCursorPos);
+      }
+    }, 0);
     
     setMentionOpen(false);
     
