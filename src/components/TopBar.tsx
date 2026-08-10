@@ -4,6 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { SubscriptionDialog } from "./SubscriptionDialog";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 export function TopBar({ title }: { title?: string }) {
   return (
@@ -209,12 +210,7 @@ export function BrandMark() {
 
   return (
     <div className="absolute left-6 top-5 z-20 flex items-center gap-2">
-      <div className="grid h-5 w-5 grid-cols-2 gap-[2px]">
-        <div className="rounded-[1px] bg-aurora-pink" />
-        <div className="rounded-[1px] bg-aurora-orange" />
-        <div className="rounded-[1px] bg-aurora-blue" />
-        <div className="rounded-[1px] bg-foreground" />
-      </div>
+      <img src={logoAsset.url} alt="Artrail Logo" className="h-6 w-auto" />
       <span className="text-[15px] font-semibold tracking-tight">artrail.ai</span>
     </div>
   );

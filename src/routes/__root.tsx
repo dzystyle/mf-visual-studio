@@ -59,7 +59,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "Artrail 1.0:把品味和习惯写进 Skill,让精力回归创意。",
       },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
