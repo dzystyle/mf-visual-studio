@@ -258,7 +258,7 @@ function Composer({
               }
             }}
             rows={2}
-            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门Skills第一个和第四个可以用上面图片的内容.`}
+            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门的skill再加1个.`}
             className="min-h-16 flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
           />
         </div>

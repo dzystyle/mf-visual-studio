@@ -161,7 +161,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门Skills第一个和第四个可以用上面图片的内容.`}
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门的skill再加1个.`}
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
