@@ -340,7 +340,7 @@ export function SkillPicker({
 
       {/* Skill Detail Preview Modal */}
       <Dialog open={!!previewSkill} onOpenChange={(open) => !open && setPreviewSkill(null)}>
-        <DialogContent className="max-w-[560px] p-0 border-white/10 bg-[#121212] overflow-hidden rounded-3xl shadow-2xl">
+        <DialogContent className="max-w-[560px] p-0 border-white/10 bg-[#121212] overflow-hidden rounded-3xl shadow-2xl [&>button]:hidden">
           <div className="relative">
             {/* Header Image */}
             <div className="relative aspect-[16/9] w-full overflow-hidden">
