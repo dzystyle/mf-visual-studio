@@ -125,50 +125,51 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     <div className="glass rounded-2xl p-5 shadow-2xl relative">
 
       <div className="relative">
-        {attachments.length > 0 && (
-          <div className="mb-3 flex flex-wrap gap-2">
-            {attachments.map((a) => (
-              <AttachmentChip 
-                key={a.id} 
-                a={a} 
-                onRemove={() => remove(a.id)} 
-                onAtClick={() => {
-                  setMentionOpen(true);
-                  setMentionFilter("");
-                  textareaRef.current?.focus();
-                }}
-              />
-            ))}
-          </div>
-        )}
-        <textarea
-          ref={textareaRef}
-          rows={3}
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-            setCursorPos(e.target.selectionStart);
-          }}
-          onKeyUp={(e) => {
-            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-          }}
-          onClick={(e) => {
-            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              const v = text.trim();
-              if (v && onSubmit) {
-                onSubmit(v);
-                setText("");
-                setAttachments([]);
+        <div className="flex flex-wrap items-center gap-2 mb-2 min-h-[20px]">
+          {attachments.map((a) => (
+            <AttachmentChip 
+              key={a.id} 
+              a={a} 
+              onRemove={() => remove(a.id)} 
+              onAtClick={() => {
+                setMentionOpen(true);
+                setMentionFilter("");
+                textareaRef.current?.focus();
+              }}
+            />
+          ))}
+          <textarea
+            ref={textareaRef}
+            rows={1}
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+              setCursorPos(e.target.selectionStart);
+            }}
+            onKeyUp={(e) => {
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+            }}
+            onFocus={(e) => {
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+            }}
+            onClick={(e) => {
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                const v = text.trim();
+                if ((v || attachments.length > 0) && onSubmit) {
+                  onSubmit(v);
+                  setText("");
+                  setAttachments([]);
+                }
               }
-            }
-          }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            我希望@完后下面的文字就显示的是对应的图片的缩列图小图标.把文字换成小图标。`}
-          className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
-        />
+            }}
+            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            我希望@完后下面的文字就显示的是对应的图片的缩列图小图标.把文字换成小图标。`}
+            className="flex-1 min-w-[120px] resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+          />
+        </div>
 
         {mentionOpen && (
           <div className="absolute top-full left-0 mt-2 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
