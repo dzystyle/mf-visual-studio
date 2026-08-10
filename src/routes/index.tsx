@@ -141,19 +141,42 @@ function SkillsWithPreview() {
                 playsInline
                 className="h-full w-full object-cover"
               />
-              <div className="absolute top-2 right-2 rounded bg-black/60 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur">
-                MiniMax H3
+              <div className="absolute top-2 right-2 flex gap-1">
+                {active.subModel && (
+                  <div className="rounded bg-black/60 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur">
+                    {active.subModel}
+                  </div>
+                )}
+                <div className="rounded bg-black/60 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur">
+                  {active.model}
+                </div>
               </div>
             </div>
             <div className="p-4">
-              <div className="text-[10px] text-white/40 mb-1">@时见鹿小创</div>
-              <div className="text-sm font-bold text-white mb-2">{active.title}</div>
-              <div className="text-[11px] leading-relaxed text-white/60 mb-3">
+              <div className="text-[10px] text-white/40 mb-1">{active.author}</div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-sm font-bold text-white truncate mr-2">{active.title}</div>
+                <div className="rounded bg-white/10 px-1 text-[9px] font-medium text-white/60">
+                  {active.version}
+                </div>
+              </div>
+              <div className="text-[11px] leading-relaxed text-white/60 mb-3 line-clamp-2">
                 {active.desc}
               </div>
-              <div className="flex gap-2">
-                <span className="rounded-full bg-white/5 px-2 py-0.5 text-[9px] text-white/40">新手必用</span>
-                <span className="rounded-full bg-white/5 px-2 py-0.5 text-[9px] text-white/40">动漫游戏</span>
+              <div className="flex items-center justify-between">
+                <div className="flex gap-2">
+                  {active.tags?.map(tag => (
+                    <span key={tag} className="rounded-full bg-white/5 px-2 py-0.5 text-[9px] text-white/40">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[9px] text-white/60">{active.default ? "取消默认" : "设为默认"}</span>
+                  <div className={`h-3 w-6 rounded-full p-0.5 transition-colors ${active.default ? 'bg-emerald-500' : 'bg-white/20'}`}>
+                    <div className={`h-2 w-2 rounded-full bg-white transition-transform ${active.default ? 'translate-x-3' : 'translate-x-0'}`} />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
