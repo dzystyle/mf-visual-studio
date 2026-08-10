@@ -32,6 +32,7 @@ type Attachment = {
   name: string;
   kind: "image" | "audio" | "video" | "text";
   url?: string;
+  isMentioned?: boolean;
 };
 
 const ACCEPT_MAP: Record<Attachment["kind"], string> = {
