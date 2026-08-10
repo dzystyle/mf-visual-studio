@@ -183,7 +183,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门Skills鼠标移动到上面会显示试一试点击试一试会跟图2一样把这个选中到输入框内.`}
+          placeholder="输入提示词,或输入 @ 引用资产库中的角色、素材..."
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
