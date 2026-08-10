@@ -423,7 +423,42 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               </div>
             </PopoverContent>
           </Popover>
+      </div>
+      
+      {attachments.some(a => a.isMentioned) && (
+        <div className="mt-4 flex flex-wrap gap-2 pt-4 border-t border-white/5">
+          {attachments.filter(a => a.isMentioned).map((a) => (
+            <div key={a.id} className="relative group">
+              <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 bg-card/60">
+                {a.url ? (
+                  <img src={a.url} alt={a.name} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+              <button 
+                onClick={() => setAttachments(prev => prev.map(item => item.id === a.id ? { ...item, isMentioned: false } : item))}
+                className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+              >
+                <X className="h-2.5 w-2.5 text-white" />
+              </button>
+              
+              {/* Reference indicator line */}
+              <div className="absolute -right-2 top-0 bottom-0 w-[1px] bg-white/20" />
+              
+              {/* Hover Preview for mentioned items (Fig 4) */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-[110]">
+                <div className="bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl p-4 overflow-hidden min-w-[200px]">
+                  <div className="text-[12px] text-white font-medium mb-2">画布生图</div>
+                  <img src={a.url} alt="Large Preview" className="w-[180px] h-[320px] rounded-xl object-cover" />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
+      )}
         <button
           onClick={() => {
             const v = text.trim();
