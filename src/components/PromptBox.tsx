@@ -162,9 +162,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
         />
       </div>
 
-
-
-
         {mentionOpen && (
           <div className="absolute top-full left-0 mt-2 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="p-3 border-b border-white/5">
@@ -203,8 +200,10 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 打开资产库
               </button>
             </div>
+          </div>
         )}
       </div>
+
 
       <div className="mt-4 flex items-center justify-between">
         <div className="flex flex-wrap items-center gap-2">
