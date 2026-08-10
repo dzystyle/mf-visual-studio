@@ -1021,27 +1021,33 @@ function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: 
       </div>
 
       {/* File area */}
-      <div className="flex h-[260px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
-        <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
-          <div className="flex items-center gap-1.5 text-xs">
-            <FolderOpen className="h-3.5 w-3.5" />
+      <div className="flex h-[280px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-[#0f0f12]">
+        <div className="flex h-11 items-center justify-between border-b border-border/60 px-3">
+          <div className="flex items-center gap-1.5 text-sm font-medium text-foreground/90">
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
             文件区
           </div>
-          <div className="flex items-center gap-3">
-            <label className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-              <span className="relative inline-flex h-3.5 w-7 items-center rounded-full bg-muted/60">
-                <span className="absolute left-0.5 h-2.5 w-2.5 rounded-full bg-foreground/70" />
-              </span>
-              只展示未分配素材
-            </label>
-            <button className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground">
-              <MoreHorizontal className="h-3.5 w-3.5" />
-            </button>
-            <button className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground">
-              <X className="h-3.5 w-3.5" />
-            </button>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-[12px] text-muted-foreground">只展示未分配素材</span>
+              <div className="h-4 w-8 rounded-full bg-muted/60 relative p-0.5">
+                 <div className="h-3 w-3 rounded-full bg-foreground/60 shadow-sm" />
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              <button className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent/50 hover:text-foreground">
+                <MoreHorizontal className="h-4 w-4" />
+              </button>
+              <button
+                onClick={onClose}
+                className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
+
         <div className="flex-1 overflow-y-auto scrollbar-hide p-3">
           <div className="grid grid-cols-6 gap-2">
             {fileAssets.map((a, i) => (
