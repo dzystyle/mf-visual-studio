@@ -98,8 +98,10 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
     const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
     const after = text.slice(cursorPos);
-    // Keep the @name in text but we will also show the chip
-    setText(`${before}@${name} ${after}`);
+    
+    // As per requirement: "不要显示@显示文字", so we don't insert @name text
+    // Instead we rely on the visual chip.
+    setText(`${before}${after}`);
     setMentionOpen(false);
     
     if (url && (kind === "image" || kind === "video")) {
@@ -161,7 +163,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个被遮盖住了,需要修复一下。`}
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            上传完素材后@是展示这个小图,看上面图片.不要显示@显示文字。`}
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
@@ -276,13 +278,9 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                   url
                 }
               ]);
-              setText(prev => {
-                const mention = `@${name}`;
-                if (!prev) return mention;
-                if (prev.endsWith(' ')) return prev + mention;
-                return prev + ' ' + mention;
-              });
+              setText(prev => prev);
             }} 
+
           />
 
 
