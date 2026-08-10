@@ -4,6 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { SubscriptionDialog } from "./SubscriptionDialog";
+import { useTheme } from "@/hooks/use-theme";
 import logoAsset from "@/assets/logo.png.asset.json";
 import { cn } from "@/lib/utils";
 
@@ -69,6 +70,7 @@ function UserMenu({
   onMouseLeave: () => void;
 }) {
   const [showSubscription, setShowSubscription] = React.useState(false);
+  const { theme, setTheme } = useTheme();
 
   return (
     <>
@@ -118,9 +120,9 @@ function UserMenu({
           <div className="px-3 py-2">
             <div className="text-[10px] font-medium text-white/30 uppercase tracking-wider mb-2">外观</div>
             <div className="flex p-1 bg-white/5 rounded-lg gap-1">
-              <ThemeButton icon={Sun} label="亮色" active={false} />
-              <ThemeButton icon={Moon} label="暗色" active={true} />
-              <ThemeButton icon={Monitor} label="跟随" active={false} />
+              <ThemeButton icon={Sun} label="亮色" active={theme === 'light'} onClick={() => setTheme('light')} />
+              <ThemeButton icon={Moon} label="暗色" active={theme === 'dark'} onClick={() => setTheme('dark')} />
+              <ThemeButton icon={Monitor} label="跟随" active={theme === 'system'} onClick={() => setTheme('system')} />
             </div>
           </div>
 
@@ -160,9 +162,11 @@ function UserMenu({
   );
 }
 
-function ThemeButton({ icon: Icon, label, active }: { icon: any, label: string, active: boolean }) {
+function ThemeButton({ icon: Icon, label, active, onClick }: { icon: any, label: string, active: boolean, onClick: () => void }) {
   return (
-    <button className={cn(
+    <button 
+      onClick={onClick}
+      className={cn(
       "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-[11px] font-medium transition-all",
       active 
         ? "bg-white/10 text-white shadow-sm" 

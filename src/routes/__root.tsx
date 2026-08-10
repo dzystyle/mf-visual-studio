@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 import { Sidebar } from "@/components/Sidebar";
+import { useTheme } from "@/hooks/use-theme";
 
 function NotFoundComponent() {
   return (
@@ -85,6 +86,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  useTheme();
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
