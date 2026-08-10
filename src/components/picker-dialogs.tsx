@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X, ChevronDown } from "lucide-react";
+import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X } from "lucide-react";
 import skillScript from "@/assets/skill-script.jpg";
 import skillStory from "@/assets/skill-story.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
@@ -402,37 +402,24 @@ export function ElementsPicker({
 
   return (
     <div className="w-[900px] bg-white text-black overflow-hidden flex flex-col h-[640px]">
-      {/* Header Tabs with Project Dropdown */}
-      <div className="flex items-center px-8 pt-6 border-b border-gray-100">
-        <div className="flex items-center gap-8">
-          {assetTabs.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`pb-4 text-[15px] font-medium transition-all relative ${
-                tab === t.key ? "text-black" : "text-gray-400 hover:text-gray-600"
-              }`}
-            >
-              {t.label}
-              {tab === t.key && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-black" />
-              )}
-            </button>
-          ))}
-        </div>
-        
-        <div className="ml-8 pb-4">
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition text-[13px] font-medium text-gray-600">
-            <span>项目: 默认项目</span>
-            <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
-          </div>
-        </div>
-        
+      {/* Header Tabs */}
+      <div className="flex items-center gap-8 px-8 pt-6 border-b border-gray-100">
+        {assetTabs.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`pb-4 text-[15px] font-medium transition-all relative ${
+              tab === t.key ? "text-black" : "text-gray-400 hover:text-gray-600"
+            }`}
+          >
+            {t.label}
+            {tab === t.key && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-black" />
+            )}
+          </button>
+        ))}
         <div className="flex-1" />
-        <button 
-          onClick={() => onSelect?.('', '', '')} 
-          className="mb-4 flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100 transition"
-        >
+        <button className="mb-4 flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100 transition">
           <X className="h-4 w-4 text-gray-400" />
         </button>
       </div>
