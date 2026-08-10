@@ -118,49 +118,52 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
 
   return (
     <div className="glass rounded-2xl p-5 shadow-2xl relative">
+
       <div className="relative">
-        <div className="relative flex flex-wrap items-center gap-2 min-h-[44px] bg-white/[0.02] border border-white/5 rounded-xl px-3 py-2 transition-all focus-within:border-white/10">
-          {attachments.map((a) => (
-            <AttachmentChip 
-              key={a.id} 
-              a={a} 
-              onRemove={() => remove(a.id)} 
-              onAtClick={() => {
-                setMentionOpen(true);
-                setMentionFilter("");
-                textareaRef.current?.focus();
-              }}
-            />
-          ))}
-          <textarea
-            ref={textareaRef}
-            rows={1}
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-              setCursorPos(e.target.selectionStart);
-            }}
-            onKeyUp={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-            }}
-            onClick={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                const v = text.trim();
-                if (v && onSubmit) {
-                  onSubmit(v);
-                  setText("");
-                  setAttachments([]);
-                }
+        {attachments.length > 0 && (
+          <div className="mb-3 flex flex-wrap gap-2">
+            {attachments.map((a) => (
+              <AttachmentChip 
+                key={a.id} 
+                a={a} 
+                onRemove={() => remove(a.id)} 
+                onAtClick={() => {
+                  setMentionOpen(true);
+                  setMentionFilter("");
+                  textareaRef.current?.focus();
+                }}
+              />
+            ))}
+          </div>
+        )}
+        <textarea
+          ref={textareaRef}
+          rows={3}
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+            setCursorPos(e.target.selectionStart);
+          }}
+          onKeyUp={(e) => {
+            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+          }}
+          onClick={(e) => {
+            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              const v = text.trim();
+              if (v && onSubmit) {
+                onSubmit(v);
+                setText("");
+                setAttachments([]);
               }
-            }}
-            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            错了,上的图片还是不动.这个@文字换成这种文字加图片的形式.`}
-            className="flex-1 min-w-[120px] resize-none bg-transparent text-[14px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none py-1"
-          />
-        </div>
+            }
+          }}
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            看上图我希望这个@是文字和图片的,我需要你跟上图保持100%一致性.`}
+          className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+        />
 
         {mentionOpen && (
           <div className="absolute top-full left-0 mt-2 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
@@ -203,9 +206,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           </div>
         )}
       </div>
-
-
-
       <div className="mt-4 flex items-center justify-between">
         <div className="flex flex-wrap items-center gap-2">
           <Popover open={plusOpen} onOpenChange={setPlusOpen}>
@@ -431,10 +431,10 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           <ArrowUp className="h-4 w-4" />
         </button>
       </div>
+
     </div>
   );
 }
-
 
 function AddItem({
   icon: Icon,
