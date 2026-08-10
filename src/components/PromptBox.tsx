@@ -64,6 +64,12 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     const handleSelectSkill = (e: any) => {
       const skillTitle = e.detail;
       setSkill(skillTitle);
+      setText(prev => {
+        const mention = `@${skillTitle}`;
+        if (!prev) return mention;
+        if (prev.endsWith(' ')) return prev + mention;
+        return prev + ' ' + mention;
+      });
     };
     window.addEventListener('select-skill', handleSelectSkill);
     return () => window.removeEventListener('select-skill', handleSelectSkill);
