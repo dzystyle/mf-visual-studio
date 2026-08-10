@@ -98,10 +98,8 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
     const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
     const after = text.slice(cursorPos);
-    
-    // As per requirement: "不要显示@显示文字", so we don't insert @name text
-    // Instead we rely on the visual chip.
-    setText(`${before}${after}`);
+    // Keep the @name in text but we will also show the chip
+    setText(`${before}@${name} ${after}`);
     setMentionOpen(false);
     
     if (url && (kind === "image" || kind === "video")) {
@@ -163,7 +161,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            上传图片后图片会显示到第一行,然后在下面的输入框@其实是应用上面上传的图片然后@会把这个图片引用下面,鼠标移动到这个图片上面会显示这个.预览.参考上图我需要保证100%一致.`}
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个被遮盖住了,需要修复一下。`}
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
@@ -278,9 +276,13 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                   url
                 }
               ]);
-              setText(prev => prev);
+              setText(prev => {
+                const mention = `@${name}`;
+                if (!prev) return mention;
+                if (prev.endsWith(' ')) return prev + mention;
+                return prev + ' ' + mention;
+              });
             }} 
-
           />
 
 

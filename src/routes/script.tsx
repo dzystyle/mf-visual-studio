@@ -699,7 +699,7 @@ function Composer({
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            上传图片后图片会显示到第一行,然后在下面的输入框@其实是应用上面上传的图片然后@会把这个图片引用下面,鼠标移动到这个图片上面会显示这个.预览.参考上图我需要保证100%一致.`}
+          placeholder="请输入你的消息..."
           className="w-full bg-transparent text-[13px] text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
         />
         <div className="mt-2.5 flex items-center justify-between">
@@ -737,10 +737,8 @@ function Composer({
               onOpenChange={setAssetsOpen} 
               onSelect={(name) => {
                 setElements((xs) => (xs.includes(name) ? xs : [...xs, name]));
-                // Removed insertion of @name text in composer
-                // setText(prev => prev ? `${prev} @${name}` : `@${name}`);
+                setText(prev => prev ? `${prev} @${name}` : `@${name}`);
               }} 
-
             />
           </div>
           <button className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground hover:bg-foreground hover:text-background">
@@ -947,7 +945,7 @@ function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: 
           <div className="flex items-center gap-2 border-t border-border/60 p-3">
             <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
               <input
-              placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            上传图片后图片会显示到第一行,然后在下面的输入框@其实是应用上面上传的图片然后@会把这个图片引用下面,鼠标移动到这个图片上面会显示这个.预览.参考上图我需要保证100%一致.`}
+                placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个被遮盖住了,需要修复一下。`}
                 className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none"
               />
               <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
@@ -1162,7 +1160,7 @@ function EditorPreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote
         </div>
         <div className="flex items-center gap-2 border-t border-border/60 p-3">
           <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
-            <input placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            上传图片后图片会显示到第一行,然后在下面的输入框@其实是应用上面上传的图片然后@会把这个图片引用下面,鼠标移动到这个图片上面会显示这个.预览.参考上图我需要保证100%一致.`} className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
+            <input placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            这个被遮盖住了,需要修复一下。`} className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
             <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
               <ArrowUp className="h-3 w-3" />
             </button>
