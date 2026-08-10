@@ -159,7 +159,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 </button>
               </div>
             )}
-            {attachments.map((a) => (
+            {attachments.filter(a => !text.includes(`[${a.name}]`)).map((a) => (
               <AttachmentChip 
                 key={a.id} 
                 a={a} 
