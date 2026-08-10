@@ -114,10 +114,27 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     setAttachments((prev) => prev.filter((a) => a.id !== id));
 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
-    const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
-    const after = text.slice(cursorPos);
-    // Keep the @name in text but we will also show the chip
-    setText(`${before}@${name} ${after}`);
+    const textBeforeCursor = text.slice(0, cursorPos);
+    const lastAtPos = textBeforeCursor.lastIndexOf("@");
+    
+    if (lastAtPos !== -1) {
+      const before = text.slice(0, lastAtPos);
+      const after = text.slice(cursorPos);
+      // Ensure there's a space after the mention
+      const newText = `${before}@${name} ${after}`;
+      setText(newText);
+      
+      // Update cursor position to be after the mention and space
+      const newCursorPos = before.length + name.length + 2;
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.focus();
+          textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
+          setCursorPos(newCursorPos);
+        }
+      }, 0);
+    }
+    
     setMentionOpen(false);
     
     if (url && (kind === "image" || kind === "video")) {
@@ -389,12 +406,12 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 )}
               </div>
               <div className="text-[10px] text-muted-foreground px-2 py-1 mb-1 opacity-60">其他角色</div>
-              <MentionItem label="场景01" img="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" active={selectedCharacter === "场景01"} onClick={() => setSelectedCharacter("场景01")} />
-              <MentionItem label="角色01" img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" active={selectedCharacter === "角色01"} onClick={() => setSelectedCharacter("角色01")} />
+              <MentionItem label="场景01" img="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" active={selectedCharacter === "场景01"} onClick={() => { setSelectedCharacter("场景01"); handleMentionSelect("场景01", "image", "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop"); }} />
+              <MentionItem label="角色01" img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" active={selectedCharacter === "角色01"} onClick={() => { setSelectedCharacter("角色01"); handleMentionSelect("角色01", "image", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop"); }} />
               <div className="text-[10px] text-muted-foreground px-2 py-1 mt-2 mb-1 opacity-60">推荐角色</div>
-              <MentionItem label="皮皮特PiPi" icon={<div className="w-full h-full bg-accent flex items-center justify-center text-[10px]">P</div>} active={selectedCharacter === "皮皮特PiPi"} onClick={() => setSelectedCharacter("皮皮特PiPi")} />
-              <MentionItem label="萧衍" img="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop" active={selectedCharacter === "萧衍"} onClick={() => setSelectedCharacter("萧衍")} />
-              <MentionItem label="西施" img="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop" active={selectedCharacter === "西施"} onClick={() => setSelectedCharacter("西施")} />
+              <MentionItem label="皮皮特PiPi" icon={<div className="w-full h-full bg-accent flex items-center justify-center text-[10px]">P</div>} active={selectedCharacter === "皮皮特PiPi"} onClick={() => { setSelectedCharacter("皮皮特PiPi"); handleMentionSelect("皮皮特PiPi", "image", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop"); }} />
+              <MentionItem label="萧衍" img="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop" active={selectedCharacter === "萧衍"} onClick={() => { setSelectedCharacter("萧衍"); handleMentionSelect("萧衍", "image", "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop"); }} />
+              <MentionItem label="西施" img="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop" active={selectedCharacter === "西施"} onClick={() => { setSelectedCharacter("西施"); handleMentionSelect("西施", "image", "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop"); }} />
             </PopoverContent>
           </Popover>
 
