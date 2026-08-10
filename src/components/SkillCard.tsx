@@ -25,7 +25,7 @@ export const hotSkills = [
     version: "V2",
     model: "Seedance 2.5",
     desc: "把任何一张图片（人物、场景、物件都行）变成一段 30 秒的 JOJO 动画风格短片：厚描边、硬阴影、高饱和和平涂、满屏...",
-    image: "https://images.unsplash.com/photo-1578632738980-432a8b889d3a?q=80&w=800&auto=format&fit=crop&sig=1",
+    image: "https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=800&auto=format&fit=crop",
     video: SAMPLES.bunny,
     tags: ["动漫游戏", "新手必用"],
     default: false
@@ -63,7 +63,7 @@ export const hotSkills = [
     model: "Seedance 2.5",
     subModel: "GPT Image 2",
     desc: "打破屏幕让自己喜欢的角色来到现实世界或者去到他们的世界。",
-    image: "https://images.unsplash.com/photo-1560169897-bb334ee5b30a?q=80&w=800&auto=format&fit=crop&sig=2",
+    image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=800&auto=format&fit=crop",
     video: SAMPLES.escape,
     tags: ["新手必用", "动漫游戏"],
     default: true
