@@ -14,6 +14,7 @@ import {
   AtSign,
   Search,
   ChevronRight,
+  Mic,
 } from "lucide-react";
 import {
   ModelPicker,
