@@ -40,17 +40,17 @@ function UserMenuContainer() {
   
   return (
     <div 
-      className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-white/10 group cursor-pointer relative"
+      className="flex items-center gap-2 rounded-full border border-border bg-card/50 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-card group cursor-pointer relative"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="flex items-center gap-2 pr-2 border-r border-white/10">
+      <div className="flex items-center gap-2 pr-2 border-r border-border">
         <FilmIconGradient />
-        <span className="font-bold text-white tracking-tight">2,081</span>
+        <span className="font-bold text-foreground tracking-tight">2,081</span>
       </div>
 
       <div className="flex items-center gap-2 px-1">
-        <span className="font-bold text-white tracking-tight">Free</span>
+        <span className="font-bold text-foreground tracking-tight">Free</span>
       </div>
 
       <UserMenu open={open} setOpen={setOpen} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
@@ -87,7 +87,7 @@ function UserMenu({
         sideOffset={8}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        className="w-[280px] overflow-hidden border-white/10 bg-[#1A1A1A]/95 p-0 text-foreground shadow-2xl backdrop-blur-2xl"
+        className="w-[280px] overflow-hidden border-border bg-popover p-0 text-popover-foreground shadow-2xl backdrop-blur-2xl"
       >
         <div className="p-5">
           <div className="flex items-center justify-between">
