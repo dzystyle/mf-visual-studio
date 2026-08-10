@@ -65,7 +65,7 @@ export const hotSkills = [
     model: "Seedance 2.5",
     subModel: "GPT Image 2",
     desc: "打破屏幕让自己喜欢的角色来到现实世界或者去到他们的世界。",
-    image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=800&auto=format&fit=crop",
+    image: skillDimension.url,
     video: SAMPLES.escape,
     tags: ["新手必用", "动漫游戏"],
     default: true
