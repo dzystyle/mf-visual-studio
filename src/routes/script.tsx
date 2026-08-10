@@ -77,11 +77,13 @@ const initialElements: Element[] = [
 ];
 
 type Mode = "storyboard" | "timeline";
+type ViewMode = "canvas" | "list";
 export type QuotedRef = { id: string; name: string; image: string };
 
 function ScriptPage() {
   const { prompt } = Route.useSearch();
   const [mode, setMode] = useState<Mode>("storyboard");
+  const [viewMode, setViewMode] = useState<ViewMode>("canvas");
   const [showLeft, setShowLeft] = useState(true);
   const [showPreview, setShowPreview] = useState(true);
   const [showChat, setShowChat] = useState(true);
@@ -97,7 +99,7 @@ function ScriptPage() {
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
       <TitleBar mode={mode} setMode={setMode} />
-      <div className="flex flex-1 gap-2 overflow-hidden px-2 pb-2">
+      <div className="flex flex-1 gap-2 overflow-hidden px-2 pb-2 relative">
         {mode === "timeline" ? (
           <TimelineWorkspace
             showLeft={showLeft}
@@ -105,16 +107,20 @@ function ScriptPage() {
             onCloseLeft={() => setShowLeft(false)}
             onClosePreview={() => setShowPreview(false)}
             onQuote={addQuote}
+            mode={mode}
+            setMode={setMode}
           />
         ) : (
           <>
             {showLeft && (
-              <StoryboardPanel onClose={() => setShowLeft(false)} />
+              <StoryboardPanel onClose={() => setShowLeft(false)} viewMode={viewMode} />
             )}
             {showPreview && (
               <PreviewPanel
                 onClose={() => setShowPreview(false)}
                 onQuote={addQuote}
+                mode={mode}
+                setMode={setMode}
               />
             )}
           </>
@@ -127,10 +133,84 @@ function ScriptPage() {
             onRemoveQuote={removeQuote}
           />
         )}
+        
+        {/* Floating Bottom Toolbar */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40">
+          <BottomToolbar 
+            viewMode={viewMode} 
+            setViewMode={setViewMode}
+            mode={mode}
+            setMode={setMode}
+          />
+        </div>
       </div>
     </div>
   );
 }
+
+import { Menu, RotateCcw, Columns, Keyboard } from "lucide-react";
+
+function BottomToolbar({ 
+  viewMode, 
+  setViewMode,
+  mode,
+  setMode 
+}: { 
+  viewMode: ViewMode; 
+  setViewMode: (v: ViewMode) => void;
+  mode: Mode;
+  setMode: (m: Mode) => void;
+}) {
+  return (
+    <div className="flex items-center gap-4 px-4 py-2 rounded-full bg-black/80 border border-white/10 backdrop-blur-xl shadow-2xl">
+      <div className="flex items-center gap-1 rounded-lg bg-white/5 p-1">
+        <button 
+          onClick={() => setViewMode("canvas")}
+          className={`flex h-8 w-8 items-center justify-center rounded-md transition-all ${viewMode === "canvas" ? "bg-white text-black" : "text-muted-foreground hover:text-foreground"}`}
+        >
+          <LayoutGrid className="h-4 w-4" />
+        </button>
+        <button 
+          onClick={() => setViewMode("list")}
+          className={`flex h-8 w-8 items-center justify-center rounded-md transition-all ${viewMode === "list" ? "bg-white text-black" : "text-muted-foreground hover:text-foreground"}`}
+        >
+          <Menu className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="flex items-center gap-3 px-2 border-l border-r border-white/10">
+        <button className="text-muted-foreground hover:text-foreground"><Plus className="h-4 w-4" /></button>
+        <div className="text-[13px] font-medium text-foreground w-12 text-center">51%</div>
+        <button className="text-muted-foreground hover:text-foreground"><Plus className="h-4 w-4" /></button>
+      </div>
+
+      <div className="flex items-center gap-1">
+        <button className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <Undo2 className="h-4 w-4" />
+        </button>
+        <button className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <Redo2 className="h-4 w-4" />
+        </button>
+        <button className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <Columns className="h-4 w-4" />
+        </button>
+        <button className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <RotateCcw className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="flex items-center gap-1 ml-2">
+        <button className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground">
+          <ChevronUp className="h-4 w-4" />
+        </button>
+        <button className="flex h-8 w-8 items-center justify-center rounded-md bg-white/10 text-foreground hover:bg-white/20">
+          <Keyboard className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 
 function TitleBar({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void }) {
   return (
@@ -194,7 +274,7 @@ function TabBtn({
   );
 }
 
-function StoryboardPanel({ onClose }: { onClose: () => void }) {
+function StoryboardPanel({ onClose, viewMode }: { onClose: () => void; viewMode?: ViewMode }) {
   return (
     <div className="flex w-[300px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
       <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
@@ -891,7 +971,7 @@ const fileAssets: { name: string; src: string; isVideo?: boolean }[] = [
   { name: "", src: charSam, isVideo: true },
 ];
 
-function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: QuotedRef) => void }) {
+function PreviewPanel({ onClose, onQuote, mode, setMode }: { onClose: () => void; onQuote: (q: QuotedRef) => void; mode: Mode; setMode: (m: Mode) => void }) {
   const quoteCurrent = () => onQuote({ id: "Element_Sam_ref_img", name: "Element_Sam_ref_img", image: charSam });
   return (
     <div className="flex flex-1 min-w-0 flex-col gap-2 overflow-hidden">
@@ -1042,19 +1122,23 @@ function TimelineWorkspace({
   onCloseLeft,
   onClosePreview,
   onQuote,
+  mode,
+  setMode,
 }: {
   showLeft: boolean;
   showPreview: boolean;
   onCloseLeft: () => void;
   onClosePreview: () => void;
   onQuote: (q: QuotedRef) => void;
+  mode: Mode;
+  setMode: (m: Mode) => void;
 }) {
   return (
     <div className="flex flex-1 min-w-0 flex-col gap-2 overflow-hidden">
       {/* Top row: file area + preview */}
       <div className="flex flex-1 gap-2 overflow-hidden">
         {showLeft && <FileLibraryPanel onClose={onCloseLeft} />}
-        {showPreview && <EditorPreviewPanel onClose={onClosePreview} onQuote={onQuote} />}
+        {showPreview && <EditorPreviewPanel onClose={onClosePreview} onQuote={onQuote} mode={mode} setMode={setMode} />}
       </div>
       {/* Bottom: timeline track */}
       <TimelineBar />
@@ -1140,7 +1224,7 @@ function AudioCard({ name }: { name: string }) {
   );
 }
 
-function EditorPreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: QuotedRef) => void }) {
+function EditorPreviewPanel({ onClose, onQuote, mode, setMode }: { onClose: () => void; onQuote: (q: QuotedRef) => void; mode: Mode; setMode: (m: Mode) => void }) {
   const quoteCurrent = () => onQuote({ id: "Element_Sam_ref_img", name: "Element_Sam_ref_img", image: charSam });
   return (
     <div className="flex flex-1 min-w-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
