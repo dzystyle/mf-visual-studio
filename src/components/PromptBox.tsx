@@ -116,8 +116,9 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
     const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
     const after = text.slice(cursorPos);
-    // Keep the @name in text but we will also show the chip
-    setText(`${before}@${name} ${after}`);
+    
+    // Replace text trigger with a space if needed
+    setText(`${before} ${after}`);
     setMentionOpen(false);
     
     if (url && (kind === "image" || kind === "video")) {
