@@ -258,7 +258,7 @@ function Composer({
               }
             }}
             rows={2}
-            placeholder={`描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能`}
+            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            页面的整体配色我希望按照上图的这个配色走.`}
             className="min-h-16 flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
           />
         </div>
