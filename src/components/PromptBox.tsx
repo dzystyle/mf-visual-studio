@@ -98,11 +98,13 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   const handleMentionSelect = (name: string, kind: string, url?: string) => {
     const before = text.slice(0, cursorPos).replace(/@\S*$/, "");
     const after = text.slice(cursorPos);
-    // Keep the @name in text but we will also show the chip
     setText(`${before}@${name} ${after}`);
     setMentionOpen(false);
     
-    if (url && (kind === "image" || kind === "video")) {
+    // Check if this is already an attachment
+    const isAlreadyAttached = attachments.some(a => a.url === url || a.name === name);
+    
+    if (url && (kind === "image" || kind === "video") && !isAlreadyAttached) {
       const id = `${Date.now()}-${name}`;
       setAttachments(prev => [
         ...prev,
@@ -161,7 +163,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            页面的整体配色我希望按照上图的这个配色走.`}
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            输入上传完素材后输入框会显示图片,我希望@这个图片后会自动把这个图片显示到下方,不是上传完图片就自动@这个图片名字.`}
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
@@ -186,7 +188,8 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
                 { name: "角色01", kind: "image", url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" },
                 { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
-              ].filter(i => i.name.includes(mentionFilter)).map((item, idx) => (
+                ...attachments.map(a => ({ name: a.name, kind: a.kind, url: a.url || "", isAttachment: true }))
+              ].filter(i => i.name.toLowerCase().includes(mentionFilter.toLowerCase())).map((item, idx) => (
                 <MentionListItem 
                   key={idx}
                   item={item}
@@ -276,12 +279,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                   url
                 }
               ]);
-              setText(prev => {
-                const mention = `@${name}`;
-                if (!prev) return mention;
-                if (prev.endsWith(' ')) return prev + mention;
-                return prev + ' ' + mention;
-              });
             }} 
           />
 
