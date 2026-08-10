@@ -181,13 +181,17 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 <Package className="h-3 w-3 text-white/40" />
                 <span>{skill}</span>
                 <button 
-                  onClick={() => setSkill(null)}
+                  onClick={() => {
+                    setSkill(null);
+                    setText(prev => prev.replace(new RegExp(`@${skill}\\s?`), ""));
+                  }}
                   className="hover:text-white transition-colors"
                 >
                   <X className="h-3 w-3" />
                 </button>
               </div>
             )}
+
             {attachments.map((a) => (
               <AttachmentChip 
                 key={a.id} 
