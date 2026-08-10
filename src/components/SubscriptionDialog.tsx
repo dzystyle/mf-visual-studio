@@ -12,7 +12,7 @@ export function SubscriptionDialog({
   open: boolean;
   onOpenChange: (v: boolean) => void;
 }) {
-  const [activeTab, setActiveTab] = React.useState<"personal" | "team">("personal");
+  const [activeTab, setActiveTab] = React.useState<"personal" | "team">("team");
   const [personalCycle, setPersonalCycle] = React.useState<"month" | "year">("month");
   const [teamCycle, setTeamCycle] = React.useState<"1month" | "3month" | "1year">("1month");
 
@@ -38,7 +38,7 @@ export function SubscriptionDialog({
             <h1 className="text-2xl font-bold tracking-tight">Artrail - 价格与套餐</h1>
 
             <div className="mt-8 flex justify-center">
-              <div className="flex border-b border-white/10 w-full max-w-md">
+              <div className="flex border-b border-white/10 w-full max-w-md hidden">
                 <button 
                   onClick={() => setActiveTab("personal")}
                   className={cn(
