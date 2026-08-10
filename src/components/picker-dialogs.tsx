@@ -232,29 +232,34 @@ const categories = [
 
 const skillList = [
   {
-    title: "故事驱动型视频",
-    desc: "专为具有完整故事线的视频而设计。核心亮点：- 由 Seedance 2.5 480p (目前最强大...",
-    img: skillStory,
+    id: "destiny",
+    title: "百万主角登场动效",
+    desc: "主角高燃登场视频生成：用户上传主角人物图和结算画面图，基于案例提示词模板替换画风，保留极限镜头语言，并...",
+    img: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=800&auto=format&fit=crop",
   },
   {
-    title: "古风甜宠短剧",
-    desc: "适用于古装甜宠短剧视频的创作。支持 AI 自动生成剧本或用户自提剧本，流程涵盖剧本...",
-    img: skillReenact,
+    id: "jojo",
+    title: "JOJO 风格变身玩法",
+    desc: "把任何一张图片（人物、场景、物件都行）变成一段 30 秒的 JOJO 动画风格短片：厚描边、硬阴影、高饱和和平涂、满屏...",
+    img: "https://images.unsplash.com/photo-1578632738981-43c9ad4c585f?q=80&w=800&auto=format&fit=crop",
   },
   {
-    title: "商品宣传短片",
-    desc: "快速创建AI商业广告短片，为您的产品呈现专业级的视觉效果 and 创意故事。使用模型 Nan...",
-    img: skillProduct,
+    id: "gta6",
+    title: "GTA 6 风格演示 (玩转我的人生)",
+    desc: "受 GTA6 官方公开素材启发的主题视频、分镜、提示词和视觉审查。只借鉴公开素材里的视觉语法、城市气质、镜头组...",
+    img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
   },
   {
-    title: "视频拉片复刻",
-    desc: "通过学习上传视频的电影语法（提取其脚本、镜头结构、视觉语言 and 节奏），围绕您自己...",
-    img: skillReenact,
+    id: "3d-horror",
+    title: "经典 3D 日式怪谈风",
+    desc: "专用于生成具有日式恐怖（如《死魂曲》《零》）风格的写实 3D 游戏恐怖视频。聚焦于阴雨浓雾下的旧校舍、民居、生...",
+    img: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=800&auto=format&fit=crop",
   },
   {
-    title: "剧情短片 (音色参考)",
-    desc: "核心亮点： - 角色语音锚定：每个角色有元素",
-    img: skillScript,
+    id: "dimension",
+    title: "次元破壁互动玩法",
+    desc: "打破屏幕让自己喜欢的角色来到现实世界或者去到他们的世界。",
+    img: "https://images.unsplash.com/photo-1560972550-aba3456b5564?q=80&w=800&auto=format&fit=crop",
   },
 ];
 
