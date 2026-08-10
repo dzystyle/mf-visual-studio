@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, LogOut, LayoutGrid } from "lucide-react";
+import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, LogOut, LayoutGrid, Film } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -13,22 +13,39 @@ export function TopBar({ title }: { title?: string }) {
         <span className="font-medium">全新 Artrail 1.0 使用教程</span>
       </button>
 
-      <div className="flex items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1.5 text-xs backdrop-blur">
-        <Coins className="h-3.5 w-3.5 text-aurora-orange" />
-        <span className="font-semibold">200</span>
-        <span className="text-muted-foreground">|</span>
-        <span className="text-muted-foreground font-medium">Free</span>
-      </div>
-
-      <UserMenu />
+      <UserMenuContainer />
 
       {title ? <span className="sr-only">{title}</span> : null}
     </div>
   );
 }
 
-function UserMenu() {
+function UserMenuContainer() {
   const [open, setOpen] = React.useState(false);
+  
+  return (
+    <div 
+      className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-white/10 group cursor-pointer"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <div className="flex items-center gap-2 pr-2 border-r border-white/10">
+        <FilmIconGradient />
+        <span className="font-bold text-white tracking-tight">2,081</span>
+      </div>
+
+
+      
+      <div className="flex items-center gap-2 px-1">
+        <span className="font-bold text-white tracking-tight">Free</span>
+      </div>
+
+      <UserMenu open={open} setOpen={setOpen} />
+    </div>
+  );
+}
+
+function UserMenu({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => void }) {
   const [showSubscription, setShowSubscription] = React.useState(false);
 
   return (
@@ -36,11 +53,11 @@ function UserMenu() {
       <SubscriptionDialog open={showSubscription} onOpenChange={setShowSubscription} />
       <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button 
-          onMouseEnter={() => setOpen(true)}
-          className="h-8 w-8 cursor-pointer rounded-full bg-gradient-to-br from-aurora-pink to-aurora-blue ring-offset-background transition-transform hover:scale-105 active:scale-95 ring-2 ring-transparent hover:ring-white/20" 
-        />
+        <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
+          <Users className="h-5 w-5 text-white/40" />
+        </div>
       </PopoverTrigger>
+
       <PopoverContent 
         align="end" 
         onMouseEnter={() => setOpen(true)}
@@ -170,7 +187,26 @@ function Play({ className, fill, ...props }: any) {
 }
 
 
+function FilmIconGradient() {
+  return (
+    <div className="relative h-4 w-4 overflow-hidden rounded-[2px] bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 flex items-center justify-center">
+      <div className="grid grid-cols-1 gap-[1px]">
+        <div className="flex gap-[1px]">
+          <div className="h-[2px] w-[2px] bg-[#1A1A1A]" />
+          <div className="h-[2px] w-[2px] bg-[#1A1A1A]" />
+        </div>
+        <div className="h-1.5 w-2.5 rounded-[1px] bg-transparent border-[1.5px] border-[#1A1A1A]" />
+        <div className="flex gap-[1px]">
+          <div className="h-[2px] w-[2px] bg-[#1A1A1A]" />
+          <div className="h-[2px] w-[2px] bg-[#1A1A1A]" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function BrandMark() {
+
   return (
     <div className="absolute left-6 top-5 z-20 flex items-center gap-2">
       <div className="grid h-5 w-5 grid-cols-2 gap-[2px]">
