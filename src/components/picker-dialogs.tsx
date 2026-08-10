@@ -360,22 +360,19 @@ const assetTabs = [
 
 const assetSubTabs = [
   { key: "all", label: "全部" },
-  { key: "recent", label: "最近" },
   { key: "image", label: "图片" },
   { key: "video", label: "视频" },
 ] as const;
 
 const assetItems = [
-  { id: 1, name: "画布生图", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&h=200&fit=crop", kind: "image" },
-  { id: 2, name: "S1.mp4", img: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=200&h=200&fit=crop", kind: "video", duration: "10s" },
-  { id: 3, name: "画布生图", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=200&h=200&fit=crop", kind: "image", selected: true },
-  { id: 4, name: "画布生图", img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200&h=200&fit=crop", kind: "image" },
-  { id: 5, name: "画布生图", img: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=200&h=200&fit=crop", kind: "image" },
-  { id: 6, name: "画布生图", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=200&h=200&fit=crop", kind: "image" },
-  { id: 7, name: "画布生图", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=200&h=200&fit=crop", kind: "image" },
-  { id: 8, name: "啊实打实大大叔大叔大叔的啊实...", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop", kind: "image" },
-  { id: 9, name: "画布生图", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop", kind: "image" },
-  { id: 10, name: "画布生图", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop", kind: "image" },
+  { id: 1, name: "S1.mp4", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop", kind: "video", duration: "10s", date: "2026-08-10 13:43" },
+  { id: 2, name: "S2.mp4", img: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=400&h=300&fit=crop", kind: "video", duration: "10s", date: "2026-08-07 17:50" },
+  { id: 3, name: "画布生图", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=300&fit=crop", kind: "image", date: "2026-08-07 17:32" },
+  { id: 4, name: "画布生图", img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop", kind: "image", date: "2026-08-07 17:20" },
+  { id: 5, name: "画布生图", img: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&h=300&fit=crop", kind: "image", date: "2026-08-07 17:16" },
+  { id: 6, name: "画布生图", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&h=300&fit=crop", kind: "image", date: "2026-08-07 17:16" },
+  { id: 7, name: "画布生图", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400&h=300&fit=crop", kind: "image", date: "2026-08-07 17:16" },
+  { id: 8, name: "画布生图", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=300&fit=crop", kind: "image", date: "2026-08-07 17:16" },
 ];
 
 export function ElementsPicker({ 
@@ -385,7 +382,7 @@ export function ElementsPicker({
 }) {
   const [tab, setTab] = useState<typeof assetTabs[number]["key"]>("works");
   const [subTab, setSubTab] = useState<typeof assetSubTabs[number]["key"]>("all");
-  const [selectedIds, setSelectedIds] = useState<number[]>([3]);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const toggleSelect = (id: number) => {
     setSelectedIds(prev => 
@@ -401,127 +398,152 @@ export function ElementsPicker({
   };
 
   return (
-    <div className="w-[900px] bg-white text-black overflow-hidden flex flex-col h-[640px]">
-      {/* Header Tabs */}
-      <div className="flex items-center gap-8 px-8 pt-6 border-b border-gray-100">
-        {assetTabs.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`pb-4 text-[15px] font-medium transition-all relative ${
-              tab === t.key ? "text-black" : "text-gray-400 hover:text-gray-600"
-            }`}
-          >
-            {t.label}
-            {tab === t.key && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-black" />
-            )}
-          </button>
-        ))}
-        <div className="flex-1" />
-        <button className="mb-4 flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100 transition">
-          <X className="h-4 w-4 text-gray-400" />
+    <div className="w-[1000px] h-[720px] bg-[#0A0A0A] text-white overflow-hidden flex flex-col relative">
+      {/* Top Header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+        <div className="flex items-center gap-2">
+          <span className="text-lg font-bold">所有资产</span>
+          <span className="text-sm text-white/40">(8)</span>
+        </div>
+        <button className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-white/5 transition">
+          <X className="h-4 w-4 text-white/40" />
         </button>
       </div>
 
-      {/* Toolbar */}
-      <div className="flex items-center gap-2 px-8 py-4">
-        <div className="flex items-center gap-1 bg-gray-50 rounded-full p-1">
+      {/* Toolbar / Filters */}
+      <div className="flex items-center gap-3 px-6 py-4 flex-wrap border-b border-white/5">
+        {/* Creation Source Dropdown */}
+        <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+          创作资产 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+        </button>
+
+        {/* Media Type Filters */}
+        <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
           {assetSubTabs.map((t) => (
             <button
               key={t.key}
               onClick={() => setSubTab(t.key)}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition ${
-                subTab === t.key ? "bg-white shadow-sm text-black" : "text-gray-400 hover:text-gray-600"
+              className={`px-3 py-1 rounded-md text-xs font-medium transition ${
+                subTab === t.key ? "bg-white/10 text-white" : "text-white/40 hover:text-white/60"
               }`}
             >
-              {t.label}
+              <div className="flex items-center gap-1.5">
+                {t.key === 'image' && <ImageIcon className="h-3 w-3" />}
+                {t.key === 'video' && <Video className="h-3 w-3" />}
+                {t.label}
+              </div>
             </button>
           ))}
         </div>
-        
-        <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-500 hover:text-black transition">
-          <div className="flex flex-col gap-0.5 scale-75">
-            <div className="w-3 h-0.5 bg-current" />
-            <div className="w-2 h-0.5 bg-current" />
-            <div className="w-1 h-0.5 bg-current" />
-          </div>
-          最新优先
+
+        {/* Date Filter */}
+        <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+          时间范围 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+        </button>
+
+        {/* Sort Order */}
+        <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+          倒序 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
         </button>
 
         <div className="flex-1" />
 
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-1.5 px-4 py-1.5 bg-gray-50 rounded-full text-xs font-medium hover:bg-gray-100 transition">
-            <Plus className="h-3.5 w-3.5" />
-            新增
+        {/* Right Side Filters */}
+        <div className="flex items-center gap-2">
+          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+            全部项目 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
           </button>
+          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+            全部人员 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+          </button>
+          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+            全部画布 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+          </button>
+          
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/40" />
             <input 
               type="text" 
-              placeholder="搜索" 
-              className="pl-9 pr-4 py-1.5 bg-gray-50 rounded-full text-xs w-48 focus:outline-none focus:ring-1 focus:ring-black/5"
+              placeholder="搜索资产..." 
+              className="pl-9 pr-4 py-1.5 bg-white/5 rounded-lg text-xs w-40 focus:outline-none focus:ring-1 focus:ring-white/10"
             />
           </div>
+
+          <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
+            <button className="p-1.5 rounded bg-white/10"><Sparkles className="h-3.5 w-3.5" /></button>
+            <button className="p-1.5 rounded hover:bg-white/10"><Check className="h-3.5 w-3.5 text-white/40" /></button>
+          </div>
+
+          <button className="flex items-center gap-1.5 px-4 py-1.5 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition">
+            <Check className="h-3.5 w-3.5" />
+            批量操作
+          </button>
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="flex-1 overflow-y-auto px-8 pb-20 scrollbar-hide">
-        <div className="grid grid-cols-5 gap-x-4 gap-y-6">
+      {/* Main Grid */}
+      <div className="flex-1 overflow-y-auto px-6 py-6 scrollbar-hide">
+        <div className="grid grid-cols-4 lg:grid-cols-5 gap-6">
           {assetItems.map((item) => {
             const isSelected = selectedIds.includes(item.id);
             return (
-              <div key={item.id} className="group flex flex-col gap-2">
+              <div key={item.id} className="group relative">
                 <div 
                   onClick={() => toggleSelect(item.id)}
-                  className={`relative aspect-[1.6/1] rounded-xl overflow-hidden cursor-pointer transition-all border-2 ${
-                    isSelected ? "border-black" : "border-transparent bg-gray-50"
+                  className={`relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer transition-all ${
+                    isSelected ? "ring-2 ring-primary ring-offset-2 ring-offset-[#0A0A0A]" : "bg-white/5 hover:bg-white/10"
                   }`}
                 >
                   <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
                   
-                  {/* Selection Indicator */}
-                  <div className={`absolute top-2 left-2 h-5 w-5 rounded-md border flex items-center justify-center transition ${
-                    isSelected ? "bg-black border-black" : "bg-white/80 border-gray-200"
-                  }`}>
-                    {isSelected && <Check className="h-3 w-3 text-white stroke-[3px]" />}
-                  </div>
-
-                  {/* Video Duration Badge */}
-                  {item.kind === "video" && item.duration && (
-                    <div className="absolute bottom-1.5 left-1.5 bg-black/50 backdrop-blur-sm text-white text-[8px] px-1.5 py-0.5 rounded font-medium">
-                      {item.duration}
+                  {/* Video Icon/Duration */}
+                  {item.kind === "video" && (
+                    <div className="absolute top-2 right-2 h-6 w-6 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                      <Video className="h-3 w-3 text-white" />
                     </div>
                   )}
+
+                  {/* Hover/Selected Overlay */}
+                  <div className={`absolute inset-0 bg-black/20 transition-opacity ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
                 </div>
-                <span className="text-[12px] text-gray-500 truncate px-1">
-                  {item.name}
-                </span>
+                
+                {/* Info Footer */}
+                <div className="mt-3 flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <Sparkles className="h-3 w-3 text-white/40" />
+                    <span className="text-[10px] font-medium text-white/40">D</span>
+                  </div>
+                  <span className="text-[10px] text-white/40 font-medium">· {item.date}</span>
+                </div>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-8 py-4 flex items-center justify-between z-20">
-        <div className="text-sm text-gray-400">
-          已选 {selectedIds.length} 个素材
+      {/* Footer Actions */}
+      {selectedIds.length > 0 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-8 py-4 bg-[#1A1A1A] border border-white/10 rounded-2xl flex items-center gap-6 shadow-2xl z-30 animate-in fade-in slide-in-from-bottom-4">
+          <div className="text-sm font-medium">
+            已选择 <span className="text-primary">{selectedIds.length}</span> 个素材
+          </div>
+          <div className="h-4 w-[1px] bg-white/10" />
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setSelectedIds([])}
+              className="px-4 py-2 text-sm text-white/60 hover:text-white transition"
+            >
+              取消
+            </button>
+            <button 
+              onClick={handleConfirm}
+              className="px-6 py-2 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 transition shadow-lg shadow-primary/20"
+            >
+              确认添加
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-          <button className="px-6 py-2 text-sm font-medium text-gray-500 hover:text-black transition">
-            取消
-          </button>
-          <button 
-            onClick={handleConfirm}
-            className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-black/90 transition shadow-lg shadow-black/10"
-          >
-            添加 {selectedIds.length} 项
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -537,7 +559,7 @@ export function ElementsPickerDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[900px] border-none bg-white p-0 text-black overflow-hidden rounded-[32px] shadow-2xl">
+      <DialogContent className="max-w-[1000px] border-white/10 bg-[#0A0A0A] p-0 text-white overflow-hidden rounded-[24px] shadow-2xl">
         <ElementsPicker onSelect={(name, kind, url) => { 
           onSelect?.(name, kind, url); 
           onOpenChange(false); 
