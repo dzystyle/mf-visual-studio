@@ -128,7 +128,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
         }
       ]);
       
-      // Calculate cursor position before the "@" match
       const beforeStr = text.slice(0, cursorPos);
       const atMatch = beforeStr.match(/@\S*$/);
       if (atMatch) {
@@ -136,9 +135,8 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
         const before = text.slice(0, atIndex);
         const after = text.slice(cursorPos);
         
-        // Use a hidden character or zero-width space to represent the image in the textarea
-        // but visually we show the chip above.
-        setText(`${before} ${after}`);
+        // Use a non-standard marker that we'll render as a small image chip
+        setText(`${before}[${name}]${after}`);
       }
     }
   };
@@ -177,9 +175,9 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
         )}
         <div className="relative flex items-start gap-2 min-h-[72px]">
           {attachments.some(a => text.includes(`[${a.name}]`)) && (
-            <div className="flex flex-wrap gap-2 pt-1 pointer-events-none">
+            <div className="flex flex-wrap gap-2 pt-1.5 pointer-events-none">
               {attachments.filter(a => text.includes(`[${a.name}]`)).map(a => (
-                <div key={a.id} className="w-8 h-8 rounded-md overflow-hidden border border-white/10 shadow-sm opacity-60">
+                <div key={a.id} className="w-6 h-6 rounded border border-white/10 shadow-sm overflow-hidden flex-shrink-0">
                   <img src={a.url} className="w-full h-full object-cover" />
                 </div>
               ))}
@@ -191,16 +189,13 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             value={text}
             onChange={(e) => {
               setText(e.target.value);
-              setCursorPos(e.target.selectionStart);
+              setCursorPos(e.target.selectionStart ?? 0);
             }}
             onKeyUp={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-            }}
-            onSelectionChange={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart ?? 0);
             }}
             onClick={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart ?? 0);
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
