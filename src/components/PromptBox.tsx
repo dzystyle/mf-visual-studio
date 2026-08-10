@@ -733,20 +733,11 @@ function MentionListItem({
         )}
       </button>
 
-      {showPreview && (
+      {showPreview && item.kind !== 'folder' && (
         <div className="absolute left-full top-0 ml-2 pointer-events-none p-2 bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-left-2 duration-200 z-[100]">
           <div className="space-y-2">
-            <div className="text-[10px] text-muted-foreground px-1">{item.name} 预览</div>
-            <img src={item.url} alt="Preview" className="w-[180px] h-[180px] rounded-xl object-cover" />
-            {item.name === "画布生图" && (
-              <div className="grid grid-cols-3 gap-1 w-[180px] mt-2">
-                {[...Array(9)].map((_, i) => (
-                  <div key={i} className="aspect-square bg-white/5 rounded-sm overflow-hidden">
-                    <img src={item.url} className="w-full h-full object-cover opacity-60" />
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="text-[12px] text-white font-medium px-2 py-1">{item.name}</div>
+            <img src={item.url} alt="Preview" className="w-[180px] h-[320px] rounded-xl object-cover" />
           </div>
         </div>
       )}
