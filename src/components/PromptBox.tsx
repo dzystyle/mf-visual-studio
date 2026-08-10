@@ -102,18 +102,22 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     setText(`${before}@${name} ${after}`);
     setMentionOpen(false);
     
-    // Check if this is already an attachment
-    const isAlreadyAttached = attachments.some(a => a.url === url || a.name === name);
-    
-    if (url && (kind === "image" || kind === "video") && !isAlreadyAttached) {
-      const id = `${Date.now()}-${name}`;
+    // Mark the attachment as mentioned so it shows up in the "mentioned list" at the bottom
+    setAttachments(prev => prev.map(a => 
+      (a.name === name || a.url === url) ? { ...a, isMentioned: true } : a
+    ));
+
+    // If it's not in attachments yet (e.g. from global library), add it as mentioned
+    const isAlreadyInAttachments = attachments.some(a => a.url === url || a.name === name);
+    if (!isAlreadyInAttachments && url) {
       setAttachments(prev => [
         ...prev,
         {
-          id,
+          id: `${Date.now()}-${name}`,
           name,
           kind: kind as any,
-          url
+          url,
+          isMentioned: true
         }
       ]);
     }
