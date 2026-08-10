@@ -161,7 +161,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            看上图我希望这个@是文字和图片的,我需要你跟上图保持100%一致性.`}
+          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            @这个弹窗还是被盖住了.`}
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
@@ -513,24 +513,28 @@ function AttachmentChip({ a, onRemove, onAtClick }: { a: Attachment; onRemove: (
   
   return (
     <div 
-      className="group relative flex items-center gap-1.5 h-7 px-2 pr-1.5 rounded-lg border border-aurora-blue/30 bg-aurora-blue/20 shadow-sm"
+      className="group relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-card/60 shadow-lg"
       onMouseEnter={() => setShowPreview(true)}
       onMouseLeave={() => setShowPreview(false)}
     >
-      {a.url && (a.kind === "image" || a.kind === "video") ? (
-        <div className="h-4 w-4 shrink-0 overflow-hidden rounded-sm border border-white/10 bg-muted/40 relative">
-          <img src={a.url} alt={a.name} className="h-full w-full object-cover" />
-          {a.kind === "video" && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-              <div className="w-0 h-0 border-t-[2px] border-t-transparent border-l-[3px] border-l-white border-b-[2px] border-b-transparent ml-0.5" />
-            </div>
-          )}
-        </div>
+      {a.kind === "image" && a.url ? (
+        <img src={a.url} alt={a.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-110" />
       ) : (
-        <Icon className="h-3.5 w-3.5 text-aurora-blue/70" />
+        <div className="flex h-full w-full items-center justify-center rounded bg-muted/40">
+          <Icon className="h-6 w-6 text-muted-foreground" />
+        </div>
       )}
       
-      <span className="text-[12px] font-medium text-aurora-blue whitespace-nowrap">@{a.name}</span>
+      {/* Icon Overlay for @ mention style */}
+      <button 
+        onClick={(e) => {
+          e.stopPropagation();
+          onAtClick?.();
+        }}
+        className="absolute top-1 left-1 h-4 w-4 rounded-full bg-black/60 flex items-center justify-center border border-white/10 hover:bg-black/80 transition"
+      >
+        <AtSign className="h-2.5 w-2.5 text-white/80" />
+      </button>
 
       {/* Remove Button */}
       <button
@@ -538,10 +542,17 @@ function AttachmentChip({ a, onRemove, onAtClick }: { a: Attachment; onRemove: (
           e.stopPropagation();
           onRemove();
         }}
-        className="ml-1 flex h-3.5 w-3.5 items-center justify-center rounded-full text-aurora-blue/60 hover:text-aurora-blue hover:bg-aurora-blue/20 transition"
+        className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-black/60 text-white/80 opacity-0 transition group-hover:opacity-100 hover:bg-black/80"
       >
         <X className="h-2.5 w-2.5" />
       </button>
+
+      {/* Type Badge */}
+      {a.kind === 'video' && (
+        <div className="absolute bottom-1 right-1 bg-black/60 text-[8px] px-1 py-0.5 rounded text-white font-medium">
+          V
+        </div>
+      )}
 
       {/* Hover Preview Tooltip */}
       {showPreview && a.url && (
@@ -557,7 +568,6 @@ function AttachmentChip({ a, onRemove, onAtClick }: { a: Attachment; onRemove: (
     </div>
   );
 }
-
 
 function Chip({
   icon: Icon,
