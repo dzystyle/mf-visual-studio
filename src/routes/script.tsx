@@ -276,6 +276,73 @@ function TabBtn({
 
 function StoryboardPanel({ onClose, viewMode }: { onClose: () => void; viewMode?: ViewMode }) {
   return (
+  if (viewMode === "canvas") {
+    return (
+      <div className="flex-1 overflow-auto bg-[#0A0A0A] relative scrollbar-hide">
+        <div className="min-w-[1200px] p-8 space-y-12">
+          {/* Key Elements Section */}
+          <section>
+            <div className="flex items-center gap-2 mb-4 text-[13px] text-muted-foreground">
+              <Smile className="h-4 w-4" /> 关键元素
+            </div>
+            <div className="grid grid-cols-4 gap-4">
+              {initialElements.slice(0, 4).map((el, i) => (
+                <CanvasNode key={i} title={el.name} content={el.desc} images={el.thumbs} />
+              ))}
+            </div>
+          </section>
+
+          {/* Shots Section */}
+          <section>
+            <div className="flex items-center gap-2 mb-4 text-[13px] text-muted-foreground">
+              <LayoutGrid className="h-4 w-4" /> 分镜
+            </div>
+            <div className="flex gap-6 relative">
+              {storyboardShots.map((s, i) => (
+                <div key={i} className="flex items-center gap-6">
+                  <CanvasNode 
+                    title={s.shot} 
+                    content={s.content} 
+                    images={[charSam]} 
+                    subtitle={s.time}
+                  />
+                  {i < storyboardShots.length - 1 && (
+                    <div className="flex flex-col items-center gap-1 opacity-40">
+                      <div className="w-8 h-px bg-white/40" />
+                      <ChevronRight className="h-3 w-3 text-white" />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Audio Section */}
+          <section>
+            <div className="flex items-center gap-2 mb-4 text-[13px] text-muted-foreground">
+              <Music2 className="h-4 w-4" /> 音频层
+            </div>
+            <div className="w-[300px]">
+              <div className="glass rounded-xl p-4 border border-white/10">
+                <div className="text-[12px] font-medium mb-2">Audio_BGM_Industrial_Tense</div>
+                <div className="flex h-12 items-center justify-around gap-1">
+                  {Array.from({ length: 30 }).map((_, i) => (
+                    <div 
+                      key={i} 
+                      className="w-0.5 rounded-full bg-aurora-blue/60" 
+                      style={{ height: `${20 + Math.random() * 80}%` }} 
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    );
+  }
+
+  return (
     <div className="flex w-[300px] flex-shrink-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-card/30">
       <div className="flex h-9 items-center justify-between border-b border-border/60 px-3">
         <div className="flex items-center gap-1.5 text-xs text-foreground">
@@ -307,6 +374,35 @@ function StoryboardPanel({ onClose, viewMode }: { onClose: () => void; viewMode?
     </div>
   );
 }
+
+function CanvasNode({ title, content, images, subtitle }: { title: string; content: string; images?: string[]; subtitle?: string }) {
+  return (
+    <div className="w-[280px] glass rounded-xl border border-white/10 overflow-hidden flex flex-col group transition-all hover:border-white/20 hover:shadow-xl">
+      <div className="p-3 border-b border-white/5 bg-white/[0.02]">
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-[12px] font-semibold text-foreground">{title}</span>
+          {subtitle && <span className="text-[10px] text-muted-foreground">{subtitle}</span>}
+        </div>
+        <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
+          {content}
+        </p>
+      </div>
+      {images && images.length > 0 && (
+        <div className="p-3 bg-black/20 flex gap-2 overflow-x-auto scrollbar-hide">
+          {images.map((img, i) => (
+            <div key={i} className="w-16 h-16 rounded-md overflow-hidden border border-white/10 shrink-0">
+              <img src={img} alt="" className="w-full h-full object-cover" />
+            </div>
+          ))}
+          <button className="w-8 h-8 rounded-full border border-dashed border-white/20 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-white/40 self-center ml-1">
+            <Plus className="h-3 w-3" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 function ElementRow({ el }: { el: Element }) {
   const [open, setOpen] = useState(el.expanded !== false);
