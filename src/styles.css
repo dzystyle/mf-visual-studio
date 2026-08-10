@@ -39,53 +39,53 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.13 0.012 270);
-  --foreground: oklch(0.96 0.005 270);
-  --card: oklch(0.17 0.012 270);
-  --card-foreground: oklch(0.96 0.005 270);
-  --popover: oklch(0.16 0.012 270);
-  --popover-foreground: oklch(0.96 0.005 270);
-  --primary: oklch(0.96 0.005 270);
-  --primary-foreground: oklch(0.13 0.012 270);
-  --secondary: oklch(0.22 0.012 270);
-  --secondary-foreground: oklch(0.96 0.005 270);
-  --muted: oklch(0.2 0.012 270);
-  --muted-foreground: oklch(0.62 0.015 270);
-  --accent: oklch(0.24 0.015 270);
-  --accent-foreground: oklch(0.96 0.005 270);
-  --success: oklch(0.72 0.17 150);
-  --destructive: oklch(0.62 0.22 25);
-  --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 10%);
-  --ring: oklch(0.55 0.02 270);
-  --sidebar: oklch(0.11 0.012 270);
-  --sidebar-foreground: oklch(0.7 0.015 270);
+  --background: #0f0f12;
+  --foreground: #ffffff;
+  --card: #18181b;
+  --card-foreground: #ffffff;
+  --popover: #18181b;
+  --popover-foreground: #ffffff;
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #27272a;
+  --secondary-foreground: #ffffff;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #ffffff;
+  --success: #22c55e;
+  --destructive: #ef4444;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: #8b5cf6;
+  --sidebar: #0f0f12;
+  --sidebar-foreground: #a1a1aa;
 
-  --aurora-pink: oklch(0.72 0.22 15);
-  --aurora-orange: oklch(0.78 0.18 50);
-  --aurora-blue: oklch(0.62 0.18 250);
+  --aurora-pink: #d946ef;
+  --aurora-orange: #f97316;
+  --aurora-blue: #3b82f6;
 
   --gradient-aurora: radial-gradient(
       ellipse 80% 60% at 20% 0%,
-      oklch(0.72 0.22 15 / 0.55) 0%,
+      rgba(217, 70, 239, 0.15) 0%,
       transparent 60%
     ),
     radial-gradient(
       ellipse 70% 55% at 55% -10%,
-      oklch(0.78 0.18 50 / 0.45) 0%,
+      rgba(249, 115, 22, 0.1) 0%,
       transparent 65%
     ),
     radial-gradient(
       ellipse 90% 70% at 90% 0%,
-      oklch(0.62 0.18 250 / 0.5) 0%,
+      rgba(59, 130, 246, 0.15) 0%,
       transparent 60%
     );
 
   --gradient-promo: linear-gradient(
     90deg,
-    oklch(0.78 0.16 30) 0%,
-    oklch(0.7 0.18 320) 50%,
-    oklch(0.65 0.18 240) 100%
+    #f97316 0%,
+    #d946ef 50%,
+    #3b82f6 100%
   );
 }
 
