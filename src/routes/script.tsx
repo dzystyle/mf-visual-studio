@@ -115,7 +115,7 @@ function ScriptPage() {
             {showLeft && (
               <StoryboardPanel onClose={() => setShowLeft(false)} viewMode={viewMode} />
             )}
-            {showPreview && (
+            {showPreview && viewMode === "list" && (
               <PreviewPanel
                 onClose={() => setShowPreview(false)}
                 onQuote={addQuote}
@@ -123,6 +123,7 @@ function ScriptPage() {
                 setMode={setMode}
               />
             )}
+
           </>
         )}
         {showChat && (
