@@ -124,7 +124,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   };
 
   return (
-    <div className="glass rounded-2xl p-4 shadow-2xl relative">
+    <div className="glass rounded-2xl p-5 shadow-2xl relative">
 
       <div className="relative">
         {attachments.some(a => !a.isMentioned) && (
@@ -146,73 +146,34 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             ))}
           </div>
         )}
-        <div className="relative group/textarea">
-          <textarea
-            ref={textareaRef}
-            rows={3}
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-              setCursorPos(e.target.selectionStart);
-            }}
-            onKeyUp={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-            }}
-            onClick={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                const v = text.trim();
-                if (v && onSubmit) {
-                  onSubmit(v);
-                  setText("");
-                  setAttachments([]);
-                }
+        <textarea
+          ref={textareaRef}
+          rows={3}
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+            setCursorPos(e.target.selectionStart);
+          }}
+          onKeyUp={(e) => {
+            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+          }}
+          onClick={(e) => {
+            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              const v = text.trim();
+              if (v && onSubmit) {
+                onSubmit(v);
+                setText("");
+                setAttachments([]);
               }
-            }}
-            placeholder={`描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能`}
-            className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none pr-10"
-          />
-
-          {attachments.some(a => a.isMentioned) && (
-            <div className="absolute bottom-2 right-0 flex items-end gap-1.5 p-1 bg-[#18181B]/80 backdrop-blur-md rounded-lg border border-white/5 shadow-lg">
-              {attachments.filter(a => a.isMentioned).map((a) => (
-                <div key={a.id} className="relative group/item shrink-0">
-                  <div className="w-8 h-8 rounded-md overflow-hidden border border-white/10 bg-card/60">
-                    {a.url ? (
-                      <img src={a.url} alt={a.name} className="h-full w-full object-cover" />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center">
-                        <ImageIcon className="h-4 w-4 text-muted-foreground" />
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Mentioned Indicator (@name) as requested in Fig 1 */}
-                  <div className="absolute -bottom-6 left-0 whitespace-nowrap bg-black/90 px-1.5 py-0.5 rounded text-[10px] text-white/90 border border-white/10 opacity-0 group-hover/item:opacity-100 transition shadow-xl pointer-events-none">
-                    @{a.name}
-                  </div>
-
-                  <button 
-                    onClick={() => setAttachments(prev => prev.map(item => item.id === a.id ? { ...item, isMentioned: false } : item))}
-                    className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-black/80 flex items-center justify-center opacity-0 group-hover/item:opacity-100 transition"
-                  >
-                    <X className="h-2 w-2 text-white" />
-                  </button>
-
-                  {/* Hover Preview for mentioned items (Fig 4) */}
-                  <div className="absolute bottom-full right-0 mb-3 opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none z-[110]">
-                    <div className="bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl p-4 overflow-hidden">
-                      <img src={a.url} alt="Large Preview" className="w-[180px] h-[320px] rounded-xl object-cover" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+            }
+          }}
+          placeholder={`描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能`}
+          className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+        />
 
         {mentionOpen && (
           <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[100] animate-in fade-in slide-in-from-bottom-2 duration-200">
@@ -463,6 +424,39 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           </Popover>
       </div>
       
+      {attachments.some(a => a.isMentioned) && (
+        <div className="mt-4 flex flex-wrap gap-2 pt-4 border-t border-white/5">
+          {attachments.filter(a => a.isMentioned).map((a) => (
+            <div key={a.id} className="relative group">
+              <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 bg-card/60">
+                {a.url ? (
+                  <img src={a.url} alt={a.name} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+              <button 
+                onClick={() => setAttachments(prev => prev.map(item => item.id === a.id ? { ...item, isMentioned: false } : item))}
+                className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+              >
+                <X className="h-2.5 w-2.5 text-white" />
+              </button>
+              
+              {/* Reference indicator line */}
+              <div className="absolute -right-2 top-0 bottom-0 w-[1px] bg-white/20" />
+              
+              {/* Hover Preview for mentioned items (Fig 4) */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-[110]">
+                <div className="bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl p-4 overflow-hidden min-w-[200px]">
+                  <img src={a.url} alt="Large Preview" className="w-[180px] h-[320px] rounded-xl object-cover" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
         <button
           onClick={() => {
             const v = text.trim();
