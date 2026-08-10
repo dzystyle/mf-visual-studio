@@ -52,7 +52,7 @@ function UserMenu({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => v
     <>
       <SubscriptionDialog open={showSubscription} onOpenChange={setShowSubscription} />
       <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild className="pointer-events-none">
         <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
           <Users className="h-5 w-5 text-white/40" />
         </div>
