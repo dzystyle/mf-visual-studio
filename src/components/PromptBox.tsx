@@ -176,7 +176,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
         />
 
         {mentionOpen && (
-          <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[100] animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div className="absolute top-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="p-3 border-b border-white/5">
               <div className="relative">
                 <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
@@ -193,10 +193,11 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             <div className="max-h-64 overflow-y-auto p-1.5 scrollbar-hide">
               <div className="px-2 py-1.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">最近使用</div>
               {[
-                ...attachments.filter(a => !a.isMentioned).map(a => ({ name: a.name, kind: a.kind, url: a.url || "", isAttachment: true })),
+                { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
                 { name: "素材", kind: "folder", url: "" },
                 { name: "角色", kind: "folder", url: "" },
                 { name: "商品", kind: "folder", url: "" },
+                ...attachments.filter(a => !a.isMentioned).map(a => ({ name: a.name, kind: a.kind, url: a.url || "", isAttachment: true }))
               ].filter(i => i.name.toLowerCase().includes(mentionFilter.toLowerCase())).map((item, idx) => (
                 <MentionListItem 
                   key={idx}
@@ -450,6 +451,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               {/* Hover Preview for mentioned items (Fig 4) */}
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-[110]">
                 <div className="bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl p-4 overflow-hidden min-w-[200px]">
+                  <div className="text-[12px] text-white font-medium mb-2">画布生图</div>
                   <img src={a.url} alt="Large Preview" className="w-[180px] h-[320px] rounded-xl object-cover" />
                 </div>
               </div>
