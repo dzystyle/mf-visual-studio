@@ -75,7 +75,7 @@ function UserMenu({ open, setOpen }: { open: boolean, setOpen: (v: boolean) => v
 
           <button 
             onClick={() => { setShowSubscription(true); setOpen(false); }}
-            className="group mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#FF7E5F] to-[#FEB47B] py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 cursor-pointer"
+            className="group mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#A855F7] to-[#3B82F6] py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 cursor-pointer"
           >
             <div className="flex h-4 w-4 items-center justify-center rounded-sm bg-white/20">
               <Play fill="white" className="h-2 w-2 text-white" />
