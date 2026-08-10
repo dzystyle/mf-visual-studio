@@ -258,7 +258,7 @@ function Composer({
               }
             }}
             rows={2}
-            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            输入上传完素材后输入框会显示图片,我希望@这个图片后会自动把这个图片显示到下方,不是上传完图片就自动@这个图片名字.`}
+            placeholder={`描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能`}
             className="min-h-16 flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
           />
         </div>

@@ -501,7 +501,7 @@ function BotMessage({ nodes }: { nodes: BotNode[] }) {
     <div className="space-y-3">
       <div className="flex items-center gap-1.5 text-[13px] font-semibold">
         <span className="text-aurora-pink">✦</span>
-        <span>Flova</span>
+        <span>Artrail</span>
       </div>
       {nodes.map((n, i) => (
         <BotNodeView key={i} node={n} />
@@ -699,7 +699,7 @@ function Composer({
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="请输入你的消息..."
+          placeholder={`描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能`}
           className="w-full bg-transparent text-[13px] text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
         />
         <div className="mt-2.5 flex items-center justify-between">
@@ -945,7 +945,7 @@ function PreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote: (q: 
           <div className="flex items-center gap-2 border-t border-border/60 p-3">
             <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
               <input
-                placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            输入上传完素材后输入框会显示图片,我希望@这个图片后会自动把这个图片显示到下方,不是上传完图片就自动@这个图片名字.`}
+                placeholder={`描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能`}
                 className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none"
               />
               <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
@@ -1160,7 +1160,7 @@ function EditorPreviewPanel({ onClose, onQuote }: { onClose: () => void; onQuote
         </div>
         <div className="flex items-center gap-2 border-t border-border/60 p-3">
           <div className="flex flex-1 items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2">
-            <input placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            页面的整体配色我希望按照上图的这个配色走.`} className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
+            <input placeholder={`描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能`} className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none" />
             <button className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20">
               <ArrowUp className="h-3 w-3" />
             </button>

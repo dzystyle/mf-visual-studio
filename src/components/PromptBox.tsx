@@ -32,6 +32,7 @@ type Attachment = {
   name: string;
   kind: "image" | "audio" | "video" | "text";
   url?: string;
+  isMentioned?: boolean;
 };
 
 const ACCEPT_MAP: Record<Attachment["kind"], string> = {
@@ -101,18 +102,22 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     setText(`${before}@${name} ${after}`);
     setMentionOpen(false);
     
-    // Check if this is already an attachment
-    const isAlreadyAttached = attachments.some(a => a.url === url || a.name === name);
-    
-    if (url && (kind === "image" || kind === "video") && !isAlreadyAttached) {
-      const id = `${Date.now()}-${name}`;
+    // Mark the attachment as mentioned so it shows up in the "mentioned list" at the bottom
+    setAttachments(prev => prev.map(a => 
+      (a.name === name || a.url === url) ? { ...a, isMentioned: true } : a
+    ));
+
+    // If it's not in attachments yet (e.g. from global library), add it as mentioned
+    const isAlreadyInAttachments = attachments.some(a => a.url === url || a.name === name);
+    if (!isAlreadyInAttachments && url) {
       setAttachments(prev => [
         ...prev,
         {
-          id,
+          id: `${Date.now()}-${name}`,
           name,
           kind: kind as any,
-          url
+          url,
+          isMentioned: true
         }
       ]);
     }
@@ -122,16 +127,19 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     <div className="glass rounded-2xl p-5 shadow-2xl relative">
 
       <div className="relative">
-        {attachments.length > 0 && (
+        {attachments.some(a => !a.isMentioned) && (
           <div className="mb-3 flex flex-wrap gap-2">
-            {attachments.map((a) => (
+            {attachments.filter(a => !a.isMentioned).map((a) => (
               <AttachmentChip 
                 key={a.id} 
                 a={a} 
                 onRemove={() => remove(a.id)} 
                 onAtClick={() => {
-                  setMentionOpen(true);
-                  setMentionFilter("");
+                  // Manually trigger @ name insertion
+                  const before = text.slice(0, cursorPos);
+                  const after = text.slice(cursorPos);
+                  setText(`${before}@${a.name} ${after}`);
+                  setAttachments(prev => prev.map(item => item.id === a.id ? { ...item, isMentioned: true } : item));
                   textareaRef.current?.focus();
                 }}
               />
@@ -163,12 +171,12 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               }
             }
           }}
-          placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            输入上传完素材后输入框会显示图片,我希望@这个图片后会自动把这个图片显示到下方,不是上传完图片就自动@这个图片名字.`}
+          placeholder={`描述你的想法，用 @ 引用图片/视频/音频/文件作为参考，用 / 使用技能`}
           className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
         />
 
         {mentionOpen && (
-          <div className="absolute top-full left-0 mt-2 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="absolute top-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="p-3 border-b border-white/5">
               <div className="relative">
                 <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
@@ -186,9 +194,10 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               <div className="px-2 py-1.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">最近使用</div>
               {[
                 { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
-                { name: "角色01", kind: "image", url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" },
-                { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
-                ...attachments.map(a => ({ name: a.name, kind: a.kind, url: a.url || "", isAttachment: true }))
+                { name: "素材", kind: "folder", url: "" },
+                { name: "角色", kind: "folder", url: "" },
+                { name: "商品", kind: "folder", url: "" },
+                ...attachments.filter(a => !a.isMentioned).map(a => ({ name: a.name, kind: a.kind, url: a.url || "", isAttachment: true }))
               ].filter(i => i.name.toLowerCase().includes(mentionFilter.toLowerCase())).map((item, idx) => (
                 <MentionListItem 
                   key={idx}
@@ -414,7 +423,42 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
               </div>
             </PopoverContent>
           </Popover>
+      </div>
+      
+      {attachments.some(a => a.isMentioned) && (
+        <div className="mt-4 flex flex-wrap gap-2 pt-4 border-t border-white/5">
+          {attachments.filter(a => a.isMentioned).map((a) => (
+            <div key={a.id} className="relative group">
+              <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 bg-card/60">
+                {a.url ? (
+                  <img src={a.url} alt={a.name} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+              <button 
+                onClick={() => setAttachments(prev => prev.map(item => item.id === a.id ? { ...item, isMentioned: false } : item))}
+                className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+              >
+                <X className="h-2.5 w-2.5 text-white" />
+              </button>
+              
+              {/* Reference indicator line */}
+              <div className="absolute -right-2 top-0 bottom-0 w-[1px] bg-white/20" />
+              
+              {/* Hover Preview for mentioned items (Fig 4) */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-[110]">
+                <div className="bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl p-4 overflow-hidden min-w-[200px]">
+                  <div className="text-[12px] text-white font-medium mb-2">画布生图</div>
+                  <img src={a.url} alt="Large Preview" className="w-[180px] h-[320px] rounded-xl object-cover" />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
+      )}
         <button
           onClick={() => {
             const v = text.trim();
@@ -524,27 +568,28 @@ function AttachmentChip({ a, onRemove, onAtClick }: { a: Attachment; onRemove: (
         </div>
       )}
       
-      {/* Icon Overlay for @ mention style */}
-      <button 
-        onClick={(e) => {
-          e.stopPropagation();
-          onAtClick?.();
-        }}
-        className="absolute top-1 left-1 h-4 w-4 rounded-full bg-black/60 flex items-center justify-center border border-white/10 hover:bg-black/80 transition"
-      >
-        <AtSign className="h-2.5 w-2.5 text-white/80" />
-      </button>
+      {/* Icon Overlay for @ mention style (Fig 3) */}
+      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            onAtClick?.();
+          }}
+          className="h-6 w-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-white/40 transition"
+        >
+          <AtSign className="h-3.5 w-3.5 text-white" />
+        </button>
 
-      {/* Remove Button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onRemove();
-        }}
-        className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-black/60 text-white/80 opacity-0 transition group-hover:opacity-100 hover:bg-black/80"
-      >
-        <X className="h-2.5 w-2.5" />
-      </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
+          className="h-6 w-6 items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white border border-white/20 hover:bg-white/40 transition flex"
+        >
+          <X className="h-3.5 w-3.5" />
+        </button>
+      </div>
 
       {/* Type Badge */}
       {a.kind === 'video' && (
@@ -661,10 +706,18 @@ function MentionListItem({
         onClick={onClick}
         onMouseEnter={() => setShowPreview(true)}
         onMouseLeave={() => setShowPreview(false)}
-        className="flex w-full items-center gap-3 rounded-xl px-2 py-2 hover:bg-white/5 transition text-left group"
+        className="flex w-full items-center gap-3 rounded-xl px-2 py-2 hover:bg-white/10 transition text-left group"
       >
         <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-white/5 bg-white/5 relative">
-          <img src={item.url} className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition" />
+          {item.kind === 'folder' ? (
+             <div className="h-full w-full flex items-center justify-center bg-white/5">
+                {item.name === "素材" ? <ImageIcon className="h-5 w-5 text-white/60" /> : 
+                 item.name === "角色" ? <AtSign className="h-5 w-5 text-white/60" /> :
+                 <Package className="h-5 w-5 text-white/60" />}
+             </div>
+          ) : (
+            <img src={item.url} className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition" />
+          )}
           {item.kind === "video" && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/20">
               <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[6px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
@@ -672,26 +725,20 @@ function MentionListItem({
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="text-[13px] font-medium text-white truncate">{item.name}</div>
-          <div className="text-[10px] text-muted-foreground capitalize">{item.kind === 'image' ? '图片' : '视频'}</div>
+          <div className="text-[14px] font-normal text-white truncate">{item.name}</div>
         </div>
-        <ChevronRight className="h-3.5 w-3.5 text-white/20 group-hover:text-white/40" />
+        {item.kind === 'folder' ? (
+          <ChevronRight className="h-4 w-4 text-white/40 group-hover:text-white/60" />
+        ) : (
+          <ChevronRight className="h-3.5 w-3.5 text-white/20 group-hover:text-white/40" />
+        )}
       </button>
 
-      {showPreview && (
+      {showPreview && item.kind !== 'folder' && (
         <div className="absolute left-full top-0 ml-2 pointer-events-none p-2 bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-left-2 duration-200 z-[100]">
           <div className="space-y-2">
-            <div className="text-[10px] text-muted-foreground px-1">{item.name} 预览</div>
-            <img src={item.url} alt="Preview" className="w-[180px] h-[180px] rounded-xl object-cover" />
-            {item.name === "画布生图" && (
-              <div className="grid grid-cols-3 gap-1 w-[180px] mt-2">
-                {[...Array(9)].map((_, i) => (
-                  <div key={i} className="aspect-square bg-white/5 rounded-sm overflow-hidden">
-                    <img src={item.url} className="w-full h-full object-cover opacity-60" />
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="text-[12px] text-white font-medium px-2 py-1">{item.name}</div>
+            <img src={item.url} alt="Preview" className="w-[180px] h-[320px] rounded-xl object-cover" />
           </div>
         </div>
       )}
