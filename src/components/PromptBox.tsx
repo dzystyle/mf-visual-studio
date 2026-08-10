@@ -70,11 +70,19 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   }, []);
 
   useEffect(() => {
-    const lastChar = text[cursorPos - 1];
-    if (lastChar === "@") {
-      setMentionOpen(true);
-      setMentionFilter("");
-    } else if (mentionOpen && !text.slice(0, cursorPos).includes("@")) {
+    const textBeforeCursor = text.slice(0, cursorPos);
+    const lastAtPos = textBeforeCursor.lastIndexOf("@");
+    
+    if (lastAtPos !== -1) {
+      const afterAt = textBeforeCursor.slice(lastAtPos + 1);
+      // If there's no space after the @, we consider it a mention trigger
+      if (!afterAt.includes(" ")) {
+        setMentionOpen(true);
+        setMentionFilter(afterAt);
+      } else {
+        setMentionOpen(false);
+      }
+    } else {
       setMentionOpen(false);
     }
   }, [text, cursorPos]);
@@ -188,7 +196,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
         />
 
         {mentionOpen && (
-          <div className="absolute top-full left-0 mt-2 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="absolute top-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="p-3 border-b border-white/5">
               <div className="relative">
                 <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
