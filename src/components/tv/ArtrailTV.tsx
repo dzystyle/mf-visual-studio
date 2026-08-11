@@ -22,7 +22,7 @@ const TV_DATA = [
 
 export function ArtrailTV() {
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = React.useState("漫剧");
+  const [activeCategory, setActiveCategory] = React.useState("品牌设计");
   const [hoveredId, setHoveredId] = React.useState<number | null>(null);
   const [selectedVideo, setSelectedVideo] = React.useState<any>(null);
 
