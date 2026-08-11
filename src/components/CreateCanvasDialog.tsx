@@ -34,59 +34,86 @@ export function CreateCanvasDialog({ open, onOpenChange }: CreateCanvasDialogPro
 
           <div className="space-y-3">
             <Label className="text-sm font-medium text-gray-700">画布风格</Label>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-3">
               {/* Free Layout Option */}
               <div 
                 onClick={() => setStyle("free")}
                 className={cn(
-                  "relative cursor-pointer rounded-2xl border-2 p-4 transition-all duration-200",
+                  "relative cursor-pointer rounded-2xl border-2 p-3 transition-all duration-200",
                   style === "free" ? "border-blue-500 bg-blue-50/30" : "border-gray-100 bg-white hover:border-gray-200"
                 )}
               >
                 {style === "free" && (
-                  <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-white">
-                    <CheckIcon className="h-3 w-3" />
+                  <div className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-white">
+                    <CheckIcon className="h-2.5 w-2.5" />
                   </div>
                 )}
-                <div className="mb-8 flex justify-center py-2">
-                   <div className="grid grid-cols-3 gap-1.5">
+                <div className="mb-6 flex justify-center py-2">
+                   <div className="grid grid-cols-3 gap-1">
                       {[1, 2, 3, 4, 5, 6].map(i => (
-                        <div key={i} className="h-4 w-6 rounded-sm bg-blue-200/60" />
+                        <div key={i} className="h-3 w-4 rounded-sm bg-blue-200/60" />
                       ))}
                    </div>
                 </div>
-                <div className="font-bold text-blue-600">自由平铺</div>
-                <div className="text-[11px] text-gray-400">元素独立铺开</div>
+                <div className="text-sm font-bold text-blue-600">自由平铺</div>
+                <div className="text-[10px] text-gray-400">元素独立铺开</div>
               </div>
 
               {/* Node Connection Option */}
               <div 
                 onClick={() => setStyle("nodes")}
                 className={cn(
-                  "relative cursor-pointer rounded-2xl border-2 p-4 transition-all duration-200",
+                  "relative cursor-pointer rounded-2xl border-2 p-3 transition-all duration-200",
                   style === "nodes" ? "border-blue-500 bg-blue-50/30" : "border-gray-100 bg-white hover:border-gray-200"
                 )}
               >
                 {style === "nodes" && (
-                  <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-white">
-                    <CheckIcon className="h-3 w-3" />
+                  <div className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-white">
+                    <CheckIcon className="h-2.5 w-2.5" />
                   </div>
                 )}
-                <div className="mb-8 flex justify-center py-2">
+                <div className="mb-6 flex justify-center py-2">
                    <div className="relative flex items-center justify-center">
-                      <div className="h-4 w-6 rounded-sm bg-gray-200" />
-                      <div className="mx-1 flex flex-col gap-2">
-                         <div className="h-[1px] w-4 bg-gray-300" />
-                         <div className="h-[1px] w-4 bg-gray-300" />
+                      <div className="h-3 w-4 rounded-sm bg-gray-200" />
+                      <div className="mx-1 flex flex-col gap-1.5">
+                         <div className="h-[1px] w-3 bg-gray-300" />
+                         <div className="h-[1px] w-3 bg-gray-300" />
                       </div>
-                      <div className="flex flex-col gap-2">
-                         <div className="h-4 w-6 rounded-sm bg-gray-200" />
-                         <div className="h-4 w-6 rounded-sm bg-gray-200" />
+                      <div className="flex flex-col gap-1.5">
+                         <div className="h-3 w-4 rounded-sm bg-gray-200" />
+                         <div className="h-3 w-4 rounded-sm bg-gray-200" />
                       </div>
                    </div>
                 </div>
-                <div className="font-bold text-gray-900">节点连线</div>
-                <div className="text-[11px] text-gray-400">可视化引用关系</div>
+                <div className="text-sm font-bold text-gray-900">节点连线</div>
+                <div className="text-[10px] text-gray-400">可视化引用关系</div>
+              </div>
+
+              {/* List View Option */}
+              <div 
+                onClick={() => setStyle("list")}
+                className={cn(
+                  "relative cursor-pointer rounded-2xl border-2 p-3 transition-all duration-200",
+                  style === "list" ? "border-blue-500 bg-blue-50/30" : "border-gray-100 bg-white hover:border-gray-200"
+                )}
+              >
+                {style === "list" && (
+                  <div className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-white">
+                    <CheckIcon className="h-2.5 w-2.5" />
+                  </div>
+                )}
+                <div className="mb-6 flex justify-center py-2">
+                   <div className="flex flex-col gap-1.5">
+                      {[1, 2, 3].map(i => (
+                        <div key={i} className="flex items-center gap-1">
+                          <div className="h-3 w-4 rounded-sm bg-gray-200" />
+                          <div className="h-1.5 w-8 rounded-full bg-gray-100" />
+                        </div>
+                      ))}
+                   </div>
+                </div>
+                <div className="text-sm font-bold text-gray-900">列表模式</div>
+                <div className="text-[10px] text-gray-400">纵向排列管理</div>
               </div>
             </div>
           </div>
