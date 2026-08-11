@@ -114,19 +114,13 @@ function UserMenu({
         </div>
 
         <div className="space-y-0.5 px-2 pb-2">
-          <Link to="/settings/account"><MenuItem icon={Users} label="团队管理" /></Link>
-          <Link to="/settings/billing"><MenuItem icon={Gift} label="兑换码" /></Link>
-          
-          <div className="my-1" />
-
-          
-          <div className="px-3 py-2 border-t border-border/50">
-            <div className="flex items-center justify-between text-xs text-foreground/40">
-              <div className="flex items-center gap-2">
+          <div className="px-3 pt-2">
+            <div className="flex items-center justify-between text-xs text-foreground/40 font-medium">
+              <div className="flex items-center gap-2 text-foreground">
                 <FilmIconGradient className="h-3.5 w-3.5" />
-                <span>会员积分</span>
+                <span className="text-[13px]">会员积分</span>
               </div>
-              <span className="font-bold text-foreground">2081</span>
+              <span className="font-bold text-foreground text-[13px]">2081</span>
             </div>
             <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
               <div className="flex justify-between"><span>套餐</span><span>2000</span></div>
@@ -136,33 +130,38 @@ function UserMenu({
             </div>
           </div>
 
-          <div className="px-3 py-1 pb-3">
-            <div className="flex items-center justify-between text-xs text-foreground/40">
-              <div className="flex items-center gap-2">
-                <Gift className="h-3.5 w-3.5 text-muted-foreground" />
-                <span>奖励积分</span>
+          <div className="px-3 pt-3 pb-3">
+            <div className="flex items-center justify-between text-xs text-foreground/40 font-medium">
+              <div className="flex items-center gap-2 text-foreground">
+                <Gift className="h-3.5 w-3.5 text-foreground/60" />
+                <span className="text-[13px]">奖励积分</span>
               </div>
-              <span className="font-bold text-foreground">0</span>
+              <span className="font-bold text-foreground text-[13px]">0</span>
             </div>
             <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
               <div className="flex justify-between"><span>邀请奖励</span><span>0</span></div>
             </div>
             
-            <Link to="/settings/billing" onClick={() => setOpen(false)} className="mt-4 flex w-full items-center justify-center rounded-full bg-foreground/5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10">
+            <Link to="/settings/billing" onClick={() => setOpen(false)} className="mt-4 flex w-full items-center justify-center rounded-full bg-foreground/5 py-2.5 text-[13px] font-semibold text-foreground/80 transition-colors hover:bg-foreground/10">
               查看用量
             </Link>
           </div>
 
           <div className="my-1 border-t border-border/50" />
+          
+          <Link to="/settings/account"><MenuItem icon={Users} label="团队管理" /></Link>
+          <Link to="/settings/billing"><MenuItem icon={Gift} label="兑换码" /></Link>
+
+          <div className="my-1 border-t border-border/50" />
 
           {/* Language Selector */}
-          <div className="px-3 py-2 border-t border-border/50">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2 text-sm text-foreground/80">
-                <Globe className="h-4 w-4 text-foreground/60" />
+          <div className="px-3 py-2 cursor-pointer hover:bg-foreground/5 rounded-lg transition-colors group">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm text-foreground/80 group-hover:text-foreground">
+                <Globe className="h-4 w-4 text-foreground/60 group-hover:text-foreground" />
                 <span>语言</span>
               </div>
-              <div className="flex items-center gap-1 text-xs text-foreground/40">
+              <div className="flex items-center gap-1 text-xs text-foreground/40 group-hover:text-foreground/60">
                 简体中文 <ChevronRight className="h-3 w-3" />
               </div>
             </div>
