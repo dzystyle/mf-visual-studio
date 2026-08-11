@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, Dispatch, SetStateAction } from "react";
 import {
   Plus,
   Video,
@@ -288,7 +288,7 @@ function Composer({
   setInput: (v: string) => void;
   onSubmit: () => void;
   attachments: { id: string; url: string; name: string }[];
-  setAttachments: React.Dispatch<React.SetStateAction<{ id: string; url: string; name: string }[]>>;
+  setAttachments: Dispatch<SetStateAction<{ id: string; url: string; name: string }[]>>;
 }) {
   const [mentionOpen, setMentionOpen] = useState(false);
   const [mentionFilter, setMentionFilter] = useState("");
@@ -494,11 +494,9 @@ function Composer({
       <div className="flex items-center gap-2 px-5 pb-4 pt-3">
         <button 
           onClick={() => {
-            setInput((prev: string) => {
-              const before = prev.slice(0, cursorPos);
-              const after = prev.slice(cursorPos);
-              return before + "@" + after;
-            });
+            const before = input.slice(0, cursorPos);
+            const after = input.slice(cursorPos);
+            setInput(before + "@" + after);
             textareaRef.current?.focus();
           }}
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-background/40 text-muted-foreground hover:bg-background/70 transition"
