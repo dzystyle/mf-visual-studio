@@ -185,14 +185,8 @@ export function BillingSettings({ activeSection = 'credits' }: BillingSettingsPr
                 <Label className="text-xs text-white/40">开票类型</Label>
                 <div className="flex p-1 rounded-xl bg-white/5">
                   <button 
-                    disabled
-                    className="flex-1 py-2 text-sm font-medium rounded-lg text-white/40 cursor-not-allowed opacity-50"
-                  >
-                    个人
-                  </button>
-                  <button 
                     onClick={() => setType('company')}
-                    className="flex-1 py-2 text-sm font-medium rounded-lg transition-all bg-white text-black"
+                    className="flex-1 py-2 text-sm font-medium rounded-lg transition-all bg-white text-black text-center"
                   >
                     公司
                   </button>
