@@ -107,7 +107,7 @@ function UserMenu({
             className="group mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#A855F7] to-[#3B82F6] py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 cursor-pointer"
           >
             <div className="flex h-4 w-4 items-center justify-center rounded-sm bg-white/20">
-              <Play fill="white" className="h-2 w-2 text-white" />
+              <Play fill="white" className="h-2 w-2 text-white ml-0.5" />
             </div>
             开通会员
           </button>
