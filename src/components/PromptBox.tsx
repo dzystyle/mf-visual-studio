@@ -42,7 +42,14 @@ const ACCEPT_MAP: Record<Attachment["kind"], string> = {
   text: ".txt,.md,.json,.csv,text/*",
 };
 
-export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = {}) {
+export function PromptBox({ 
+  onSubmit, 
+  isMini = false 
+}: { 
+  onSubmit?: (text: string) => void;
+  isMini?: boolean;
+} = {}) {
+
   const [text, setText] = useState("");
   const [plusOpen, setPlusOpen] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -178,10 +185,12 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   };
 
   return (
-    <div className="glass rounded-2xl p-5 shadow-2xl relative z-20">
+    <div className={`glass shadow-2xl relative z-20 transition-all duration-500 ease-out-expo ${
+      isMini ? 'rounded-full p-2 pl-6' : 'rounded-2xl p-5'
+    }`}>
 
       <div className="relative">
-        {(attachments.length > 0 || skill) && (
+        {!isMini && (attachments.length > 0 || skill) && (
           <div className="mb-3 flex flex-wrap gap-2">
             {skill && (
               <div className="flex items-center gap-1.5 rounded-lg bg-white/5 border border-white/10 px-2 py-1 text-xs text-white/80 group">
@@ -213,36 +222,56 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             ))}
           </div>
         )}
-        <textarea
-          ref={textareaRef}
-          rows={3}
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-            setCursorPos(e.target.selectionStart);
-          }}
-          onKeyUp={(e) => {
-            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-          }}
-          onClick={(e) => {
-            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              const v = text.trim();
-              if (v && onSubmit) {
-                onSubmit(v);
-                setText("");
-                setAttachments([]);
+        
+        <div className="flex items-center gap-3">
+          <textarea
+            ref={textareaRef}
+            rows={isMini ? 1 : 3}
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+              setCursorPos(e.target.selectionStart);
+            }}
+            onKeyUp={(e) => {
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+            }}
+            onClick={(e) => {
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                const v = text.trim();
+                if (v && onSubmit) {
+                  onSubmit(v);
+                  setText("");
+                  setAttachments([]);
+                }
               }
-            }
-          }}
-          placeholder="输入提示词,或输入 @ 引用资产库中的角色、素材..."
-          className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
-        />
+            }}
+            placeholder={isMini ? "由一个想法或故事开始..." : "输入提示词,或输入 @ 引用资产库中的角色、素材..."}
+            className={`w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 ${
+              isMini ? 'py-1 cursor-pointer' : 'py-0'
+            }`}
+          />
+          
+          {isMini && (
+            <button
+              onClick={() => {
+                const v = text.trim();
+                if (v && onSubmit) {
+                  onSubmit(v);
+                  setText("");
+                }
+              }}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground text-background transition hover:scale-105"
+            >
+              <ArrowUp className="h-4 w-4" />
+            </button>
+          )}
+        </div>
 
-        {mentionOpen && (
+        {!isMini && mentionOpen && (
           <div className="absolute top-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="p-3 border-b border-white/5">
               <div className="relative">
@@ -283,7 +312,9 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           </div>
         )}
       </div>
-      <div className="mt-4 flex items-center justify-between">
+      {!isMini && (
+        <div className="mt-4 flex items-center justify-between">
+
         <div className="flex flex-wrap items-center gap-2">
           <Popover open={plusOpen} onOpenChange={setPlusOpen}>
             <PopoverTrigger asChild>
