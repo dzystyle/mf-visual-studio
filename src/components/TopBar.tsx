@@ -118,6 +118,21 @@ function UserMenu({
           <Link to="/settings/billing"><MenuItem icon={Gift} label="兑换码" /></Link>
 
           <div className="my-2 border-t border-border/50" />
+          
+          <div className="px-3 py-2">
+            <div className="flex items-center justify-between text-xs text-foreground/40">
+              <div className="flex items-center gap-2">
+                <Gift className="h-3.5 w-3.5 text-[#A855F7]" />
+                <span>奖励积分</span>
+              </div>
+              <span>0</span>
+            </div>
+            <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
+              <div className="flex justify-between"><span>邀请奖励</span><span>0</span></div>
+            </div>
+          </div>
+
+          <div className="my-2 border-t border-border/50" />
 
           {/* Theme Selector */}
           <div className="px-3 py-2">
