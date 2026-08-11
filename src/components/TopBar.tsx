@@ -158,7 +158,7 @@ function UserMenu({
           <div className="px-3 py-2">
             <div className="flex items-center justify-between text-xs text-foreground/40">
               <div className="flex items-center gap-2">
-                <Coins className="h-3.5 w-3.5 text-[#FFB800]" />
+                <FilmIconGradient />
                 <span>会员积分</span>
               </div>
               <span>2081</span>
