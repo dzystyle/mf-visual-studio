@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, Dispatch, SetStateAction } from "react";
 import {
   Plus,
   Video,
@@ -81,6 +81,9 @@ function QuickPage() {
   );
   const [showMini, setShowMini] = useState(false);
   const [hdOpen, setHdOpen] = useState(false);
+  const [attachments, setAttachments] = useState<{ id: string; url: string; name: string }[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -185,6 +188,8 @@ function QuickPage() {
                 input={input}
                 setInput={setInput}
                 onSubmit={submit}
+                attachments={attachments}
+                setAttachments={setAttachments}
               />
             </div>
           )}
@@ -274,13 +279,86 @@ function Composer({
   input,
   setInput,
   onSubmit,
+  attachments,
+  setAttachments,
 }: {
   tab: "video" | "image" | "music" | "voice";
   setTab: (t: "video" | "image" | "music" | "voice") => void;
   input: string;
   setInput: (v: string) => void;
   onSubmit: () => void;
+  attachments: { id: string; url: string; name: string }[];
+  setAttachments: Dispatch<SetStateAction<{ id: string; url: string; name: string }[]>>;
 }) {
+  const [mentionOpen, setMentionOpen] = useState(false);
+  const [mentionFilter, setMentionFilter] = useState("");
+  const [cursorPos, setCursorPos] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const textBeforeCursor = input.slice(0, cursorPos);
+    const lastAtPos = textBeforeCursor.lastIndexOf("@");
+    
+    if (lastAtPos !== -1) {
+      const afterAt = textBeforeCursor.slice(lastAtPos + 1);
+      if (!afterAt.includes(" ")) {
+        setMentionOpen(true);
+        setMentionFilter(afterAt);
+      } else {
+        setMentionOpen(false);
+      }
+    } else {
+      setMentionOpen(false);
+    }
+  }, [input, cursorPos]);
+
+  const handleMentionSelect = (name: string, url: string) => {
+    const textBeforeCursor = input.slice(0, cursorPos);
+    const lastAtPos = textBeforeCursor.lastIndexOf("@");
+    
+    let newInput: string;
+    let newCursorPos: number;
+
+    if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
+      const before = input.slice(0, lastAtPos);
+      const after = input.slice(cursorPos);
+      newInput = `${before}@${name} ${after}`;
+      newCursorPos = before.length + name.length + 2;
+    } else {
+      const before = input.slice(0, cursorPos);
+      const after = input.slice(cursorPos);
+      const prefix = before.endsWith(" ") || before === "" ? "" : " ";
+      newInput = `${before}${prefix}@${name} ${after}`;
+      newCursorPos = before.length + prefix.length + name.length + 2;
+    }
+
+    setInput(newInput);
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
+        setCursorPos(newCursorPos);
+      }
+    }, 0);
+    
+    setMentionOpen(false);
+    
+    if (!attachments.find(a => a.url === url)) {
+      setAttachments(prev => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
+    }
+  };
+
+  const onFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
+    if (!files.length) return;
+    const next = files.map((f) => ({
+      id: `${Date.now()}-${f.name}`,
+      name: f.name,
+      url: URL.createObjectURL(f),
+    }));
+    setAttachments((prev) => [...prev, ...next]);
+  };
   const tabs = [
     { id: "video", label: "视频生成", icon: Video },
     { id: "image", label: "图片生成", icon: ImageIcon },
@@ -321,34 +399,110 @@ function Composer({
         })}
       </div>
 
-      {/* Input area */}
       <div className="px-5 pt-4">
         <div className="flex items-start gap-3">
-          <button className="relative flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-background/40 text-muted-foreground transition hover:border-foreground/40 hover:text-foreground">
-            <span className="absolute right-1 top-1 rounded bg-background/60 px-1 text-[9px] text-muted-foreground">
-              0/9
-            </span>
-            <Plus className="h-4 w-4" />
-            <span className="mt-0.5 text-[10px]">添加</span>
-          </button>
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                onSubmit();
-              }
-            }}
-            rows={2}
-            placeholder="使用@快速调用参考能力，支持文本、图片、音频、视频全能参考，例如：@图片1参考 @音频1的音色，模仿@视频1的动作"
-            className="min-h-[80px] flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none"
-          />
+          <div className="flex gap-2">
+            {attachments.map((a) => (
+              <div key={a.id} className="relative group h-16 w-16 shrink-0 rounded-xl overflow-hidden border border-white/10">
+                <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
+                <button 
+                  onClick={() => setAttachments(prev => prev.filter(x => x.id !== a.id))}
+                  className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
+                >
+                  <Plus className="h-3 w-3 rotate-45" />
+                </button>
+              </div>
+            ))}
+            {attachments.length < 9 && (
+              <button 
+                onClick={() => fileInputRef.current?.click()}
+                className="relative flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-background/40 text-muted-foreground transition hover:border-foreground/40 hover:text-foreground"
+              >
+                <span className="absolute right-1 top-1 rounded bg-background/60 px-1 text-[9px] text-muted-foreground">
+                  {attachments.length}/9
+                </span>
+                <Plus className="h-4 w-4" />
+                <span className="mt-0.5 text-[10px]">添加</span>
+              </button>
+            )}
+          </div>
+          <input ref={fileInputRef} type="file" multiple className="hidden" accept="image/*" onChange={onFiles} />
+          
+          <div className="relative flex-1">
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value);
+                setCursorPos(e.target.selectionStart);
+              }}
+              onKeyUp={(e) => setCursorPos((e.target as HTMLTextAreaElement).selectionStart)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  onSubmit();
+                }
+              }}
+              rows={2}
+              placeholder="使用@快速调用参考能力，支持文本、图片、音频、视频全能参考，例如：@图片1参考 @音频1的音色，模仿@视频1的动作"
+              className="min-h-[80px] w-full resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none"
+            />
+            
+            {mentionOpen && (
+              <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-bottom-2 duration-200">
+                <div className="p-3 border-b border-white/5">
+                  <div className="relative">
+                    <Plus className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground rotate-45" />
+                    <input 
+                      autoFocus
+                      type="text" 
+                      value={mentionFilter}
+                      onChange={(e) => setMentionFilter(e.target.value)}
+                      placeholder="搜索素材、角色、商品..."
+                      className="w-full bg-white/5 border-none rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:ring-1 focus:ring-white/10 focus:outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="max-h-64 overflow-y-auto p-1.5 scrollbar-hide">
+                  <div className="px-2 py-1.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">最近使用</div>
+                  {[
+                    { name: "IMG_2883.JPG", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
+                    { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" },
+                    { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
+                  ].filter(i => i.name.toLowerCase().includes(mentionFilter.toLowerCase())).map((item, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleMentionSelect(item.name, item.url)}
+                      className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition group"
+                    >
+                      <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden border border-white/5">
+                        <img src={item.url} alt={item.name} className="h-full w-full object-cover" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <div className="text-xs font-medium text-white group-hover:text-aurora-purple transition">{item.name}</div>
+                        <div className="text-[10px] text-muted-foreground">{item.kind === 'image' ? '图片' : '视频'}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Bottom chips + submit */}
       <div className="flex items-center gap-2 px-5 pb-4 pt-3">
+        <button 
+          onClick={() => {
+            const before = input.slice(0, cursorPos);
+            const after = input.slice(cursorPos);
+            setInput(before + "@" + after);
+            textareaRef.current?.focus();
+          }}
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-background/40 text-muted-foreground hover:bg-background/70 transition"
+        >
+          <span className="text-sm font-medium">@</span>
+        </button>
         <Popover>
           <PopoverTrigger asChild>
             <button className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/40 px-3 py-1.5 text-xs text-foreground/90 transition hover:bg-background/70">
