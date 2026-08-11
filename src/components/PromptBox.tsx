@@ -13,7 +13,6 @@ import {
   ChevronDown,
   AtSign,
   Search,
-  ChevronRight,
   Mic,
 } from "lucide-react";
 import {
@@ -42,7 +41,13 @@ const ACCEPT_MAP: Record<Attachment["kind"], string> = {
   text: ".txt,.md,.json,.csv,text/*",
 };
 
-export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = {}) {
+export function PromptBox({ 
+  onSubmit, 
+  isMini = false 
+}: { 
+  onSubmit?: (text: string) => void;
+  isMini?: boolean;
+} = {}) {
   const [text, setText] = useState("");
   const [plusOpen, setPlusOpen] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -81,7 +86,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     
     if (lastAtPos !== -1) {
       const afterAt = textBeforeCursor.slice(lastAtPos + 1);
-      // If there's no space after the @, we consider it a mention trigger
       if (!afterAt.includes(" ")) {
         setMentionOpen(true);
         setMentionFilter(afterAt);
@@ -121,9 +125,7 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
     if (name) {
       setText(prev => {
         const mention = `@${name}`;
-        // Find if the mention exists in the text
         if (prev.includes(mention)) {
-          // Replace the first occurrence of the mention (and potentially a following space)
           return prev.replace(new RegExp(`@${name}\\s?`), "");
         }
         return prev;
@@ -143,7 +145,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
       const after = text.slice(cursorPos);
       newText = `${before}@${name} ${after}`;
       newCursorPos = before.length + name.length + 2;
-
     } else {
       const before = text.slice(0, cursorPos);
       const after = text.slice(cursorPos);
@@ -178,10 +179,11 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
   };
 
   return (
-    <div className="glass rounded-2xl p-5 shadow-2xl relative z-20">
-
+    <div className={`glass shadow-2xl relative z-20 transition-all duration-500 ease-out-expo ${
+      isMini ? 'rounded-full p-2 pl-6' : 'rounded-2xl p-5'
+    }`}>
       <div className="relative">
-        {(attachments.length > 0 || skill) && (
+        {!isMini && (attachments.length > 0 || skill) && (
           <div className="mb-3 flex flex-wrap gap-2">
             {skill && (
               <div className="flex items-center gap-1.5 rounded-lg bg-white/5 border border-white/10 px-2 py-1 text-xs text-white/80 group">
@@ -198,7 +200,6 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
                 </button>
               </div>
             )}
-
             {attachments.map((a) => (
               <AttachmentChip 
                 key={a.id} 
@@ -213,36 +214,55 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
             ))}
           </div>
         )}
-        <textarea
-          ref={textareaRef}
-          rows={3}
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-            setCursorPos(e.target.selectionStart);
-          }}
-          onKeyUp={(e) => {
-            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-          }}
-          onClick={(e) => {
-            setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              const v = text.trim();
-              if (v && onSubmit) {
-                onSubmit(v);
-                setText("");
-                setAttachments([]);
+        
+        <div className="flex items-center gap-3">
+          <textarea
+            ref={textareaRef}
+            rows={isMini ? 1 : 3}
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+              setCursorPos(e.target.selectionStart);
+            }}
+            onKeyUp={(e) => {
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+            }}
+            onClick={(e) => {
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                const v = text.trim();
+                if (v && onSubmit) {
+                  onSubmit(v);
+                  setText("");
+                  setAttachments([]);
+                }
               }
-            }
-          }}
-          placeholder="输入提示词,或输入 @ 引用资产库中的角色、素材..."
-          className="w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
-        />
+            }}
+            placeholder={isMini ? "由一个想法或故事开始..." : "输入提示词,或输入 @ 引用资产库中的角色、素材..."}
+            className={`w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 ${
+              isMini ? 'py-1 cursor-pointer' : 'py-0'
+            }`}
+          />
+          {isMini && (
+            <button
+              onClick={() => {
+                const v = text.trim();
+                if (v && onSubmit) {
+                  onSubmit(v);
+                  setText("");
+                }
+              }}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground text-background transition hover:scale-105"
+            >
+              <ArrowUp className="h-4 w-4" />
+            </button>
+          )}
+        </div>
 
-        {mentionOpen && (
+        {!isMini && mentionOpen && (
           <div className="absolute top-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="p-3 border-b border-white/5">
               <div className="relative">
@@ -283,268 +303,153 @@ export function PromptBox({ onSubmit }: { onSubmit?: (text: string) => void } = 
           </div>
         )}
       </div>
-      <div className="mt-4 flex items-center justify-between">
-        <div className="flex flex-wrap items-center gap-2">
-          <Popover open={plusOpen} onOpenChange={setPlusOpen}>
-            <PopoverTrigger asChild>
-              <button className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent">
-                <Plus className="h-4 w-4" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent
-              side="top"
-              align="start"
-              className="w-44 space-y-2 border-border/60 bg-card/95 p-2 backdrop-blur-xl"
-            >
-              <AddItem icon={ImageIcon} label="图片" onClick={() => triggerPick("image")} />
-              <AddItem icon={AudioLines} label="音频" onClick={() => triggerPick("audio")} />
-              <AddItem icon={Video} label="视频" onClick={() => triggerPick("video")} />
-              <AddItem icon={FileText} label="文本" onClick={() => triggerPick("text")} />
-            </PopoverContent>
-          </Popover>
 
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            className="hidden"
-            onChange={onFiles}
-          />
-
-          <Popover>
-            <PopoverTrigger asChild>
-              <button type="button">
-                <Chip icon={LayoutGrid} label={model} badge="新" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent align="start" className="w-[600px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
-              <ModelPicker value={model} onSelect={setModel} />
-            </PopoverContent>
-          </Popover>
-
-          <Popover>
-            <PopoverTrigger asChild>
-              <button type="button">
-                <Chip
-                  icon={Package}
-                  label={skill ?? "Skill"}
-                  active={!!skill}
-                  onClear={skill ? () => {
-                    setSkill(null);
-                    setText(prev => prev.replace(new RegExp(`@${skill}\\s?`), ""));
-                  } : undefined}
-
-                />
-              </button>
-
-            </PopoverTrigger>
-            <PopoverContent align="start" className="w-[500px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
-              <SkillPicker onSelect={setSkill} />
-            </PopoverContent>
-          </Popover>
-
-          <button type="button" onClick={() => setAssetsOpen(true)}>
-            <Chip icon={Smile} label="资产库" />
-          </button>
-          <ElementsPickerDialog 
-            open={assetsOpen} 
-            onOpenChange={setAssetsOpen} 
-            onSelect={(name, kind, url) => {
-              setAttachments(prev => [
-                ...prev,
-                {
-                  id: `${Date.now()}-${name}`,
-                  name,
-                  kind: (kind as any) || "image",
-                  url
-                }
-              ]);
-              setText(prev => {
-                const mention = `@${name}`;
-                if (!prev) return mention;
-                if (prev.endsWith(' ')) return prev + mention;
-                return prev + ' ' + mention;
-              });
-            }} 
-          />
-
-
-          <div className="h-4 w-px bg-border/40 mx-1" />
-
-          {/* Aspect Ratio Picker */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition">
-                <div className="w-3.5 h-2.5 border border-current rounded-[1px] flex items-center justify-center text-[8px] leading-none">
-                  <span className="scale-75 uppercase">{ratio}</span>
+      {!isMini && (
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex flex-wrap items-center gap-2">
+            <Popover open={plusOpen} onOpenChange={setPlusOpen}>
+              <PopoverTrigger asChild>
+                <button className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent">
+                  <Plus className="h-4 w-4" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent side="top" align="start" className="w-44 space-y-2 border-border/60 bg-card/95 p-2 backdrop-blur-xl">
+                <AddItem icon={ImageIcon} label="图片" onClick={() => triggerPick("image")} />
+                <AddItem icon={AudioLines} label="音频" onClick={() => triggerPick("audio")} />
+                <AddItem icon={Video} label="视频" onClick={() => triggerPick("video")} />
+                <AddItem icon={FileText} label="文本" onClick={() => triggerPick("text")} />
+              </PopoverContent>
+            </Popover>
+            <input ref={fileInputRef} type="file" multiple className="hidden" onChange={onFiles} />
+            <Popover>
+              <PopoverTrigger asChild>
+                <button type="button">
+                  <Chip icon={LayoutGrid} label={model} badge="新" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-[600px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+                <ModelPicker value={model} onSelect={setModel} />
+              </PopoverContent>
+            </Popover>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button type="button">
+                  <Chip icon={Package} label={skill ?? "Skill"} active={!!skill} onClear={skill ? () => {
+                      setSkill(null);
+                      setText(prev => prev.replace(new RegExp(`@${skill}\\s?`), ""));
+                    } : undefined}
+                  />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-[500px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+                <SkillPicker onSelect={setSkill} />
+              </PopoverContent>
+            </Popover>
+            <button type="button" onClick={() => setAssetsOpen(true)}>
+              <Chip icon={Smile} label="资产库" />
+            </button>
+            <ElementsPickerDialog 
+              open={assetsOpen} 
+              onOpenChange={setAssetsOpen} 
+              onSelect={(name, kind, url) => {
+                setAttachments(prev => [...prev, { id: `${Date.now()}-${name}`, name, kind: (kind as any) || "image", url }]);
+                setText(prev => {
+                  const mention = `@${name}`;
+                  if (!prev) return mention;
+                  if (prev.endsWith(' ')) return prev + mention;
+                  return prev + ' ' + mention;
+                });
+              }} 
+            />
+            <div className="h-4 w-px bg-border/40 mx-1" />
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition">
+                  <div className="w-3.5 h-2.5 border border-current rounded-[1px] flex items-center justify-center text-[8px] leading-none">
+                    <span className="scale-75 uppercase">{ratio}</span>
+                  </div>
+                  <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-40 p-1 border-border bg-card/95 backdrop-blur-xl rounded-xl">
+                <RatioItem label="自动" icon={<LayoutGrid className="w-3.5 h-3.5" />} active={ratio === "自动"} onClick={() => setRatio("自动")} />
+                <RatioItem label="16:9 (横屏)" active={ratio === "16:9"} icon={<div className="w-3.5 h-2.5 border border-current rounded-[1px]" />} onClick={() => setRatio("16:9")} />
+                <RatioItem label="21:9 (电影)" active={ratio === "21:9"} icon={<div className="w-4 h-2 border border-current rounded-[1px]" />} onClick={() => setRatio("21:9")} />
+                <RatioItem label="9:16 (竖屏)" active={ratio === "9:16"} icon={<div className="w-2.5 h-4 border border-current rounded-[1px]" />} onClick={() => setRatio("9:16")} />
+                <RatioItem label="4:3" active={ratio === "4:3"} icon={<div className="w-3.5 h-3 border border-current rounded-[1px]" />} onClick={() => setRatio("4:3")} />
+                <RatioItem label="3:4" active={ratio === "3:4"} icon={<div className="w-3 h-3.5 border border-current rounded-[1px]" />} onClick={() => setRatio("3:4")} />
+                <RatioItem label="1:1" active={ratio === "1:1"} icon={<div className="w-3.5 h-3.5 border border-current rounded-[1px]" />} onClick={() => setRatio("1:1")} />
+              </PopoverContent>
+            </Popover>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className={`flex h-8 w-8 items-center justify-center rounded-full border border-border transition ${selectedCharacter ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'text-muted-foreground hover:bg-accent hover:text-foreground'}`}>
+                  <AtSign className="h-4 w-4" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-56 p-2 border-border bg-card/95 backdrop-blur-xl rounded-xl">
+                <div className="text-[10px] text-muted-foreground px-2 py-1 mb-1 flex items-center justify-between">
+                  <span>角色引用</span>
+                  {selectedCharacter && <button onClick={() => setSelectedCharacter(null)} className="hover:text-foreground">清除</button>}
                 </div>
-                <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                <div className="text-[10px] text-muted-foreground px-2 py-1 mb-1 opacity-60">其他角色</div>
+                <MentionItem label="场景01" img="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" active={selectedCharacter === "场景01"} onClick={() => { setSelectedCharacter("场景01"); handleMentionSelect("场景01", "image", "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop"); }} />
+                <MentionItem label="角色01" img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" active={selectedCharacter === "角色01"} onClick={() => { setSelectedCharacter("角色01"); handleMentionSelect("角色01", "image", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop"); }} />
+                <div className="text-[10px] text-muted-foreground px-2 py-1 mt-2 mb-1 opacity-60">推荐角色</div>
+                <MentionItem label="皮皮特PiPi" icon={<div className="w-full h-full bg-accent flex items-center justify-center text-[10px]">P</div>} active={selectedCharacter === "皮皮特PiPi"} onClick={() => { setSelectedCharacter("皮皮特PiPi"); handleMentionSelect("皮皮特PiPi", "image", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop"); }} />
+                <MentionItem label="萧衍" img="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop" active={selectedCharacter === "萧衍"} onClick={() => { setSelectedCharacter("萧衍"); handleMentionSelect("萧衍", "image", "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop"); }} />
+                <MentionItem label="西施" img="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop" active={selectedCharacter === "西施"} onClick={() => { setSelectedCharacter("西施"); handleMentionSelect("西施", "image", "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop"); }} />
+              </PopoverContent>
+            </Popover>
+            <div className="flex items-center gap-2 px-1">
+              <span className="text-xs text-foreground/80">画布</span>
+              <button onClick={() => setCanvasMode(!canvasMode)} className={`w-9 h-5 rounded-full relative p-0.5 transition-all duration-300 ${canvasMode ? 'bg-aurora-blue/60' : 'bg-muted/60'}`}>
+                <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-300 ${canvasMode ? 'translate-x-4' : 'translate-x-0'}`} />
               </button>
-            </PopoverTrigger>
-            <PopoverContent align="start" className="w-40 p-1 border-border bg-card/95 backdrop-blur-xl rounded-xl">
-              <RatioItem 
-                label="自动" 
-                icon={<LayoutGrid className="w-3.5 h-3.5" />} 
-                active={ratio === "自动"}
-                onClick={() => setRatio("自动")}
-              />
-              <RatioItem 
-                label="16:9 (横屏)" 
-                active={ratio === "16:9"} 
-                icon={<div className="w-3.5 h-2.5 border border-current rounded-[1px]" />} 
-                onClick={() => setRatio("16:9")}
-              />
-              <RatioItem 
-                label="21:9 (电影)" 
-                active={ratio === "21:9"}
-                icon={<div className="w-4 h-2 border border-current rounded-[1px]" />} 
-                onClick={() => setRatio("21:9")}
-              />
-              <RatioItem 
-                label="9:16 (竖屏)" 
-                active={ratio === "9:16"}
-                icon={<div className="w-2.5 h-4 border border-current rounded-[1px]" />} 
-                onClick={() => setRatio("9:16")}
-              />
-              <RatioItem 
-                label="4:3" 
-                active={ratio === "4:3"}
-                icon={<div className="w-3.5 h-3 border border-current rounded-[1px]" />} 
-                onClick={() => setRatio("4:3")}
-              />
-              <RatioItem 
-                label="3:4" 
-                active={ratio === "3:4"}
-                icon={<div className="w-3 h-3.5 border border-current rounded-[1px]" />} 
-                onClick={() => setRatio("3:4")}
-              />
-              <RatioItem 
-                label="1:1" 
-                active={ratio === "1:1"}
-                icon={<div className="w-3.5 h-3.5 border border-current rounded-[1px]" />} 
-                onClick={() => setRatio("1:1")}
-              />
-            </PopoverContent>
-          </Popover>
-
-          {/* Character Mention */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className={`flex h-8 w-8 items-center justify-center rounded-full border border-border transition ${selectedCharacter ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'text-muted-foreground hover:bg-accent hover:text-foreground'}`}>
-                <AtSign className="h-4 w-4" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent align="start" className="w-56 p-2 border-border bg-card/95 backdrop-blur-xl rounded-xl">
-              <div className="text-[10px] text-muted-foreground px-2 py-1 mb-1 flex items-center justify-between">
-                <span>角色引用</span>
-                {selectedCharacter && (
-                  <button onClick={() => setSelectedCharacter(null)} className="hover:text-foreground">清除</button>
-                )}
-              </div>
-              <div className="text-[10px] text-muted-foreground px-2 py-1 mb-1 opacity-60">其他角色</div>
-              <MentionItem label="场景01" img="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" active={selectedCharacter === "场景01"} onClick={() => { setSelectedCharacter("场景01"); handleMentionSelect("场景01", "image", "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop"); }} />
-              <MentionItem label="角色01" img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" active={selectedCharacter === "角色01"} onClick={() => { setSelectedCharacter("角色01"); handleMentionSelect("角色01", "image", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop"); }} />
-              <div className="text-[10px] text-muted-foreground px-2 py-1 mt-2 mb-1 opacity-60">推荐角色</div>
-              <MentionItem label="皮皮特PiPi" icon={<div className="w-full h-full bg-accent flex items-center justify-center text-[10px]">P</div>} active={selectedCharacter === "皮皮特PiPi"} onClick={() => { setSelectedCharacter("皮皮特PiPi"); handleMentionSelect("皮皮特PiPi", "image", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop"); }} />
-              <MentionItem label="萧衍" img="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop" active={selectedCharacter === "萧衍"} onClick={() => { setSelectedCharacter("萧衍"); handleMentionSelect("萧衍", "image", "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop"); }} />
-              <MentionItem label="西施" img="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop" active={selectedCharacter === "西施"} onClick={() => { setSelectedCharacter("西施"); handleMentionSelect("西施", "image", "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop"); }} />
-            </PopoverContent>
-          </Popover>
-
-          {/* Canvas Mode Toggle */}
-          <div className="flex items-center gap-2 px-1">
-            <span className="text-xs text-foreground/80">画布</span>
-            <button 
-              onClick={() => setCanvasMode(!canvasMode)}
-              className={`w-9 h-5 rounded-full relative p-0.5 transition-all duration-300 ${canvasMode ? 'bg-aurora-blue/60' : 'bg-muted/60'}`}
+            </div>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="flex items-center gap-1.5 rounded-full bg-accent/60 px-3 py-1.5 text-xs text-foreground hover:bg-accent transition border border-border/40">
+                  <span>{duration}秒</span>
+                  <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-72 p-4 border-border bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl">
+                <div className="text-sm font-semibold mb-4">视频时长</div>
+                <div className="flex bg-muted/40 p-1 rounded-full mb-6">
+                  <button className="flex-1 text-[11px] py-1.5 rounded-full bg-white text-black font-medium shadow-sm">按秒数</button>
+                  <button className="flex-1 text-[11px] py-1.5 rounded-full text-muted-foreground hover:text-foreground">智能时长</button>
+                </div>
+                <div className="relative pt-2 pb-8">
+                  <input type="range" min="4" max="180" value={duration} onChange={(e) => setDuration(parseInt(e.target.value))} className="w-full h-1 bg-muted/60 rounded-full appearance-none cursor-pointer accent-foreground" />
+                  <div className="flex justify-between mt-3 text-[10px] text-muted-foreground"><span>4</span><span>60</span><span>120</span><span>180</span></div>
+                  <div className="absolute right-0 top-[-8px] bg-accent/80 px-2 py-1 rounded-lg text-xs font-medium border border-border">{duration} 秒</div>
+                </div>
+                <div className="text-[10px] text-muted-foreground/60 text-center italic">会在提示词里附加“时长：{duration}秒”</div>
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="flex items-center gap-2">
+            <button type="button" className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition hover:bg-accent hover:text-foreground" onClick={() => console.log("Voice input triggered")}>
+              <Mic className="h-4 w-4" />
+            </button>
+            <button onClick={() => {
+                const v = text.trim();
+                if (v && onSubmit) { onSubmit(v); setText(""); }
+              }} className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
             >
-              <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-300 ${canvasMode ? 'translate-x-4' : 'translate-x-0'}`} />
+              <ArrowUp className="h-4 w-4" />
             </button>
           </div>
-
-          {/* Duration Picker */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="flex items-center gap-1.5 rounded-full bg-accent/60 px-3 py-1.5 text-xs text-foreground hover:bg-accent transition border border-border/40">
-                <span>{duration}秒</span>
-                <ChevronDown className="h-3 w-3 text-muted-foreground" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-72 p-4 border-border bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl">
-              <div className="text-sm font-semibold mb-4">视频时长</div>
-              <div className="flex bg-muted/40 p-1 rounded-full mb-6">
-                <button className="flex-1 text-[11px] py-1.5 rounded-full bg-white text-black font-medium shadow-sm">按秒数</button>
-                <button className="flex-1 text-[11px] py-1.5 rounded-full text-muted-foreground hover:text-foreground">智能时长</button>
-              </div>
-              <div className="relative pt-2 pb-8">
-                <input 
-                  type="range" 
-                  min="4" 
-                  max="180" 
-                  value={duration} 
-                  onChange={(e) => setDuration(parseInt(e.target.value))}
-                  className="w-full h-1 bg-muted/60 rounded-full appearance-none cursor-pointer accent-foreground"
-                />
-                <div className="flex justify-between mt-3 text-[10px] text-muted-foreground">
-                  <span>4</span>
-                  <span>60</span>
-                  <span>120</span>
-                  <span>180</span>
-                </div>
-                <div className="absolute right-0 top-[-8px] bg-accent/80 px-2 py-1 rounded-lg text-xs font-medium border border-border">
-                  {duration} 秒
-                </div>
-              </div>
-              <div className="text-[10px] text-muted-foreground/60 text-center italic">
-                会在提示词里附加“时长：{duration}秒”
-              </div>
-            </PopoverContent>
-          </Popover>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition hover:bg-accent hover:text-foreground"
-            onClick={() => {
-              // Voice input logic would go here
-              console.log("Voice input triggered");
-            }}
-          >
-            <Mic className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => {
-              const v = text.trim();
-              if (v && onSubmit) {
-                onSubmit(v);
-                setText("");
-              }
-            }}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
-          >
-            <ArrowUp className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
-
+      )}
     </div>
   );
 }
 
-function AddItem({
-  icon: Icon,
-  label,
-  onClick,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  onClick: () => void;
-}) {
+function AddItem({ icon: Icon, label, onClick }: { icon: any; label: string; onClick: () => void; }) {
   return (
-    <button
-      onClick={onClick}
-      className="flex w-full items-center gap-3 rounded-xl border border-border/60 bg-card/60 px-3 py-2.5 text-sm text-foreground transition hover:bg-accent"
-    >
+    <button onClick={onClick} className="flex w-full items-center gap-3 rounded-xl border border-border/60 bg-card/60 px-3 py-2.5 text-sm text-foreground transition hover:bg-accent">
       <Icon className="h-4 w-4 text-muted-foreground" />
       <span>{label}</span>
     </button>
@@ -553,48 +458,19 @@ function AddItem({
 
 function RatioItem({ label, icon, active, onClick }: { label: string; icon: React.ReactNode; active?: boolean; onClick?: () => void }) {
   return (
-    <button 
-      onClick={onClick}
-      className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-2 text-xs text-foreground transition hover:bg-accent/60"
-    >
-      <div className="flex items-center gap-2">
-        <span className="text-muted-foreground">{icon}</span>
-        <span>{label}</span>
-      </div>
+    <button onClick={onClick} className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-2 text-xs text-foreground transition hover:bg-accent/60">
+      <div className="flex items-center gap-2"><span className="text-muted-foreground">{icon}</span><span>{label}</span></div>
       {active && <div className="h-1.5 w-1.5 rounded-full bg-foreground" />}
     </button>
   );
 }
 
-function MentionItem({ 
-  label, 
-  img, 
-  icon, 
-  active, 
-  onClick 
-}: { 
-  label: string; 
-  img?: string; 
-  icon?: React.ReactNode; 
-  active?: boolean; 
-  onClick?: () => void 
-}) {
+function MentionItem({ label, img, icon, active, onClick }: { label: string; img?: string; icon?: React.ReactNode; active?: boolean; onClick?: () => void }) {
   return (
-    <button 
-      onClick={onClick}
-      className={`flex w-full items-center gap-3 rounded-xl px-2 py-2 text-xs text-foreground transition hover:bg-accent/60 ${active ? 'bg-accent/80' : ''}`}
-    >
+    <button onClick={onClick} className={`flex w-full items-center gap-3 rounded-xl px-2 py-2 text-xs text-foreground transition hover:bg-accent/60 ${active ? 'bg-accent/80' : ''}`}>
       <div className="h-8 w-8 overflow-hidden rounded-lg border border-border bg-muted/40 relative">
-        {img ? (
-          <img src={img} alt={label} className="h-full w-full object-cover" />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">{icon}</div>
-        )}
-        {active && (
-          <div className="absolute inset-0 bg-aurora-blue/20 flex items-center justify-center">
-            <div className="w-1.5 h-1.5 rounded-full bg-aurora-blue shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
-          </div>
-        )}
+        {img ? <img src={img} alt={label} className="h-full w-full object-cover" /> : <div className="flex h-full w-full items-center justify-center">{icon}</div>}
+        {active && <div className="absolute inset-0 bg-aurora-blue/20 flex items-center justify-center"><div className="w-1.5 h-1.5 rounded-full bg-aurora-blue shadow-[0_0_8px_rgba(59,130,246,0.8)]" /></div>}
       </div>
       <span className={`font-medium text-[13px] ${active ? 'text-foreground' : 'text-foreground/80'}`}>{label}</span>
     </button>
@@ -602,198 +478,38 @@ function MentionItem({
 }
 
 function AttachmentChip({ a, onRemove, onAtClick }: { a: Attachment; onRemove: () => void; onAtClick?: () => void }) {
-  const [showPreview, setShowPreview] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
-  const Icon =
-    a.kind === "image" ? ImageIcon : a.kind === "audio" ? AudioLines : a.kind === "video" ? Video : FileText;
-  
+  const Icon = a.kind === "image" ? ImageIcon : a.kind === "audio" ? AudioLines : a.kind === "video" ? Video : FileText;
   return (
-    <div 
-      className="group relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-card/60 shadow-lg cursor-pointer"
-      onMouseEnter={() => {}}
-      onMouseLeave={() => {}}
-      onClick={() => a.url && setIsZoomed(true)}
-    >
-      {a.kind === "image" && a.url ? (
-        <img src={a.url} alt={a.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center rounded bg-muted/40">
-          <Icon className="h-6 w-6 text-muted-foreground" />
-        </div>
-      )}
-      
-      {/* Icon Overlay for @ mention style */}
-      <button 
-        onClick={(e) => {
-          e.stopPropagation();
-          onAtClick?.();
-        }}
-        className="absolute top-1 left-1 h-4 w-4 rounded-full bg-black/60 flex items-center justify-center border border-white/10 hover:bg-black/80 transition"
-      >
-        <AtSign className="h-2.5 w-2.5 text-white/80" />
-      </button>
-
-      {/* Remove Button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onRemove();
-        }}
-        className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-black/60 text-white/80 opacity-0 transition group-hover:opacity-100 hover:bg-black/80"
-      >
-        <X className="h-2.5 w-2.5" />
-      </button>
-
-      {/* Type Badge */}
-      {a.kind === 'video' && (
-        <div className="absolute bottom-1 right-1 bg-black/60 text-[8px] px-1 py-0.5 rounded text-white font-medium">
-          V
-        </div>
-      )}
-
-      {/* Hover Preview Tooltip */}
-      {showPreview && a.url && (
-        <div className="fixed z-[100] pointer-events-none p-1 bg-[#1A1A1A] border border-white/10 rounded-lg shadow-2xl animate-in fade-in zoom-in-95 duration-100"
-             style={{ 
-               left: '50%', 
-               bottom: 'calc(100% + 20px)',
-               transform: 'translateX(-50%)'
-             }}>
-          <img src={a.url} alt="Preview" className="max-w-[120px] max-h-[120px] rounded-md object-contain" />
-        </div>
-      )}
-      {/* Zoomed Modal */}
-      {isZoomed && a.url && (
-        <div 
-          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsZoomed(false);
-          }}
-        >
-          <div className="relative max-w-[90vw] max-h-[90vh] overflow-hidden rounded-2xl border border-white/10 bg-[#1A1A1A] shadow-2xl animate-in zoom-in-95 duration-200">
-            <img 
-              src={a.url} 
-              alt="Zoomed preview" 
-              className="max-w-full max-h-full object-contain" 
-            />
-            <button 
-              className="absolute top-4 right-4 h-8 w-8 rounded-full bg-black/60 flex items-center justify-center text-white/80 hover:bg-black/80 transition border border-white/10"
-              onClick={() => setIsZoomed(false)}
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-      )}
+    <div className="group relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-card/60 shadow-lg cursor-pointer" onClick={() => a.url && setIsZoomed(true)}>
+      {a.kind === "image" && a.url ? <img src={a.url} alt={a.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" /> : <div className="flex h-full w-full flex-col items-center justify-center gap-1"><Icon className="h-5 w-5 text-muted-foreground" /><div className="px-1 text-[8px] text-muted-foreground truncate w-full text-center">{a.name}</div></div>}
+      <button onClick={(e) => { e.stopPropagation(); onRemove(); }} className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black/60 text-white/80 opacity-0 transition group-hover:opacity-100 hover:bg-black hover:text-white"><X className="h-2.5 w-2.5" /></button>
     </div>
   );
 }
 
-function Chip({
-  icon: Icon,
-  label,
-  badge,
-  onClick,
-  active,
-  onClear,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  badge?: string;
-  onClick?: () => void;
-  active?: boolean;
-  onClear?: () => void;
-}) {
-  const baseCls = `flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs text-foreground transition ${
-    active
-      ? "border-aurora-blue/60 bg-aurora-blue/10"
-      : "border-border bg-card/40 hover:bg-card"
-  }`;
-  const inner = (
-    <>
-      <Icon className="h-3.5 w-3.5 text-muted-foreground" />
-      <span className="max-w-[140px] truncate">{label}</span>
-      {badge ? (
-        <span className="ml-0.5 rounded-full bg-success/20 px-1.5 text-[9px] font-medium text-success">
-          {badge}
-        </span>
-      ) : null}
-    </>
-  );
-  if (!onClear) {
-    return (
-      <button type="button" onClick={onClick} className={baseCls}>
-        {inner}
-      </button>
-    );
-  }
+function Chip({ icon: Icon, label, badge, active, onClear }: { icon: any; label: string; badge?: string; active?: boolean; onClear?: () => void; }) {
   return (
-    <div className={baseCls}>
-      <button type="button" onClick={onClick} className="flex items-center gap-1.5">
-        {inner}
-      </button>
-      <button
-        type="button"
-        onClick={onClear}
-        className="flex h-3.5 w-3.5 items-center justify-center rounded-full text-muted-foreground hover:text-foreground"
-      >
-        <X className="h-3 w-3" />
-      </button>
+    <div className={`relative flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition ${active ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'border-border bg-card/40 text-foreground hover:bg-card'}`}>
+      <Icon className={`h-3.5 w-3.5 ${active ? 'text-aurora-blue' : 'text-muted-foreground'}`} />
+      <span className="font-medium">{label}</span>
+      {badge && <span className="flex h-4 items-center rounded bg-aurora-purple/20 px-1 text-[8px] font-bold uppercase text-aurora-purple">{badge}</span>}
+      {onClear && <button onClick={(e) => { e.stopPropagation(); onClear(); }} className="ml-0.5 hover:text-aurora-blue"><X className="h-3 w-3" /></button>}
     </div>
   );
 }
 
-function MentionListItem({ 
-  item, 
-  onClick 
-}: { 
-  item: { name: string; kind: string; url: string }; 
-  onClick: () => void 
-}) {
-  const [showPreview, setShowPreview] = useState(false);
-  
+function MentionListItem({ item, onClick }: { item: any; onClick: () => void }) {
   return (
-    <div className="relative">
-      <button
-        onClick={onClick}
-        onMouseEnter={() => setShowPreview(true)}
-        onMouseLeave={() => setShowPreview(false)}
-        className="flex w-full items-center gap-3 rounded-xl px-2 py-2 hover:bg-white/5 transition text-left group"
-      >
-        <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-white/5 bg-white/5 relative">
-          <img src={item.url} className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition" />
-          {item.kind === "video" && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-              <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[6px] border-l-white border-b-[4px] border-b-transparent ml-0.5" />
-            </div>
-          )}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="text-[13px] font-medium text-white truncate">{item.name}</div>
-          <div className="text-[10px] text-muted-foreground capitalize">{item.kind === 'image' ? '图片' : '视频'}</div>
-        </div>
-        <ChevronRight className="h-3.5 w-3.5 text-white/20 group-hover:text-white/40" />
-      </button>
-
-      {showPreview && (
-        <div className="absolute left-full top-0 ml-2 pointer-events-none p-2 bg-[#1A1A1A] border border-white/10 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-left-2 duration-200 z-[100]">
-          <div className="space-y-2">
-            <div className="text-[10px] text-muted-foreground px-1">{item.name} 预览</div>
-            <img src={item.url} alt="Preview" className="w-[180px] h-[180px] rounded-xl object-cover" />
-            {item.name === "画布生图" && (
-              <div className="grid grid-cols-3 gap-1 w-[180px] mt-2">
-                {[...Array(9)].map((_, i) => (
-                  <div key={i} className="aspect-square bg-white/5 rounded-sm overflow-hidden">
-                    <img src={item.url} className="w-full h-full object-cover opacity-60" />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
+    <button onClick={onClick} className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl hover:bg-white/5 transition group text-left">
+      <div className="h-8 w-8 rounded-lg overflow-hidden border border-white/10 bg-white/5 shrink-0">
+        <img src={item.url} alt={item.name} className="h-full w-full object-cover" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="text-sm font-medium text-white/90 truncate">{item.name}</div>
+        <div className="text-[10px] text-muted-foreground">{item.kind === 'image' ? '图片' : '视频'} · 刚刚</div>
+      </div>
+      <div className="opacity-0 group-hover:opacity-100 transition-opacity"><ArrowUp className="h-3.5 w-3.5 text-muted-foreground" /></div>
+    </button>
   );
 }
-

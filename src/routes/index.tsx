@@ -22,6 +22,25 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const navigate = useNavigate();
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const [isHoveredInMini, setIsHoveredInMini] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Logic: If scrolled more than 100px or near the bottom, show the mini input
+      // Actually, the prompt says "After sliding to the bottom ArtrailTV"
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const fullHeight = document.documentElement.scrollHeight;
+      
+      // If we are past the hero section (roughly 500px), or specifically near the TV section
+      setIsScrolledToBottom(scrollY > 400);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="relative">
       <PromoBanner />
@@ -39,7 +58,7 @@ function Home() {
             把品味和习惯写进 Skill,让精力回归创意
           </p>
 
-          <div className="mt-8">
+          <div className={`mt-8 transition-all duration-500 ${isScrolledToBottom ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
             <PromptBox
               onSubmit={(prompt) =>
                 navigate({ to: "/script", search: { prompt } })
@@ -110,9 +129,26 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Floating Mini Prompt Box */}
+      <div 
+        className={`fixed bottom-8 left-1/2 z-[100] -translate-x-1/2 transition-all duration-500 ease-out-expo ${
+          isScrolledToBottom ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'
+        }`}
+        onMouseEnter={() => setIsHoveredInMini(true)}
+        onMouseLeave={() => setIsHoveredInMini(false)}
+      >
+        <div className={`transition-all duration-300 ${isHoveredInMini ? 'w-[800px]' : 'w-[400px]'}`}>
+          <PromptBox 
+            isMini={!isHoveredInMini}
+            onSubmit={(prompt) => navigate({ to: "/script", search: { prompt } })}
+          />
+        </div>
+      </div>
     </div>
   );
 }
+
 
 function SkillsWithPreview() {
   const [hovered, setHovered] = useState<string | null>(null);
