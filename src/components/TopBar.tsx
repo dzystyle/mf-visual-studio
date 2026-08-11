@@ -122,46 +122,10 @@ function UserMenu({
           <div className="px-3 py-2">
             <div className="flex items-center justify-between text-xs text-foreground/40">
               <div className="flex items-center gap-2">
-                <Gift className="h-3.5 w-3.5 text-[#A855F7]" />
-                <span>奖励积分</span>
-              </div>
-              <span>0</span>
-            </div>
-            <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
-              <div className="flex justify-between"><span>邀请奖励</span><span>0</span></div>
-            </div>
-          </div>
-
-          <div className="my-2 border-t border-border/50" />
-
-          {/* Theme Selector */}
-          <div className="px-3 py-2">
-            <div className="text-[10px] font-medium text-foreground/30 uppercase tracking-wider mb-2">外观</div>
-            <div className="flex p-1 bg-foreground/5 rounded-lg gap-1">
-              <ThemeButton icon={Sun} label="亮色" active={theme === 'light'} onClick={() => setTheme('light')} />
-              <ThemeButton icon={Moon} label="暗色" active={theme === 'dark'} onClick={() => setTheme('dark')} />
-              <ThemeButton icon={Monitor} label="跟随" active={theme === 'system'} onClick={() => setTheme('system')} />
-            </div>
-          </div>
-
-          {/* Language Selector */}
-          <div className="px-3 py-2">
-            <div className="text-[10px] font-medium text-foreground/30 uppercase tracking-wider mb-2">语言</div>
-            <div className="flex p-1 bg-foreground/5 rounded-lg gap-1">
-              <LanguageButton label="中文" active={true} icon={Languages} />
-              <LanguageButton label="English" active={false} icon={Languages} />
-            </div>
-          </div>
-
-          <div className="my-1 border-t border-border/50" />
-
-          <div className="px-3 py-2">
-            <div className="flex items-center justify-between text-xs text-foreground/40">
-              <div className="flex items-center gap-2">
                 <FilmIconGradient />
                 <span>会员积分</span>
               </div>
-              <span>2081</span>
+              <span className="font-bold text-foreground">2081</span>
             </div>
             <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
               <div className="flex justify-between"><span>套餐</span><span>2000</span></div>
@@ -169,21 +133,58 @@ function UserMenu({
               <div className="flex justify-between"><span>模型专属积分</span><span>0</span></div>
               <div className="flex justify-between"><span>额外</span><span>81</span></div>
             </div>
+          </div>
+
+          <div className="px-3 py-1 pb-3">
+            <div className="flex items-center justify-between text-xs text-foreground/40">
+              <div className="flex items-center gap-2">
+                <Gift className="h-3.5 w-3.5 text-muted-foreground" />
+                <span>奖励积分</span>
+              </div>
+              <span className="font-bold text-foreground">0</span>
+            </div>
+            <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
+              <div className="flex justify-between"><span>邀请奖励</span><span>0</span></div>
+            </div>
             
-            <Link to="/settings/billing" onClick={() => setOpen(false)} className="mt-4 flex w-full items-center justify-center rounded-lg bg-foreground/5 py-2.5 text-xs font-medium text-foreground/60 transition-colors hover:bg-foreground/10 hover:text-foreground">
+            <Link to="/settings/billing" onClick={() => setOpen(false)} className="mt-4 flex w-full items-center justify-center rounded-full bg-foreground/5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10">
               查看用量
             </Link>
           </div>
 
           <div className="my-1 border-t border-border/50" />
-          
-          <Link to="/settings/profile"><MenuItem icon={Settings} label="管理账户" /></Link>
+
+          {/* Language Selector */}
+          <div className="px-3 py-2">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 text-sm text-foreground/80">
+                <Globe className="h-4 w-4 text-foreground/60" />
+                <span>语言</span>
+              </div>
+              <div className="flex items-center gap-1 text-xs text-foreground/40">
+                简体中文 <ChevronRight className="h-3 w-3" />
+              </div>
+            </div>
+          </div>
+
           <MenuItem 
             icon={MessageSquare} 
             label="反馈" 
             onClick={() => { setShowFeedback(true); setOpen(false); }}
           />
-          <Link to="/settings/account"><MenuItem icon={Key} label="修改密码" /></Link>
+          <Link to="/settings/profile"><MenuItem icon={Settings} label="管理账户" /></Link>
+          
+          <div className="my-1 border-t border-border/50" />
+
+          {/* Theme Selector - compact */}
+          <div className="px-3 py-2">
+            <div className="flex p-1 bg-foreground/5 rounded-lg gap-1">
+              <ThemeButton icon={Sun} label="亮色" active={theme === 'light'} onClick={() => setTheme('light')} />
+              <ThemeButton icon={Moon} label="暗色" active={theme === 'dark'} onClick={() => setTheme('dark')} />
+              <ThemeButton icon={Monitor} label="跟随" active={theme === 'system'} onClick={() => setTheme('system')} />
+            </div>
+          </div>
+          
           <MenuItem icon={LogOut} label="退出登录" className="text-red-400/80 hover:text-red-400 hover:bg-red-400/5" />
         </div>
       </PopoverContent>
