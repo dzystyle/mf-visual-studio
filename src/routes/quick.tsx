@@ -403,16 +403,29 @@ function Composer({
       <div className="px-5 pt-4">
         {/* Row 1: Add Image button */}
         <div className="mb-4 flex items-center gap-3">
-          <button 
-            onClick={() => fileInputRef.current?.click()}
-            className="relative flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-background/40 text-muted-foreground transition hover:border-foreground/40 hover:text-foreground"
-          >
-            <span className="absolute right-1 top-1 rounded bg-background/60 px-1 text-[9px] text-muted-foreground">
-              0/50
-            </span>
-            <Plus className="h-4 w-4" />
-            <span className="mt-0.5 text-[10px]">添加</span>
-          </button>
+          {attachments.map((a) => (
+            <div key={a.id} className="relative group h-16 w-16 shrink-0 rounded-xl overflow-hidden border border-white/10">
+              <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
+              <button 
+                onClick={() => setAttachments(prev => prev.filter(x => x.id !== a.id))}
+                className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
+              >
+                <Plus className="h-3 w-3 rotate-45" />
+              </button>
+            </div>
+          ))}
+          {attachments.length < 50 && (
+            <button 
+              onClick={() => fileInputRef.current?.click()}
+              className="relative flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/[0.02] text-white/40 transition hover:border-white/20 hover:text-white/60"
+            >
+              <span className="absolute right-1 top-1 rounded bg-black/40 px-1 text-[9px] text-white/40">
+                {attachments.length}/50
+              </span>
+              <Plus className="h-4 w-4" />
+              <span className="mt-0.5 text-[10px]">添加</span>
+            </button>
+          )}
           <input ref={fileInputRef} type="file" multiple className="hidden" accept="image/*" onChange={onFiles} />
         </div>
 
