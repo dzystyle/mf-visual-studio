@@ -307,8 +307,7 @@ export function SkillPicker({
             <div
               key={s.title}
               className="group flex cursor-pointer items-start gap-3 rounded-xl py-1 transition-all"
-              onClick={() => onSelect?.(s.title)}
-
+              onClick={() => setPreviewSkill(s)}
             >
               <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-white/5">
                 <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
@@ -413,20 +412,6 @@ export function SkillPicker({
                 </div>
               </div>
               
-              <div className="h-px bg-white/5 my-6" />
-
-              <div className="flex justify-center">
-                <button 
-                  onClick={() => {
-                    if (previewSkill) onSelect?.(previewSkill.title);
-                    setPreviewSkill(null);
-                  }}
-                  className="flex items-center gap-2 rounded-full bg-white px-8 py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-all shadow-xl shadow-white/5"
-                >
-                  <Sparkles className="h-4 w-4" />
-                  去使用 Skill
-                </button>
-              </div>
             </div>
           </div>
         </DialogContent>
