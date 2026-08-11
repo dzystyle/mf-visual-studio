@@ -142,7 +142,12 @@ function UserMenu({
               <div className="flex justify-between"><span>邀请奖励</span><span>0</span></div>
             </div>
             
-            <Link to="/settings/billing" onClick={() => setOpen(false)} className="mt-4 flex w-full items-center justify-center rounded-full bg-foreground/5 py-2.5 text-[13px] font-semibold text-foreground/80 transition-colors hover:bg-foreground/10">
+            <Link 
+              to="/settings/billing" 
+              search={{ tab: 'credits' }}
+              onClick={() => setOpen(false)} 
+              className="mt-4 flex w-full items-center justify-center rounded-full bg-foreground/5 py-2.5 text-[13px] font-semibold text-foreground/80 transition-colors hover:bg-foreground/10"
+            >
               查看用量
             </Link>
           </div>
