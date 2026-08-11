@@ -113,7 +113,7 @@ function UserMenu({
           </button>
         </div>
 
-        <div className="space-y-0.5 px-2 pb-2">
+        <div className="space-y-0 px-2 pb-2">
           <div className="px-3 pt-2">
             <div className="flex items-center justify-between text-xs text-foreground/40 font-medium">
               <div className="flex items-center gap-2 text-foreground">
