@@ -119,7 +119,7 @@ function UserMenu({
 
           <div className="my-1 border-t border-border/50" />
           
-          <div className="px-3 py-2">
+          <div className="px-3 py-2 border-t border-border/50">
             <div className="flex items-center justify-between text-xs text-foreground/40">
               <div className="flex items-center gap-2">
                 <FilmIconGradient className="h-3.5 w-3.5" />
