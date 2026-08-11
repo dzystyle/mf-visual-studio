@@ -1,9 +1,15 @@
 import React from 'react';
-import { Search, RotateCcw, Gift, Info } from 'lucide-react';
+import { Search, RotateCcw, Gift, Info, FileText, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
-export function BillingSettings() {
+export type BillingSection = 'credits' | 'invoices' | 'pricing';
+
+interface BillingSettingsProps {
+  activeSection?: BillingSection;
+}
+
+export function BillingSettings({ activeSection = 'credits' }: BillingSettingsProps) {
   const transactions = [
     { name: '赛博朋克主角登场', type: 'video', time: '2026.08.10 20:49', amount: -329 },
     { name: '探索奖励积分已添加', type: 'reward', time: '2026.08.10 20:28', amount: 10, isPositive: true },
@@ -11,6 +17,11 @@ export function BillingSettings() {
     { name: 'Starter', type: 'purchase', time: '2026.08.10 20:23', amount: 2000, isPositive: true },
     { name: 'Weekly Credits expired', type: 'expiry', time: '2026.06.22 00:00', amount: -200 },
     { name: 'Weekly Credits refreshed', type: 'refresh', time: '2026.06.18 15:35', amount: 200, isPositive: true },
+  ];
+
+  const invoices = [
+    { id: 'INV-2026-001', date: '2026.08.10', amount: '¥140.00', status: '已支付', plan: 'Starter' },
+    { id: 'INV-2026-002', date: '2026.07.10', amount: '¥140.00', status: '已支付', plan: 'Starter' },
   ];
 
   return (
