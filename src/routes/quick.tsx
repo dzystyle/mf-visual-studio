@@ -82,6 +82,7 @@ function QuickPage() {
   const [showMini, setShowMini] = useState(false);
   const [hdOpen, setHdOpen] = useState(false);
   const [attachments, setAttachments] = useState<{ id: string; url: string; name: string }[]>([]);
+  const [mentions, setMentions] = useState<{ id: string; url: string; name: string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -190,6 +191,8 @@ function QuickPage() {
                 onSubmit={submit}
                 attachments={attachments}
                 setAttachments={setAttachments}
+                mentions={mentions}
+                setMentions={setMentions}
               />
             </div>
           )}
@@ -281,6 +284,8 @@ function Composer({
   onSubmit,
   attachments,
   setAttachments,
+  mentions,
+  setMentions,
 }: {
   tab: "video" | "image" | "music" | "voice";
   setTab: (t: "video" | "image" | "music" | "voice") => void;
@@ -289,6 +294,8 @@ function Composer({
   onSubmit: () => void;
   attachments: { id: string; url: string; name: string }[];
   setAttachments: Dispatch<SetStateAction<{ id: string; url: string; name: string }[]>>;
+  mentions: { id: string; url: string; name: string }[];
+  setMentions: Dispatch<SetStateAction<{ id: string; url: string; name: string }[]>>;
 }) {
   const [mentionOpen, setMentionOpen] = useState(false);
   const [mentionFilter, setMentionFilter] = useState("");
@@ -344,9 +351,9 @@ function Composer({
     
     setMentionOpen(false);
     
-    // Instead of adding to top-level attachments, we'll handle the visual chip below the input
-    if (!attachments.find(a => a.url === url)) {
-      setAttachments(prev => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
+    // Add to mentions list for visual chip display below input
+    if (!mentions.find((a: any) => a.url === url)) {
+      setMentions((prev: any) => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
     }
   };
 
@@ -430,16 +437,16 @@ function Composer({
         </div>
 
         {/* Row 2: Selected Mention Chips */}
-        {attachments.length > 0 && (
+        {mentions.length > 0 && (
           <div className="mb-2 flex flex-wrap gap-2">
-            {attachments.map((a) => (
+            {mentions.map((a: any) => (
               <div key={a.id} className="inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
                 <div className="h-4 w-4 rounded overflow-hidden border border-white/10">
                   <img src={a.url} alt="" className="w-full h-full object-cover" />
                 </div>
                 <span>{a.name}</span>
                 <button 
-                  onClick={() => setAttachments(prev => prev.filter(x => x.id !== a.id))}
+                  onClick={() => setMentions((prev: any) => prev.filter((x: any) => x.id !== a.id))}
                   className="hover:text-white transition-colors"
                 >
                   <Plus className="h-3 w-3 rotate-45 text-muted-foreground" />
