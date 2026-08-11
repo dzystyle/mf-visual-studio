@@ -155,12 +155,9 @@ function UserMenu({
               <div className="flex justify-between"><span>额外</span><span>0</span></div>
             </div>
             
-            <button 
-              onClick={() => { setOpen(false); }}
-              className="mt-4 flex w-full items-center justify-center rounded-lg bg-foreground/5 py-2.5 text-xs font-medium text-foreground/60 transition-colors hover:bg-foreground/10"
-            >
-              <Link to="/settings/billing">查看用量</Link>
-            </button>
+            <Link to="/settings/billing" onClick={() => setOpen(false)} className="mt-4 flex w-full items-center justify-center rounded-lg bg-foreground/5 py-2.5 text-xs font-medium text-foreground/60 transition-colors hover:bg-foreground/10 hover:text-foreground">
+              查看用量
+            </Link>
           </div>
 
           <div className="my-2 border-t border-border/50" />
