@@ -6,6 +6,7 @@ import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
 import { SkillCard, hotSkills } from "@/components/SkillCard";
 import { ArtrailTV } from "@/components/tv/ArtrailTV";
+import { CreateCanvasDialog } from "@/components/CreateCanvasDialog";
 import projectTeacher from "@/assets/project-teacher.jpg";
 import tvSpace from "@/assets/tv-space.jpg";
 
@@ -23,6 +24,7 @@ function Home() {
   const navigate = useNavigate();
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
   const [isHoveredInMini, setIsHoveredInMini] = useState(false);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,7 +89,7 @@ function Home() {
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <NewProjectCard />
+            <NewProjectCard onClick={() => setIsCreateDialogOpen(true)} />
             <ProjectCard title="会飞的鱼" date="2026年5月16日 15:33" />
             <ProjectCard
               title="AI视频演示:禁止在校园使用超能力"
@@ -116,6 +118,11 @@ function Home() {
           />
         </div>
       </div>
+      
+      <CreateCanvasDialog 
+        open={isCreateDialogOpen} 
+        onOpenChange={setIsCreateDialogOpen} 
+      />
     </div>
   );
 }
@@ -251,9 +258,12 @@ function SkillsWithPreview() {
   );
 }
 
-function NewProjectCard() {
+function NewProjectCard({ onClick }: { onClick?: () => void }) {
   return (
-    <button className="group flex aspect-[16/10] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-card/40 transition hover:border-foreground/40 hover:bg-card">
+    <button 
+      onClick={onClick}
+      className="group flex aspect-[16/10] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-card/40 transition hover:border-foreground/40 hover:bg-card"
+    >
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-muted-foreground group-hover:text-foreground">
         <Plus className="h-5 w-5" />
       </div>
