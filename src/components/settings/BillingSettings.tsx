@@ -3,6 +3,7 @@ import { Search, RotateCcw, Gift, Info, FileText, ExternalLink } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+
 export type BillingSection = 'credits' | 'invoices' | 'pricing';
 
 interface BillingSettingsProps {
