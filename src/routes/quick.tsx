@@ -548,7 +548,7 @@ function Composer({
           />
           
           {mentionOpen && (
-            <div className="absolute bottom-[calc(100%+8px)] right-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-bottom-2 duration-200">
+            <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-bottom-2 duration-200">
               <div className="p-3 border-b border-white/5">
                 <div className="relative">
                   <Plus className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground rotate-45" />
@@ -599,8 +599,9 @@ function Composer({
       <div className="flex items-center gap-2 px-5 pb-4 pt-3">
         <button 
           onClick={() => {
-            setMentionOpen(!mentionOpen);
-            setMentionFilter("");
+            const before = input.slice(0, cursorPos);
+            const after = input.slice(cursorPos);
+            setInput(before + "@" + after);
             textareaRef.current?.focus();
           }}
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-background/40 text-muted-foreground hover:bg-background/70 transition"
