@@ -147,12 +147,12 @@ function UserMenu({
             </Link>
           </div>
 
-          <div className="my-1 border-t border-border/50" />
+          <div className="my-1 border-t border-border/50 opacity-50" />
           
           <Link to="/settings/account"><MenuItem icon={Users} label="团队管理" /></Link>
           <Link to="/settings/billing"><MenuItem icon={Gift} label="兑换码" /></Link>
 
-          <div className="my-1 border-t border-border/50" />
+          <div className="my-1 border-t border-border/50 opacity-50" />
 
           {/* Language Selector */}
           <div className="px-3 py-2 cursor-pointer hover:bg-foreground/5 rounded-lg transition-colors group">
@@ -174,7 +174,7 @@ function UserMenu({
           />
           <Link to="/settings/profile"><MenuItem icon={Settings} label="管理账户" /></Link>
           
-          <div className="my-1 border-t border-border/50" />
+          <div className="my-1 border-t border-border/50 opacity-50" />
 
           {/* Theme Selector - compact */}
           <div className="px-3 py-2">
