@@ -189,7 +189,7 @@ export function SubscriptionDialog({
 
           {/* FAQ Section */}
           <div className="mx-auto mt-24 max-w-4xl px-6">
-            <h2 className="mb-10 text-center text-xl font-bold">Artrail 订阅与积分常见问题</h2>
+            <h2 className="mb-10 text-center text-xl font-bold text-foreground">Artrail 订阅与积分常见问题</h2>
             <Accordion type="single" collapsible className="w-full space-y-4 border-none">
               <FaqItem 
                 id="q1" 
@@ -300,7 +300,7 @@ export function SubscriptionDialog({
             </Accordion>
 
             <div className="mt-16 border-t border-white/5 pt-10">
-              <div className="text-sm font-bold mb-4">免责声明与联系方式</div>
+              <div className="text-sm font-bold mb-4 text-foreground">免责声明与联系方式</div>
               <div className="flex items-center gap-2 text-xs text-white/40">
                 <MessageSquare className="h-3 w-3" />
                 如有关于订阅或积分的问题，欢迎联系 support@artrail.ai
@@ -341,7 +341,7 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
       <div className="mt-6 flex items-baseline gap-1">
         <span className="text-lg font-bold">¥</span>
         <span className="text-3xl font-bold">{price}</span>
-        <span className="text-xs text-white/40">/月</span>
+        <span className="text-xs text-foreground/40">/月</span>
       </div>
 
       <div className="mt-2 text-lg font-medium">{credits} 积分</div>
