@@ -25,15 +25,15 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
     { id: 'profile', label: '编辑资料', icon: User, path: '/settings/profile' },
     { id: 'settings', label: '设置', icon: SettingsIcon, path: '/settings/account' },
     { separator: true },
-    { id: 'credits', label: '积分详情', icon: Coins, path: '/settings/billing' },
-    { id: 'invoices', label: '订单发票', icon: FileText, path: '/settings/billing' },
-    { id: 'pricing', label: '价格详情', icon: Tag, path: '/settings/billing' },
+    { id: 'credits', label: '积分详情', icon: Coins, path: '/settings/billing', search: { tab: 'credits' } },
+    { id: 'invoices', label: '订单发票', icon: FileText, path: '/settings/billing', search: { tab: 'invoices' } },
+    { id: 'pricing', label: '价格详情', icon: Tag, path: '/settings/billing', search: { tab: 'pricing' } },
     { id: 'api', label: 'Agent API 密钥', icon: Key, path: '/settings/account' },
     { separator: true },
     { id: 'terms', label: '使用条款', icon: ShieldCheck, path: '/settings/account' },
     { id: 'privacy', label: '隐私政策', icon: FileLock2, path: '/settings/account' },
     { separator: true },
-    { id: 'logout', label: '退出登录', icon: LogOut, path: '/', color: 'text-red-400' },
+    { id: 'logout', label: '退出登录', icon: LogOut, path: '/', color: 'text-red-400', search: undefined },
   ];
 
   return (
@@ -67,16 +67,19 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
               }
               
               const Icon = item.icon!;
-              const isActive = activeTab === item.id;
+               const isActive = activeTab === item.id || 
+                               (item.id === 'credits' && activeTab === 'invoices') || 
+                               (item.id === 'credits' && activeTab === 'pricing');
 
               return (
                 <Link
                   key={item.id}
                   to={item.path}
+                  search={(item as any).search}
                   className={cn(
-                    "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200",
+                    "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 ease-out-expo hover:scale-[1.02] active:scale-[0.98]",
                     isActive 
-                      ? "bg-white/10 text-white" 
+                      ? "bg-white/10 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)]" 
                       : cn("text-white/40 hover:bg-white/5 hover:text-white/60", item.color)
                   )}
                 >
@@ -89,8 +92,10 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto bg-[#0f0f12] p-8 md:p-12 scrollbar-hide">
-          {children}
+        <div className="flex-1 overflow-y-auto bg-[#0f0f12] p-8 md:p-12 scrollbar-hide scroll-smooth">
+          <div className="animate-in fade-in slide-in-from-right-4 duration-500 ease-out-expo">
+            {children}
+          </div>
         </div>
       </div>
     </div>
