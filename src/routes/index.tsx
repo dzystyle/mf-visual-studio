@@ -98,7 +98,7 @@ function Home() {
         </div>
       </section>
 
-      {/* ArtrailTV Section */}
+      {/* Inspiration Discovery Section */}
       <ArtrailTV />
 
       {/* Floating Mini Prompt Box */}

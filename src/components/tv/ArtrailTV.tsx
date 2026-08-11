@@ -34,7 +34,7 @@ export function ArtrailTV() {
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <h2 className="text-xl font-bold tracking-tight text-foreground">ArtrailTV</h2>
+            <h2 className="text-xl font-bold tracking-tight text-foreground">灵感发现</h2>
             <div className="flex items-center gap-2">
               {categories.map((cat) => (
                 <button
