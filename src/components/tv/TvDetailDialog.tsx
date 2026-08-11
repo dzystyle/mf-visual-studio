@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { X, Play, Info, Share2, CheckCircle2, ChevronLeft, ChevronRight, Maximize2, Volume2 } from "lucide-react";
+import { X, Play, Info, Share2, CheckCircle2, ChevronLeft, ChevronRight, Maximize2, Volume2, Pause } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import tvSpace from "@/assets/tv-space.jpg";
 import tvDrama from "@/assets/tv-drama.jpg";
@@ -17,6 +18,7 @@ interface TvDetailDialogProps {
 }
 
 export function TvDetailDialog({ open, onOpenChange, videoData }: TvDetailDialogProps) {
+  const navigate = useNavigate();
   if (!videoData) return null;
 
   const thumbnails = [
@@ -75,7 +77,10 @@ export function TvDetailDialog({ open, onOpenChange, videoData }: TvDetailDialog
                     {/* Bottom Action Bar */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                         <button className="flex items-center gap-2 rounded-full bg-white px-8 py-3 font-semibold text-black transition hover:bg-white/90">
+                         <button 
+                           onClick={() => navigate({ to: "/script" })}
+                           className="flex items-center gap-2 rounded-full bg-white px-8 py-3 font-semibold text-black transition hover:bg-white/90"
+                         >
                            <Play className="h-5 w-5 fill-current" />
                            查看创作过程
                          </button>
@@ -96,8 +101,9 @@ export function TvDetailDialog({ open, onOpenChange, videoData }: TvDetailDialog
                       </div>
 
                       <div className="flex items-center gap-6 text-white/80">
-                         <div className="flex items-center gap-2">
-                           <span className="text-sm font-mono">00:06 / 01:43</span>
+                         <div className="flex items-center gap-3">
+                           <Pause className="h-4 w-4 fill-current cursor-pointer hover:text-white" />
+                           <span className="text-sm font-mono tracking-tighter">00:04 / 01:43</span>
                          </div>
                          <div className="flex items-center gap-4">
                             <Volume2 className="h-5 w-5 cursor-pointer hover:text-white" />
