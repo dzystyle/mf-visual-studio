@@ -54,7 +54,7 @@ export function ModelPicker({
   value,
   onSelect,
 }: {
-  value?: string;
+  value?: string | null;
   onSelect?: (name: string) => void;
 }) {
   const [activeTab, setActiveTab] = useState<keyof typeof modelData>("video");
@@ -210,7 +210,7 @@ export function ModelPickerDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  value?: string;
+  value?: string | null;
   onSelect?: (name: string) => void;
 }) {
   return (
