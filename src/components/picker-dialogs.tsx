@@ -496,7 +496,7 @@ export function ElementsPicker({
   const handleConfirm = () => {
     const selected = assetItems.filter(item => selectedIds.includes(item.id));
     selected.forEach(item => {
-      onSelect?.(item.name, item.kind as any, item.img);
+      onSelect?.(item.name, item.kind, item.img);
     });
   };
 

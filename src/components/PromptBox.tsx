@@ -135,7 +135,7 @@ export function PromptBox({
     }
   };
 
-  const handleMentionSelect = (name: string, kind: string, url?: string) => {
+  const handleMentionSelect = (name: string, kind?: string, url?: string) => {
     const textBeforeCursor = text.slice(0, cursorPos);
     const lastAtPos = textBeforeCursor.lastIndexOf("@");
     
