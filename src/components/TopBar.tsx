@@ -47,8 +47,8 @@ function UserMenuContainer() {
       onMouseLeave={handleMouseLeave}
     >
       <div className="flex items-center gap-2 pr-2 border-r border-border">
-        <FilmIconGradient />
-        <span className="font-bold text-foreground tracking-tight">2,081</span>
+        <FilmIconGradient className="h-4 w-4" />
+        <span className="font-bold text-foreground tracking-tight text-[13px]">2,081</span>
       </div>
 
       <div className="flex items-center gap-2 px-1">
@@ -122,7 +122,7 @@ function UserMenu({
           <div className="px-3 py-2">
             <div className="flex items-center justify-between text-xs text-foreground/40">
               <div className="flex items-center gap-2">
-                <FilmIconGradient />
+                <FilmIconGradient className="h-3.5 w-3.5" />
                 <span>会员积分</span>
               </div>
               <span className="font-bold text-foreground">2081</span>
@@ -275,9 +275,9 @@ function Play({ className, fill, ...props }: any) {
 }
 
 
-function FilmIconGradient() {
+function FilmIconGradient({ className }: { className?: string }) {
   return (
-    <div className="relative h-4 w-4 overflow-hidden rounded-[2px] bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 flex items-center justify-center">
+    <div className={cn("relative h-4 w-4 overflow-hidden rounded-[2px] bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 flex items-center justify-center", className)}>
       <div className="grid grid-cols-1 gap-[1px]">
         <div className="flex gap-[1px]">
           <div className="h-[2px] w-[2px] bg-[#1A1A1A]" />
