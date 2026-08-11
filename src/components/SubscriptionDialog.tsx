@@ -454,16 +454,16 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
 
 function FaqItem({ id, num, title, content }: any) {
   return (
-    <AccordionItem value={id} className="border-white/5">
+    <AccordionItem value={id} className="border-border">
       <AccordionTrigger className="hover:no-underline py-4 group">
         <div className="flex items-center gap-4">
-          <div className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-[10px] text-white/40 group-data-[state=open]:border-white/20 group-data-[state=open]:text-white">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full border border-border text-[10px] text-foreground/40 group-data-[state=open]:border-accent group-data-[state=open]:text-foreground">
             {num}
           </div>
-          <span className="text-sm font-medium text-white/60 group-data-[state=open]:text-white">{title}</span>
+          <span className="text-sm font-medium text-foreground/60 group-data-[state=open]:text-foreground">{title}</span>
         </div>
       </AccordionTrigger>
-      <AccordionContent className="pl-10 text-white/60">
+      <AccordionContent className="pl-10 text-foreground/60">
         {content}
       </AccordionContent>
     </AccordionItem>
