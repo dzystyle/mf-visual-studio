@@ -58,6 +58,8 @@ export function PromptBox({
   const [canvasMode, setCanvasMode] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
   const [assetsOpen, setAssetsOpen] = useState(false);
+  const [videoMode, setVideoMode] = useState("全能参考");
+  const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
   const [mentionFilter, setMentionFilter] = useState("");
   const [cursorPos, setCursorPos] = useState(0);
