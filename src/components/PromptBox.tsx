@@ -324,7 +324,7 @@ export function PromptBox({
             )}
             <input ref={fileInputRef} type="file" multiple className="hidden" onChange={onFiles} />
             
-            {!isMini && <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} />}
+            {!isMini && <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} onSelect={handleMentionSelect} />}
             
             <Popover>
               <PopoverTrigger asChild>
