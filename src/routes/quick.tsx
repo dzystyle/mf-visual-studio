@@ -380,18 +380,17 @@ function Composer({
       });
 
       if (dimensions.width < 480 || dimensions.width > 4096) {
-        toast.error("", {
-          className: "bg-[#1A1111]/90 border-white/5 backdrop-blur-xl rounded-xl p-0 overflow-hidden min-w-[400px]",
-          duration: 4000,
-          content: (
-            <div className="flex items-center gap-3 px-4 py-3 text-white/90">
-              <XCircle className="h-5 w-5 text-red-500 shrink-0" />
-              <span className="text-sm font-medium tracking-wide">
-                {file.name}: 宽度需在 480px 到 4096px 之间
-              </span>
-            </div>
-          ),
-        });
+        toast.custom((t) => (
+          <div className="flex w-[400px] items-center gap-3 rounded-xl border border-white/5 bg-[#1A1111]/90 px-4 py-3 text-white/90 shadow-2xl backdrop-blur-xl">
+            <XCircle className="h-5 w-5 text-red-500 shrink-0" />
+            <span className="flex-1 text-sm font-medium tracking-wide">
+              {file.name}: 宽度需在 480px 到 4096px 之间
+            </span>
+            <button onClick={() => toast.dismiss(t)} className="text-white/20 hover:text-white/40 transition">
+              <Plus className="h-4 w-4 rotate-45" />
+            </button>
+          </div>
+        ), { duration: 4000 });
         URL.revokeObjectURL(objectUrl);
         continue;
       }
