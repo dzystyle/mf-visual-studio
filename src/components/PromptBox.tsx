@@ -409,6 +409,11 @@ export function PromptBox({
                 </div>
               </PopoverContent>
             </Popover>
+            <button type="button" onClick={() => setMentionOpen(true)}>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent hover:text-foreground transition">
+                <AtSign className="h-4 w-4" />
+              </div>
+            </button>
             <button type="button" onClick={() => setAssetsOpen(true)}>
               <Chip icon={Smile} label="资产库" />
             </button>
