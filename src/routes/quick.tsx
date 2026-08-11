@@ -119,7 +119,7 @@ function QuickPage() {
   }
 
   return (
-    <div className="relative flex h-screen flex-col">
+    <div className="relative flex h-screen flex-col overflow-hidden">
       <section className="aurora-bg relative flex flex-1 flex-col overflow-hidden px-8 pt-6">
         <BrandMark />
         <TopBar />
@@ -129,9 +129,9 @@ function QuickPage() {
             <span className="text-3xl font-bold text-white/90">5.21</span>
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <FilterChip label="全部时间" />
-            <FilterChip label="全部类型" />
-            <FilterChip label="全部操作" />
+            <FilterMenu label="全部时间" options={['全部', '今天', '近7天', '近30天']} />
+            <FilterMenu label="全部类型" options={['全部', '图片', '视频', '音乐', '音频']} />
+            <FilterMenu label="全部操作" options={['全部', '收藏']} />
           </div>
         </div>
 
