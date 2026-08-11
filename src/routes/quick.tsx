@@ -79,11 +79,9 @@ function QuickPage() {
   const [tab, setTab] = useState<"video" | "image" | "music" | "voice">(
     "video",
   );
+  const [showMini, setShowMini] = useState(false);
   const [hdOpen, setHdOpen] = useState(false);
   const [attachments, setAttachments] = useState<{ id: string; url: string; name: string }[]>([]);
-  const [mentionOpen, setMentionOpen] = useState(false);
-  const [mentionFilter, setMentionFilter] = useState("");
-  const [cursorPos, setCursorPos] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -496,7 +494,7 @@ function Composer({
       <div className="flex items-center gap-2 px-5 pb-4 pt-3">
         <button 
           onClick={() => {
-            setInput(prev => {
+            setInput((prev: string) => {
               const before = prev.slice(0, cursorPos);
               const after = prev.slice(cursorPos);
               return before + "@" + after;
