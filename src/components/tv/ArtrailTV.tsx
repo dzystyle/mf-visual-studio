@@ -22,11 +22,11 @@ const TV_DATA = [
 
 export function ArtrailTV() {
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = React.useState("漫剧");
+  const [activeCategory, setActiveCategory] = React.useState("品牌设计");
   const [hoveredId, setHoveredId] = React.useState<number | null>(null);
   const [selectedVideo, setSelectedVideo] = React.useState<any>(null);
 
-  const categories = ["全部", "影视", "短剧", "漫剧", "MV", "TVC"];
+  const categories = ["品牌设计", "海报与广告", "插画UI设计", "角色设计", "影片与分镜", "产品设计", "建筑设计"];
 
   return (
     <section className="px-6 pb-24 pt-10">
