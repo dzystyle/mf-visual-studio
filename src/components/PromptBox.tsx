@@ -326,25 +326,6 @@ export function PromptBox({
             
             {!isMini && <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} onSelect={handleMentionSelect} />}
             
-            <Popover>
-              <PopoverTrigger asChild>
-                <button className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition group">
-                  <span className="text-muted-foreground group-hover:text-foreground">{videoMode}</span>
-                  <ChevronDown className="h-3 w-3 text-muted-foreground group-hover:text-foreground" />
-                </button>
-              </PopoverTrigger>
-              <PopoverContent align="start" className="w-36 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
-                {["图生视频", "首尾帧生视频", "对口型数字人"].map((item) => (
-                  <button 
-                    key={item}
-                    onClick={() => setVideoMode(item)}
-                    className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${videoMode === item ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </PopoverContent>
-            </Popover>
 
             <Popover>
               <PopoverTrigger asChild>
