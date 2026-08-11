@@ -81,7 +81,7 @@ function QuickPage() {
   const [tab, setTab] = useState<"video" | "image" | "music" | "voice">(
     "video",
   );
-  const [showMini, setShowMini] = useState(false); // Initially false for debugging
+  const [showMini, setShowMini] = useState(false);
   const [hdOpen, setHdOpen] = useState(false);
   const [attachments, setAttachments] = useState<{ id: string; url: string; name: string }[]>([]);
   const [mentions, setMentions] = useState<{ id: string; url: string; name: string }[]>([]);
