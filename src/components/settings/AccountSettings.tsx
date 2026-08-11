@@ -29,11 +29,11 @@ export function AccountSettings() {
           <Switch defaultChecked className="data-[state=checked]:bg-primary" />
         </div>
 
-        {/* Agent Usage */}
+        {/* Platform Usage */}
         <div className="flex items-center justify-between border-b border-white/5 pb-8">
           <div className="space-y-1">
-            <div className="text-sm font-medium text-white">Seedance 2.0 4K&1080p Agent 使用提醒:</div>
-            <div className="text-xs text-white/40">配置 Agent 识别到会使用 Seedance 2.0 4K&1080p 时的默认处理方式。</div>
+            <div className="text-sm font-medium text-white">Seedance 2.0 4K&1080p 平台使用提醒:</div>
+            <div className="text-xs text-white/40">配置平台识别到会使用 Seedance 2.0 4K&1080p 时的默认处理方式。</div>
           </div>
           <Select defaultValue="ask">
             <SelectTrigger className="w-[160px] border-white/10 bg-white/5 text-xs text-white">
