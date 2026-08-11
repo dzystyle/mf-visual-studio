@@ -374,44 +374,54 @@ export function SkillPicker({
             {/* Content Area */}
             <div className="px-6 pb-6">
               <div className="flex border-b border-white/5 mb-6">
-                <button className="px-1 pb-3 text-sm font-medium text-white border-b-2 border-white">内容</button>
+                <button className="px-1 pb-3 text-sm font-medium text-white border-b-2 border-white">简介</button>
+                <button className="px-1 pb-3 text-sm font-medium text-white/40 hover:text-white/60 ml-6">内容</button>
               </div>
 
-              <div className="relative rounded-2xl border border-white/5 bg-white/[0.02] p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="text-[15px] font-bold text-white">流程规划：</div>
-                  <div className="flex items-center gap-1.5 p-0.5 rounded-lg bg-white/5">
-                    <button className="p-2 rounded-md bg-white/10 text-white shadow-sm">
-                      <Eye className="h-4 w-4" />
-                    </button>
-                    <button className="p-2 rounded-md text-white/40 hover:text-white/60">
-                      <Code className="h-4 w-4" />
-                    </button>
+              <div className="space-y-6">
+                <div className="text-[14px] leading-relaxed text-white/70">
+                  {previewSkill?.id === 'destiny' ? (
+                    "分析上传的剧本（图片/PDF/文本），通过学习其电影语法——提取脚本、镜头结构、视觉语言和节奏——围绕您的主题生成全新的视频。使用 Nano Banana + Seedance 2.5（分辨率480p）生成视觉素材。"
+                  ) : previewSkill?.desc}
+                </div>
+
+                <div className="flex items-center justify-between py-4 border-t border-b border-white/5">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-white/40">历史使用</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] text-white/20">最近一次更新时间 2026-08-11 16:56</span>
                   </div>
                 </div>
 
-                <div className="space-y-4 text-[13px] leading-relaxed text-white/60">
-                  <p className="font-medium text-white/80">全流程规划逻辑与依赖关系：</p>
-                  <ol className="space-y-4 list-decimal pl-4">
-                    <li>
-                      <span className="font-medium text-white/80">全局设定初始化：</span> 创建并锁定 Final_Video_Spec.md (明确画面比例默认为 16:9; 受开放世界犯罪/街头题材启发的主题视频、分镜、提示词和视觉审查。只借鉴其视觉语法、城市气质、镜头组织和角色类型，不复刻官方镜头、Logo、UI、商标、车牌或具体台词。) → text_editor。
-                      <ul className="mt-2 list-disc pl-4 space-y-2 opacity-80">
-                        <li>视觉风格不是单纯“霓虹犯罪”，而是“热带度假广告 + 真实犯罪纪录片 + 社交媒体荒诞短视频 + 开放世界城市展示”的混合体。画面表层热闹、性感、阳光、夸张；底层始终有追捕、债务、人情、走私、音乐产业、帮派和情侣逃亡的压力。</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <span className="font-medium text-white/80">分镜大纲设计：</span> 设计完整故事分镜脚本 (时长默认控制在30-60s的小篇幅游戏机展示demo，除非用户有明确的长故事需求)，包含 key_elements (角色、场景、道具) 及 shot 列表。此处提供两种角色创作路径，由用户进行选择:
-                    </li>
-                  </ol>
+                <div className="flex items-center justify-between pt-4">
+                  <div className="flex items-center gap-3">
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 text-red-500 text-xs hover:bg-red-500/20 transition-colors">
+                      <X className="h-3.5 w-3.5" />
+                      删除
+                    </button>
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 text-white/80 text-xs hover:bg-white/10 transition-colors">
+                      <FileText className="h-3.5 w-3.5" />
+                      创建副本
+                    </button>
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 text-white/80 text-xs hover:bg-white/10 transition-colors">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      分享
+                    </button>
+                  </div>
+                  
+                  <button 
+                    onClick={() => {
+                      if (previewSkill) onSelect?.(previewSkill.title);
+                      setPreviewSkill(null);
+                    }}
+                    className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FFE5B4] to-white px-8 py-2.5 text-sm font-bold text-black hover:opacity-90 transition-all shadow-xl shadow-white/5"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    去使用 Skill
+                  </button>
                 </div>
               </div>
-
-              <div className="mt-8 flex items-center justify-between text-[11px] text-white/20">
-                <div className="flex items-center gap-1.5">
-                  最近一次更新时间 2026-08-10 20:22
-                </div>
-              </div>
-              
             </div>
           </div>
         </DialogContent>
