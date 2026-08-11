@@ -166,7 +166,7 @@ function QuickPage() {
         </div>
 
         {/* Bottom composer container */}
-        <div className="absolute bottom-6 left-1/2 w-full max-w-7xl -translate-x-1/2 px-8">
+        <div className="absolute bottom-6 left-1/2 w-full max-w-7xl -translate-x-1/2 px-8 z-[50]">
           {showMini ? (
             <div 
               className="mx-auto w-[600px] animate-in fade-in slide-in-from-bottom-4 duration-300"
