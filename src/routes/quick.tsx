@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useRef, useState, useEffect, Dispatch, SetStateAction, useCallback } from "react";
+import { toast } from "sonner";
+import { XCircle } from "lucide-react";
 import {
   Plus,
   Video,
@@ -357,16 +359,54 @@ function Composer({
     }
   };
 
-  const onFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFiles = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);
     if (!files.length) return;
-    const next = files.map((f) => ({
-      id: `${Date.now()}-${f.name}`,
-      name: f.name,
-      url: URL.createObjectURL(f),
-    }));
-    setAttachments((prev) => [...prev, ...next]);
-  };
+
+    const validFiles: { id: string; url: string; name: string }[] = [];
+    
+    for (const file of files) {
+      if (!file.type.startsWith('image/')) continue;
+      
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+      
+      const dimensions = await new Promise<{ width: number; height: number }>((resolve) => {
+        img.onload = () => {
+          resolve({ width: img.naturalWidth, height: img.naturalHeight });
+        };
+        img.onerror = () => resolve({ width: 0, height: 0 });
+        img.src = objectUrl;
+      });
+
+      if (dimensions.width < 480 || dimensions.width > 4096) {
+        toast.error("", {
+          className: "bg-[#1A1111]/90 border-white/5 backdrop-blur-xl rounded-xl p-0 overflow-hidden min-w-[400px]",
+          duration: 4000,
+          content: (
+            <div className="flex items-center gap-3 px-4 py-3 text-white/90">
+              <XCircle className="h-5 w-5 text-red-500 shrink-0" />
+              <span className="text-sm font-medium tracking-wide">
+                {file.name}: 宽度需在 480px 到 4096px 之间
+              </span>
+            </div>
+          ),
+        });
+        URL.revokeObjectURL(objectUrl);
+        continue;
+      }
+
+      validFiles.push({
+        id: `${Date.now()}-${file.name}`,
+        name: file.name,
+        url: objectUrl,
+      });
+    }
+
+    if (validFiles.length > 0) {
+      setAttachments((prev) => [...prev, ...validFiles]);
+    }
+  }, [setAttachments]);
   const tabs = [
     { id: "video", label: "视频生成", icon: Video },
     { id: "image", label: "图片生成", icon: ImageIcon },
