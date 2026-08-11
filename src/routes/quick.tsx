@@ -127,7 +127,7 @@ function QuickPage() {
   }
 
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-black">
       <section className="aurora-bg relative flex flex-1 flex-col overflow-hidden px-8 pt-6">
         <BrandMark />
         <TopBar />
