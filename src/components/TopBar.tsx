@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { SubscriptionDialog } from "./SubscriptionDialog";
+import { FeedbackDialog } from "./FeedbackDialog";
 import { useTheme } from "@/hooks/use-theme";
 import logoAsset from "@/assets/logo.png.asset.json";
 import { cn } from "@/lib/utils";
@@ -46,8 +47,8 @@ function UserMenuContainer() {
       onMouseLeave={handleMouseLeave}
     >
       <div className="flex items-center gap-2 pr-2 border-r border-border">
-        <FilmIconGradient />
-        <span className="font-bold text-foreground tracking-tight">2,081</span>
+        <FilmIconGradient className="h-4 w-4" />
+        <span className="font-bold text-foreground tracking-tight text-[13px]">2,081</span>
       </div>
 
       <div className="flex items-center gap-2 px-1">
@@ -71,11 +72,13 @@ function UserMenu({
   onMouseLeave: () => void;
 }) {
   const [showSubscription, setShowSubscription] = React.useState(false);
+  const [showFeedback, setShowFeedback] = React.useState(false);
   const { theme, setTheme } = useTheme();
 
   return (
     <>
       <SubscriptionDialog open={showSubscription} onOpenChange={setShowSubscription} />
+      <FeedbackDialog open={showFeedback} onOpenChange={setShowFeedback} />
       <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild className="pointer-events-none">
         <div className="h-8 w-8 rounded-full bg-foreground/10 flex items-center justify-center overflow-hidden">
@@ -104,57 +107,85 @@ function UserMenu({
             className="group mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#A855F7] to-[#3B82F6] py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90 cursor-pointer"
           >
             <div className="flex h-4 w-4 items-center justify-center rounded-sm bg-white/20">
-              <Play fill="white" className="h-2 w-2 text-white" />
+              <Play fill="white" className="h-2 w-2 text-white ml-0.5" />
             </div>
             开通会员
           </button>
         </div>
 
-        <div className="space-y-0.5 px-2 pb-2">
-          <Link to="/settings/account"><MenuItem icon={LayoutGrid} label="切换为团队版" /></Link>
-          <Link to="/settings/account"><MenuItem icon={Users} label="团队管理" /></Link>
-          <Link to="/settings/billing"><MenuItem icon={Gift} label="兑换码" /></Link>
+        <div className="space-y-0 px-2 pb-2 mt-2">
+          <div className="px-3 pt-2">
+            <div className="flex items-center justify-between text-xs text-foreground/40 font-medium">
+              <div className="flex items-center gap-2 text-foreground">
+                <FilmIconGradient className="h-3.5 w-3.5" />
+                <span className="text-[13px]">会员积分</span>
+              </div>
+              <span className="font-bold text-foreground text-[13px]">2081</span>
+            </div>
+            <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
+              <div className="flex justify-between"><span>套餐</span><span>2000</span></div>
+              <div className="flex justify-between"><span>通用积分</span><span>0</span></div>
+              <div className="flex justify-between"><span>模型专属积分</span><span>0</span></div>
+              <div className="flex justify-between"><span>额外</span><span>81</span></div>
+            </div>
+          </div>
 
-          <div className="my-2 border-t border-border/50" />
+          <div className="px-3 pt-3 pb-3">
+            <div className="flex items-center justify-between text-xs text-foreground/40 font-medium">
+              <div className="flex items-center gap-2 text-foreground">
+                <Gift className="h-3.5 w-3.5 text-foreground/60" />
+                <span className="text-[13px]">奖励积分</span>
+              </div>
+              <span className="font-bold text-foreground text-[13px]">0</span>
+            </div>
+            <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
+              <div className="flex justify-between"><span>邀请奖励</span><span>0</span></div>
+            </div>
+            
+            <Link to="/settings/billing" onClick={() => setOpen(false)} className="mt-4 flex w-full items-center justify-center rounded-full bg-foreground/5 py-2.5 text-[13px] font-semibold text-foreground/80 transition-colors hover:bg-foreground/10">
+              查看用量
+            </Link>
+          </div>
 
-          {/* Theme Selector */}
+          <div className="border-t border-border/50 opacity-50" />
+          
+          <Link to="/settings/account"><MenuItem icon={Users} label="团队管理" className="py-2" /></Link>
+          <Link to="/settings/billing"><MenuItem icon={Gift} label="兑换码" className="py-2" /></Link>
+
+          <div className="border-t border-border/50 opacity-50" />
+
+          {/* Language Selector */}
+          <div className="px-3 py-2 cursor-pointer hover:bg-foreground/5 rounded-lg transition-colors group">
+            <div className="flex items-center justify-between py-1">
+              <div className="flex items-center gap-2 text-sm text-foreground/80 group-hover:text-foreground">
+                <Globe className="h-4 w-4 text-foreground/60 group-hover:text-foreground" />
+                <span>语言</span>
+                <span className="mx-0.5 text-foreground/20">|</span>
+                <span className="text-foreground/40 font-normal group-hover:text-foreground/60">简体中文</span>
+                <ChevronRight className="h-3 w-3 ml-0.5 text-foreground/20 group-hover:text-foreground/40" />
+              </div>
+            </div>
+          </div>
+
+          <MenuItem 
+            icon={MessageSquare} 
+            label="反馈" 
+            className="py-2"
+            onClick={() => { setShowFeedback(true); setOpen(false); }}
+          />
+          <Link to="/settings/profile"><MenuItem icon={Settings} label="管理账户" className="py-2" /></Link>
+          
+          <div className="border-t border-border/50 opacity-50" />
+
+          {/* Theme Selector - compact */}
           <div className="px-3 py-2">
-            <div className="text-[10px] font-medium text-foreground/30 uppercase tracking-wider mb-2">外观</div>
             <div className="flex p-1 bg-foreground/5 rounded-lg gap-1">
               <ThemeButton icon={Sun} label="亮色" active={theme === 'light'} onClick={() => setTheme('light')} />
               <ThemeButton icon={Moon} label="暗色" active={theme === 'dark'} onClick={() => setTheme('dark')} />
               <ThemeButton icon={Monitor} label="跟随" active={theme === 'system'} onClick={() => setTheme('system')} />
             </div>
           </div>
-
-          {/* Language Selector */}
-          <div className="px-3 py-2">
-            <div className="text-[10px] font-medium text-foreground/30 uppercase tracking-wider mb-2">语言</div>
-            <div className="flex p-1 bg-foreground/5 rounded-lg gap-1">
-              <LanguageButton label="中文" active={true} icon={Languages} />
-              <LanguageButton label="English" active={false} icon={Languages} />
-            </div>
-          </div>
-
-          <div className="my-2 border-t border-border/50" />
-
-          <div className="px-3 py-2">
-            <div className="flex items-center justify-between text-xs text-foreground/40">
-              <div className="flex items-center gap-2">
-                <Coins className="h-3.5 w-3.5 text-[#FFB800]" />
-                <span>会员积分</span>
-              </div>
-              <span>0</span>
-            </div>
-            <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
-              <div className="flex justify-between"><span>套餐</span><span>0</span></div>
-              <div className="flex justify-between"><span>通用积分</span><span>0</span></div>
-              <div className="flex justify-between"><span>模型专属积分</span><span>0</span></div>
-              <div className="flex justify-between"><span>额外</span><span>0</span></div>
-            </div>
-          </div>
-
-          <Link to="/settings/account"><MenuItem icon={Key} label="修改密码" /></Link>
+          
           <MenuItem icon={LogOut} label="退出登录" className="text-red-400/80 hover:text-red-400 hover:bg-red-400/5" />
         </div>
       </PopoverContent>
@@ -199,15 +230,19 @@ function MenuItem({
   rightContent,
   hasChevron,
   className,
+  onClick,
 }: {
   icon: any;
   label: string;
   rightContent?: React.ReactNode;
   hasChevron?: boolean;
   className?: string;
+  onClick?: () => void;
 }) {
   return (
-    <button className={cn(
+    <button 
+      onClick={onClick}
+      className={cn(
       "flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-foreground/5 group",
       className
     )}>
@@ -241,9 +276,9 @@ function Play({ className, fill, ...props }: any) {
 }
 
 
-function FilmIconGradient() {
+function FilmIconGradient({ className }: { className?: string }) {
   return (
-    <div className="relative h-4 w-4 overflow-hidden rounded-[2px] bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 flex items-center justify-center">
+    <div className={cn("relative h-4 w-4 overflow-hidden rounded-[2px] bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 flex items-center justify-center", className)}>
       <div className="grid grid-cols-1 gap-[1px]">
         <div className="flex gap-[1px]">
           <div className="h-[2px] w-[2px] bg-[#1A1A1A]" />
