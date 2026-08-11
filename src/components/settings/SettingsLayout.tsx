@@ -67,7 +67,9 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
               }
               
               const Icon = item.icon!;
-              const isActive = activeTab === item.id;
+               const isActive = activeTab === item.id || 
+                               (item.id === 'credits' && activeTab === 'invoices') || 
+                               (item.id === 'credits' && activeTab === 'pricing');
 
               return (
                 <Link
