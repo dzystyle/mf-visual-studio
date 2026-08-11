@@ -430,41 +430,12 @@ export function PromptBox({
                 });
               }} 
             />
-            <div className="h-4 w-px bg-border/40 mx-1" />
-            <Popover>
-              <PopoverTrigger asChild>
-                <button className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition">
-                  <div className="w-3.5 h-2.5 border border-current rounded-[1px] flex items-center justify-center text-[8px] leading-none">
-                    <span className="scale-75 uppercase">{ratio}</span>
-                  </div>
-                  <ChevronDown className="h-3 w-3 text-muted-foreground" />
-                </button>
-              </PopoverTrigger>
-              <PopoverContent align="start" className="w-40 p-1 border-border bg-card/95 backdrop-blur-xl rounded-xl">
-                <RatioItem label="自动" icon={<LayoutGrid className="w-3.5 h-3.5" />} active={ratio === "自动"} onClick={() => setRatio("自动")} />
-                <RatioItem label="16:9 (横屏)" active={ratio === "16:9"} icon={<div className="w-3.5 h-2.5 border border-current rounded-[1px]" />} onClick={() => setRatio("16:9")} />
-                <RatioItem label="21:9 (电影)" active={ratio === "21:9"} icon={<div className="w-4 h-2 border border-current rounded-[1px]" />} onClick={() => setRatio("21:9")} />
-                <RatioItem label="9:16 (竖屏)" active={ratio === "9:16"} icon={<div className="w-2.5 h-4 border border-current rounded-[1px]" />} onClick={() => setRatio("9:16")} />
-                <RatioItem label="4:3" active={ratio === "4:3"} icon={<div className="w-3.5 h-3 border border-current rounded-[1px]" />} onClick={() => setRatio("4:3")} />
-                <RatioItem label="3:4" active={ratio === "3:4"} icon={<div className="w-3 h-3.5 border border-current rounded-[1px]" />} onClick={() => setRatio("3:4")} />
-                <RatioItem label="1:1" active={ratio === "1:1"} icon={<div className="w-3.5 h-3.5 border border-current rounded-[1px]" />} onClick={() => setRatio("1:1")} />
-              </PopoverContent>
-            </Popover>
-            <Popover>
-              <PopoverTrigger asChild>
-                <button className={`flex h-8 w-8 items-center justify-center rounded-full border border-border transition ${selectedCharacter ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'text-muted-foreground hover:bg-accent hover:text-foreground'}`}>
-                  <AtSign className="h-4 w-4" />
-                </button>
-              </PopoverTrigger>
-              <PopoverContent align="start" className="w-56 p-2 border-border bg-card/95 backdrop-blur-xl rounded-xl">
-                <div className="text-[10px] text-muted-foreground px-2 py-1 mb-1 flex items-center justify-between">
-                  <span>角色引用</span>
-                  {selectedCharacter && <button onClick={() => setSelectedCharacter(null)} className="hover:text-foreground">清除</button>}
-                </div>
-                <div className="text-[10px] text-muted-foreground px-2 py-1 mb-1 opacity-60">其他角色</div>
-                <MentionItem label="场景01" img="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" active={selectedCharacter === "场景01"} onClick={() => { setSelectedCharacter("场景01"); handleMentionSelect("场景01", "image", "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop"); }} />
-                <MentionItem label="角色01" img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" active={selectedCharacter === "角色01"} onClick={() => { setSelectedCharacter("角色01"); handleMentionSelect("角色01", "image", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop"); }} />
-                <div className="text-[10px] text-muted-foreground px-2 py-1 mt-2 mb-1 opacity-60">推荐角色</div>
+            <div className="flex items-center gap-2 px-1">
+              <span className="text-xs text-foreground/80">画布</span>
+              <button onClick={() => setCanvasMode(!canvasMode)} className={`w-9 h-5 rounded-full relative p-0.5 transition-all duration-300 ${canvasMode ? 'bg-aurora-blue/60' : 'bg-muted/60'}`}>
+                <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-300 ${canvasMode ? 'translate-x-4' : 'translate-x-0'}`} />
+              </button>
+            </div>
                 <MentionItem label="皮皮特PiPi" icon={<div className="w-full h-full bg-accent flex items-center justify-center text-[10px]">P</div>} active={selectedCharacter === "皮皮特PiPi"} onClick={() => { setSelectedCharacter("皮皮特PiPi"); handleMentionSelect("皮皮特PiPi", "image", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop"); }} />
                 <MentionItem label="萧衍" img="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop" active={selectedCharacter === "萧衍"} onClick={() => { setSelectedCharacter("萧衍"); handleMentionSelect("萧衍", "image", "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop"); }} />
                 <MentionItem label="西施" img="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop" active={selectedCharacter === "西施"} onClick={() => { setSelectedCharacter("西施"); handleMentionSelect("西施", "image", "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop"); }} />
