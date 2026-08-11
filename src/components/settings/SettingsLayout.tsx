@@ -33,7 +33,7 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
     { id: 'terms', label: '使用条款', icon: ShieldCheck, path: '/settings/account' },
     { id: 'privacy', label: '隐私政策', icon: FileLock2, path: '/settings/account' },
     { separator: true },
-    { id: 'logout', label: '退出登录', icon: LogOut, path: '/', color: 'text-red-400' },
+    { id: 'logout', label: '退出登录', icon: LogOut, path: '/', color: 'text-red-400', search: undefined },
   ];
 
   return (
@@ -92,7 +92,7 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto bg-[#0f0f12] p-8 md:p-12 scrollbar-hide">
+        <div className="flex-1 overflow-y-auto bg-[#0f0f12] p-8 md:p-12 scrollbar-hide scroll-smooth">
           {children}
         </div>
       </div>
