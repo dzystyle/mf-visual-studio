@@ -119,9 +119,9 @@ export function TvDetailDialog({ open, onOpenChange, videoData }: TvDetailDialog
                  </div>
 
                  {/* Subtitles Placeholder */}
-                 <div className="absolute bottom-32 left-0 right-0 text-center">
-                    <p className="text-2xl font-medium text-white/90 drop-shadow-lg">
-                      Let's take it to the community carnival right now
+                 <div className="absolute bottom-24 left-0 right-0 text-center">
+                    <p className="text-2xl font-medium text-white/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                      Yeah, let's stop bombarding this
                     </p>
                  </div>
                </div>
