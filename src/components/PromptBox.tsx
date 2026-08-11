@@ -322,28 +322,91 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
             <input ref={fileInputRef} type="file" multiple className="hidden" onChange={onFiles} />
+            
+            <Popover>
+              <PopoverTrigger asChild>
+                <button type="button" className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition">
+                  <span>全能参考</span>
+                  <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-40 p-1 border-border bg-card/95 backdrop-blur-xl rounded-xl">
+                {["全能参考", "图生视频", "首尾帧生视频", "对口型数字人"].map((item) => (
+                  <button key={item} className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-xs text-foreground hover:bg-accent/60 transition">
+                    {item}
+                  </button>
+                ))}
+              </PopoverContent>
+            </Popover>
+
             <Popover>
               <PopoverTrigger asChild>
                 <button type="button">
-                  <Chip icon={LayoutGrid} label={model} badge="新" />
+                  <div className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition">
+                    <span className="text-muted-foreground">模型：</span>
+                    <span className="font-medium">{model}</span>
+                    <span className="flex h-4 items-center rounded bg-green-500/20 px-1 text-[8px] font-bold text-green-500">新</span>
+                    <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                  </div>
                 </button>
               </PopoverTrigger>
               <PopoverContent align="start" className="w-[600px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
                 <ModelPicker value={model} onSelect={setModel} />
               </PopoverContent>
             </Popover>
+
             <Popover>
               <PopoverTrigger asChild>
-                <button type="button">
-                  <Chip icon={Package} label={skill ?? "Skill"} active={!!skill} onClear={skill ? () => {
-                      setSkill(null);
-                      setText(prev => prev.replace(new RegExp(`@${skill}\\s?`), ""));
-                    } : undefined}
-                  />
+                <button type="button" className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition">
+                  <span className="text-muted-foreground">分辨率：</span>
+                  <span className="font-medium">720p</span>
+                  <span className="flex h-4 items-center rounded bg-aurora-purple/20 px-1 text-[8px] font-bold text-aurora-purple">尊享</span>
+                  <ChevronDown className="h-3 w-3 text-muted-foreground" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-[500px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
-                <SkillPicker onSelect={setSkill} />
+              <PopoverContent align="start" className="w-40 p-1 border-border bg-card/95 backdrop-blur-xl rounded-xl">
+                {["480p", "720p", "1080p", "4K"].map((res) => (
+                  <button key={res} className="flex w-full items-center justify-between gap-2 rounded-lg px-2 py-2 text-xs text-foreground hover:bg-accent/60 transition">
+                    <span>{res}</span>
+                    {res === "720p" && <span className="flex h-4 items-center rounded bg-aurora-purple/20 px-1 text-[8px] font-bold text-aurora-purple">尊享</span>}
+                  </button>
+                ))}
+              </PopoverContent>
+            </Popover>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button type="button" className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition">
+                  <span className="text-muted-foreground">比例：</span>
+                  <span className="font-medium">{ratio}</span>
+                  <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-40 p-1 border-border bg-card/95 backdrop-blur-xl rounded-xl">
+                <RatioItem label="21:9" active={ratio === "21:9"} icon={<div className="w-4 h-2 border border-current rounded-[1px]" />} onClick={() => setRatio("21:9")} />
+                <RatioItem label="16:9" active={ratio === "16:9"} icon={<div className="w-3.5 h-2.5 border border-current rounded-[1px]" />} onClick={() => setRatio("16:9")} />
+                <RatioItem label="4:3" active={ratio === "4:3"} icon={<div className="w-3.5 h-3 border border-current rounded-[1px]" />} onClick={() => setRatio("4:3")} />
+                <RatioItem label="1:1" active={ratio === "1:1"} icon={<div className="w-3.5 h-3.5 border border-current rounded-[1px]" />} onClick={() => setRatio("1:1")} />
+                <RatioItem label="3:4" active={ratio === "3:4"} icon={<div className="w-3 h-3.5 border border-current rounded-[1px]" />} onClick={() => setRatio("3:4")} />
+                <RatioItem label="9:16" active={ratio === "9:16"} icon={<div className="w-2.5 h-4 border border-current rounded-[1px]" />} onClick={() => setRatio("9:16")} />
+              </PopoverContent>
+            </Popover>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button type="button" className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition">
+                  <span className="text-muted-foreground">时长：</span>
+                  <span className="font-medium">{duration === 179 ? "29s" : duration + "s"}</span>
+                  <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-72 p-4 border-border bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl">
+                <div className="text-sm font-semibold mb-4 text-white">时长：</div>
+                <div className="relative pt-2 pb-8">
+                  <input type="range" min="4" max="30" value={duration > 30 ? 29 : duration} onChange={(e) => setDuration(parseInt(e.target.value))} className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer accent-white" />
+                  <div className="flex justify-between mt-3 text-[10px] text-white/40 font-medium"><span>4s</span><span>17s</span><span>30s</span></div>
+                  <div className="absolute right-0 top-[-8px] bg-white/10 px-3 py-1.5 rounded-lg text-sm font-bold border border-white/5 text-white">{duration > 30 ? 29 : duration}s</div>
+                </div>
               </PopoverContent>
             </Popover>
             <button type="button" onClick={() => setAssetsOpen(true)}>
