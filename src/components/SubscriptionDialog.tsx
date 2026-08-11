@@ -418,9 +418,9 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
             <button onClick={() => setSeats(seats + 1)} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><PlusIcon className="h-3 w-3" /></button>
           </div>
         </div>
-        <div className="mt-3 flex items-center justify-between border-t border-white/5 pt-3">
-          <div className="text-[9px] text-white/30">总积分 {(parseInt(credits.split(' ')[0]) + parseInt(credits.split(' ')[2])) * seats}/月</div>
-          <div className="text-[9px] text-white/30">总价 ¥{price * seats}/月</div>
+        <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
+          <div className="text-[9px] text-foreground/30">总积分 {(parseInt(credits.split(' ')[0]) + parseInt(credits.split(' ')[2])) * seats}/月</div>
+          <div className="text-[9px] text-foreground/30">总价 ¥{price * seats}/月</div>
         </div>
       </div>
 
@@ -431,14 +431,14 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
       <div className="mt-8 space-y-6 overflow-hidden">
         {features.map((group: any) => (
           <div key={group.title}>
-            <div className="mb-3 text-[10px] font-medium text-white/40 uppercase tracking-wider">{group.title}</div>
+            <div className="mb-3 text-[10px] font-medium text-foreground/40 uppercase tracking-wider">{group.title}</div>
             <div className="space-y-2.5">
               {group.items.map((item: any) => (
                 <div key={item.label} className="flex items-start gap-2">
                   <Check className="mt-0.5 h-3 w-3 shrink-0 text-[#E6B380]" />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] text-white/80">{item.label}</span>
+                      <span className="text-[11px] text-foreground/80">{item.label}</span>
                       {item.tag && <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] text-green-500">新</span>}
                     </div>
                   </div>
