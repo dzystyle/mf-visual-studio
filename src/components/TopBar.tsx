@@ -154,7 +154,7 @@ function UserMenu({
 
           <div className="border-t border-border/50 opacity-50" />
           
-          <Link to="/settings/account" onClick={() => setOpen(false)}><MenuItem icon={Users} label="团队管理" className="py-2" /></Link>
+          <Link to="/settings/team" onClick={() => setOpen(false)}><MenuItem icon={Users} label="团队管理" className="py-2" /></Link>
           <Link to="/settings/billing" search={{ tab: 'pricing' }} onClick={() => setOpen(false)}><MenuItem icon={Gift} label="兑换码" className="py-2" /></Link>
 
           <div className="border-t border-border/50 opacity-50" />
