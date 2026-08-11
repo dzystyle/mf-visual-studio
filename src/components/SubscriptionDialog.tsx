@@ -18,11 +18,11 @@ export function SubscriptionDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-white/10 bg-[#0A0A0A] p-0 text-white scrollbar-hide">
+      <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-border bg-background p-0 text-foreground scrollbar-hide">
         <div className="relative pb-20 pt-10">
           {/* Header Section */}
           <div className="mx-auto max-w-4xl px-6 text-center">
-            <div className="mb-8 inline-flex items-center gap-4 rounded-2xl bg-gradient-to-r from-[#2A1F15] to-[#151A25] p-1 pr-6 border border-white/5">
+            <div className="mb-8 inline-flex items-center gap-4 rounded-2xl bg-gradient-to-r from-[#2A1F15] to-[#151A25] p-1 pr-6 border border-border">
               <div className="flex flex-col items-start px-4 py-2">
                 <div className="text-sm font-semibold text-[#E6B380]">Seedance 2.5 满血版上线, 积分限时买一送一</div>
                 <div className="text-xs text-white/60">480p 再享 5.3折, 低至 ¥ 0.23/秒</div>
@@ -189,7 +189,7 @@ export function SubscriptionDialog({
 
           {/* FAQ Section */}
           <div className="mx-auto mt-24 max-w-4xl px-6">
-            <h2 className="mb-10 text-center text-xl font-bold">Artrail 订阅与积分常见问题</h2>
+            <h2 className="mb-10 text-center text-xl font-bold text-foreground">Artrail 订阅与积分常见问题</h2>
             <Accordion type="single" collapsible className="w-full space-y-4 border-none">
               <FaqItem 
                 id="q1" 
@@ -300,7 +300,7 @@ export function SubscriptionDialog({
             </Accordion>
 
             <div className="mt-16 border-t border-white/5 pt-10">
-              <div className="text-sm font-bold mb-4">免责声明与联系方式</div>
+              <div className="text-sm font-bold mb-4 text-foreground">免责声明与联系方式</div>
               <div className="flex items-center gap-2 text-xs text-white/40">
                 <MessageSquare className="h-3 w-3" />
                 如有关于订阅或积分的问题，欢迎联系 support@artrail.ai
@@ -329,7 +329,7 @@ function CountdownItem({ value, label }: { value: string; label: string }) {
 
 function PersonalCard({ name, price, credits, bonus, features, highlight }: any) {
   return (
-    <div className="relative flex flex-col rounded-3xl border border-white/10 bg-[#161616] p-6 text-left transition hover:border-white/20">
+    <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
@@ -341,7 +341,7 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
       <div className="mt-6 flex items-baseline gap-1">
         <span className="text-lg font-bold">¥</span>
         <span className="text-3xl font-bold">{price}</span>
-        <span className="text-xs text-white/40">/月</span>
+        <span className="text-xs text-foreground/40">/月</span>
       </div>
 
       <div className="mt-2 text-lg font-medium">{credits} 积分</div>
@@ -359,20 +359,20 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
       <div className="mt-8 space-y-6 overflow-hidden">
         {features.map((group: any) => (
           <div key={group.title}>
-            <div className="mb-3 text-[10px] font-medium text-white/40 uppercase tracking-wider">{group.title}</div>
+            <div className="mb-3 text-[10px] font-medium text-foreground/40 uppercase tracking-wider">{group.title}</div>
             <div className="space-y-2.5">
               {group.items.map((item: any) => (
                 <div key={item.label} className="flex items-start gap-2">
                   <Check className="mt-0.5 h-3 w-3 shrink-0 text-[#E6B380]" />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] text-white/80">{item.label}</span>
-                      {item.info && <Info className="h-2.5 w-2.5 text-white/20" />}
-                      {item.tag && <span className="rounded bg-white/10 px-1 py-0.5 text-[8px] text-white/60">{item.tag}</span>}
+                      <span className="text-[11px] text-foreground/80">{item.label}</span>
+                      {item.info && <Info className="h-2.5 w-2.5 text-foreground/20" />}
+                      {item.tag && <span className="rounded bg-white/10 px-1 py-0.5 text-[8px] text-foreground/60">{item.tag}</span>}
                     </div>
-                    {item.sub && <div className="mt-0.5 text-[9px] text-white/40">{item.sub}</div>}
+                    {item.sub && <div className="mt-0.5 text-[9px] text-foreground/40">{item.sub}</div>}
                   </div>
-                  {item.value && <div className="text-[10px] text-white/40">{item.value}</div>}
+                  {item.value && <div className="text-[10px] text-foreground/40">{item.value}</div>}
                 </div>
               ))}
             </div>
@@ -386,7 +386,7 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
 function TeamCard({ name, price, credits, bonus, features }: any) {
   const [seats, setSeats] = React.useState(2);
   return (
-    <div className="relative flex flex-col rounded-3xl border border-white/10 bg-[#161616] p-6 text-left transition hover:border-white/20">
+    <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
@@ -398,7 +398,7 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
       <div className="mt-6 flex items-baseline gap-1">
         <span className="text-lg font-bold">¥</span>
         <span className="text-3xl font-bold">{price}</span>
-        <span className="text-[10px] text-white/40 ml-1">/席/月</span>
+        <span className="text-[10px] text-foreground/40 ml-1">/席/月</span>
       </div>
 
       <div className="mt-2 text-lg font-medium">{credits} 积分</div>
@@ -410,17 +410,17 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
       </div>
 
       <div className="mt-6 rounded-xl bg-white/5 p-3">
-        <div className="flex items-center justify-between text-[11px] text-white/60">
+        <div className="flex items-center justify-between text-[11px] text-foreground/60">
           <span>席位</span>
           <div className="flex items-center gap-3">
             <button onClick={() => setSeats(Math.max(2, seats - 1))} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><Minus className="h-3 w-3" /></button>
-            <span className="text-white font-medium">{seats} 席</span>
+            <span className="text-foreground font-medium">{seats} 席</span>
             <button onClick={() => setSeats(seats + 1)} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><PlusIcon className="h-3 w-3" /></button>
           </div>
         </div>
-        <div className="mt-3 flex items-center justify-between border-t border-white/5 pt-3">
-          <div className="text-[9px] text-white/30">总积分 {(parseInt(credits.split(' ')[0]) + parseInt(credits.split(' ')[2])) * seats}/月</div>
-          <div className="text-[9px] text-white/30">总价 ¥{price * seats}/月</div>
+        <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
+          <div className="text-[9px] text-foreground/30">总积分 {(parseInt(credits.split(' ')[0]) + parseInt(credits.split(' ')[2])) * seats}/月</div>
+          <div className="text-[9px] text-foreground/30">总价 ¥{price * seats}/月</div>
         </div>
       </div>
 
@@ -431,14 +431,14 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
       <div className="mt-8 space-y-6 overflow-hidden">
         {features.map((group: any) => (
           <div key={group.title}>
-            <div className="mb-3 text-[10px] font-medium text-white/40 uppercase tracking-wider">{group.title}</div>
+            <div className="mb-3 text-[10px] font-medium text-foreground/40 uppercase tracking-wider">{group.title}</div>
             <div className="space-y-2.5">
               {group.items.map((item: any) => (
                 <div key={item.label} className="flex items-start gap-2">
                   <Check className="mt-0.5 h-3 w-3 shrink-0 text-[#E6B380]" />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] text-white/80">{item.label}</span>
+                      <span className="text-[11px] text-foreground/80">{item.label}</span>
                       {item.tag && <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] text-green-500">新</span>}
                     </div>
                   </div>
@@ -454,16 +454,16 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
 
 function FaqItem({ id, num, title, content }: any) {
   return (
-    <AccordionItem value={id} className="border-white/5">
+    <AccordionItem value={id} className="border-border">
       <AccordionTrigger className="hover:no-underline py-4 group">
         <div className="flex items-center gap-4">
-          <div className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-[10px] text-white/40 group-data-[state=open]:border-white/20 group-data-[state=open]:text-white">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full border border-border text-[10px] text-foreground/40 group-data-[state=open]:border-accent group-data-[state=open]:text-foreground">
             {num}
           </div>
-          <span className="text-sm font-medium text-white/60 group-data-[state=open]:text-white">{title}</span>
+          <span className="text-sm font-medium text-foreground/60 group-data-[state=open]:text-foreground">{title}</span>
         </div>
       </AccordionTrigger>
-      <AccordionContent className="pl-10 text-white/60">
+      <AccordionContent className="pl-10 text-foreground/60">
         {content}
       </AccordionContent>
     </AccordionItem>

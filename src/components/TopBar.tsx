@@ -1,5 +1,6 @@
 import * as React from "react";
 import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, LogOut, LayoutGrid, Film, Gift, Sun, Moon, Monitor, Key, Languages } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -91,12 +92,12 @@ function UserMenu({
       >
         <div className="p-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <Link to="/settings/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <span className="text-lg font-bold">User</span>
               <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-white/60">Free</span>
-            </div>
+            </Link>
           </div>
-          <div className="mt-1 text-sm text-white/40">yangdu776@gmail.com</div>
+          <Link to="/settings/profile" className="mt-1 block text-sm text-white/40 hover:text-white/60 transition-colors">yangdu776@gmail.com</Link>
 
           <button 
             onClick={() => { setShowSubscription(true); setOpen(false); }}
@@ -110,9 +111,9 @@ function UserMenu({
         </div>
 
         <div className="space-y-0.5 px-2 pb-2">
-          <MenuItem icon={LayoutGrid} label="切换为团队版" />
-          <MenuItem icon={Users} label="团队管理" />
-          <MenuItem icon={Gift} label="兑换码" />
+          <Link to="/settings/account"><MenuItem icon={LayoutGrid} label="切换为团队版" /></Link>
+          <Link to="/settings/account"><MenuItem icon={Users} label="团队管理" /></Link>
+          <Link to="/settings/billing"><MenuItem icon={Gift} label="兑换码" /></Link>
 
           <div className="my-2 border-t border-white/5" />
 
@@ -153,7 +154,7 @@ function UserMenu({
             </div>
           </div>
 
-          <MenuItem icon={Key} label="修改密码" />
+          <Link to="/settings/account"><MenuItem icon={Key} label="修改密码" /></Link>
           <MenuItem icon={LogOut} label="退出登录" className="text-red-400/80 hover:text-red-400 hover:bg-red-400/5" />
         </div>
       </PopoverContent>
