@@ -20,7 +20,7 @@ const TV_DATA = [
   { id: 10, title: "Auto Life", author: "Artrail", image: tvSpace, category: "漫剧" },
 ];
 
-export function ArtrailTV() {
+export function ArtrailTV() { // Keeping component name but changing UI text
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = React.useState("品牌设计");
   const [hoveredId, setHoveredId] = React.useState<number | null>(null);
