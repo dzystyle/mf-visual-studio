@@ -159,10 +159,10 @@ function UserMenu({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-sm text-foreground/80 group-hover:text-foreground">
                 <Globe className="h-4 w-4 text-foreground/60 group-hover:text-foreground" />
-                <span>语言</span>
+                <span>语言 | 简体中文</span>
               </div>
               <div className="flex items-center gap-1 text-xs text-foreground/40 group-hover:text-foreground/60">
-                简体中文 <ChevronRight className="h-3 w-3" />
+                 <ChevronRight className="h-3 w-3" />
               </div>
             </div>
           </div>
