@@ -27,7 +27,7 @@ function Home() {
   useEffect(() => {
     const handleScroll = () => {
       // Logic: If scrolled more than 100px or near the bottom, show the mini input
-      // Actually, the prompt says "After sliding to the bottom ArtrailTV"
+      // Actually, the prompt says "After sliding to the bottom 灵感发现"
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       const fullHeight = document.documentElement.scrollHeight;

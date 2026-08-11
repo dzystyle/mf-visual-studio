@@ -6,14 +6,14 @@ import tvDrama from "@/assets/tv-drama.jpg";
 import tvPalace from "@/assets/tv-palace.jpg";
 
 export const Route = createFileRoute("/tv")({
-  head: () => ({ meta: [{ title: "ArtrailTV — 社区作品" }] }),
+  head: () => ({ meta: [{ title: "灵感发现 — 社区作品" }] }),
   component: () => (
     <div className="relative min-h-screen">
       <section className="aurora-bg px-8 pb-10 pt-16">
         <BrandMark />
         <TopBar />
         <div className="mx-auto max-w-7xl">
-          <h1 className="text-2xl font-semibold">ArtrailTV</h1>
+          <h1 className="text-2xl font-semibold">灵感发现</h1>
           <p className="mt-1 text-sm text-muted-foreground">来自社区的精选作品</p>
         </div>
       </section>
