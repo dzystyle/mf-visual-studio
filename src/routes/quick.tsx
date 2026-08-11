@@ -9,13 +9,21 @@ import {
   Edit3,
   RefreshCw,
   ChevronDown,
+  ChevronUp,
   ArrowUp,
   Sparkles,
   Download,
   Star,
   Trash2,
   Maximize2,
+  Check,
 } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import skillProduct from "@/assets/skill-product.jpg";
 import skillStory from "@/assets/skill-story.jpg";
