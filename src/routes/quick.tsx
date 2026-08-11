@@ -344,6 +344,7 @@ function Composer({
     
     setMentionOpen(false);
     
+    // Instead of adding to top-level attachments, we'll handle the visual chip below the input
     if (!attachments.find(a => a.url === url)) {
       setAttachments(prev => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
     }
