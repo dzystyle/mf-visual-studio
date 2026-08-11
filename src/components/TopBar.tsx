@@ -114,7 +114,6 @@ function UserMenu({
         </div>
 
         <div className="space-y-0.5 px-2 pb-2">
-          <Link to="/settings/account"><MenuItem icon={LayoutGrid} label="切换为团队版" /></Link>
           <Link to="/settings/account"><MenuItem icon={Users} label="团队管理" /></Link>
           <Link to="/settings/billing"><MenuItem icon={Gift} label="兑换码" /></Link>
 
