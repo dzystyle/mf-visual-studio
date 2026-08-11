@@ -350,8 +350,8 @@ function Composer({
     setMentionOpen(false);
     
     // Add to mentions list for visual chip display below input
-    if (!mentions.find(a => a.url === url)) {
-      setMentions(prev => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
+    if (!mentions.find((a: any) => a.url === url)) {
+      setMentions((prev: any) => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
     }
   };
 
@@ -437,14 +437,14 @@ function Composer({
         {/* Row 2: Selected Mention Chips */}
         {mentions.length > 0 && (
           <div className="mb-2 flex flex-wrap gap-2">
-            {mentions.map((a) => (
+            {mentions.map((a: any) => (
               <div key={a.id} className="inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
                 <div className="h-4 w-4 rounded overflow-hidden border border-white/10">
                   <img src={a.url} alt="" className="w-full h-full object-cover" />
                 </div>
                 <span>{a.name}</span>
                 <button 
-                  onClick={() => setMentions(prev => prev.filter(x => x.id !== a.id))}
+                  onClick={() => setMentions((prev: any) => prev.filter((x: any) => x.id !== a.id))}
                   className="hover:text-white transition-colors"
                 >
                   <Plus className="h-3 w-3 rotate-45 text-muted-foreground" />
