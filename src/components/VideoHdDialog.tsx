@@ -1,7 +1,12 @@
 import * as React from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { X, ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export function VideoHdDialog({
   open,
@@ -13,6 +18,8 @@ export function VideoHdDialog({
   const [resolution, setResolution] = React.useState("1080P");
   const [mode, setMode] = React.useState("高质量补帧");
   const [fps, setFps] = React.useState("30fps");
+  const [modeOpen, setModeOpen] = React.useState(false);
+  const [fpsOpen, setFpsOpen] = React.useState(false);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -44,19 +51,81 @@ export function VideoHdDialog({
           {/* 补帧模式 */}
           <div className="flex items-center gap-8">
             <label className="w-16 text-sm text-white/40">补帧模式</label>
-            <button className="flex-1 flex items-center justify-between rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-sm text-white hover:bg-white/10 transition">
-              <span>{mode}</span>
-              <ChevronDown className="h-4 w-4 text-white/40" />
-            </button>
+            <Popover open={modeOpen} onOpenChange={setModeOpen}>
+              <PopoverTrigger asChild>
+                <button className="flex-1 flex items-center justify-between rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-sm text-white hover:bg-white/10 transition">
+                  <span>{mode}</span>
+                  {modeOpen ? (
+                    <ChevronUp className="h-4 w-4 text-white/40" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-white/40" />
+                  )}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent 
+                className="w-[332px] p-1 border-white/10 bg-[#1A1A1A] rounded-xl shadow-2xl backdrop-blur-xl"
+                align="start"
+                sideOffset={4}
+              >
+                {["不补帧", "高质量补帧"].map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => {
+                      setMode(item);
+                      setModeOpen(false);
+                    }}
+                    className={cn(
+                      "w-full text-left px-4 py-2.5 text-sm rounded-lg transition-colors",
+                      mode === item
+                        ? "bg-white/5 text-white/90"
+                        : "text-white/40 hover:text-white/60 hover:bg-white/5"
+                    )}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </PopoverContent>
+            </Popover>
           </div>
 
           {/* 帧率 */}
           <div className="flex items-center gap-8">
             <label className="w-16 text-sm text-white/40">帧率</label>
-            <button className="flex-1 flex items-center justify-between rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-sm text-white hover:bg-white/10 transition">
-              <span>{fps}</span>
-              <ChevronDown className="h-4 w-4 text-white/40" />
-            </button>
+            <Popover open={fpsOpen} onOpenChange={setFpsOpen}>
+              <PopoverTrigger asChild>
+                <button className="flex-1 flex items-center justify-between rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-sm text-white hover:bg-white/10 transition">
+                  <span>{fps}</span>
+                  {fpsOpen ? (
+                    <ChevronUp className="h-4 w-4 text-white/40" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-white/40" />
+                  )}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent 
+                className="w-[332px] p-1 border-white/10 bg-[#1A1A1A] rounded-xl shadow-2xl backdrop-blur-xl"
+                align="start"
+                sideOffset={4}
+              >
+                {["30fps", "60fps"].map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => {
+                      setFps(item);
+                      setFpsOpen(false);
+                    }}
+                    className={cn(
+                      "w-full text-left px-4 py-2.5 text-sm rounded-lg transition-colors",
+                      fps === item
+                        ? "bg-white/5 text-white/90"
+                        : "text-white/40 hover:text-white/60 hover:bg-white/5"
+                    )}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
 
