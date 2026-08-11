@@ -175,7 +175,7 @@ function UserMenu({
             </Link>
           </div>
 
-          <div className="my-2 border-t border-border/50" />
+          <div className="my-1 border-t border-border/50" />
           
           <Link to="/settings/profile"><MenuItem icon={Settings} label="管理账户" /></Link>
           <MenuItem 
