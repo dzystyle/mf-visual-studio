@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { Play, CheckCircle2, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TvDetailDialog } from "./TvDetailDialog";
@@ -20,6 +21,7 @@ const TV_DATA = [
 ];
 
 export function ArtrailTV() {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = React.useState("漫剧");
   const [hoveredId, setHoveredId] = React.useState<number | null>(null);
   const [selectedVideo, setSelectedVideo] = React.useState<any>(null);
@@ -84,6 +86,7 @@ export function ArtrailTV() {
                onMouseEnter={() => setHoveredId(item.id)}
                onMouseLeave={() => setHoveredId(null)}
                onClick={() => setSelectedVideo(item)}
+               navigate={navigate}
              />
            ))}
 
@@ -96,6 +99,7 @@ export function ArtrailTV() {
                onMouseEnter={() => setHoveredId(item.id)}
                onMouseLeave={() => setHoveredId(null)}
                onClick={() => setSelectedVideo(item)}
+               navigate={navigate}
              />
            ))}
         </div>
@@ -110,7 +114,16 @@ export function ArtrailTV() {
   );
 }
 
-function TvItem({ item, isHovered, onMouseEnter, onMouseLeave, onClick }: any) {
+function TvItem({ item, isHovered, onMouseEnter, onMouseLeave, onClick, navigate }: any) {
+  const handleAction = (e: React.MouseEvent, type: 'view' | 'creation') => {
+    e.stopPropagation();
+    if (type === 'creation') {
+      navigate({ to: "/script" });
+    } else {
+      onClick();
+    }
+  };
+
   return (
     <div 
       className="group relative flex flex-col"
@@ -148,10 +161,16 @@ function TvItem({ item, isHovered, onMouseEnter, onMouseLeave, onClick }: any) {
              </div>
              
              <div className="flex w-full gap-2">
-                <button className="flex-1 rounded-full bg-white py-2 text-xs font-semibold text-black transition hover:bg-white/90">
+                <button 
+                  onClick={(e) => handleAction(e, 'view')}
+                  className="flex-1 rounded-full bg-white py-2 text-xs font-semibold text-black transition hover:bg-white/90"
+                >
                   查看
                 </button>
-                <button className="flex-1 rounded-full bg-white/20 py-2 text-xs font-semibold text-white backdrop-blur border border-white/10 transition hover:bg-white/30">
+                <button 
+                  onClick={(e) => handleAction(e, 'creation')}
+                  className="flex-1 rounded-full bg-white/20 py-2 text-xs font-semibold text-white backdrop-blur border border-white/10 transition hover:bg-white/30"
+                >
                   查看创作过程
                 </button>
              </div>
