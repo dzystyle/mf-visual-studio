@@ -371,7 +371,7 @@ function ComposerChip({
 
 function FilterChip({ label }: { label: string }) {
   return (
-    <button className="inline-flex items-center gap-1 rounded-full border border-border bg-background/40 px-3 py-1 text-xs text-muted-foreground hover:text-foreground">
+    <button className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/60 hover:text-white transition-colors">
       {label}
       <ChevronDown className="h-3 w-3" />
     </button>
@@ -380,7 +380,7 @@ function FilterChip({ label }: { label: string }) {
 
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-md bg-background/60 px-2 py-0.5 text-[11px] text-foreground/80">
+    <span className="inline-flex items-center rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-white/40">
       {children}
     </span>
   );
