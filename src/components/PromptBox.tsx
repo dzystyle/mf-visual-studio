@@ -280,10 +280,11 @@ export function PromptBox({
             <div className="max-h-64 overflow-y-auto p-1.5 scrollbar-hide">
               <div className="px-2 py-1.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">最近使用</div>
               {[
+                ...attachments.map(a => ({ name: a.name, kind: a.kind, url: a.url })),
                 { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
                 { name: "角色01", kind: "image", url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" },
                 { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
-              ].filter(i => i.name.includes(mentionFilter)).map((item, idx) => (
+              ].filter(i => i.name.toLowerCase().includes(mentionFilter.toLowerCase())).map((item, idx) => (
                 <MentionListItem 
                   key={idx}
                   item={item}
