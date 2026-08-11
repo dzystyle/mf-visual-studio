@@ -80,6 +80,7 @@ function QuickPage() {
     "video",
   );
   const [showMini, setShowMini] = useState(false);
+  const [hdOpen, setHdOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -152,8 +153,9 @@ function QuickPage() {
           className="scrollbar-hide mx-auto w-full max-w-7xl flex-1 space-y-12 overflow-y-auto pb-6 pt-4"
         >
           {msgs.map((m) => (
-            <MessageBlock key={m.id} msg={m} />
+            <MessageBlock key={m.id} msg={m} onHdClick={() => setHdOpen(true)} />
           ))}
+          <VideoHdDialog open={hdOpen} onOpenChange={setHdOpen} />
           <div className="h-40" />
         </div>
 
@@ -192,7 +194,7 @@ function QuickPage() {
   );
 }
 
-function MessageBlock({ msg }: { msg: Msg }) {
+function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) {
   return (
     <div className="group relative">
       <div className="mb-6 flex items-center gap-2 text-[12px]">
@@ -229,7 +231,10 @@ function MessageBlock({ msg }: { msg: Msg }) {
               <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
                 <Download className="h-4 w-4" />
               </button>
-              <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+              <button 
+                onClick={onHdClick}
+                className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20"
+              >
                 <span className="text-[10px] font-bold">HD</span>
               </button>
               <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
