@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { BrandMark, TopBar } from "@/components/TopBar";
+import { VideoHdDialog } from "@/components/VideoHdDialog";
 import skillProduct from "@/assets/skill-product.jpg";
 import skillStory from "@/assets/skill-story.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
