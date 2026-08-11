@@ -6,15 +6,15 @@ export function TeamOverview() {
   return (
     <div className="space-y-6">
       {/* Team Header Card */}
-      <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#6C5DD3] text-xl font-bold text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-xl font-bold text-primary-foreground">
               D
             </div>
             <div>
-              <h3 className="text-base font-bold text-[#1A1D1F]">D</h3>
-              <p className="text-xs text-[#6F767E]">团队信息</p>
+              <h3 className="text-base font-bold text-foreground">D</h3>
+              <p className="text-xs text-muted-foreground">团队信息</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -33,8 +33,8 @@ export function TeamOverview() {
 
       <div className="grid grid-cols-3 gap-6">
         {/* Usage Card */}
-        <div className="col-span-1 rounded-2xl border border-black/5 bg-white p-6 shadow-sm flex flex-col items-center">
-          <h4 className="w-full text-sm font-bold text-[#1A1D1F] mb-8 text-left">共享额度使用情况</h4>
+        <div className="col-span-1 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center">
+          <h4 className="w-full text-sm font-bold text-foreground mb-8 text-left">共享额度使用情况</h4>
           
           <div className="relative mb-12 flex h-32 w-32 items-center justify-center">
             {/* Simple circular progress visualization */}
@@ -42,47 +42,48 @@ export function TeamOverview() {
               <circle 
                 cx="50" cy="50" r="45" 
                 fill="none" 
-                stroke="#F4F4F4" 
+                stroke="currentColor" 
+                className="text-muted-foreground/10"
                 strokeWidth="8" 
               />
               <circle 
                 cx="50" cy="50" r="45" 
                 fill="none" 
-                stroke="#6C5DD3" 
+                stroke="currentColor" 
+                className="text-primary"
                 strokeWidth="8" 
                 strokeDasharray="282.7" 
                 strokeDashoffset="282.7" 
                 strokeLinecap="round"
-                className="transition-all duration-1000 ease-in-out"
               />
-              <circle cx="50" cy="5" r="3" fill="#6C5DD3" />
+              <circle cx="50" cy="5" r="3" fill="currentColor" className="text-primary" />
             </svg>
             <div className="absolute flex flex-col items-center">
-              <span className="text-2xl font-bold">0%</span>
-              <span className="text-[10px] text-[#6F767E]">已用</span>
+              <span className="text-2xl font-bold text-foreground">0%</span>
+              <span className="text-[10px] text-muted-foreground">已用</span>
             </div>
           </div>
 
           <div className="w-full space-y-3 mb-8">
-            <UsageRow color="bg-[#6C5DD3]" label="已用" value="0" />
-            <UsageRow color="bg-[#7FBA7A]" label="剩余可用" value="0" />
-            <UsageRow color="bg-[#EFEFEF]" label="总额度" value="0" />
+            <UsageRow color="bg-primary" label="已用" value="0" />
+            <UsageRow color="bg-green-500" label="剩余可用" value="0" />
+            <UsageRow color="bg-muted-foreground/20" label="总额度" value="0" />
           </div>
 
-          <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1A1D1F] py-3 text-sm font-bold text-white transition-opacity hover:opacity-90">
+          <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground py-3 text-sm font-bold text-background transition-opacity hover:opacity-90">
             <CreditCard className="h-4 w-4" />
             购买额度
           </button>
         </div>
 
         {/* Active Projects Card */}
-        <div className="col-span-2 rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
-          <div className="flex items-center gap-2 text-[#6C5DD3] mb-8">
+        <div className="col-span-2 rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <div className="flex items-center gap-2 text-primary mb-8">
             <TrendingUp className="h-4 w-4" />
-            <h4 className="text-sm font-bold text-[#1A1D1F]">活跃项目</h4>
+            <h4 className="text-sm font-bold text-foreground">活跃项目</h4>
           </div>
           
-          <div className="flex h-64 flex-col items-center justify-center text-[#6F767E]">
+          <div className="flex h-64 flex-col items-center justify-center text-muted-foreground">
             <span className="text-sm font-medium">暂无项目</span>
           </div>
         </div>
@@ -93,8 +94,8 @@ export function TeamOverview() {
 
 function ActionButton({ icon: Icon, label }: { icon: any, label: string }) {
   return (
-    <button className="flex items-center gap-1.5 rounded-lg border border-black/5 px-3 py-1.5 text-xs font-medium text-[#1A1D1F] transition-colors hover:bg-black/[0.02]">
-      <Icon className="h-3.5 w-3.5 text-[#6F767E]" />
+    <button className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted/50">
+      <Icon className="h-3.5 w-3.5 text-muted-foreground" />
       {label}
     </button>
   );
@@ -102,12 +103,12 @@ function ActionButton({ icon: Icon, label }: { icon: any, label: string }) {
 
 function StatBox({ icon: Icon, label, value }: { icon: any, label: string, value: string }) {
   return (
-    <div className="rounded-xl bg-[#F8F9FB] p-4">
-      <div className="flex items-center gap-2 text-[#6F767E] mb-2">
+    <div className="rounded-xl bg-muted/30 p-4 border border-border/20">
+      <div className="flex items-center gap-2 text-muted-foreground mb-2">
         <Icon className="h-3.5 w-3.5 opacity-50" />
-        <span className="text-[11px] font-medium uppercase tracking-wider">{label}</span>
+        <span className="text-[11px] font-bold uppercase tracking-wider">{label}</span>
       </div>
-      <div className="text-2xl font-bold text-[#1A1D1F]">{value}</div>
+      <div className="text-2xl font-bold text-foreground">{value}</div>
     </div>
   );
 }
@@ -117,9 +118,9 @@ function UsageRow({ color, label, value }: { color: string, label: string, value
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <div className={cn("h-2 w-2 rounded-full", color)} />
-        <span className="text-xs text-[#1A1D1F]">{label}</span>
+        <span className="text-xs text-foreground/80">{label}</span>
       </div>
-      <span className="text-xs font-bold">{value}</span>
+      <span className="text-xs font-bold text-foreground">{value}</span>
     </div>
   );
 }
