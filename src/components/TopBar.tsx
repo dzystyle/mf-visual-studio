@@ -109,7 +109,7 @@ function UserMenu({
             <div className="flex h-4 w-4 items-center justify-center rounded-sm bg-white/20">
               <Play fill="white" className="h-2 w-2 text-white" />
             </div>
-            开通会员
+            立即开通
           </button>
         </div>
 
