@@ -77,9 +77,9 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
                   to={item.path}
                   search={(item as any).search}
                   className={cn(
-                    "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200",
+                    "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 ease-out-expo hover:scale-[1.02] active:scale-[0.98]",
                     isActive 
-                      ? "bg-white/10 text-white" 
+                      ? "bg-white/10 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)]" 
                       : cn("text-white/40 hover:bg-white/5 hover:text-white/60", item.color)
                   )}
                 >
@@ -93,7 +93,9 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto bg-[#0f0f12] p-8 md:p-12 scrollbar-hide scroll-smooth">
-          {children}
+          <div className="animate-in fade-in slide-in-from-right-4 duration-500 ease-out-expo">
+            {children}
+          </div>
         </div>
       </div>
     </div>
