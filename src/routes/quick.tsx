@@ -379,7 +379,7 @@ function ComposerChip({
   );
 }
 
-function FilterMenu({ label, options }: { label: string; options: string[] }) {
+function FilterMenu({ label, options, isFirst, isLast }: { label: string; options: string[]; isFirst?: boolean; isLast?: boolean }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(options[0]);
 
@@ -387,14 +387,18 @@ function FilterMenu({ label, options }: { label: string; options: string[] }) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button className={cn(
-          "inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs transition-all hover:bg-white/10",
-          open ? "text-white border-white/20" : "text-white/60"
+          "inline-flex items-center gap-1.5 px-4 py-1.5 text-xs transition-all hover:bg-white/5",
+          open ? "text-white" : "text-white/60",
+          isFirst && "rounded-l-full pl-5",
+          isLast && "rounded-r-full pr-5",
+          !isFirst && !isLast && "",
+          "bg-[#1A1A1A]/40"
         )}>
           {selected === options[0] ? label : selected}
           {open ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[120px] border-white/10 bg-[#1A1A1A]/95 p-1 backdrop-blur-xl" align="start">
+      <PopoverContent className="w-[120px] border-white/10 bg-[#1A1A1A]/95 p-1 shadow-2xl backdrop-blur-xl" align={isLast ? "end" : "start"}>
         <div className="flex flex-col gap-0.5">
           {options.map((opt) => (
             <button
@@ -404,12 +408,12 @@ function FilterMenu({ label, options }: { label: string; options: string[] }) {
                 setOpen(false);
               }}
               className={cn(
-                "flex items-center justify-between rounded-md px-3 py-2 text-xs transition-colors hover:bg-white/5",
+                "flex items-center justify-between rounded-md px-3 py-2 text-[13px] transition-colors hover:bg-white/5",
                 selected === opt ? "bg-white/10 text-white" : "text-white/60 hover:text-white"
               )}
             >
               {opt}
-              {selected === opt && <Check className="h-3 w-3" />}
+              {selected === opt && <Check className="h-3 w-3 text-white/40" />}
             </button>
           ))}
         </div>
