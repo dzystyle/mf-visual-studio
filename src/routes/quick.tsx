@@ -282,6 +282,12 @@ function Composer({
     { id: "voice", label: "配音生成", icon: AudioLines },
   ] as const;
 
+  const [videoMode, setVideoMode] = useState("全能参考");
+  const [model, setModel] = useState("Seedance 2.0");
+  const [resolution, setResolution] = useState("720p");
+  const [ratio, setRatio] = useState("21:9");
+  const [duration, setDuration] = useState("4s");
+
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-card/70 backdrop-blur-xl">
       {/* Tabs */}
@@ -337,11 +343,112 @@ function Composer({
 
       {/* Bottom chips + submit */}
       <div className="flex items-center gap-2 px-5 pb-4 pt-3">
-        <ComposerChip label="全能参考" />
-        <ComposerChip label="模型" value="Seedance 2.0" badge="新" />
-        <ComposerChip label="分辨率" value="720p" badge="测试" />
-        <ComposerChip label="比例" value="21:9" />
-        <ComposerChip label="时长" value="4s" />
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/40 px-3 py-1.5 text-xs text-foreground/90 transition hover:bg-background/70">
+              <span className="text-muted-foreground">{videoMode}</span>
+              <ChevronDown className="h-3 w-3 opacity-60" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent align="start" className="w-36 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+            {["全能参考", "图生视频", "首尾帧生视频", "对口型数字人"].map((item) => (
+              <button 
+                key={item}
+                onClick={() => setVideoMode(item)}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${videoMode === item ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+              >
+                {item}
+              </button>
+            ))}
+          </PopoverContent>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/40 px-3 py-1.5 text-xs text-foreground/90 transition hover:bg-background/70">
+              <span className="text-muted-foreground">模型</span>
+              <span>: {model}</span>
+              <span className="rounded bg-emerald-500/20 px-1 text-[9px] text-emerald-300">新</span>
+              <ChevronDown className="h-3 w-3 opacity-60" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent align="start" className="w-48 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+            {["Seedance 2.0", "Seedance 2.5", "Seedance 1.5"].map((m) => (
+              <button 
+                key={m}
+                onClick={() => setModel(m)}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${model === m ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+              >
+                {m}
+              </button>
+            ))}
+          </PopoverContent>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/40 px-3 py-1.5 text-xs text-foreground/90 transition hover:bg-background/70">
+              <span className="text-muted-foreground">分辨率</span>
+              <span>: {resolution}</span>
+              <span className="rounded bg-emerald-500/20 px-1 text-[9px] text-emerald-300">测试</span>
+              <ChevronDown className="h-3 w-3 opacity-60" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent align="start" className="w-32 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+            {["480p", "720p", "1080p"].map((res) => (
+              <button 
+                key={res}
+                onClick={() => setResolution(res)}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${resolution === res ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+              >
+                {res}
+              </button>
+            ))}
+          </PopoverContent>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/40 px-3 py-1.5 text-xs text-foreground/90 transition hover:bg-background/70">
+              <span className="text-muted-foreground">比例</span>
+              <span>: {ratio}</span>
+              <ChevronDown className="h-3 w-3 opacity-60" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent align="start" className="w-24 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+            {["21:9", "16:9", "4:3", "1:1", "9:16"].map((r) => (
+              <button 
+                key={r}
+                onClick={() => setRatio(r)}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${ratio === r ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+              >
+                {r}
+              </button>
+            ))}
+          </PopoverContent>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/40 px-3 py-1.5 text-xs text-foreground/90 transition hover:bg-background/70">
+              <span className="text-muted-foreground">时长</span>
+              <span>: {duration}</span>
+              <ChevronDown className="h-3 w-3 opacity-60" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent align="start" className="w-24 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+            {["4s", "10s", "30s"].map((d) => (
+              <button 
+                key={d}
+                onClick={() => setDuration(d)}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${duration === d ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+              >
+                {d}
+              </button>
+            ))}
+          </PopoverContent>
+        </Popover>
+
         <div className="ml-auto">
           <button
             onClick={onSubmit}
@@ -353,29 +460,6 @@ function Composer({
         </div>
       </div>
     </div>
-  );
-}
-
-function ComposerChip({
-  label,
-  value,
-  badge,
-}: {
-  label: string;
-  value?: string;
-  badge?: string;
-}) {
-  return (
-    <button className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/40 px-3 py-1.5 text-xs text-foreground/90 transition hover:bg-background/70">
-      <span className="text-muted-foreground">{label}</span>
-      {value && <span>: {value}</span>}
-      {badge && (
-        <span className="rounded bg-emerald-500/20 px-1 text-[9px] text-emerald-300">
-          {badge}
-        </span>
-      )}
-      <ChevronDown className="h-3 w-3 opacity-60" />
-    </button>
   );
 }
 
