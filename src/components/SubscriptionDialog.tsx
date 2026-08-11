@@ -18,11 +18,11 @@ export function SubscriptionDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-white/10 bg-[#0A0A0A] p-0 text-white scrollbar-hide">
+      <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-border bg-background p-0 text-foreground scrollbar-hide">
         <div className="relative pb-20 pt-10">
           {/* Header Section */}
           <div className="mx-auto max-w-4xl px-6 text-center">
-            <div className="mb-8 inline-flex items-center gap-4 rounded-2xl bg-gradient-to-r from-[#2A1F15] to-[#151A25] p-1 pr-6 border border-white/5">
+            <div className="mb-8 inline-flex items-center gap-4 rounded-2xl bg-gradient-to-r from-[#2A1F15] to-[#151A25] p-1 pr-6 border border-border">
               <div className="flex flex-col items-start px-4 py-2">
                 <div className="text-sm font-semibold text-[#E6B380]">Seedance 2.5 满血版上线, 积分限时买一送一</div>
                 <div className="text-xs text-white/60">480p 再享 5.3折, 低至 ¥ 0.23/秒</div>
@@ -329,7 +329,7 @@ function CountdownItem({ value, label }: { value: string; label: string }) {
 
 function PersonalCard({ name, price, credits, bonus, features, highlight }: any) {
   return (
-    <div className="relative flex flex-col rounded-3xl border border-white/10 bg-[#161616] p-6 text-left transition hover:border-white/20">
+    <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
@@ -386,7 +386,7 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
 function TeamCard({ name, price, credits, bonus, features }: any) {
   const [seats, setSeats] = React.useState(2);
   return (
-    <div className="relative flex flex-col rounded-3xl border border-white/10 bg-[#161616] p-6 text-left transition hover:border-white/20">
+    <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
