@@ -58,7 +58,7 @@ export function PromptBox({
   const [canvasMode, setCanvasMode] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
   const [assetsOpen, setAssetsOpen] = useState(false);
-  const [videoMode, setVideoMode] = useState("全能参考");
+  const [videoMode, setVideoMode] = useState("图生视频");
   const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
   const [mentionFilter, setMentionFilter] = useState("");
@@ -315,14 +315,14 @@ export function PromptBox({
                   <Plus className="h-4 w-4" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent side="top" align="start" className="w-44 p-2 space-y-2 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
-                <AddItem icon={ImageIcon} label="图片" onClick={() => triggerPick("image")} />
-                <AddItem icon={AudioLines} label="音频" onClick={() => triggerPick("audio")} />
-                <AddItem icon={Video} label="视频" onClick={() => triggerPick("video")} />
-                <AddItem icon={FileText} label="文本" onClick={() => triggerPick("text")} />
+              <PopoverContent side="top" align="start" className="w-40 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+                <AddItem icon={ImageIcon} label="本地上传" onClick={() => triggerPick("image")} />
+                <AddItem icon={LayoutGrid} label="资产库" onClick={() => setAssetsOpen(true)} />
               </PopoverContent>
             </Popover>
             <input ref={fileInputRef} type="file" multiple className="hidden" onChange={onFiles} />
+            
+            <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} />
             
             <Popover>
               <PopoverTrigger asChild>
@@ -332,7 +332,7 @@ export function PromptBox({
                 </button>
               </PopoverTrigger>
               <PopoverContent align="start" className="w-36 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
-                {["全能参考", "图生视频", "首尾帧生视频", "对口型数字人"].map((item) => (
+                {["图生视频", "首尾帧生视频", "对口型数字人"].map((item) => (
                   <button 
                     key={item}
                     onClick={() => setVideoMode(item)}
