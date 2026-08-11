@@ -472,7 +472,7 @@ function Composer({
               <span className="mt-0.5 text-[10px]">添加</span>
             </button>
           )}
-          <input ref={fileInputRef} type="file" multiple className="hidden" accept="image/*" onChange={onFiles} />
+          <input ref={fileInputRef} type="file" multiple className="hidden" accept="image/*,video/*" onChange={onFiles} />
         </div>
 
         {/* Row 2: Selected Mention Chips */}
