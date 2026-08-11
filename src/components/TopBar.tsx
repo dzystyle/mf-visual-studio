@@ -149,8 +149,8 @@ function UserMenu({
 
           <div className="my-1 border-t border-border/50 opacity-50" />
           
-          <Link to="/settings/account"><MenuItem icon={Users} label="团队管理" /></Link>
-          <Link to="/settings/billing"><MenuItem icon={Gift} label="兑换码" /></Link>
+          <Link to="/settings/account"><MenuItem icon={Users} label="团队管理" className="py-2" /></Link>
+          <Link to="/settings/billing"><MenuItem icon={Gift} label="兑换码" className="py-2" /></Link>
 
           <div className="my-1 border-t border-border/50 opacity-50" />
 
@@ -170,9 +170,10 @@ function UserMenu({
           <MenuItem 
             icon={MessageSquare} 
             label="反馈" 
+            className="py-2"
             onClick={() => { setShowFeedback(true); setOpen(false); }}
           />
-          <Link to="/settings/profile"><MenuItem icon={Settings} label="管理账户" /></Link>
+          <Link to="/settings/profile"><MenuItem icon={Settings} label="管理账户" className="py-2" /></Link>
           
           <div className="my-1 border-t border-border/50 opacity-50" />
 
