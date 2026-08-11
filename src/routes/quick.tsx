@@ -566,25 +566,32 @@ function Composer({
               </div>
               <div className="max-h-64 overflow-y-auto p-1.5 scrollbar-hide">
                 <div className="px-2 py-1.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">最近使用</div>
-                {[
-                  { name: "IMG_2883.JPG", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
-                  { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" },
-                  { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
-                ].filter(i => i.name.toLowerCase().includes(mentionFilter.toLowerCase())).map((item, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleMentionSelect(item.name, item.url)}
-                    className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition group"
-                  >
-                    <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden border border-white/5">
-                      <img src={item.url} alt={item.name} className="h-full w-full object-cover" />
-                    </div>
-                    <div className="flex-1 text-left">
-                      <div className="text-xs font-medium text-white group-hover:text-aurora-purple transition">{item.name}</div>
-                      <div className="text-[10px] text-muted-foreground">{item.kind === 'image' ? '图片' : '视频'}</div>
-                    </div>
-                  </button>
-                ))}
+                {attachments.length === 0 ? (
+                  <div className="px-2 py-8 text-center">
+                    <div className="text-[11px] text-muted-foreground">暂无可用资源</div>
+                    <div className="text-[10px] text-muted-foreground/60 mt-1">请先上传图片或视频</div>
+                  </div>
+                ) : (
+                  attachments
+                    .filter(i => i.name.toLowerCase().includes(mentionFilter.toLowerCase()))
+                    .map((item, idx) => (
+                      <button
+                        key={item.id}
+                        onClick={() => handleMentionSelect(item.name, item.url)}
+                        className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition group"
+                      >
+                        <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden border border-white/5">
+                          <img src={item.url} alt={item.name} className="h-full w-full object-cover" />
+                        </div>
+                        <div className="flex-1 text-left">
+                          <div className="text-xs font-medium text-white group-hover:text-aurora-purple transition truncate max-w-[160px]">{item.name}</div>
+                          <div className="text-[10px] text-muted-foreground">
+                            {item.name.match(/\.(mp4|webm|ogg|mov)$/i) ? '视频' : '图片'}
+                          </div>
+                        </div>
+                      </button>
+                    ))
+                )}
               </div>
             </div>
           )}
