@@ -359,20 +359,20 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
       <div className="mt-8 space-y-6 overflow-hidden">
         {features.map((group: any) => (
           <div key={group.title}>
-            <div className="mb-3 text-[10px] font-medium text-white/40 uppercase tracking-wider">{group.title}</div>
+            <div className="mb-3 text-[10px] font-medium text-foreground/40 uppercase tracking-wider">{group.title}</div>
             <div className="space-y-2.5">
               {group.items.map((item: any) => (
                 <div key={item.label} className="flex items-start gap-2">
                   <Check className="mt-0.5 h-3 w-3 shrink-0 text-[#E6B380]" />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] text-white/80">{item.label}</span>
-                      {item.info && <Info className="h-2.5 w-2.5 text-white/20" />}
-                      {item.tag && <span className="rounded bg-white/10 px-1 py-0.5 text-[8px] text-white/60">{item.tag}</span>}
+                      <span className="text-[11px] text-foreground/80">{item.label}</span>
+                      {item.info && <Info className="h-2.5 w-2.5 text-foreground/20" />}
+                      {item.tag && <span className="rounded bg-white/10 px-1 py-0.5 text-[8px] text-foreground/60">{item.tag}</span>}
                     </div>
-                    {item.sub && <div className="mt-0.5 text-[9px] text-white/40">{item.sub}</div>}
+                    {item.sub && <div className="mt-0.5 text-[9px] text-foreground/40">{item.sub}</div>}
                   </div>
-                  {item.value && <div className="text-[10px] text-white/40">{item.value}</div>}
+                  {item.value && <div className="text-[10px] text-foreground/40">{item.value}</div>}
                 </div>
               ))}
             </div>
@@ -398,7 +398,7 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
       <div className="mt-6 flex items-baseline gap-1">
         <span className="text-lg font-bold">¥</span>
         <span className="text-3xl font-bold">{price}</span>
-        <span className="text-[10px] text-white/40 ml-1">/席/月</span>
+        <span className="text-[10px] text-foreground/40 ml-1">/席/月</span>
       </div>
 
       <div className="mt-2 text-lg font-medium">{credits} 积分</div>
@@ -410,11 +410,11 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
       </div>
 
       <div className="mt-6 rounded-xl bg-white/5 p-3">
-        <div className="flex items-center justify-between text-[11px] text-white/60">
+        <div className="flex items-center justify-between text-[11px] text-foreground/60">
           <span>席位</span>
           <div className="flex items-center gap-3">
             <button onClick={() => setSeats(Math.max(2, seats - 1))} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><Minus className="h-3 w-3" /></button>
-            <span className="text-white font-medium">{seats} 席</span>
+            <span className="text-foreground font-medium">{seats} 席</span>
             <button onClick={() => setSeats(seats + 1)} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><PlusIcon className="h-3 w-3" /></button>
           </div>
         </div>
