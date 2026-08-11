@@ -11,6 +11,10 @@ import {
   ChevronDown,
   ArrowUp,
   Sparkles,
+  Download,
+  Star,
+  Trash2,
+  Maximize2,
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import skillProduct from "@/assets/skill-product.jpg";
@@ -66,13 +70,28 @@ function QuickPage() {
   const [tab, setTab] = useState<"video" | "image" | "music" | "voice">(
     "video",
   );
+  const [showMini, setShowMini] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
+    const el = scrollRef.current;
+    if (!el) return;
+    
+    const handleScroll = () => {
+      // Logic for mini input: when scrolled up enough from the bottom
+      const isNearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 100;
+      setShowMini(!isNearBottom);
+    };
+
+    el.addEventListener('scroll', handleScroll);
+    
+    // Initial scroll to bottom
+    el.scrollTo({
+      top: el.scrollHeight,
       behavior: "smooth",
     });
+
+    return () => el.removeEventListener('scroll', handleScroll);
   }, [msgs.length]);
 
   function submit() {
@@ -105,9 +124,10 @@ function QuickPage() {
         <BrandMark />
         <TopBar />
 
-        <div className="mx-auto mb-4 flex w-full max-w-6xl items-center gap-2 pt-16 text-sm">
-          <Sparkles className="h-4 w-4 text-primary" />
-          <span className="font-medium">快速生成</span>
+        <div className="mx-auto mb-4 flex w-full max-w-7xl items-center gap-2 pt-16 text-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-3xl font-bold text-white/90">5.21</span>
+          </div>
           <div className="ml-auto flex items-center gap-2">
             <FilterChip label="全部时间" />
             <FilterChip label="全部类型" />
@@ -118,22 +138,43 @@ function QuickPage() {
         {/* Conversation stream */}
         <div
           ref={scrollRef}
-          className="scrollbar-hide mx-auto w-full max-w-6xl flex-1 space-y-10 overflow-y-auto pb-6"
+          className="scrollbar-hide mx-auto w-full max-w-7xl flex-1 space-y-12 overflow-y-auto pb-6 pt-4"
         >
           {msgs.map((m) => (
             <MessageBlock key={m.id} msg={m} />
           ))}
+          <div className="h-40" />
         </div>
 
-        {/* Bottom composer */}
-        <div className="mx-auto w-full max-w-6xl pb-6">
-          <Composer
-            tab={tab}
-            setTab={setTab}
-            input={input}
-            setInput={setInput}
-            onSubmit={submit}
-          />
+        {/* Bottom composer container */}
+        <div className="absolute bottom-6 left-1/2 w-full max-w-7xl -translate-x-1/2 px-8">
+          {showMini ? (
+            <div 
+              className="mx-auto w-[600px] animate-in fade-in slide-in-from-bottom-4 duration-300"
+              onMouseEnter={() => setShowMini(false)}
+            >
+              <div className="flex items-center gap-3 rounded-full border border-white/10 bg-black/60 px-4 py-2 shadow-2xl backdrop-blur-2xl transition hover:bg-black/80">
+                <Plus className="h-4 w-4 text-white/40" />
+                <div className="flex-1 text-sm text-white/40">使用@快速调用参考能力，支持文本、图片、音频、视频全能参考...</div>
+                <div className="flex items-center gap-2">
+                  <ChevronDown className="h-4 w-4 text-white/40" />
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white/60">
+                    <ArrowUp className="h-4 w-4" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <Composer
+                tab={tab}
+                setTab={setTab}
+                input={input}
+                setInput={setInput}
+                onSubmit={submit}
+              />
+            </div>
+          )}
         </div>
       </section>
     </div>
@@ -142,51 +183,71 @@ function QuickPage() {
 
 function MessageBlock({ msg }: { msg: Msg }) {
   return (
-    <div className="border-b border-border/40 pb-8">
-      {msg.refImage && (
-        <img
-          src={msg.refImage}
-          alt="ref"
-          className="mb-3 h-20 w-28 rounded-lg object-cover"
-        />
-      )}
-      <div className="flex items-center gap-2 text-[12px]">
+    <div className="group relative">
+      <div className="mb-6 flex items-center gap-2 text-[12px]">
         <Tag>{msg.model}</Tag>
         {msg.size && <Tag>{msg.size}</Tag>}
         <Tag>{msg.ratio}</Tag>
         {msg.badge && (
-          <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-400">
-            <span className="h-1 w-1 rounded-full bg-amber-400" />
-            -14
+          <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-400 font-mono">
+             <span className="h-1 w-1 rounded-full bg-amber-400" />
+            -5
           </span>
         )}
-        <span className="ml-1 text-foreground/80">{msg.prompt}</span>
-        <span className="ml-auto text-[11px] text-muted-foreground">
+        <span className="ml-auto text-[11px] text-white/20">
           {msg.time}
         </span>
       </div>
 
-      <div className="mt-3 overflow-hidden rounded-2xl border border-border bg-card/60">
-        <div className="relative aspect-video w-full max-w-3xl">
-          <img
-            src={msg.resultImage}
-            alt={msg.prompt}
-            className="h-full w-full object-cover"
-          />
-          {msg.resultKind === "video" && (
-            <div className="absolute right-3 top-3 rounded-md bg-black/50 px-2 py-0.5 text-[11px] text-foreground/90 backdrop-blur">
-              4s
-            </div>
-          )}
-        </div>
+      <div className="text-sm leading-relaxed text-white/60 mb-6 max-w-4xl">
+        {msg.prompt}
       </div>
 
-      <div className="mt-3 flex gap-2">
-        <ActionBtn icon={<Edit3 className="h-3.5 w-3.5" />}>手动编辑</ActionBtn>
-        <ActionBtn icon={<RefreshCw className="h-3.5 w-3.5" />}>
-          重新生成
-        </ActionBtn>
+      <div className="grid grid-cols-4 gap-4">
+        {/* Placeholder for multiple images as shown in ref */}
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+          <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 bg-white/[0.02]">
+            <img
+              src={msg.resultImage}
+              alt={msg.prompt}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover/item:scale-110"
+            />
+            
+            {/* Hover overlay icons */}
+            <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/40 opacity-0 transition-opacity duration-300 group-hover/item:opacity-100 backdrop-blur-[2px]">
+              <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                <Download className="h-4 w-4" />
+              </button>
+              <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                <span className="text-[10px] font-bold">HD</span>
+              </button>
+              <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                <Star className="h-4 w-4" />
+              </button>
+              <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
+            
+            <div className="absolute bottom-2 left-2 flex gap-1 opacity-0 transition-opacity group-hover/item:opacity-100">
+              <span className="text-[10px] text-white/40 bg-black/60 px-1.5 rounded">{i}</span>
+            </div>
+          </div>
+        ))}
       </div>
+
+      <div className="mt-6 flex gap-3 opacity-60 transition-opacity group-hover:opacity-100">
+        <button className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-white transition hover:bg-white/10">
+          <Edit3 className="h-3.5 w-3.5" />
+          重新编辑
+        </button>
+        <button className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-white transition hover:bg-white/10">
+          <RefreshCw className="h-3.5 w-3.5" />
+          重新生成
+        </button>
+      </div>
+
+      <div className="mt-12 w-full border-b border-white/5" />
     </div>
   );
 }
@@ -258,8 +319,8 @@ function Composer({
               }
             }}
             rows={2}
-            placeholder={`'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                            \n                                            热门Skills鼠标移动到上面会显示试一试点击试一试会跟图2一样把这个选中到输入框内.`}
-            className="min-h-16 flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
+            placeholder="使用@快速调用参考能力，支持文本、图片、音频、视频全能参考，例如：@图片1参考 @音频1的音色，模仿@视频1的动作"
+            className="min-h-[80px] flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none"
           />
         </div>
       </div>
