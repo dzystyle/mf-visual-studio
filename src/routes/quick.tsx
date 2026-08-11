@@ -136,11 +136,11 @@ function QuickPage() {
           <div className="flex items-center gap-2">
             <span className="text-3xl font-bold text-white/90">5.21</span>
           </div>
-          <div className="ml-auto flex items-center">
+          <div className="ml-auto flex items-center overflow-hidden rounded-full border border-white/10">
             <FilterMenu label="全部时间" options={['全部', '今天', '近7天', '近30天']} isFirst />
-            <div className="h-4 w-[1px] bg-white/10 mx-0.5" />
+            <div className="h-4 w-[1px] bg-white/10" />
             <FilterMenu label="全部类型" options={['全部', '图片', '视频', '音乐', '音频']} />
-            <div className="h-4 w-[1px] bg-white/10 mx-0.5" />
+            <div className="h-4 w-[1px] bg-white/10" />
             <FilterMenu label="全部操作" options={['全部', '收藏']} isLast />
           </div>
         </div>
