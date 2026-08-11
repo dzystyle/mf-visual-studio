@@ -284,6 +284,8 @@ function Composer({
   onSubmit,
   attachments,
   setAttachments,
+  mentions,
+  setMentions,
 }: {
   tab: "video" | "image" | "music" | "voice";
   setTab: (t: "video" | "image" | "music" | "voice") => void;
