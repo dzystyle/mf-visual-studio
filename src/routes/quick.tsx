@@ -9,13 +9,21 @@ import {
   Edit3,
   RefreshCw,
   ChevronDown,
+  ChevronUp,
   ArrowUp,
   Sparkles,
   Download,
   Star,
   Trash2,
   Maximize2,
+  Check,
 } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import skillProduct from "@/assets/skill-product.jpg";
 import skillStory from "@/assets/skill-story.jpg";
@@ -119,7 +127,7 @@ function QuickPage() {
   }
 
   return (
-    <div className="relative flex h-screen flex-col">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-black">
       <section className="aurora-bg relative flex flex-1 flex-col overflow-hidden px-8 pt-6">
         <BrandMark />
         <TopBar />
@@ -128,10 +136,12 @@ function QuickPage() {
           <div className="flex items-center gap-2">
             <span className="text-3xl font-bold text-white/90">5.21</span>
           </div>
-          <div className="ml-auto flex items-center gap-2">
-            <FilterChip label="全部时间" />
-            <FilterChip label="全部类型" />
-            <FilterChip label="全部操作" />
+          <div className="ml-auto flex items-center overflow-hidden rounded-full border border-white/10">
+            <FilterMenu label="全部时间" options={['全部', '今天', '近7天', '近30天']} isFirst />
+            <div className="h-4 w-[1px] bg-white/10" />
+            <FilterMenu label="全部类型" options={['全部', '图片', '视频', '音乐', '音频']} />
+            <div className="h-4 w-[1px] bg-white/10" />
+            <FilterMenu label="全部操作" options={['全部', '收藏']} isLast />
           </div>
         </div>
 
@@ -366,6 +376,49 @@ function ComposerChip({
       )}
       <ChevronDown className="h-3 w-3 opacity-60" />
     </button>
+  );
+}
+
+function FilterMenu({ label, options, isFirst, isLast }: { label: string; options: string[]; isFirst?: boolean; isLast?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(options[0]);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button className={cn(
+          "inline-flex items-center gap-1.5 px-4 py-1.5 text-xs transition-all hover:bg-white/5",
+          open ? "text-white" : "text-white/60",
+          isFirst && "rounded-l-full pl-5",
+          isLast && "rounded-r-full pr-5",
+          !isFirst && !isLast && "",
+          "bg-[#1A1A1A]/40"
+        )}>
+          {selected === options[0] ? label : selected}
+          {open ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[120px] border-white/10 bg-[#1A1A1A]/95 p-1 shadow-2xl backdrop-blur-xl" align={isLast ? "end" : "start"}>
+        <div className="flex flex-col gap-0.5">
+          {options.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => {
+                setSelected(opt);
+                setOpen(false);
+              }}
+              className={cn(
+                "flex items-center justify-between rounded-md px-3 py-2 text-[13px] transition-colors hover:bg-white/5",
+                selected === opt ? "bg-white/10 text-white" : "text-white/60 hover:text-white"
+              )}
+            >
+              {opt}
+              {selected === opt && <Check className="h-3 w-3 text-white/40" />}
+            </button>
+          ))}
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
 
