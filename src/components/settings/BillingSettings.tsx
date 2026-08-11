@@ -183,22 +183,16 @@ export function BillingSettings({ activeSection = 'credits' }: BillingSettingsPr
             <div className="space-y-6 rounded-[24px] bg-white/[0.02] p-6 border border-white/5">
               <div className="space-y-2">
                 <Label className="text-xs text-white/40">开票类型</Label>
-                <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/5">
+                <div className="flex p-1 rounded-xl bg-white/5">
                   <button 
-                    onClick={() => setType('individual')}
-                    className={cn(
-                      "py-2 text-sm font-medium rounded-lg transition-all",
-                      type === 'individual' ? "bg-white/10 text-white" : "text-white/40 hover:text-white/60"
-                    )}
+                    disabled
+                    className="flex-1 py-2 text-sm font-medium rounded-lg text-white/40 cursor-not-allowed opacity-50"
                   >
                     个人
                   </button>
                   <button 
                     onClick={() => setType('company')}
-                    className={cn(
-                      "py-2 text-sm font-medium rounded-lg transition-all",
-                      type === 'company' ? "bg-white text-black" : "text-white/40 hover:text-white/60"
-                    )}
+                    className="flex-1 py-2 text-sm font-medium rounded-lg transition-all bg-white text-black"
                   >
                     公司
                   </button>
