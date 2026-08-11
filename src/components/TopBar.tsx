@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { SubscriptionDialog } from "./SubscriptionDialog";
+import { FeedbackDialog } from "./FeedbackDialog";
 import { useTheme } from "@/hooks/use-theme";
 import logoAsset from "@/assets/logo.png.asset.json";
 import { cn } from "@/lib/utils";
@@ -71,11 +72,13 @@ function UserMenu({
   onMouseLeave: () => void;
 }) {
   const [showSubscription, setShowSubscription] = React.useState(false);
+  const [showFeedback, setShowFeedback] = React.useState(false);
   const { theme, setTheme } = useTheme();
 
   return (
     <>
       <SubscriptionDialog open={showSubscription} onOpenChange={setShowSubscription} />
+      <FeedbackDialog open={showFeedback} onOpenChange={setShowFeedback} />
       <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild className="pointer-events-none">
         <div className="h-8 w-8 rounded-full bg-foreground/10 flex items-center justify-center overflow-hidden">
@@ -154,6 +157,13 @@ function UserMenu({
             </div>
           </div>
 
+          <Link to="/settings/billing"><MenuItem icon={LayoutGrid} label="查看用量" /></Link>
+          <Link to="/settings/profile"><MenuItem icon={Settings} label="管理账户" /></Link>
+          <MenuItem 
+            icon={MessageSquare} 
+            label="反馈" 
+            onClick={() => { setShowFeedback(true); setOpen(false); }}
+          />
           <Link to="/settings/account"><MenuItem icon={Key} label="修改密码" /></Link>
           <MenuItem icon={LogOut} label="退出登录" className="text-red-400/80 hover:text-red-400 hover:bg-red-400/5" />
         </div>
@@ -199,15 +209,19 @@ function MenuItem({
   rightContent,
   hasChevron,
   className,
+  onClick,
 }: {
   icon: any;
   label: string;
   rightContent?: React.ReactNode;
   hasChevron?: boolean;
   className?: string;
+  onClick?: () => void;
 }) {
   return (
-    <button className={cn(
+    <button 
+      onClick={onClick}
+      className={cn(
       "flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-foreground/5 group",
       className
     )}>
