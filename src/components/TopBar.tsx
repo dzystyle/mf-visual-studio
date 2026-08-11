@@ -146,13 +146,13 @@ function UserMenu({
                 <Coins className="h-3.5 w-3.5 text-[#FFB800]" />
                 <span>会员积分</span>
               </div>
-              <span>0</span>
+              <span>2081</span>
             </div>
             <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
-              <div className="flex justify-between"><span>套餐</span><span>0</span></div>
+              <div className="flex justify-between"><span>套餐</span><span>2000</span></div>
               <div className="flex justify-between"><span>通用积分</span><span>0</span></div>
               <div className="flex justify-between"><span>模型专属积分</span><span>0</span></div>
-              <div className="flex justify-between"><span>额外</span><span>0</span></div>
+              <div className="flex justify-between"><span>额外</span><span>81</span></div>
             </div>
             
             <Link to="/settings/billing" onClick={() => setOpen(false)} className="mt-4 flex w-full items-center justify-center rounded-lg bg-foreground/5 py-2.5 text-xs font-medium text-foreground/60 transition-colors hover:bg-foreground/10 hover:text-foreground">
