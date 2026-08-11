@@ -360,7 +360,7 @@ export function PromptBox({
                 <button className="flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-xs text-foreground hover:bg-card transition">
                   <div className="flex items-center gap-1.5">
                     <span className="text-muted-foreground">分辨率：</span>
-                    <span>720p</span>
+                    <span>{resolution}</span>
                     <span className="flex h-3.5 items-center rounded bg-aurora-purple/20 px-1 text-[7px] font-bold uppercase text-aurora-purple">尊享</span>
                   </div>
                   <ChevronDown className="h-3 w-3 text-muted-foreground" />
@@ -370,7 +370,8 @@ export function PromptBox({
                 {["480p", "720p"].map((res) => (
                   <button 
                     key={res}
-                    className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-lg transition-colors ${res === '720p' ? 'bg-white/10 text-white' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
+                    onClick={() => setResolution(res)}
+                    className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-lg transition-colors ${resolution === res ? 'bg-white/10 text-white' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
                   >
                     <span>{res}</span>
                     <span className="flex h-3.5 items-center rounded bg-aurora-purple/20 px-1 text-[7px] font-bold uppercase text-aurora-purple">尊享</span>
