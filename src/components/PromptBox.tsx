@@ -135,7 +135,7 @@ export function PromptBox({
     }
   };
 
-  const handleMentionSelect = (name: string, kind: string, url?: string) => {
+  const handleMentionSelect = (name: string, kind?: string, url?: string) => {
     const textBeforeCursor = text.slice(0, cursorPos);
     const lastAtPos = textBeforeCursor.lastIndexOf("@");
     
@@ -324,7 +324,7 @@ export function PromptBox({
             )}
             <input ref={fileInputRef} type="file" multiple className="hidden" onChange={onFiles} />
             
-            {!isMini && <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} />}
+            {!isMini && <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} onSelect={handleMentionSelect} />}
             
             <Popover>
               <PopoverTrigger asChild>
