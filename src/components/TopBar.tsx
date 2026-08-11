@@ -155,17 +155,55 @@ function UserMenu({
           <div className="border-t border-border/50 opacity-50" />
 
           {/* Language Selector */}
-          <div className="px-3 py-2 cursor-pointer hover:bg-foreground/5 rounded-lg transition-colors group">
-            <div className="flex items-center justify-between py-1">
-              <div className="flex items-center gap-2 text-sm text-foreground/80 group-hover:text-foreground">
-                <Globe className="h-4 w-4 text-foreground/60 group-hover:text-foreground" />
-                <span>语言</span>
-                <span className="mx-0.5 text-foreground/20">|</span>
-                <span className="text-foreground/40 font-normal group-hover:text-foreground/60">简体中文</span>
-                <ChevronRight className="h-3 w-3 ml-0.5 text-foreground/20 group-hover:text-foreground/40" />
+          <Popover>
+            <PopoverTrigger asChild>
+              <div className="px-3 py-2 cursor-pointer hover:bg-foreground/5 rounded-lg transition-colors group">
+                <div className="flex items-center justify-between py-1">
+                  <div className="flex items-center gap-2 text-sm text-foreground/80 group-hover:text-foreground">
+                    <Globe className="h-4 w-4 text-foreground/60 group-hover:text-foreground" />
+                    <span>语言</span>
+                    <span className="mx-0.5 text-foreground/20">|</span>
+                    <span className="text-foreground/40 font-normal group-hover:text-foreground/60">简体中文</span>
+                    <ChevronRight className="h-3 w-3 ml-0.5 text-foreground/20 group-hover:text-foreground/40" />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </PopoverTrigger>
+            <PopoverContent 
+              side="left" 
+              align="start" 
+              sideOffset={12}
+              className="w-[180px] p-1 border-border bg-popover/95 backdrop-blur-xl shadow-2xl"
+            >
+              <div className="flex flex-col gap-0.5">
+                {[
+                  { label: "English", value: "en" },
+                  { label: "简体中文", value: "zh-CN", active: true },
+                  { label: "繁体中文", value: "zh-TW" },
+                  { label: "日本語", value: "ja" },
+                  { label: "한국어", value: "ko" },
+                  { label: "Français", value: "fr" },
+                  { label: "Deutsch", value: "de" },
+                  { label: "Español", value: "es" },
+                  { label: "Italiano", value: "it" },
+                  { label: "Русский", value: "ru" },
+                  { label: "العربية", value: "ar" },
+                ].map((lang) => (
+                  <button
+                    key={lang.value}
+                    className={cn(
+                      "flex w-full items-center px-3 py-2 text-sm rounded-md transition-colors",
+                      lang.active 
+                        ? "bg-foreground/10 text-foreground font-medium" 
+                        : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground"
+                    )}
+                  >
+                    {lang.label}
+                  </button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
 
           <MenuItem 
             icon={MessageSquare} 
