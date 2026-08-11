@@ -377,6 +377,45 @@ function ComposerChip({
   );
 }
 
+function FilterMenu({ label, options }: { label: string; options: string[] }) {
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(options[0]);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button className={cn(
+          "inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs transition-all hover:bg-white/10",
+          open ? "text-white border-white/20" : "text-white/60"
+        )}>
+          {selected === options[0] ? label : selected}
+          {open ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[120px] border-white/10 bg-[#1A1A1A]/95 p-1 backdrop-blur-xl" align="start">
+        <div className="flex flex-col gap-0.5">
+          {options.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => {
+                setSelected(opt);
+                setOpen(false);
+              }}
+              className={cn(
+                "flex items-center justify-between rounded-md px-3 py-2 text-xs transition-colors hover:bg-white/5",
+                selected === opt ? "bg-white/10 text-white" : "text-white/60 hover:text-white"
+              )}
+            >
+              {opt}
+              {selected === opt && <Check className="h-3 w-3" />}
+            </button>
+          ))}
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
 function FilterChip({ label }: { label: string }) {
   return (
     <button className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/60 hover:text-white transition-colors">
