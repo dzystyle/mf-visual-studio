@@ -154,9 +154,17 @@ function UserMenu({
               <div className="flex justify-between"><span>模型专属积分</span><span>0</span></div>
               <div className="flex justify-between"><span>额外</span><span>0</span></div>
             </div>
+            
+            <button 
+              onClick={() => { setOpen(false); }}
+              className="mt-4 flex w-full items-center justify-center rounded-lg bg-foreground/5 py-2.5 text-xs font-medium text-foreground/60 transition-colors hover:bg-foreground/10"
+            >
+              <Link to="/settings/billing">查看用量</Link>
+            </button>
           </div>
 
-          <Link to="/settings/billing"><MenuItem icon={LayoutGrid} label="查看用量" /></Link>
+          <div className="my-2 border-t border-border/50" />
+          
           <Link to="/settings/profile"><MenuItem icon={Settings} label="管理账户" /></Link>
           <MenuItem 
             icon={MessageSquare} 
