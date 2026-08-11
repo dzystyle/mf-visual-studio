@@ -495,14 +495,19 @@ function Composer({
           ))}
           {attachments.length < 50 && (
             <button 
-              onClick={() => fileInputRef.current?.click()}
-              className="relative flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/[0.02] text-white/40 transition hover:border-white/20 hover:text-white/60"
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                fileInputRef.current?.click();
+              }}
+              className="relative flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/[0.02] text-white/40 transition hover:border-white/20 hover:text-white/60 cursor-pointer z-[10]"
             >
               <span className="absolute right-1 top-1 rounded bg-black/40 px-1 text-[9px] text-white/40">
                 {attachments.length}/50
               </span>
-              <Plus className="h-4 w-4" />
-              <span className="mt-0.5 text-[10px]">添加</span>
+              <Plus className="h-4 w-4 pointer-events-none" />
+              <span className="mt-0.5 text-[10px] pointer-events-none">添加</span>
             </button>
           )}
           <input ref={fileInputRef} type="file" multiple className="hidden" accept="image/*,video/*" onChange={onFiles} />
