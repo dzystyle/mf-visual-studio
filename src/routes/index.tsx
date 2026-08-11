@@ -5,10 +5,9 @@ import { PromoBanner } from "@/components/PromoBanner";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
 import { SkillCard, hotSkills } from "@/components/SkillCard";
+import { ArtrailTV } from "@/components/tv/ArtrailTV";
 import projectTeacher from "@/assets/project-teacher.jpg";
 import tvSpace from "@/assets/tv-space.jpg";
-import tvDrama from "@/assets/tv-drama.jpg";
-import tvPalace from "@/assets/tv-palace.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -99,36 +98,8 @@ function Home() {
         </div>
       </section>
 
-      {/* ArtrailTV */}
-      <section className="px-6 pb-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-4 flex items-end justify-between">
-            <h2 className="text-lg font-semibold">ArtrailTV</h2>
-            <div className="flex items-center gap-2">
-              {["全部", "影视", "短剧", "漫剧", "MV", "TVC"].map((t, i) => (
-                <button
-                  key={t}
-                  className={`rounded-full px-3 py-1 text-xs transition ${
-                    i === 0
-                      ? "bg-foreground text-background"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            <TvCard title="星海漫游" author="Artrail Studio" image={tvSpace} />
-            <TvCard title="红尘旧梦" author="夜色出品" image={tvDrama} />
-            <TvCard title="深宫往事" author="一帧影像" image={tvPalace} tall />
-            <TvCard title="霓虹之夜" author="Artrail" image={tvSpace} />
-            <TvCard title="花信风" author="叙光" image={tvDrama} />
-          </div>
-        </div>
-      </section>
+      {/* ArtrailTV Section */}
+      <ArtrailTV />
 
       {/* Floating Mini Prompt Box */}
       <div 
@@ -331,39 +302,3 @@ function ProjectCard({
   );
 }
 
-function TvCard({
-  title,
-  author,
-  image,
-  tall,
-}: {
-  title: string;
-  author: string;
-  image: string;
-  tall?: boolean;
-}) {
-  return (
-    <div className="group cursor-pointer">
-      <div
-        className={`relative overflow-hidden rounded-xl border border-border ${
-          tall ? "aspect-[3/4]" : "aspect-[4/5]"
-        }`}
-      >
-        <img
-          src={image}
-          alt={title}
-          loading="lazy"
-          className="h-full w-full object-cover transition group-hover:scale-[1.03]"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent" />
-        <div className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/40 backdrop-blur">
-          <Play className="h-3 w-3 fill-foreground text-foreground" />
-        </div>
-        <div className="absolute inset-x-3 bottom-3">
-          <div className="text-sm font-semibold leading-tight">{title}</div>
-          <div className="mt-0.5 text-[11px] text-foreground/70">@ {author}</div>
-        </div>
-      </div>
-    </div>
-  );
-}

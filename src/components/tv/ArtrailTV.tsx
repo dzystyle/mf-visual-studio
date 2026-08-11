@@ -50,7 +50,7 @@ export function ArtrailTV() {
               ))}
             </div>
           </div>
-          <button className="text-sm text-white/40 hover:text-white transition">查看更多</button>
+          <button className="text-sm text-white/40 hover:text-white transition">查看全部</button>
         </div>
 
         {/* Grid Layout inspired by Reference 1 */}
