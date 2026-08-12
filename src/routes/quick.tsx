@@ -332,14 +332,13 @@ function Composer({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = input.slice(0, lastAtPos);
       const after = input.slice(cursorPos);
-      newInput = `${before}@${name} ${after}`;
-      newCursorPos = before.length + name.length + 2;
+      newInput = `${before}${after}`;
+      newCursorPos = lastAtPos;
     } else {
       const before = input.slice(0, cursorPos);
       const after = input.slice(cursorPos);
-      const prefix = before.endsWith(" ") || before === "" ? "" : " ";
-      newInput = `${before}${prefix}@${name} ${after}`;
-      newCursorPos = before.length + prefix.length + name.length + 2;
+      newInput = `${before}${after}`;
+      newCursorPos = cursorPos;
     }
 
     setInput(newInput);
@@ -353,10 +352,8 @@ function Composer({
     
     setMentionOpen(false);
     
-    // Add to mentions list for visual chip display below input
-    if (!mentions.find((a: any) => a.url === url)) {
-      setMentions((prev: any) => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
-    }
+    // Check if it's already in attachments (it should be, since mentions comes from attachments)
+    // We only want to show the image in the top attachments row, not as a chip below input
   };
 
   const onFiles = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
