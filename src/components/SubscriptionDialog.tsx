@@ -105,61 +105,17 @@ export function SubscriptionDialog({
           </div>
 
           <div className="mx-auto mt-8 max-w-[1100px] px-6">
-            {activeTab === "personal" ? (
-              <>
-                {/* Personal Toggle */}
-                <div className="mb-8 flex justify-center items-center gap-6">
-                  <div className="flex items-center gap-4 rounded-full bg-white/5 p-1">
-                    <button 
-                      onClick={() => setPersonalCycle("month")}
-                      className={cn("rounded-full px-4 py-1.5 text-xs transition", personalCycle === "month" ? "bg-white/10 text-white" : "text-white/40")}
-                    >
-                      连续包月 <span className="text-[#E6B380] ml-1">(赠50%积分)</span>
-                    </button>
-                    <button 
-                      onClick={() => setPersonalCycle("year")}
-                      className={cn("rounded-full px-4 py-1.5 text-xs transition", personalCycle === "year" ? "bg-white/10 text-white" : "text-white/40")}
-                    >
-                      连续包年 <span className="text-[#E6B380] ml-1">(赠100%积分·省17%)</span>
-                    </button>
-                  </div>
-                  <button className="flex items-center gap-2 text-xs text-white/60 hover:text-white">
-                    <div className="h-4 w-4 rounded bg-white/10 flex items-center justify-center">
-                      <PlusIcon className="h-2 w-2" />
-                    </div>
-                    个人版会员积分购买
-                  </button>
-                </div>
-
                 <div className="grid grid-cols-4 gap-4">
-                  <PersonalCard 
-                    name="Starter" 
-                    price={140} 
-                    credits="2000 + 400" 
-                    bonus="多送20%" 
-                    features={getPersonalFeatures(10)} 
-                  />
-                  <PersonalCard 
-                    name="Basic" 
-                    price={350} 
-                    credits="5000 + 1500" 
-                    bonus="多送30%" 
-                    features={getPersonalFeatures(20)}
-                  />
-                  <PersonalCard 
-                    name="Plus" 
-                    price={700} 
-                    credits="10000 + 4000" 
-                    bonus="多送40%" 
-                    features={getPersonalFeatures(50, true)}
-                  />
-                  <PersonalCard 
-                    name="Pro" 
-                    price={1400} 
-                    credits="20000 + 10000" 
-                    bonus="多送50%" 
-                    features={getPersonalFeatures(80, true)}
-                  />
+                  {personalPlans.map(plan => (
+                    <PersonalCard 
+                      key={plan.name}
+                      name={plan.name} 
+                      price={plan.price} 
+                      credits={plan.credits} 
+                      bonus={plan.bonus} 
+                      features={getPersonalFeatures(plan.concurrency, plan.vip)} 
+                    />
+                  ))}
                 </div>
               </>
             ) : (
@@ -195,34 +151,16 @@ export function SubscriptionDialog({
                 </div>
 
                 <div className="grid grid-cols-4 gap-4">
-                  <TeamCard 
-                    name="Starter Team" 
-                    price={160} 
-                    credits="2000 + 400" 
-                    bonus="多送20%" 
-                    features={getTeamFeatures(20, 7, 5)}
-                  />
-                  <TeamCard 
-                    name="Basic Team" 
-                    price={400} 
-                    credits="5000 + 1500" 
-                    bonus="多送30%" 
-                    features={getTeamFeatures(40, 10, 10)}
-                  />
-                  <TeamCard 
-                    name="Plus Team" 
-                    price={800} 
-                    credits="10000 + 4000" 
-                    bonus="多送40%" 
-                    features={getTeamFeatures(80, 15, 20)}
-                  />
-                  <TeamCard 
-                    name="Pro Team" 
-                    price={1600} 
-                    credits="20000 + 10000" 
-                    bonus="多送50%" 
-                    features={getTeamFeatures(100, 20, 30)}
-                  />
+                  {teamPlans.map(plan => (
+                    <TeamCard 
+                      key={plan.name}
+                      name={plan.name} 
+                      price={plan.price} 
+                      credits={plan.credits} 
+                      bonus={plan.bonus} 
+                      features={getTeamFeatures(plan.concurrency, plan.single, plan.avatars)}
+                    />
+                  ))}
                 </div>
               </>
             )}
