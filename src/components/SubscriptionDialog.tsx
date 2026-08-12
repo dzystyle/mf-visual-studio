@@ -20,19 +20,31 @@ export function SubscriptionDialog({
   const [showCreditPurchase, setShowCreditPurchase] = React.useState(false);
 
   const personalPlans = React.useMemo(() => {
-    const multiplier = personalCycle === "year" ? 10 : 1; // Simplify for demo
-    const discount = personalCycle === "year" ? 0.83 : 1;
-    
-    return [
-      { name: "Starter", basePrice: 140, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 10 },
-      { name: "Basic", basePrice: 350, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 20 },
-      { name: "Plus", basePrice: 700, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 50, vip: true },
-      { name: "Pro", basePrice: 1400, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 80, vip: true },
-    ].map(plan => ({
-      ...plan,
-      price: Math.round(plan.basePrice * discount),
-      credits: `${plan.baseCredits * (personalCycle === "year" ? 2 : 1.5)} + ${plan.extra}`
-    }));
+    const plans: any[] = [
+      { name: "Starter", basePrice: 40, baseCredits: 200, extra: 40, bonus: "多送20%", concurrency: 10 },
+      { name: "Basic", basePrice: 100, baseCredits: 500, extra: 150, bonus: "多送30%", concurrency: 20 },
+      { name: "Plus", basePrice: 200, baseCredits: 1000, extra: 400, bonus: "多送40%", concurrency: 50, vip: true },
+      { name: "Pro", basePrice: 400, baseCredits: 2000, extra: 1000, bonus: "多送50%", concurrency: 80, vip: true },
+    ];
+
+    if (personalCycle === "month") {
+      return plans.map(plan => ({
+        ...plan,
+        price: plan.basePrice,
+        credits: `${plan.baseCredits} + ${plan.extra}`,
+        bonus: plan.bonus
+      }));
+    } else {
+      // year
+      const yearBonus = ["多送40%", "多送60%", "多送80%", "多送100%"];
+      const yearExtra = [80, 300, 800, 2000];
+      return plans.map((plan, idx) => ({
+        ...plan,
+        price: plan.basePrice * 10,
+        credits: `${plan.baseCredits} + ${yearExtra[idx]}`,
+        bonus: yearBonus[idx]
+      }));
+    }
   }, [personalCycle]);
 
   const teamPlans = React.useMemo(() => {
