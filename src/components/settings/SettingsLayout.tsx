@@ -34,8 +34,8 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
     { id: 'api', label: '平台 API 密钥', icon: Key, path: '/settings/account' },
 
     { separator: true },
-    { id: 'terms', label: '使用条款', icon: ShieldCheck, path: '/settings/account' },
-    { id: 'privacy', label: '隐私政策', icon: FileLock2, path: '/settings/account' },
+    { id: 'terms', label: '使用条款', icon: ShieldCheck, path: '/legal/terms' },
+    { id: 'privacy', label: '隐私政策', icon: FileLock2, path: '/legal/privacy' },
     { separator: true },
     { id: 'logout', label: '退出登录', icon: LogOut, path: '/', color: 'text-red-400', search: undefined },
   ];
@@ -74,6 +74,26 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
                const isActive = activeTab === item.id || 
                                (item.id === 'credits' && activeTab === 'invoices') || 
                                (item.id === 'credits' && activeTab === 'pricing');
+
+              const isExternal = item.id === 'terms' || item.id === 'privacy';
+              
+              if (isExternal) {
+                return (
+                  <a
+                    key={item.id}
+                    href={item.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 ease-out-expo hover:scale-[1.02] active:scale-[0.98]",
+                      "text-white/40 hover:bg-white/5 hover:text-white/60"
+                    )}
+                  >
+                    <Icon className="h-4.5 w-4.5" />
+                    {item.label}
+                  </a>
+                );
+              }
 
               return (
                 <Link
