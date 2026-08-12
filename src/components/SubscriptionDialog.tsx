@@ -139,6 +139,7 @@ export function SubscriptionDialog({
                   团队版 <span className="text-[10px] opacity-40 font-normal ml-1">(均支持真人合规生成)</span>
                   {activeTab === "team" && <div className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-[#E6B380] shadow-[0_0_10px_rgba(230,179,128,0.5)]" />}
                 </button>
+              </div>
             </div>
           </div>
           <div className="mx-auto mt-8 max-w-[1100px] px-6">
