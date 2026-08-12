@@ -333,10 +333,9 @@ function Composer({
       const before = input.slice(0, lastAtPos);
       const after = input.slice(cursorPos);
       
-      // We'll insert a special marker or just empty space
-      // For this 1:1 UI, we need the chip to appear at this position
-      newInput = `${before}${after.startsWith(" ") ? after : " " + after}`;
-      newCursorPos = before.length;
+      // Keep the character space for the chip, but clear the @name text
+      newInput = `${before} ${after.startsWith(" ") ? after : " " + after}`;
+      newCursorPos = before.length + 1;
     } else {
       newInput = input;
       newCursorPos = cursorPos;
