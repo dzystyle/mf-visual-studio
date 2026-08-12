@@ -84,7 +84,7 @@ function QuickPage() {
   const [showMini, setShowMini] = useState(false);
   const [hdOpen, setHdOpen] = useState(false);
   const [attachments, setAttachments] = useState<{ id: string; url: string; name: string }[]>([]);
-  const [mentions, setMentions] = useState<{ id: string; url: string; name: string }[]>([]);
+  const [mentions, setMentions] = useState<{ id: string; url: string; name: string; position: number }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
