@@ -1,11 +1,12 @@
 import * as React from "react";
-import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, LogOut, LayoutGrid, Film, Gift, Sun, Moon, Monitor, Key, Languages } from "lucide-react";
+import { BookOpen, Coins, ChevronRight, Users, Settings, MessageSquare, Globe, LogOut, LayoutGrid, Film, Gift, Sun, Moon, Monitor, Key, Languages, Bell } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { SubscriptionDialog } from "./SubscriptionDialog";
 import { FeedbackDialog } from "./FeedbackDialog";
+import { NotificationDrawer } from "./NotificationDrawer";
 import { useTheme } from "@/hooks/use-theme";
 import logoAsset from "@/assets/logo.png.asset.json";
 import { cn } from "@/lib/utils";
@@ -73,12 +74,14 @@ function UserMenu({
 }) {
   const [showSubscription, setShowSubscription] = React.useState(false);
   const [showFeedback, setShowFeedback] = React.useState(false);
+  const [showNotifications, setShowNotifications] = React.useState(false);
   const { theme, setTheme } = useTheme();
 
   return (
     <>
       <SubscriptionDialog open={showSubscription} onOpenChange={setShowSubscription} />
       <FeedbackDialog open={showFeedback} onOpenChange={setShowFeedback} />
+      <NotificationDrawer open={showNotifications} onOpenChange={setShowNotifications} />
       <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild className="pointer-events-none">
         <div className="h-8 w-8 rounded-full bg-foreground/10 flex items-center justify-center overflow-hidden">
@@ -155,6 +158,12 @@ function UserMenu({
           <div className="border-t border-border/50 opacity-50" />
           
           <Link to="/settings/team" onClick={() => setOpen(false)}><MenuItem icon={Users} label="团队管理" className="py-2" /></Link>
+          <MenuItem 
+            icon={Bell} 
+            label="消息通知" 
+            className="py-2" 
+            onClick={() => { setShowNotifications(true); setOpen(false); }}
+          />
           <Link to="/settings/billing" search={{ tab: 'pricing' }} onClick={() => setOpen(false)}><MenuItem icon={Gift} label="兑换码" className="py-2" /></Link>
 
           <div className="border-t border-border/50 opacity-50" />
