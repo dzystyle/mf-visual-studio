@@ -508,43 +508,41 @@ function Composer({
 
 
         {/* Row 3: Textarea + Mention Popover */}
-        <div className="relative z-50 flex flex-col gap-2">
-          {mentions.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {mentions.map((a: any) => (
-                <div key={a.id} className="inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
-                  <div className="h-4 w-4 rounded overflow-hidden border border-white/10">
-                    <img src={a.url} alt="" className="w-full h-full object-cover" />
-                  </div>
-                  <span>{a.name}</span>
-                  <button 
-                    onClick={() => setMentions((prev: any) => prev.filter((x: any) => x.id !== a.id))}
-                    className="hover:text-white transition-colors"
-                  >
-                    <Plus className="h-3 w-3 rotate-45 text-muted-foreground" />
-                  </button>
+        <div className="relative z-50 flex flex-col gap-2 p-3 bg-white/5 border border-white/10 rounded-xl mb-4">
+          <div className="flex flex-wrap items-center gap-2">
+            {mentions.map((a: any) => (
+              <div key={a.id} className="inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
+                <div className="h-4 w-4 rounded overflow-hidden border border-white/10">
+                  <img src={a.url} alt="" className="w-full h-full object-cover" />
                 </div>
-              ))}
-            </div>
-          )}
-          <textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-              setCursorPos(e.target.selectionStart);
-            }}
-            onKeyUp={(e) => setCursorPos((e.target as HTMLTextAreaElement).selectionStart)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                onSubmit();
-              }
-            }}
-            rows={2}
-            placeholder="使用@快速调用参考能力，支持文本、图片、音频、视频全能参考，例如：@图片1参考 @音频1的音色，模仿@视频1的动作"
-            className="min-h-[60px] w-full resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none"
-          />
+                <span>{a.name}</span>
+                <button 
+                  onClick={() => setMentions((prev: any) => prev.filter((x: any) => x.id !== a.id))}
+                  className="hover:text-white transition-colors"
+                >
+                  <Plus className="h-3 w-3 rotate-45 text-muted-foreground" />
+                </button>
+              </div>
+            ))}
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value);
+                setCursorPos(e.target.selectionStart);
+              }}
+              onKeyUp={(e) => setCursorPos((e.target as HTMLTextAreaElement).selectionStart)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  onSubmit();
+                }
+              }}
+              rows={1}
+              placeholder="使用@快速调用参考能力"
+              className="flex-1 min-w-[200px] min-h-[32px] bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none"
+            />
+          </div>
           
           {mentionOpen && (
             <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[99999] animate-in fade-in slide-in-from-bottom-2 duration-200">
