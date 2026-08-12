@@ -153,12 +153,14 @@ function QuickPage() {
 
         {/* Conversation stream */}
         <div
-          className="mx-auto w-full max-w-7xl flex-1 space-y-12 pt-4"
+          ref={scrollRef}
+          className="scrollbar-hide mx-auto w-full max-w-7xl flex-1 space-y-12 overflow-y-auto pt-4"
         >
           {msgs.map((m) => (
             <MessageBlock key={m.id} msg={m} onHdClick={() => setHdOpen(true)} />
           ))}
           <VideoHdDialog open={hdOpen} onOpenChange={setHdOpen} />
+          <div className="h-40" />
         </div>
 
         {/* Bottom composer container */}
