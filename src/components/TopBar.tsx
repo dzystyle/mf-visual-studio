@@ -69,7 +69,7 @@ function UserMenuContainer() {
   
   return (
     <div 
-      className="flex items-center gap-2 rounded-full border border-border bg-card/50 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-card group cursor-pointer relative"
+      className="flex items-center gap-2 rounded-full border border-border bg-card/50 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-card group cursor-pointer relative z-[60]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
