@@ -456,65 +456,82 @@ function PersonalCard({ name, price, credits, bonus, features }: any) {
 
 function TeamCard({ name, price, credits, bonus, features }: any) {
   const [seats, setSeats] = React.useState(2);
+  
   return (
-    <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
+    <div className="group relative flex flex-col rounded-3xl border border-white/5 bg-[#1A1A1A] p-6 transition-all hover:border-white/10 hover:shadow-2xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
-          <span className="text-sm font-semibold">{name}</span>
+           <div className="h-4 w-4 rounded-sm bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+             <Play fill="white" className="h-2 w-2 text-white ml-0.5" />
+           </div>
+           <span className="text-sm font-bold text-white">{name}</span>
         </div>
-        <div className="rounded-full bg-[#E6B380]/10 px-2 py-0.5 text-[10px] font-medium text-[#E6B380]">{bonus}</div>
+        <span className="rounded-full bg-[#E6B380]/10 px-2 py-0.5 text-[10px] font-bold text-[#E6B380]">{bonus}</span>
       </div>
 
       <div className="mt-6 flex items-baseline gap-1">
-        <span className="text-lg font-bold">¥</span>
-        <span className="text-3xl font-bold">{price}</span>
-        <span className="text-[10px] text-foreground/40 ml-1">/席/月</span>
+        <span className="text-2xl font-bold">¥</span>
+        <span className="text-5xl font-black tracking-tighter">{price * (seats/2)}</span>
+        <span className="text-[10px] text-white/40 ml-1">/席/季 一次性支付</span>
       </div>
 
-      <div className="mt-2 text-lg font-medium">{credits} 积分</div>
-      
-      <div className="mt-4 flex gap-1">
-        {Array.from({ length: 8 }).map((_, i) => (
+      <div className="mt-2 text-xl font-bold text-white/90">
+        {credits} <span className="text-sm font-normal text-white/40">积分</span>
+      </div>
+
+      <div className="mt-6 flex justify-between gap-1">
+        {[...Array(10)].map((_, i) => (
           <div key={i} className={cn("h-1.5 w-1.5 rounded-full", i < (name.includes("Starter") ? 3 : name.includes("Basic") ? 5 : 8) ? "bg-[#E6B380]" : "bg-white/10")} />
         ))}
       </div>
 
-      <div className="mt-6 rounded-xl bg-white/5 p-3">
-        <div className="flex items-center justify-between text-[11px] text-foreground/60">
-          <span>席位</span>
-          <div className="flex items-center gap-3">
-            <button onClick={() => setSeats(Math.max(2, seats - 1))} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><Minus className="h-3 w-3" /></button>
-            <span className="text-foreground font-medium">{seats} 席</span>
-            <button onClick={() => setSeats(seats + 1)} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><PlusIcon className="h-3 w-3" /></button>
-          </div>
-        </div>
-        <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
-          <div className="text-[9px] text-foreground/30">总积分 {(parseInt(credits.split(' ')[0]) + parseInt(credits.split(' ')[2])) * seats}/月</div>
-          <div className="text-[9px] text-foreground/30">总价 ¥{price * seats}/月</div>
+      <div className="mt-8 flex items-center justify-between rounded-xl bg-white/5 p-3">
+        <span className="text-[10px] text-white/40">席位</span>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setSeats(Math.max(2, seats - 1))}
+            className="flex h-6 w-6 items-center justify-center rounded-md bg-white/5 text-white/40 hover:bg-white/10 hover:text-white"
+          >
+            <Minus className="h-3 w-3" />
+          </button>
+          <span className="text-sm font-bold text-white">{seats} 席</span>
+          <button 
+            onClick={() => setSeats(seats + 1)}
+            className="flex h-6 w-6 items-center justify-center rounded-md bg-white/5 text-white/40 hover:bg-white/10 hover:text-white"
+          >
+            <PlusIcon className="h-3 w-3" />
+          </button>
         </div>
       </div>
 
-      <Link to="/checkout">
-        <button className="mt-4 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
-          购买 {seats} 席位
-        </button>
+      <div className="mt-2 flex items-center justify-between px-1">
+        <div className="text-[9px] text-white/20">总积分 {parseInt(credits.split(' ')[0]) * seats}/月</div>
+        <div className="text-[9px] text-white/20">总价 ¥{price * (seats/2)}/季</div>
+      </div>
+
+      <Link 
+        to="/checkout"
+        className="mt-6 flex w-full items-center justify-center rounded-full bg-white py-3 text-sm font-black text-black transition-transform hover:scale-[1.02] active:scale-[0.98]"
+      >
+        购买 {seats} 席位
       </Link>
 
-      <div className="mt-8 space-y-6 overflow-hidden">
+      <div className="mt-8 space-y-4">
         {features.map((group: any) => (
-          <div key={group.title}>
-            <div className="mb-3 text-[10px] font-medium text-foreground/40 uppercase tracking-wider">{group.title}</div>
-            <div className="space-y-2.5">
-              {group.items.map((item: any) => (
-                <div key={item.label} className="flex items-start gap-2">
-                  <Check className="mt-0.5 h-3 w-3 shrink-0 text-[#E6B380]" />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] text-foreground/80">{item.label}</span>
-                      {item.tag && <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] text-green-500">新</span>}
+          <div key={group.title} className="space-y-4">
+            <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{group.title}</div>
+            <div className="space-y-3">
+              {group.items.map((item: any, i: number) => (
+                <div key={i} className="flex items-start justify-between text-[11px] text-white/70">
+                  <div className="flex items-center gap-2">
+                    <Check className="h-3 w-3 text-[#E6B380] shrink-0 mt-0.5" />
+                    <div>
+                      <div>{item.label}</div>
                     </div>
                   </div>
+                  {item.tag && <span className="text-[8px] bg-green-500/20 text-green-500 px-1 rounded ml-1">新</span>}
+                  {item.value && <span className="text-[9px] text-white/40">{item.value}</span>}
+                  {item.info && <span className="text-[9px] text-white/20 border border-white/10 px-1.5 py-0.5 rounded-full flex items-center gap-1"><Info className="h-2 w-2" />{item.info}</span>}
                 </div>
               ))}
             </div>
