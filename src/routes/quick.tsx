@@ -90,22 +90,24 @@ function QuickPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    
     const handleScroll = () => {
-      const scrollPos = window.innerHeight + window.scrollY;
-      const totalHeight = document.documentElement.scrollHeight;
-      const isNearBottom = totalHeight - scrollPos < 100;
+      // Logic for mini input: when scrolled up enough from the bottom
+      const isNearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 100;
       setShowMini(!isNearBottom);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    el.addEventListener('scroll', handleScroll);
     
     // Initial scroll to bottom
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
+    el.scrollTo({
+      top: el.scrollHeight,
       behavior: "smooth",
     });
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => el.removeEventListener('scroll', handleScroll);
   }, [msgs.length]);
 
   function submit() {
