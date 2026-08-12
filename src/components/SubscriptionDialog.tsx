@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { X, Check, Play, Info, ChevronDown, Minus, Plus as PlusIcon, HelpCircle, MessageSquare, Users, LayoutGrid, Monitor, Key } from "lucide-react";
+import { X, Check, Play, Info, ChevronDown, Minus, Plus as PlusIcon, HelpCircle, MessageSquare } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -20,31 +20,19 @@ export function SubscriptionDialog({
   const [showCreditPurchase, setShowCreditPurchase] = React.useState(false);
 
   const personalPlans = React.useMemo(() => {
-    const plans: any[] = [
-      { name: "Starter", basePrice: 40, baseCredits: 200, extra: 40, bonus: "多送20%", concurrency: 10 },
-      { name: "Basic", basePrice: 100, baseCredits: 500, extra: 150, bonus: "多送30%", concurrency: 20 },
-      { name: "Plus", basePrice: 200, baseCredits: 1000, extra: 400, bonus: "多送40%", concurrency: 50, vip: true },
-      { name: "Pro", basePrice: 400, baseCredits: 2000, extra: 1000, bonus: "多送50%", concurrency: 80, vip: true },
-    ];
-
-    if (personalCycle === "month") {
-      return plans.map(plan => ({
-        ...plan,
-        price: plan.basePrice,
-        credits: `${plan.baseCredits} + ${plan.extra}`,
-        bonus: plan.bonus
-      }));
-    } else {
-      // year
-      const yearBonus = ["多送40%", "多送60%", "多送80%", "多送100%"];
-      const yearExtra = [80, 300, 800, 2000];
-      return plans.map((plan, idx) => ({
-        ...plan,
-        price: plan.basePrice * 10,
-        credits: `${plan.baseCredits} + ${yearExtra[idx]}`,
-        bonus: yearBonus[idx]
-      }));
-    }
+    const multiplier = personalCycle === "year" ? 10 : 1; // Simplify for demo
+    const discount = personalCycle === "year" ? 0.83 : 1;
+    
+    return [
+      { name: "Starter", basePrice: 140, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 10 },
+      { name: "Basic", basePrice: 350, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 20 },
+      { name: "Plus", basePrice: 700, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 50, vip: true },
+      { name: "Pro", basePrice: 1400, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 80, vip: true },
+    ].map(plan => ({
+      ...plan,
+      price: Math.round(plan.basePrice * discount),
+      credits: `${plan.baseCredits * (personalCycle === "year" ? 2 : 1.5)} + ${plan.extra}`
+    }));
   }, [personalCycle]);
 
   const teamPlans = React.useMemo(() => {
@@ -59,102 +47,67 @@ export function SubscriptionDialog({
       discount = 0.83;
     }
 
-    const plans: any[] = [
-      { name: "Starter Team", basePrice: 480, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 20, single: 7, avatars: 5 },
-      { name: "Basic Team", basePrice: 1200, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 40, single: 10, avatars: 10 },
-      { name: "Plus Team", basePrice: 2400, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 80, single: 15, avatars: 20 },
-      { name: "Pro Team", basePrice: 4800, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 100, single: 20, avatars: 30 },
-    ];
-
-    if (teamCycle === "1month") {
-      return plans.map(plan => ({
-        ...plan,
-        price: plan.basePrice,
-        credits: `${plan.baseCredits} + ${plan.extra}`,
-        bonus: plan.bonus
-      }));
-    } else if (teamCycle === "3month") {
-      return plans.map(plan => ({
-        ...plan,
-        price: plan.basePrice, // Screenshot shows ¥480/席/季 even for 3-month cycle, but unit price changes based on label
-        credits: `${plan.baseCredits} + ${plan.extra}`,
-        bonus: plan.bonus
-      }));
-    } else {
-      // 1year
-      const yearBonus = ["多送40%", "多送60%", "多送80%", "多送100%"];
-      const yearExtra = [800, 3000, 8000, 20000];
-      const yearPrices = [1600, 4000, 8000, 16000];
-      return plans.map((plan, idx) => ({
-        ...plan,
-        price: yearPrices[idx],
-        credits: `${plan.baseCredits} + ${yearExtra[idx]}`,
-        bonus: yearBonus[idx]
-      }));
-    }
+    return [
+      { name: "Starter Team", basePrice: 160, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 20, single: 7, avatars: 5 },
+      { name: "Basic Team", basePrice: 400, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 40, single: 10, avatars: 10 },
+      { name: "Plus Team", basePrice: 800, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 80, single: 15, avatars: 20 },
+      { name: "Pro Team", basePrice: 1600, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 100, single: 20, avatars: 30 },
+    ].map(plan => ({
+      ...plan,
+      price: Math.round(plan.basePrice * (teamCycle === "1year" ? 0.83 : 1)), // Use month unit price for card
+      credits: `${Math.round(plan.baseCredits * (teamCycle === "1year" ? 2 : 1.5))} + ${plan.extra}`
+    }));
   }, [teamCycle]);
 
   return (
     <>
     <CreditPurchaseDialog open={showCreditPurchase} onOpenChange={setShowCreditPurchase} />
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-border bg-[#0D0D0D] p-0 text-foreground scrollbar-hide">
-        <div className="relative pb-20">
+      <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-border bg-background p-0 text-foreground scrollbar-hide">
+        <div className="relative pb-20 pt-10">
           {/* Header Section */}
-          <div className="mx-auto max-w-[1100px] px-6 pt-10">
-            <div className="mb-12 rounded-3xl bg-gradient-to-r from-[#1A1A1A] to-[#0D0D0D] p-8 border border-white/5 flex items-center justify-between shadow-2xl">
-              <div className="flex flex-col gap-4">
-                <div className="space-y-1">
-                  <h2 className="text-2xl font-bold text-[#E6B380]">Seedance 2.5 满血版上线，积分限时买一送一</h2>
-                  <p className="text-lg font-bold text-white">480p 再享 5.3 折，低至 ¥ 0.23/秒</p>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-white/40">解锁完整的视频 Agent:</span>
-                  <div className="flex gap-2">
-                    <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] text-white/60 border border-white/10 flex items-center gap-1.5"><Users className="h-3 w-3" /> 团队版</span>
-                    <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] text-white/60 border border-white/10 flex items-center gap-1.5"><LayoutGrid className="h-3 w-3" /> Agent Skills</span>
-                    <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] text-white/60 border border-white/10 flex items-center gap-1.5"><Monitor className="h-3 w-3" /> Agent 画布</span>
-                    <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] text-white/60 border border-white/10 flex items-center gap-1.5"><Key className="h-3 w-3" /> CLI</span>
-                  </div>
-                </div>
+          <div className="mx-auto max-w-4xl px-6 text-center">
+            <div className="mb-8 inline-flex items-center gap-4 rounded-2xl bg-gradient-to-r from-[#2A1F15] to-[#151A25] p-1 pr-6 border border-border">
+              <div className="flex flex-col items-start px-4 py-2">
+                <div className="text-sm font-semibold text-[#E6B380]">Seedance 2.5 满血版上线, 积分限时买一送一</div>
+                <div className="text-xs text-white/60">480p 再享 5.3折, 低至 ¥ 0.23/秒</div>
               </div>
-              
-              <div className="flex gap-4">
-                <CountdownItem value="05" label="日" />
-                <CountdownItem value="01" label="时" />
-                <CountdownItem value="07" label="分" />
-                <CountdownItem value="28" label="秒" />
+              <div className="flex gap-2">
+                <CountdownItem value="07" label="日" />
+                <CountdownItem value="20" label="时" />
+                <CountdownItem value="48" label="分" />
+                <CountdownItem value="33" label="秒" />
               </div>
             </div>
 
-            <h1 className="text-3xl font-black text-center mb-10 tracking-tight">Artrail - 价格与套餐</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Artrail - 价格与套餐</h1>
 
-            <div className="flex justify-center mb-12">
-              <div className="flex border-b border-white/10 w-full max-w-md relative">
+            <div className="mt-8 flex justify-center">
+              <div className="flex border-b border-white/10 w-full max-w-md hidden">
                 <button 
                   onClick={() => setActiveTab("personal")}
                   className={cn(
-                    "flex-1 pb-4 text-sm font-bold transition-all relative",
+                    "flex-1 pb-3 text-sm font-medium transition-colors relative",
                     activeTab === "personal" ? "text-white" : "text-white/40"
                   )}
                 >
                   个人版
-                  {activeTab === "personal" && <div className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-[#E6B380] shadow-[0_0_10px_rgba(230,179,128,0.5)]" />}
+                  {activeTab === "personal" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />}
                 </button>
                 <button 
                   onClick={() => setActiveTab("team")}
                   className={cn(
-                    "flex-1 pb-4 text-sm font-bold transition-all relative",
+                    "flex-1 pb-3 text-sm font-medium transition-colors relative",
                     activeTab === "team" ? "text-white" : "text-white/40"
                   )}
                 >
-                  团队版 <span className="text-[10px] opacity-40 font-normal ml-1">(均支持真人合规生成)</span>
-                  {activeTab === "team" && <div className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-[#E6B380] shadow-[0_0_10px_rgba(230,179,128,0.5)]" />}
+                  团队版 <span className="text-[10px] opacity-60 font-normal">(均支持真人合规生成)</span>
+                  {activeTab === "team" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />}
                 </button>
               </div>
             </div>
           </div>
+
           <div className="mx-auto mt-8 max-w-[1100px] px-6">
             {activeTab === "personal" ? (
               <>
@@ -390,60 +343,54 @@ function CountdownItem({ value, label }: { value: string; label: string }) {
   );
 }
 
-function PersonalCard({ name, price, credits, bonus, features }: any) {
+function PersonalCard({ name, price, credits, bonus, features, highlight }: any) {
   return (
-    <div className="group relative flex flex-col rounded-3xl border border-white/5 bg-[#1A1A1A] p-6 transition-all hover:border-white/10 hover:shadow-2xl">
+    <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-           <div className="h-4 w-4 rounded-sm bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
-             <Play fill="white" className="h-2 w-2 text-white ml-0.5" />
-           </div>
-           <span className="text-sm font-bold text-white">{name}</span>
+          <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
+          <span className="text-sm font-semibold">{name}</span>
         </div>
-        <span className="rounded-full bg-[#E6B380]/10 px-2 py-0.5 text-[10px] font-bold text-[#E6B380]">{bonus}</span>
+        <div className="rounded-full bg-[#E6B380]/10 px-2 py-0.5 text-[10px] font-medium text-[#E6B380]">{bonus}</div>
       </div>
 
       <div className="mt-6 flex items-baseline gap-1">
-        <span className="text-2xl font-bold">¥</span>
-        <span className="text-5xl font-black tracking-tighter">{price}</span>
-        <span className="text-[10px] text-white/40 ml-1">/月</span>
+        <span className="text-lg font-bold">¥</span>
+        <span className="text-3xl font-bold">{price}</span>
+        <span className="text-xs text-foreground/40">/月</span>
       </div>
 
-      <div className="mt-2 text-xl font-bold text-white/90">
-        {credits} <span className="text-sm font-normal text-white/40">积分</span>
-      </div>
-
-      <div className="mt-6 flex justify-between gap-1">
-        {[...Array(10)].map((_, i) => (
+      <div className="mt-2 text-lg font-medium">{credits} 积分</div>
+      
+      <div className="mt-4 flex gap-1">
+        {Array.from({ length: 8 }).map((_, i) => (
           <div key={i} className={cn("h-1.5 w-1.5 rounded-full", i < (name === "Starter" ? 3 : name === "Basic" ? 5 : 8) ? "bg-[#E6B380]" : "bg-white/10")} />
         ))}
       </div>
 
-      <Link 
-        to="/checkout"
-        className="mt-8 flex w-full items-center justify-center rounded-full bg-white py-3 text-sm font-black text-black transition-transform hover:scale-[1.02] active:scale-[0.98]"
-      >
-        立即订阅
+      <Link to="/checkout">
+        <button className="mt-6 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
+          立即订阅
+        </button>
       </Link>
 
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 space-y-6 overflow-hidden">
         {features.map((group: any) => (
-          <div key={group.title} className="space-y-4">
-            <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{group.title}</div>
-            <div className="space-y-3">
-              {group.items.map((item: any, i: number) => (
-                <div key={i} className="flex items-start justify-between text-[11px] text-white/70">
-                  <div className="flex items-center gap-2">
-                    <Check className="h-3 w-3 text-[#E6B380] shrink-0 mt-0.5" />
-                    <div>
-                      <div>{item.label}</div>
-                      {item.sub && <div className="text-[9px] text-white/20">{item.sub}</div>}
+          <div key={group.title}>
+            <div className="mb-3 text-[10px] font-medium text-foreground/40 uppercase tracking-wider">{group.title}</div>
+            <div className="space-y-2.5">
+              {group.items.map((item: any) => (
+                <div key={item.label} className="flex items-start gap-2">
+                  <Check className="mt-0.5 h-3 w-3 shrink-0 text-[#E6B380]" />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[11px] text-foreground/80">{item.label}</span>
+                      {item.info && <Info className="h-2.5 w-2.5 text-foreground/20" />}
+                      {item.tag && <span className="rounded bg-white/10 px-1 py-0.5 text-[8px] text-foreground/60">{item.tag}</span>}
                     </div>
+                    {item.sub && <div className="mt-0.5 text-[9px] text-foreground/40">{item.sub}</div>}
                   </div>
-                  <div className="flex flex-col items-end gap-1">
-                    {item.value && <span className="text-[9px] text-white/40">{item.value}</span>}
-                    {item.tag && <span className="text-[8px] bg-white/10 px-1 py-0.5 rounded text-white/60">{item.tag}</span>}
-                  </div>
+                  {item.value && <div className="text-[10px] text-foreground/40">{item.value}</div>}
                 </div>
               ))}
             </div>
@@ -456,82 +403,65 @@ function PersonalCard({ name, price, credits, bonus, features }: any) {
 
 function TeamCard({ name, price, credits, bonus, features }: any) {
   const [seats, setSeats] = React.useState(2);
-  
   return (
-    <div className="group relative flex flex-col rounded-3xl border border-white/5 bg-[#1A1A1A] p-6 transition-all hover:border-white/10 hover:shadow-2xl">
+    <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-           <div className="h-4 w-4 rounded-sm bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
-             <Play fill="white" className="h-2 w-2 text-white ml-0.5" />
-           </div>
-           <span className="text-sm font-bold text-white">{name}</span>
+          <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
+          <span className="text-sm font-semibold">{name}</span>
         </div>
-        <span className="rounded-full bg-[#E6B380]/10 px-2 py-0.5 text-[10px] font-bold text-[#E6B380]">{bonus}</span>
+        <div className="rounded-full bg-[#E6B380]/10 px-2 py-0.5 text-[10px] font-medium text-[#E6B380]">{bonus}</div>
       </div>
 
       <div className="mt-6 flex items-baseline gap-1">
-        <span className="text-2xl font-bold">¥</span>
-        <span className="text-5xl font-black tracking-tighter">{price * (seats/2)}</span>
-        <span className="text-[10px] text-white/40 ml-1">/席/季 一次性支付</span>
+        <span className="text-lg font-bold">¥</span>
+        <span className="text-3xl font-bold">{price}</span>
+        <span className="text-[10px] text-foreground/40 ml-1">/席/月</span>
       </div>
 
-      <div className="mt-2 text-xl font-bold text-white/90">
-        {credits} <span className="text-sm font-normal text-white/40">积分</span>
-      </div>
-
-      <div className="mt-6 flex justify-between gap-1">
-        {[...Array(10)].map((_, i) => (
+      <div className="mt-2 text-lg font-medium">{credits} 积分</div>
+      
+      <div className="mt-4 flex gap-1">
+        {Array.from({ length: 8 }).map((_, i) => (
           <div key={i} className={cn("h-1.5 w-1.5 rounded-full", i < (name.includes("Starter") ? 3 : name.includes("Basic") ? 5 : 8) ? "bg-[#E6B380]" : "bg-white/10")} />
         ))}
       </div>
 
-      <div className="mt-8 flex items-center justify-between rounded-xl bg-white/5 p-3">
-        <span className="text-[10px] text-white/40">席位</span>
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={() => setSeats(Math.max(2, seats - 1))}
-            className="flex h-6 w-6 items-center justify-center rounded-md bg-white/5 text-white/40 hover:bg-white/10 hover:text-white"
-          >
-            <Minus className="h-3 w-3" />
-          </button>
-          <span className="text-sm font-bold text-white">{seats} 席</span>
-          <button 
-            onClick={() => setSeats(seats + 1)}
-            className="flex h-6 w-6 items-center justify-center rounded-md bg-white/5 text-white/40 hover:bg-white/10 hover:text-white"
-          >
-            <PlusIcon className="h-3 w-3" />
-          </button>
+      <div className="mt-6 rounded-xl bg-white/5 p-3">
+        <div className="flex items-center justify-between text-[11px] text-foreground/60">
+          <span>席位</span>
+          <div className="flex items-center gap-3">
+            <button onClick={() => setSeats(Math.max(2, seats - 1))} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><Minus className="h-3 w-3" /></button>
+            <span className="text-foreground font-medium">{seats} 席</span>
+            <button onClick={() => setSeats(seats + 1)} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><PlusIcon className="h-3 w-3" /></button>
+          </div>
+        </div>
+        <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
+          <div className="text-[9px] text-foreground/30">总积分 {(parseInt(credits.split(' ')[0]) + parseInt(credits.split(' ')[2])) * seats}/月</div>
+          <div className="text-[9px] text-foreground/30">总价 ¥{price * seats}/月</div>
         </div>
       </div>
 
-      <div className="mt-2 flex items-center justify-between px-1">
-        <div className="text-[9px] text-white/20">总积分 {parseInt(credits.split(' ')[0]) * seats}/月</div>
-        <div className="text-[9px] text-white/20">总价 ¥{price * (seats/2)}/季</div>
-      </div>
-
-      <Link 
-        to="/checkout"
-        className="mt-6 flex w-full items-center justify-center rounded-full bg-white py-3 text-sm font-black text-black transition-transform hover:scale-[1.02] active:scale-[0.98]"
-      >
-        购买 {seats} 席位
+      <Link to="/checkout">
+        <button className="mt-4 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
+          购买 {seats} 席位
+        </button>
       </Link>
 
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 space-y-6 overflow-hidden">
         {features.map((group: any) => (
-          <div key={group.title} className="space-y-4">
-            <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{group.title}</div>
-            <div className="space-y-3">
-              {group.items.map((item: any, i: number) => (
-                <div key={i} className="flex items-start justify-between text-[11px] text-white/70">
-                  <div className="flex items-center gap-2">
-                    <Check className="h-3 w-3 text-[#E6B380] shrink-0 mt-0.5" />
-                    <div>
-                      <div>{item.label}</div>
+          <div key={group.title}>
+            <div className="mb-3 text-[10px] font-medium text-foreground/40 uppercase tracking-wider">{group.title}</div>
+            <div className="space-y-2.5">
+              {group.items.map((item: any) => (
+                <div key={item.label} className="flex items-start gap-2">
+                  <Check className="mt-0.5 h-3 w-3 shrink-0 text-[#E6B380]" />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[11px] text-foreground/80">{item.label}</span>
+                      {item.tag && <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] text-green-500">新</span>}
                     </div>
                   </div>
-                  {item.tag && <span className="text-[8px] bg-green-500/20 text-green-500 px-1 rounded ml-1">新</span>}
-                  {item.value && <span className="text-[9px] text-white/40">{item.value}</span>}
-                  {item.info && <span className="text-[9px] text-white/20 border border-white/10 px-1.5 py-0.5 rounded-full flex items-center gap-1"><Info className="h-2 w-2" />{item.info}</span>}
                 </div>
               ))}
             </div>
@@ -588,7 +518,7 @@ const getPersonalFeatures = (concurrency: number, vipStyle: boolean = false) => 
       { label: "去水印导出" },
       { label: "商用授权" },
       { label: "图片视频HD超清增强", tag: "新" },
-      ...(vipStyle ? [{ label: "尊享真人画画合规生成", tag: "新" }] : []),
+      ...(vipStyle ? [{ label: "尊享真人画风合规生成", tag: "新" }] : []),
     ]
   }
 ];
@@ -606,10 +536,26 @@ const getTeamFeatures = (concurrency: number, singleModel: number, avatars: numb
   {
     title: "模型权益",
     items: [
-      { label: "大语言模型", info: "无限免费" },
-      { label: "图生成模型", value: "5-25 积分/张" },
-      { label: "视频生成模型", value: "10-25 积分/秒" },
-      { label: "对口型生成模型", value: "10-25 积分/秒" },
+      { label: "大语言模型", tag: "无限免费" },
+      { label: "图生成模型", sub: "包含 Nano Banana 2 / GPT Image 2", value: "5-25 积分/张" },
+      { label: "视频模型(480P/720P/1080P/4K)", sub: "包含 Seedance 2.5SOTA", value: "5-135 积分/秒" },
+      { label: "视频模型", sub: "包含 MiniMax H3", value: "8-39 积分/秒" },
+      { label: "视频模型", sub: "包含 其他模型", value: "12-42 积分/秒" },
+      { label: "音乐/旁白", value: "1-5 积分/生成" },
+    ]
+  },
+  {
+    title: "使用权益",
+    items: [
+      { label: `专享 Seedance 2.5 & 2.0 高并发：${concurrency}`, tag: "新" },
+      { label: "快速生成功能，单素材自由创作", tag: "新" },
+      { label: `单模型并发：${singleModel}` },
+      { label: `授权人像容量：${avatars} 个` },
+      { label: "去水印导出" },
+      { label: "商用授权" },
+      { label: "尊享真人画风合规生成", tag: "新" },
     ]
   }
 ];
+
+const TEAM_FEATURES = []; // Keep for backward compatibility if needed, but we use getTeamFeatures now
