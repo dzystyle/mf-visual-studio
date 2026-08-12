@@ -5,6 +5,7 @@ import { Link } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import { CreditPurchaseDialog } from "./subscription/CreditPurchaseDialog";
 
 export function SubscriptionDialog({
   open,
@@ -16,6 +17,7 @@ export function SubscriptionDialog({
   const [activeTab, setActiveTab] = React.useState<"personal" | "team">("team");
   const [personalCycle, setPersonalCycle] = React.useState<"month" | "year">("month");
   const [teamCycle, setTeamCycle] = React.useState<"1month" | "3month" | "1year">("1month");
+  const [showCreditPurchase, setShowCreditPurchase] = React.useState(false);
 
   const personalPlans = React.useMemo(() => {
     const multiplier = personalCycle === "year" ? 10 : 1; // Simplify for demo
@@ -58,6 +60,8 @@ export function SubscriptionDialog({
   }, [teamCycle]);
 
   return (
+    <>
+    <CreditPurchaseDialog open={showCreditPurchase} onOpenChange={setShowCreditPurchase} />
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-border bg-background p-0 text-foreground scrollbar-hide">
         <div className="relative pb-20 pt-10">
@@ -123,7 +127,10 @@ export function SubscriptionDialog({
                       连续包年 <span className="text-[#E6B380] ml-1">(赠100%积分·省17%)</span>
                     </button>
                   </div>
-                  <button className="flex items-center gap-2 text-xs text-white/60 hover:text-white">
+                  <button 
+                    onClick={() => setShowCreditPurchase(true)}
+                    className="flex items-center gap-2 text-xs text-white/60 hover:text-white"
+                  >
                     <div className="h-4 w-4 rounded bg-white/10 flex items-center justify-center">
                       <PlusIcon className="h-2 w-2" />
                     </div>
@@ -168,7 +175,10 @@ export function SubscriptionDialog({
                       1年 <span className="text-[#E6B380] ml-1">(赠100%积分·省17%)</span>
                     </button>
                   </div>
-                  <button className="flex items-center gap-2 text-xs text-white/60 hover:text-white">
+                  <button 
+                    onClick={() => setShowCreditPurchase(true)}
+                    className="flex items-center gap-2 text-xs text-white/60 hover:text-white"
+                  >
                     <div className="h-4 w-4 rounded bg-white/10 flex items-center justify-center">
                       <PlusIcon className="h-2 w-2" />
                     </div>
@@ -318,6 +328,7 @@ export function SubscriptionDialog({
         </div>
       </DialogContent>
     </Dialog>
+    </>
   );
 }
 
