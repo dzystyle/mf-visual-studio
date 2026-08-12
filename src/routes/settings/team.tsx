@@ -6,6 +6,8 @@ import { TeamOverview } from "@/components/team/TeamOverview";
 import { TeamMembers } from "@/components/team/TeamMembers";
 import { TeamStructure } from "@/components/team/TeamStructure";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BudgetFlow } from "@/components/team/BudgetFlow";
+import { ConsumptionStats } from "@/components/team/ConsumptionStats";
 
 export const Route = createFileRoute("/settings/team")({
   component: TeamManagementPage,
@@ -61,7 +63,9 @@ function TeamManagementPage() {
               {activeTab === "overview" && <TeamOverview />}
               {activeTab === "members" && <TeamMembers />}
               {activeTab === "structure" && <TeamStructure />}
-              {activeTab !== "overview" && activeTab !== "members" && activeTab !== "structure" && (
+              {activeTab === "budget" && <BudgetFlow />}
+              {activeTab === "stats" && <ConsumptionStats />}
+              {activeTab === "projects" && (
                 <div className="flex h-[400px] items-center justify-center rounded-2xl border border-border/40 bg-card/30 text-muted-foreground">
                   {tabLabels[activeTab as keyof typeof tabLabels]} 功能开发中
                 </div>
