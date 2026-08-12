@@ -332,14 +332,13 @@ function Composer({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = input.slice(0, lastAtPos);
       const after = input.slice(cursorPos);
-      newInput = `${before}@${name} ${after}`;
-      newCursorPos = before.length + name.length + 2;
+      newInput = `${before}${after}`;
+      newCursorPos = lastAtPos;
     } else {
       const before = input.slice(0, cursorPos);
       const after = input.slice(cursorPos);
-      const prefix = before.endsWith(" ") || before === "" ? "" : " ";
-      newInput = `${before}${prefix}@${name} ${after}`;
-      newCursorPos = before.length + prefix.length + name.length + 2;
+      newInput = `${before}${after}`;
+      newCursorPos = cursorPos;
     }
 
     setInput(newInput);
@@ -353,10 +352,8 @@ function Composer({
     
     setMentionOpen(false);
     
-    // Add to mentions list for visual chip display below input
-    if (!mentions.find((a: any) => a.url === url)) {
-      setMentions((prev: any) => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
-    }
+    // Check if it's already in attachments (it should be, since mentions comes from attachments)
+    // We only want to show the image in the top attachments row, not as a chip below input
   };
 
   const onFiles = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -508,25 +505,7 @@ function Composer({
           <input ref={fileInputRef} type="file" multiple className="hidden" accept="image/*,video/*" onChange={onFiles} />
         </div>
 
-        {/* Row 2: Selected Mention Chips */}
-        {mentions.length > 0 && (
-          <div className="mb-2 flex flex-wrap gap-2">
-            {mentions.map((a: any) => (
-              <div key={a.id} className="inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
-                <div className="h-4 w-4 rounded overflow-hidden border border-white/10">
-                  <img src={a.url} alt="" className="w-full h-full object-cover" />
-                </div>
-                <span>{a.name}</span>
-                <button 
-                  onClick={() => setMentions((prev: any) => prev.filter((x: any) => x.id !== a.id))}
-                  className="hover:text-white transition-colors"
-                >
-                  <Plus className="h-3 w-3 rotate-45 text-muted-foreground" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Row 2: Selected Mention Chips - REMOVED per user request to avoid duplication */}
 
         {/* Row 3: Textarea + Mention Popover */}
         <div className="relative">
