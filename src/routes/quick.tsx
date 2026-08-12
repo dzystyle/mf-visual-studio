@@ -527,24 +527,60 @@ function Composer({
               ))}
             </div>
           )}
-          <textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-              setCursorPos(e.target.selectionStart);
-            }}
-            onKeyUp={(e) => setCursorPos((e.target as HTMLTextAreaElement).selectionStart)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                onSubmit();
-              }
-            }}
-            rows={2}
-            placeholder="使用@快速调用参考能力，支持文本、图片、音频、视频全能参考，例如：@图片1参考 @音频1的音色，模仿@视频1的动作"
-            className="min-h-[60px] w-full resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none"
-          />
+          
+          <div className="relative min-h-[60px] w-full text-sm">
+            {/* The actual textarea for input */}
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value);
+                setCursorPos(e.target.selectionStart);
+              }}
+              onKeyUp={(e) => setCursorPos((e.target as HTMLTextAreaElement).selectionStart)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  onSubmit();
+                }
+              }}
+              rows={2}
+              placeholder="使用@快速调用参考能力，支持文本、图片、音频、视频全能参考，例如：@图片1参考 @音频1的音色，模仿@视频1的动作"
+              className="absolute inset-0 w-full resize-none bg-transparent text-foreground placeholder:text-muted-foreground/40 focus:outline-none z-10"
+            />
+            
+            {/* The overlay layer to render chips at @ positions */}
+            <div className="pointer-events-none invisible whitespace-pre-wrap break-words pr-[2px]">
+              {input.split("").map((char, index) => {
+                const mention = mentions.find(m => m.position === index);
+                return (
+                  <span key={index} className="relative inline">
+                    {mention && (
+                      <span className="pointer-events-auto inline-flex items-center gap-1.5 rounded-lg bg-white/10 border border-white/5 pl-1 pr-1.5 py-0.5 text-[11px] text-white/90 align-middle mx-0.5 ring-1 ring-white/10 shadow-sm backdrop-blur-sm">
+                        <div className="h-3.5 w-3.5 rounded-sm overflow-hidden border border-white/10">
+                          <img src={mention.url} alt="" className="w-full h-full object-cover" />
+                        </div>
+                        <span className="max-w-[80px] truncate">{mention.name}</span>
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setMentions(prev => prev.filter(x => x.id !== mention.id));
+                          }}
+                          className="hover:text-white transition-colors"
+                        >
+                          <Plus className="h-2.5 w-2.5 rotate-45 text-muted-foreground" />
+                        </button>
+                      </span>
+                    )}
+                    <span className={mention ? "opacity-0" : ""}>{char}</span>
+                  </span>
+                );
+              })}
+              {/* Ensure trailing space doesn't collapse */}
+              {input.endsWith(" ") && <span className="inline-block w-[0.1px]">&nbsp;</span>}
+            </div>
+          </div>
           
           {mentionOpen && (
             <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[99999] animate-in fade-in slide-in-from-bottom-2 duration-200">
