@@ -312,7 +312,10 @@ export function PromptBox({
             {!isMini && (
               <Popover open={plusOpen} onOpenChange={setPlusOpen}>
                 <PopoverTrigger asChild>
-                  <button className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent transition-colors">
+                  <button 
+                    type="button"
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent transition-colors relative z-10"
+                  >
                     <Plus className="h-4 w-4" />
                   </button>
                 </PopoverTrigger>
