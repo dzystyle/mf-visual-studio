@@ -197,7 +197,6 @@ function QuickPage() {
                 setMentions={setMentions}
               />
             </div>
-            </div>
           )}
         </div>
       </section>
