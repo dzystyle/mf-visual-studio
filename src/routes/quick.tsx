@@ -332,13 +332,12 @@ function Composer({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = input.slice(0, lastAtPos);
       const after = input.slice(cursorPos);
-      newInput = `${before}${after}`;
-      newCursorPos = before.length;
+      // Remove the @mention text entirely from input
+      newInput = `${before.trimEnd()}${after.startsWith(" ") ? after : " " + after}`.trim();
+      newCursorPos = before.trimEnd().length;
     } else {
-      const before = input.slice(0, cursorPos);
-      const after = input.slice(cursorPos);
-      newInput = `${before}${after}`;
-      newCursorPos = before.length;
+      newInput = input;
+      newCursorPos = cursorPos;
     }
 
     setInput(newInput);
