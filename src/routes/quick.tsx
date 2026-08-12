@@ -332,9 +332,11 @@ function Composer({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = input.slice(0, lastAtPos);
       const after = input.slice(cursorPos);
-      // Remove the @mention text entirely from input
-      newInput = `${before.trimEnd()}${after.startsWith(" ") ? after : " " + after}`.trim();
-      newCursorPos = before.trimEnd().length;
+      
+      // We'll insert a special marker or just empty space
+      // For this 1:1 UI, we need the chip to appear at this position
+      newInput = `${before}${after.startsWith(" ") ? after : " " + after}`;
+      newCursorPos = before.length;
     } else {
       newInput = input;
       newCursorPos = cursorPos;
@@ -351,10 +353,8 @@ function Composer({
     
     setMentionOpen(false);
     
-    // Add to mentions list for visual chip display below input
-    if (!mentions.find((a: any) => a.url === url)) {
-      setMentions((prev: any) => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
-    }
+    // Add to mentions list with its character position
+    setMentions((prev) => [...prev, { id: `${Date.now()}-${name}`, name, url, position: lastAtPos }]);
   };
 
   const onFiles = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
