@@ -528,14 +528,13 @@ function Composer({
           )}
           
           <div className="relative min-h-[60px] w-full text-sm">
-            {/* The overlay layer to render chips at @ positions */}
-            <div className="absolute inset-0 pointer-events-none whitespace-pre-wrap break-words text-transparent selection:bg-aurora-purple/30">
+            <div className="absolute inset-0 pointer-events-none whitespace-pre-wrap break-words text-transparent font-sans leading-relaxed">
               {input.split("").map((char, index) => {
                 const mention = mentions.find(m => m.position === index);
                 if (mention) {
                   return (
                     <span key={index} className="inline-flex items-center align-middle mx-0.5">
-                      <span className="pointer-events-auto inline-flex items-center gap-1.5 rounded-lg bg-[#2A2A2A] border border-white/10 pl-1 pr-1.5 py-0.5 text-[11px] text-white/90 shadow-sm">
+                      <span className="pointer-events-auto inline-flex items-center gap-1.5 rounded-lg bg-[#2A2A2A] border border-white/10 pl-1 pr-1.5 py-0.5 text-[11px] text-white/90 shadow-sm leading-none">
                         <div className="h-3.5 w-3.5 rounded-sm overflow-hidden border border-white/10">
                           <img src={mention.url} alt="" className="w-full h-full object-cover" />
                         </div>
@@ -574,7 +573,7 @@ function Composer({
               }}
               rows={2}
               placeholder="使用@快速调用参考能力，支持文本、图片、音频、视频全能参考，例如：@图片1参考 @音频1的音色，模仿@视频1的动作"
-              className="relative w-full min-h-[60px] resize-none bg-transparent text-foreground placeholder:text-muted-foreground/40 focus:outline-none z-10"
+              className="relative w-full min-h-[60px] resize-none bg-transparent text-foreground placeholder:text-muted-foreground/40 focus:outline-none z-10 font-sans leading-relaxed"
             />
           </div>
           
