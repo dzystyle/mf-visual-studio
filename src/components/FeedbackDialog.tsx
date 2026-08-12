@@ -1,5 +1,5 @@
 import * as React from "react";
-import { X, MessageSquare, Link as LinkIcon, Mail, Check } from "lucide-react";
+import { X, MessageSquare, Link as LinkIcon, Mail, Check, ExternalLink, ChevronDown, ArrowUp, ArrowLeft, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,8 +14,12 @@ interface FeedbackDialogProps {
 }
 
 export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
-  const [view, setView] = React.useState<"list" | "form" | "success">("list");
+  const [view, setView] = React.useState<"list" | "form" | "success" | "detail">("list");
   const [type, setType] = React.useState<string>("建议");
+  const [messages, setMessages] = React.useState<Array<{role: 'user' | 'system', content: string}>>([
+    { role: 'user', content: '这个计费是怎么计算的' }
+  ]);
+  const [input, setInput] = React.useState("");
 
   // Reset view when opening
   React.useEffect(() => {
@@ -27,59 +31,88 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
     setView("success");
   };
 
+  const handleSendMessage = () => {
+    if (!input.trim()) return;
+    setMessages([...messages, { role: 'user', content: input }]);
+    setInput("");
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={cn(
         "border-border bg-popover text-popover-foreground overflow-hidden transition-all duration-300",
-        view === "success" ? "max-w-[400px] p-0 rounded-[32px]" : "max-w-[800px] p-0"
+        view === "success" ? "max-w-[400px] p-0 rounded-[32px]" : "max-w-[1000px] p-0"
       )}>
         {view === "list" ? (
-          <div className="flex flex-col min-h-[500px]">
+          <div className="flex flex-col min-h-[600px]">
             <div className="p-6 flex items-center justify-between border-b border-border">
               <div>
-                <h2 className="text-xl font-bold">反馈记录</h2>
+                <h2 className="text-2xl font-bold">反馈记录</h2>
                 <p className="text-sm text-muted-foreground mt-1">查看你的反馈进展与官方回复</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <Button 
                   onClick={() => setView("form")}
-                  className="rounded-full bg-foreground text-background hover:bg-foreground/90 px-6 h-9"
+                  className="rounded-full bg-white text-black hover:bg-white/90 px-6 h-10 font-medium"
                 >
                   + 提交新反馈
                 </Button>
                 <button 
                   onClick={() => onOpenChange(false)}
-                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-foreground/5 text-muted-foreground transition-colors"
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-muted-foreground transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
             
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-8">
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   排序
-                  <select className="bg-transparent border-none focus:ring-0 text-foreground cursor-pointer font-medium p-0">
-                    <option>最新互动优先</option>
-                  </select>
+                  <div className="flex items-center gap-1 bg-white/5 px-3 py-1.5 rounded-lg text-foreground cursor-pointer hover:bg-white/10 transition-colors">
+                    最新互动优先
+                    <ChevronDown className="w-4 h-4 opacity-50" />
+                  </div>
                 </div>
-                <div className="text-sm text-muted-foreground">共 0 条</div>
+                <div className="text-sm text-muted-foreground bg-white/5 px-3 py-1 rounded-full">共 1 条</div>
               </div>
               
-              <div className="flex flex-col items-center justify-center py-20 opacity-40">
-                <div className="w-16 h-16 rounded-full bg-foreground/5 flex items-center justify-center mb-4">
-                  <MessageSquare className="w-8 h-8" />
-                </div>
-                <p className="text-lg font-medium">还没有反馈记录</p>
-                <p className="text-sm mt-1">提交反馈后，你可以在这里查看处理进展和官方回复。</p>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setView("form")}
-                  className="mt-6 rounded-full px-8 h-10"
+              <div className="space-y-4">
+                <div 
+                  onClick={() => setView("detail")}
+                  className="group bg-[#1A1A1A] border border-white/5 rounded-2xl p-6 cursor-pointer hover:border-white/20 transition-all"
                 >
-                  + 提交新反馈
-                </Button>
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-md text-[13px] text-muted-foreground">
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        问题反馈
+                      </div>
+                      <span className="text-[13px] text-muted-foreground">建议</span>
+                    </div>
+                    <span className="text-[13px] text-muted-foreground">8月12日 09:35</span>
+                  </div>
+                  
+                  <div className="text-lg font-medium mb-6">生成的视频怎么这么贵</div>
+                  
+                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                    <div className="text-[13px] text-muted-foreground flex items-center gap-1">
+                      《超能替罪羊》剧本视频制作
+                    </div>
+                    <div className="flex items-center gap-1 text-[13px] text-muted-foreground group-hover:text-white transition-colors">
+                      查看项目 <ExternalLink className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6 flex items-center gap-2 text-[13px] text-muted-foreground">
+                    <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
+                      <MessageSquare className="w-3 h-3" />
+                    </div>
+                    回复这条反馈
+                    <ChevronDown className="w-4 h-4 ml-auto opacity-50" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -168,6 +201,114 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
               </div>
             </form>
           </div>
+        ) : view === "detail" ? (
+          <div className="flex flex-col h-[700px]">
+            <div className="p-6 flex items-center justify-between border-b border-border">
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => setView("list")}
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  返回反馈记录
+                </button>
+              </div>
+              <button 
+                onClick={() => onOpenChange(false)}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-muted-foreground transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-8 space-y-8">
+              <h2 className="text-4xl font-bold mb-8">反馈对话</h2>
+
+              {/* Original Feedback Card */}
+              <div className="bg-[#1A1A1A] border border-white/5 rounded-3xl p-8 max-w-[800px]">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-md text-[13px] text-muted-foreground">
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      建议
+                    </div>
+                    <div className="bg-white/10 text-white text-[13px] px-2.5 py-1 rounded-md">
+                      处理中
+                    </div>
+                  </div>
+                  <span className="text-[13px] text-muted-foreground">8月12日 09:35</span>
+                </div>
+                
+                <div className="text-xl font-medium mb-8">生成的视频怎么这么贵</div>
+                
+                <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                  <div className="text-[13px] text-muted-foreground flex items-center gap-1">
+                    《超能替罪羊》剧本视频制作
+                  </div>
+                  <div className="flex items-center gap-1 text-[13px] text-muted-foreground cursor-pointer hover:text-white transition-colors">
+                    查看项目 <ExternalLink className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Messages */}
+              <div className="space-y-6">
+                {messages.map((msg, i) => (
+                  <div 
+                    key={i} 
+                    className={cn(
+                      "flex items-end gap-3",
+                      msg.role === 'user' ? "flex-row-reverse" : "flex-row"
+                    )}
+                  >
+                    <div className={cn(
+                      "w-10 h-10 rounded-full flex items-center justify-center shrink-0",
+                      msg.role === 'user' ? "bg-white/10" : "bg-blue-500/20"
+                    )}>
+                      {msg.role === 'user' ? <User className="w-5 h-5" /> : <div className="text-xs font-bold text-blue-400">MF</div>}
+                    </div>
+                    <div className={cn(
+                      "max-w-[80%] px-4 py-2.5 rounded-2xl text-[15px]",
+                      msg.role === 'user' ? "bg-[#2A2A2A] text-white" : "bg-[#1A1A1A] border border-white/5 text-muted-foreground"
+                    )}>
+                      {msg.content}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Input Area */}
+            <div className="p-8 pt-0">
+              <div className="relative group">
+                <textarea 
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                  placeholder="补充更多信息，或回复 Artrail 团队..."
+                  className="w-full bg-[#1A1A1A] border border-white/5 rounded-[24px] py-6 px-8 text-base focus:outline-none focus:border-white/20 transition-all min-h-[120px] resize-none pr-16"
+                />
+                <button 
+                  onClick={handleSendMessage}
+                  disabled={!input.trim()}
+                  className={cn(
+                    "absolute right-6 bottom-6 w-10 h-10 rounded-full flex items-center justify-center transition-all",
+                    input.trim() ? "bg-white text-black" : "bg-white/5 text-muted-foreground"
+                  )}
+                >
+                  <ArrowUp className="w-5 h-5" />
+                </button>
+                <div className="absolute right-8 top-[90px] text-[13px] text-muted-foreground opacity-50">
+                  {input.length}/5000
+                </div>
+              </div>
+            </div>
+          </div>
         ) : (
           <div className="relative p-10 flex flex-col items-center justify-center text-center">
             <button 
@@ -202,4 +343,5 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
     </Dialog>
   );
 }
+
 
