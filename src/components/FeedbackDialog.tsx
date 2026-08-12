@@ -41,8 +41,8 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={cn(
-        "border-border bg-popover text-popover-foreground overflow-hidden transition-all duration-300",
-        view === "success" ? "max-w-[400px] p-0 rounded-[32px]" : "max-w-[1000px] p-0"
+        "border-border bg-popover text-popover-foreground overflow-hidden transition-all duration-300 !p-0",
+        view === "success" ? "max-w-[400px] rounded-[32px]" : "max-w-[1000px]"
       )}>
         {view === "list" ? (
           <div className="flex flex-col min-h-[600px]">
@@ -60,7 +60,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                 </Button>
                 <button 
                   onClick={() => onOpenChange(false)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-muted-foreground transition-colors"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -218,7 +218,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                 </div>
                 <button 
                   onClick={() => onOpenChange(false)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-muted-foreground transition-colors"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
