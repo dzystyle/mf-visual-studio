@@ -506,28 +506,27 @@ function Composer({
           <input ref={fileInputRef} type="file" multiple className="hidden" accept="image/*,video/*" onChange={onFiles} />
         </div>
 
-        {/* Row 2: Selected Mention Chips */}
-        {mentions.length > 0 && (
-          <div className="mb-2 flex flex-wrap gap-2">
-            {mentions.map((a: any) => (
-              <div key={a.id} className="inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
-                <div className="h-4 w-4 rounded overflow-hidden border border-white/10">
-                  <img src={a.url} alt="" className="w-full h-full object-cover" />
-                </div>
-                <span>{a.name}</span>
-                <button 
-                  onClick={() => setMentions((prev: any) => prev.filter((x: any) => x.id !== a.id))}
-                  className="hover:text-white transition-colors"
-                >
-                  <Plus className="h-3 w-3 rotate-45 text-muted-foreground" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
 
         {/* Row 3: Textarea + Mention Popover */}
-        <div className="relative z-50">
+        <div className="relative z-50 flex flex-col gap-2">
+          {mentions.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {mentions.map((a: any) => (
+                <div key={a.id} className="inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
+                  <div className="h-4 w-4 rounded overflow-hidden border border-white/10">
+                    <img src={a.url} alt="" className="w-full h-full object-cover" />
+                  </div>
+                  <span>{a.name}</span>
+                  <button 
+                    onClick={() => setMentions((prev: any) => prev.filter((x: any) => x.id !== a.id))}
+                    className="hover:text-white transition-colors"
+                  >
+                    <Plus className="h-3 w-3 rotate-45 text-muted-foreground" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
           <textarea
             ref={textareaRef}
             value={input}
