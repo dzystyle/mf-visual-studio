@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { X, Check, Play, Info, ChevronDown, Minus, Plus as PlusIcon, HelpCircle, MessageSquare } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
@@ -352,9 +353,11 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
         ))}
       </div>
 
-      <button className="mt-6 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
-        立即订阅
-      </button>
+      <Link to="/checkout">
+        <button className="mt-6 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
+          立即订阅
+        </button>
+      </Link>
 
       <div className="mt-8 space-y-6 overflow-hidden">
         {features.map((group: any) => (
@@ -424,9 +427,11 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
         </div>
       </div>
 
-      <button className="mt-4 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
-        购买 {seats} 席位
-      </button>
+      <Link to="/checkout">
+        <button className="mt-4 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
+          购买 {seats} 席位
+        </button>
+      </Link>
 
       <div className="mt-8 space-y-6 overflow-hidden">
         {features.map((group: any) => (
