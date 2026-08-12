@@ -6,7 +6,9 @@ import {
   Coins, 
   FileText, 
   Tag, 
+  Ticket,
   Key, 
+
   ShieldCheck, 
   FileLock2, 
   LogOut,
@@ -28,7 +30,9 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
     { id: 'credits', label: '积分详情', icon: Coins, path: '/settings/billing', search: { tab: 'credits' } },
     { id: 'invoices', label: '订单发票', icon: FileText, path: '/settings/billing', search: { tab: 'invoices' } },
     { id: 'pricing', label: '价格详情', icon: Tag, path: '/settings/billing', search: { tab: 'pricing' } },
+    { id: 'redeem', label: '兑换码', icon: Ticket, path: '/settings/redeem' },
     { id: 'api', label: '平台 API 密钥', icon: Key, path: '/settings/account' },
+
     { separator: true },
     { id: 'terms', label: '使用条款', icon: ShieldCheck, path: '/settings/account' },
     { id: 'privacy', label: '隐私政策', icon: FileLock2, path: '/settings/account' },
