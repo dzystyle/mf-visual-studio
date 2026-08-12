@@ -1,6 +1,6 @@
 # MF Video Studio
 
-我要设计一个MF视频生成的网站,以你资深UI设计师的角度深度思考一下,1比1还原上面的所有页面和功能.
+灵犀AI
 
 This project was built with [Lovable](https://lovable.dev).
 
