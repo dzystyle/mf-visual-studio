@@ -16,6 +16,7 @@ import { Route as ScriptRouteImport } from './routes/script'
 import { Route as QuickRouteImport } from './routes/quick'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ElementsRouteImport } from './routes/elements'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SettingsTeamRouteImport } from './routes/settings/team'
@@ -59,6 +60,11 @@ const ElementsRoute = ElementsRouteImport.update({
   path: '/elements',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -97,6 +103,7 @@ const SettingsAccountRoute = SettingsAccountRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/checkout': typeof CheckoutRoute
   '/elements': typeof ElementsRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/checkout': typeof CheckoutRoute
   '/elements': typeof ElementsRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
@@ -130,6 +138,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/checkout': typeof CheckoutRoute
   '/elements': typeof ElementsRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/checkout'
     | '/elements'
     | '/projects'
     | '/quick'
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/checkout'
     | '/elements'
     | '/projects'
     | '/quick'
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/checkout'
     | '/elements'
     | '/projects'
     | '/quick'
@@ -197,6 +209,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CheckoutRoute: typeof CheckoutRoute
   ElementsRoute: typeof ElementsRoute
   ProjectsRoute: typeof ProjectsRoute
   QuickRoute: typeof QuickRoute
@@ -263,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ElementsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -317,6 +337,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CheckoutRoute: CheckoutRoute,
   ElementsRoute: ElementsRoute,
   ProjectsRoute: ProjectsRoute,
   QuickRoute: QuickRoute,
