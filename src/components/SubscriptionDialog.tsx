@@ -17,6 +17,46 @@ export function SubscriptionDialog({
   const [personalCycle, setPersonalCycle] = React.useState<"month" | "year">("month");
   const [teamCycle, setTeamCycle] = React.useState<"1month" | "3month" | "1year">("1month");
 
+  const personalPlans = React.useMemo(() => {
+    const multiplier = personalCycle === "year" ? 10 : 1; // Simplify for demo
+    const discount = personalCycle === "year" ? 0.83 : 1;
+    
+    return [
+      { name: "Starter", basePrice: 140, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 10 },
+      { name: "Basic", basePrice: 350, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 20 },
+      { name: "Plus", basePrice: 700, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 50, vip: true },
+      { name: "Pro", basePrice: 1400, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 80, vip: true },
+    ].map(plan => ({
+      ...plan,
+      price: Math.round(plan.basePrice * discount),
+      credits: `${plan.baseCredits * (personalCycle === "year" ? 2 : 1.5)} + ${plan.extra}`
+    }));
+  }, [personalCycle]);
+
+  const teamPlans = React.useMemo(() => {
+    let multiplier = 1;
+    let discount = 1;
+    
+    if (teamCycle === "3month") {
+      multiplier = 3.5; // Demo values
+      discount = 0.95;
+    } else if (teamCycle === "1year") {
+      multiplier = 14;
+      discount = 0.83;
+    }
+
+    return [
+      { name: "Starter Team", basePrice: 160, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 20, single: 7, avatars: 5 },
+      { name: "Basic Team", basePrice: 400, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 40, single: 10, avatars: 10 },
+      { name: "Plus Team", basePrice: 800, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 80, single: 15, avatars: 20 },
+      { name: "Pro Team", basePrice: 1600, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 100, single: 20, avatars: 30 },
+    ].map(plan => ({
+      ...plan,
+      price: Math.round(plan.basePrice * (teamCycle === "1year" ? 0.83 : 1)), // Use month unit price for card
+      credits: `${Math.round(plan.baseCredits * (teamCycle === "1year" ? 2 : 1.5))} + ${plan.extra}`
+    }));
+  }, [teamCycle]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-border bg-background p-0 text-foreground scrollbar-hide">
@@ -92,34 +132,16 @@ export function SubscriptionDialog({
                 </div>
 
                 <div className="grid grid-cols-4 gap-4">
-                  <PersonalCard 
-                    name="Starter" 
-                    price={140} 
-                    credits="2000 + 400" 
-                    bonus="多送20%" 
-                    features={getPersonalFeatures(10)} 
-                  />
-                  <PersonalCard 
-                    name="Basic" 
-                    price={350} 
-                    credits="5000 + 1500" 
-                    bonus="多送30%" 
-                    features={getPersonalFeatures(20)}
-                  />
-                  <PersonalCard 
-                    name="Plus" 
-                    price={700} 
-                    credits="10000 + 4000" 
-                    bonus="多送40%" 
-                    features={getPersonalFeatures(50, true)}
-                  />
-                  <PersonalCard 
-                    name="Pro" 
-                    price={1400} 
-                    credits="20000 + 10000" 
-                    bonus="多送50%" 
-                    features={getPersonalFeatures(80, true)}
-                  />
+                  {personalPlans.map(plan => (
+                    <PersonalCard 
+                      key={plan.name}
+                      name={plan.name} 
+                      price={plan.price} 
+                      credits={plan.credits} 
+                      bonus={plan.bonus} 
+                      features={getPersonalFeatures(plan.concurrency, plan.vip)} 
+                    />
+                  ))}
                 </div>
               </>
             ) : (
@@ -155,34 +177,16 @@ export function SubscriptionDialog({
                 </div>
 
                 <div className="grid grid-cols-4 gap-4">
-                  <TeamCard 
-                    name="Starter Team" 
-                    price={160} 
-                    credits="2000 + 400" 
-                    bonus="多送20%" 
-                    features={getTeamFeatures(20, 7, 5)}
-                  />
-                  <TeamCard 
-                    name="Basic Team" 
-                    price={400} 
-                    credits="5000 + 1500" 
-                    bonus="多送30%" 
-                    features={getTeamFeatures(40, 10, 10)}
-                  />
-                  <TeamCard 
-                    name="Plus Team" 
-                    price={800} 
-                    credits="10000 + 4000" 
-                    bonus="多送40%" 
-                    features={getTeamFeatures(80, 15, 20)}
-                  />
-                  <TeamCard 
-                    name="Pro Team" 
-                    price={1600} 
-                    credits="20000 + 10000" 
-                    bonus="多送50%" 
-                    features={getTeamFeatures(100, 20, 30)}
-                  />
+                  {teamPlans.map(plan => (
+                    <TeamCard 
+                      key={plan.name}
+                      name={plan.name} 
+                      price={plan.price} 
+                      credits={plan.credits} 
+                      bonus={plan.bonus} 
+                      features={getTeamFeatures(plan.concurrency, plan.single, plan.avatars)}
+                    />
+                  ))}
                 </div>
               </>
             )}
