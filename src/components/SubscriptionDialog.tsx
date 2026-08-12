@@ -105,6 +105,32 @@ export function SubscriptionDialog({
           </div>
 
           <div className="mx-auto mt-8 max-w-[1100px] px-6">
+            {activeTab === "personal" ? (
+              <>
+                {/* Personal Toggle */}
+                <div className="mb-8 flex justify-center items-center gap-6">
+                  <div className="flex items-center gap-4 rounded-full bg-white/5 p-1">
+                    <button 
+                      onClick={() => setPersonalCycle("month")}
+                      className={cn("rounded-full px-4 py-1.5 text-xs transition", personalCycle === "month" ? "bg-white/10 text-white" : "text-white/40")}
+                    >
+                      连续包月 <span className="text-[#E6B380] ml-1">(赠50%积分)</span>
+                    </button>
+                    <button 
+                      onClick={() => setPersonalCycle("year")}
+                      className={cn("rounded-full px-4 py-1.5 text-xs transition", personalCycle === "year" ? "bg-white/10 text-white" : "text-white/40")}
+                    >
+                      连续包年 <span className="text-[#E6B380] ml-1">(赠100%积分·省17%)</span>
+                    </button>
+                  </div>
+                  <button className="flex items-center gap-2 text-xs text-white/60 hover:text-white">
+                    <div className="h-4 w-4 rounded bg-white/10 flex items-center justify-center">
+                      <PlusIcon className="h-2 w-2" />
+                    </div>
+                    个人版会员积分购买
+                  </button>
+                </div>
+
                 <div className="grid grid-cols-4 gap-4">
                   {personalPlans.map(plan => (
                     <PersonalCard 
