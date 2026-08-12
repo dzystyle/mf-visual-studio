@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 
 export function TopBar({ title }: { title?: string }) {
   return (
-    <div className="absolute right-6 top-4 z-20 flex items-center gap-3">
+    <div className="absolute right-6 top-4 z-50 flex items-center gap-3">
       <button className="flex items-center gap-2 rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-xs text-foreground backdrop-blur hover:bg-card">
         <BookOpen className="h-3.5 w-3.5 text-aurora-orange" />
         <span className="font-medium">全新 Artrail 1.0 使用教程</span>
