@@ -198,7 +198,7 @@ function QuickPage() {
               />
             </div>
             )}
-          </div>
+          )}
         </div>
       </section>
     </div>
