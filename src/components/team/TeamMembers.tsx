@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Search, RefreshCw, UserPlus, UserCheck, ShieldCheck, MoreHorizontal, Copy, Trash2, Link as LinkIcon, Clock } from "lucide-react";
+import { Search, RefreshCw, UserPlus, UserCheck, ShieldCheck, MoreHorizontal, Copy, Trash2, Link as LinkIcon, Clock, Check, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,11 +14,19 @@ import { toast } from "sonner";
 // --- Team Members Tab ---
 
 export function TeamMembers() {
+  const members = [
+    { id: 1, name: "Zhangyu_4n6h", email: "zy28511116@gmail.com", role: "所有者", type: "内部", initial: "Z", limit: "无额度限制" },
+    { id: 2, name: "猫咪", email: "t1@aaa.com", role: "成员", type: "内部", initial: "猫", limit: "无额度限制" },
+    { id: 3, name: "猫咪2", email: "t3@aaa.com", role: "成员", type: "内部", initial: "猫", limit: "无额度限制" },
+    { id: 4, name: "猫咪3", email: "t6@aaa.com", role: "成员", type: "内部", initial: "猫", limit: "无额度限制" },
+    { id: 5, name: "aaa22", email: "a22@aaa.com", role: "成员", type: "内部", initial: "A", limit: "无额度限制" },
+  ];
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium text-foreground/80">
-          团队积分: <span className="font-bold text-foreground ml-1">0 / 0 积分</span>
+          团队积分: <span className="font-bold text-foreground ml-1">0 / 70 积分</span>
         </div>
         
         <div className="flex items-center gap-2">
@@ -29,49 +37,128 @@ export function TeamMembers() {
               className="h-9 w-48 bg-muted/30 pl-9 text-xs border-border/50 focus-visible:ring-primary/20"
             />
           </div>
-          <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs border-border/50">
+          <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs border-border/50 bg-card/50">
             <RefreshCw className="h-3.5 w-3.5" />
             刷新
           </Button>
           <InviteInternalButton />
-          <Button size="sm" className="h-9 gap-1.5 text-xs bg-primary hover:bg-primary/90">
-            <UserPlus className="h-3.5 w-3.5" />
+          <Button size="sm" className="h-9 gap-1.5 text-xs bg-primary hover:bg-primary/90 text-white font-bold px-4">
             邀请外部成员
           </Button>
           <InviteManagementButton />
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border/50 bg-card/30 p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-primary font-bold">
-              D
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm font-bold text-foreground">D</span>
-                <span className="text-amber-500">👑</span>
-                <span className="rounded bg-muted/50 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">内部</span>
+      <div className="space-y-3">
+        {members.map((member) => (
+          <div key={member.id} className="rounded-2xl border border-border/40 bg-card/20 p-4 px-6 hover:bg-card/40 transition-colors">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className={cn(
+                  "flex h-10 w-10 items-center justify-center rounded-full font-bold text-sm",
+                  member.role === "所有者" ? "bg-primary/20 text-primary" : "bg-muted/40 text-muted-foreground"
+                )}>
+                  {member.initial}
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[15px] font-bold text-foreground">{member.name}</span>
+                    {member.role === "所有者" && <span className="text-amber-500 text-xs">👑</span>}
+                    <span className="rounded bg-muted/40 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground/80 uppercase tracking-tight">内部</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground/70">{member.email}</span>
+                </div>
               </div>
-              <span className="text-xs text-muted-foreground">dzystyle@163.com</span>
-            </div>
-          </div>
 
-          <div className="flex items-center gap-12">
-            <div className="flex flex-col gap-1 w-48">
-              <div className="flex justify-between text-[10px] text-muted-foreground font-medium uppercase tracking-wider">
-                <span>无额度限制</span>
-                <span>∞</span>
-              </div>
-              <div className="h-1.5 w-full rounded-full bg-muted/30 overflow-hidden">
-                <div className="h-full w-full bg-primary/60" />
+              <div className="flex items-center gap-12">
+                <div className="flex flex-col gap-1 w-48">
+                  <div className="flex justify-between text-[10px] text-muted-foreground font-bold uppercase tracking-wide">
+                    <span>{member.limit}</span>
+                    <span>∞</span>
+                  </div>
+                  <div className="h-1 w-full rounded-full bg-muted/20 overflow-hidden">
+                    <div className="h-full w-full bg-primary/40 rounded-full" />
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  {member.role === "所有者" ? (
+                    <span className="text-sm font-bold text-muted-foreground w-20 text-center">所有者</span>
+                  ) : (
+                    <div className="flex items-center gap-4">
+                      <Button variant="ghost" size="sm" className="h-8 gap-1 text-xs font-bold text-muted-foreground hover:bg-transparent px-0">
+                        成员 <ChevronDown className="h-3 w-3" />
+                      </Button>
+                      <div className="flex items-center gap-3">
+                        <button className="text-[12px] font-bold text-primary hover:opacity-80 transition-opacity">额度设置</button>
+                        <button className="text-[12px] font-bold text-muted-foreground hover:text-foreground transition-colors">移除成员</button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-            <span className="text-sm font-medium text-muted-foreground">所有者</span>
           </div>
-        </div>
+        ))}
       </div>
+    </div>
+  );
+}
+
+export function TeamApproval() {
+  const pendingApprovals = [
+    { id: 1, name: "待审核用户1", email: "pending1@example.com", time: "1小时前", initial: "待" },
+    { id: 2, name: "待审核用户2", email: "pending2@example.com", time: "3小时前", initial: "待" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-bold text-foreground">待审核加入请求</h3>
+        <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs border-border/50">
+          <RefreshCw className="h-3 w-3" />
+          刷新
+        </Button>
+      </div>
+
+      {pendingApprovals.length > 0 ? (
+        <div className="space-y-3">
+          {pendingApprovals.map((req) => (
+            <div key={req.id} className="rounded-2xl border border-border/40 bg-card/20 p-4 px-6 hover:bg-card/40 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted/40 text-muted-foreground font-bold text-sm">
+                    {req.initial}
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[15px] font-bold text-foreground">{req.name}</span>
+                      <span className="text-[10px] text-muted-foreground font-medium bg-muted/20 px-1.5 py-0.5 rounded">通过链接邀请</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground/70">{req.email} • {req.time}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="sm" className="h-9 px-4 gap-1.5 text-xs font-bold text-destructive hover:bg-destructive/10">
+                    <X className="h-4 w-4" />
+                    拒绝
+                  </Button>
+                  <Button size="sm" className="h-9 px-4 gap-1.5 text-xs font-bold bg-primary hover:bg-primary/90 text-white">
+                    <Check className="h-4 w-4" />
+                    同意加入
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-20 border border-dashed border-border/40 rounded-2xl bg-card/5">
+          <UserPlus className="h-10 w-10 text-muted-foreground/30 mb-4" />
+          <p className="text-sm text-muted-foreground font-medium">暂无待审核的加入请求</p>
+        </div>
+      )}
     </div>
   );
 }

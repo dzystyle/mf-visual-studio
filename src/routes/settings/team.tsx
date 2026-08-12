@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { TopBar } from "@/components/TopBar";
 import { Sidebar } from "@/components/Sidebar";
 import { TeamOverview } from "@/components/team/TeamOverview";
-import { TeamMembers } from "@/components/team/TeamMembers";
+import { TeamMembers, TeamApproval } from "@/components/team/TeamMembers";
 import { TeamStructure } from "@/components/team/TeamStructure";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BudgetFlow } from "@/components/team/BudgetFlow";
@@ -20,6 +20,7 @@ function TeamManagementPage() {
   const tabLabels = {
     overview: "团队概览",
     members: "团队成员",
+    approval: "加入审核",
     structure: "组织架构",
     projects: "项目成员",
     budget: "预算流水",
@@ -45,6 +46,7 @@ function TeamManagementPage() {
               {[
                 { id: "overview", label: "团队概览" },
                 { id: "members", label: "团队成员" },
+                { id: "approval", label: "加入审核" },
                 { id: "structure", label: "组织架构" },
                 { id: "projects", label: "项目成员" },
                 { id: "budget", label: "预算流水" },
@@ -63,6 +65,7 @@ function TeamManagementPage() {
             <div className="mt-4">
               {activeTab === "overview" && <TeamOverview />}
               {activeTab === "members" && <TeamMembers />}
+              {activeTab === "approval" && <TeamApproval />}
               {activeTab === "structure" && <TeamStructure />}
               {activeTab === "budget" && <BudgetFlow />}
               {activeTab === "stats" && <ConsumptionStats />}
