@@ -17,6 +17,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
   const [view, setView] = React.useState<"list" | "form" | "success" | "detail">("list");
   const [type, setType] = React.useState<string>("建议");
   const [messages, setMessages] = React.useState<Array<{role: 'user' | 'system', content: string}>>([
+    { role: 'system', content: '请查看积分明细。' },
     { role: 'user', content: '这个计费是怎么计算的' }
   ]);
   const [input, setInput] = React.useState("");
@@ -203,8 +204,8 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
           </div>
         ) : view === "detail" ? (
           <div className="flex flex-col h-[700px]">
-            <div className="p-6 flex items-center justify-between border-b border-border">
-              <div className="flex items-center gap-3">
+            <div className="p-6 flex flex-col gap-4 border-b border-border">
+              <div className="flex items-center justify-between">
                 <button 
                   onClick={() => setView("list")}
                   className="flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
@@ -212,17 +213,17 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                   <ArrowLeft className="w-4 h-4" />
                   返回反馈记录
                 </button>
+                <button 
+                  onClick={() => onOpenChange(false)}
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-muted-foreground transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <button 
-                onClick={() => onOpenChange(false)}
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-muted-foreground transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <h2 className="text-4xl font-bold px-2">反馈对话</h2>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-8 space-y-8">
-              <h2 className="text-4xl font-bold mb-8">反馈对话</h2>
+            <div className="flex-1 overflow-y-auto p-8 space-y-8 pt-4">
 
               {/* Original Feedback Card */}
               <div className="bg-[#1A1A1A] border border-white/5 rounded-3xl p-8 max-w-[800px]">
