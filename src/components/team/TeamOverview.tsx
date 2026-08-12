@@ -6,28 +6,31 @@ export function TeamOverview() {
   return (
     <div className="space-y-6">
       {/* Team Header Card */}
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="rounded-2xl border border-border/50 bg-card/30 p-8 shadow-sm">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-xl font-bold text-primary-foreground">
+          <div className="flex items-center gap-5">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-2xl font-bold text-primary-foreground shadow-lg shadow-primary/20">
               D
             </div>
             <div>
-              <h3 className="text-base font-bold text-foreground">D</h3>
-              <p className="text-xs text-muted-foreground">团队信息</p>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="text-xl font-bold text-foreground">D</h3>
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary border border-primary/20">专业版</span>
+              </div>
+              <p className="text-sm text-muted-foreground font-medium">团队 ID: 29384756</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <ActionButton icon={Edit3} label="重命名" />
             <ActionButton icon={Share2} label="转让负责人" />
-            <ActionButton icon={Trash2} label="解散团队" />
+            <ActionButton icon={Trash2} label="解散团队" className="text-destructive hover:bg-destructive/10 border-destructive/20" />
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-3 gap-4">
-          <StatBox icon={Users} label="团队成员" value="1" />
-          <StatBox icon={Folder} label="团队项目" value="0" />
-          <StatBox icon={LayoutGrid} label="分组数" value="0" />
+        <div className="mt-10 grid grid-cols-3 gap-6">
+          <StatBox icon={Users} label="团队成员" value="1" subValue="/ 50 人" />
+          <StatBox icon={Folder} label="团队项目" value="0" subValue="个活跃项目" />
+          <StatBox icon={LayoutGrid} label="分组数" value="0" subValue="个管理分组" />
         </div>
       </div>
 
@@ -92,23 +95,31 @@ export function TeamOverview() {
   );
 }
 
-function ActionButton({ icon: Icon, label }: { icon: any, label: string }) {
+function ActionButton({ icon: Icon, label, className }: { icon: any, label: string, className?: string }) {
   return (
-    <button className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted/50">
-      <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+    <button className={cn(
+      "flex items-center gap-2 rounded-xl border border-border/60 bg-muted/20 px-4 py-2 text-sm font-semibold text-foreground transition-all hover:bg-muted/40 active:scale-95",
+      className
+    )}>
+      <Icon className="h-4 w-4 opacity-70" />
       {label}
     </button>
   );
 }
 
-function StatBox({ icon: Icon, label, value }: { icon: any, label: string, value: string }) {
+function StatBox({ icon: Icon, label, value, subValue }: { icon: any, label: string, value: string, subValue?: string }) {
   return (
-    <div className="rounded-xl bg-muted/30 p-4 border border-border/20">
-      <div className="flex items-center gap-2 text-muted-foreground mb-2">
-        <Icon className="h-3.5 w-3.5 opacity-50" />
+    <div className="rounded-2xl bg-muted/20 p-6 border border-border/30 hover:border-primary/30 transition-colors group">
+      <div className="flex items-center gap-2 text-muted-foreground mb-4">
+        <div className="p-2 rounded-lg bg-background/50 border border-border/20 group-hover:text-primary transition-colors">
+          <Icon className="h-4 w-4" />
+        </div>
         <span className="text-[11px] font-bold uppercase tracking-wider">{label}</span>
       </div>
-      <div className="text-2xl font-bold text-foreground">{value}</div>
+      <div className="flex items-baseline gap-2">
+        <div className="text-3xl font-bold text-foreground">{value}</div>
+        {subValue && <div className="text-xs text-muted-foreground font-medium">{subValue}</div>}
+      </div>
     </div>
   );
 }
