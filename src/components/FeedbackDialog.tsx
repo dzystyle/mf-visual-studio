@@ -60,7 +60,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                 </Button>
                 <button 
                   onClick={() => onOpenChange(false)}
-                  className="text-muted-foreground hover:text-foreground transition-colors absolute top-6 right-6 z-50"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -218,7 +218,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                 </div>
                 <button 
                   onClick={() => onOpenChange(false)}
-                  className="text-muted-foreground hover:text-foreground transition-colors absolute top-6 right-6 z-50"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
