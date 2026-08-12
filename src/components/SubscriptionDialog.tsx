@@ -63,7 +63,7 @@ export function SubscriptionDialog({
     <>
     <CreditPurchaseDialog open={showCreditPurchase} onOpenChange={setShowCreditPurchase} />
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-border bg-background p-0 text-foreground scrollbar-hide [&>button[data-radix-collection-item]]:hidden">
+      <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-border bg-background p-0 text-foreground scrollbar-hide">
         <div className="relative pb-20 pt-10">
           {/* Header Section */}
           <div className="mx-auto max-w-4xl px-6 text-center">

@@ -30,7 +30,7 @@ export function TvDetailDialog({ open, onOpenChange, videoData }: TvDetailDialog
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-screen h-screen border-none bg-black/95 p-0 sm:rounded-none [&>button[data-radix-collection-item]]:hidden">
+      <DialogContent className="max-w-screen h-screen border-none bg-black/95 p-0 sm:rounded-none">
         <div className="relative flex h-full w-full flex-col overflow-hidden">
           {/* Top Bar / Navigation */}
           <div className="absolute left-0 right-0 top-0 z-50 flex items-center justify-between bg-gradient-to-b from-black/80 to-transparent p-4">

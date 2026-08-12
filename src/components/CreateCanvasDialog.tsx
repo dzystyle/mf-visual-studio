@@ -18,7 +18,7 @@ export function CreateCanvasDialog({ open, onOpenChange }: CreateCanvasDialogPro
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[480px] rounded-[32px] border-none bg-white p-8 text-black shadow-2xl dark:bg-white dark:text-black sm:rounded-[32px] [&>button[data-radix-collection-item]]:hidden">
+      <DialogContent className="max-w-[480px] rounded-[32px] border-none bg-white p-8 text-black shadow-2xl dark:bg-white dark:text-black sm:rounded-[32px]">
         <h2 className="mb-6 text-xl font-bold">新建画布</h2>
         
         <div className="space-y-6">

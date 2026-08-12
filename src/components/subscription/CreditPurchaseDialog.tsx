@@ -42,7 +42,7 @@ export function CreditPurchaseDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
-        className="max-w-[1000px] h-fit border-border bg-[#1A1A1A] p-0 text-foreground overflow-hidden animate-in slide-in-from-bottom duration-500 rounded-t-3xl sm:rounded-3xl translate-y-0 sm:-translate-y-1/2 bottom-0 sm:bottom-auto top-auto sm:top-1/2 left-0 sm:left-1/2 translate-x-0 sm:-translate-x-1/2 [&>button[data-radix-collection-item]]:hidden"
+        className="max-w-[1000px] h-fit border-border bg-[#1A1A1A] p-0 text-foreground overflow-hidden animate-in slide-in-from-bottom duration-500 rounded-t-3xl sm:rounded-3xl translate-y-0 sm:-translate-y-1/2 bottom-0 sm:bottom-auto top-auto sm:top-1/2 left-0 sm:left-1/2 translate-x-0 sm:-translate-x-1/2"
         style={{ margin: 0 }}
       >
         <div className="relative p-6 pt-10">

@@ -23,7 +23,7 @@ export function VideoHdDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[500px] border-white/10 bg-[#121212] p-8 text-white shadow-2xl rounded-[24px] [&>button[data-radix-collection-item]]:hidden">
+      <DialogContent className="max-w-[500px] border-white/10 bg-[#121212] p-8 text-white shadow-2xl rounded-[24px]">
         <h2 className="text-2xl font-bold mb-8">视频超清</h2>
 
         <div className="space-y-6">
