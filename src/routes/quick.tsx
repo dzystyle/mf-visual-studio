@@ -527,7 +527,7 @@ function Composer({
         )}
 
         {/* Row 3: Textarea + Mention Popover */}
-        <div className="relative">
+        <div className="relative z-50">
           <textarea
             ref={textareaRef}
             value={input}
