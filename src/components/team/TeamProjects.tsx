@@ -91,10 +91,16 @@ function ProjectGroup({ project }: { project: Project }) {
           </CollapsibleTrigger>
           
           <div className="flex items-center gap-4">
-            <button className="text-xs font-bold text-primary hover:text-primary/80 transition-colors flex items-center gap-1">
+            <button 
+              onClick={() => console.log('Add member to project:', project.name)}
+              className="text-xs font-bold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+            >
               添加成员
             </button>
-            <button className="text-xs font-bold text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1">
+            <button 
+              onClick={() => console.log('Delete project:', project.name)}
+              className="text-xs font-bold text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1"
+            >
               删除项目
             </button>
           </div>
@@ -132,7 +138,10 @@ function ProjectGroup({ project }: { project: Project }) {
                   <span className="text-muted-foreground text-xs">{member.lastActive}</span>
                   
                   <div className="flex justify-end">
-                    <button className="text-xs text-muted-foreground hover:text-destructive transition-colors font-medium">
+                    <button 
+                      onClick={() => console.log('Remove member from project:', member.name)}
+                      className="text-xs text-muted-foreground hover:text-destructive transition-colors font-medium"
+                    >
                       移出项目
                     </button>
                   </div>
