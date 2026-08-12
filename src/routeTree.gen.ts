@@ -24,6 +24,8 @@ import { Route as SettingsRedeemRouteImport } from './routes/settings/redeem'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as SettingsBillingRouteImport } from './routes/settings/billing'
 import { Route as SettingsAccountRouteImport } from './routes/settings/account'
+import { Route as LegalTermsRouteImport } from './routes/legal/terms'
+import { Route as LegalPrivacyRouteImport } from './routes/legal/privacy'
 
 const TvRoute = TvRouteImport.update({
   id: '/tv',
@@ -100,6 +102,16 @@ const SettingsAccountRoute = SettingsAccountRouteImport.update({
   path: '/settings/account',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LegalTermsRoute = LegalTermsRouteImport.update({
+  id: '/legal/terms',
+  path: '/legal/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalPrivacyRoute = LegalPrivacyRouteImport.update({
+  id: '/legal/privacy',
+  path: '/legal/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -111,6 +123,8 @@ export interface FileRoutesByFullPath {
   '/skill': typeof SkillRoute
   '/tutorial': typeof TutorialRoute
   '/tv': typeof TvRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/terms': typeof LegalTermsRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/billing': typeof SettingsBillingRoute
   '/settings/profile': typeof SettingsProfileRoute
@@ -128,6 +142,8 @@ export interface FileRoutesByTo {
   '/skill': typeof SkillRoute
   '/tutorial': typeof TutorialRoute
   '/tv': typeof TvRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/terms': typeof LegalTermsRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/billing': typeof SettingsBillingRoute
   '/settings/profile': typeof SettingsProfileRoute
@@ -146,6 +162,8 @@ export interface FileRoutesById {
   '/skill': typeof SkillRoute
   '/tutorial': typeof TutorialRoute
   '/tv': typeof TvRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/terms': typeof LegalTermsRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/billing': typeof SettingsBillingRoute
   '/settings/profile': typeof SettingsProfileRoute
@@ -165,6 +183,8 @@ export interface FileRouteTypes {
     | '/skill'
     | '/tutorial'
     | '/tv'
+    | '/legal/privacy'
+    | '/legal/terms'
     | '/settings/account'
     | '/settings/billing'
     | '/settings/profile'
@@ -182,6 +202,8 @@ export interface FileRouteTypes {
     | '/skill'
     | '/tutorial'
     | '/tv'
+    | '/legal/privacy'
+    | '/legal/terms'
     | '/settings/account'
     | '/settings/billing'
     | '/settings/profile'
@@ -199,6 +221,8 @@ export interface FileRouteTypes {
     | '/skill'
     | '/tutorial'
     | '/tv'
+    | '/legal/privacy'
+    | '/legal/terms'
     | '/settings/account'
     | '/settings/billing'
     | '/settings/profile'
@@ -217,6 +241,8 @@ export interface RootRouteChildren {
   SkillRoute: typeof SkillRoute
   TutorialRoute: typeof TutorialRoute
   TvRoute: typeof TvRoute
+  LegalPrivacyRoute: typeof LegalPrivacyRoute
+  LegalTermsRoute: typeof LegalTermsRoute
   SettingsAccountRoute: typeof SettingsAccountRoute
   SettingsBillingRoute: typeof SettingsBillingRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
@@ -332,6 +358,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsAccountRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/legal/terms': {
+      id: '/legal/terms'
+      path: '/legal/terms'
+      fullPath: '/legal/terms'
+      preLoaderRoute: typeof LegalTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/privacy': {
+      id: '/legal/privacy'
+      path: '/legal/privacy'
+      fullPath: '/legal/privacy'
+      preLoaderRoute: typeof LegalPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -345,6 +385,8 @@ const rootRouteChildren: RootRouteChildren = {
   SkillRoute: SkillRoute,
   TutorialRoute: TutorialRoute,
   TvRoute: TvRoute,
+  LegalPrivacyRoute: LegalPrivacyRoute,
+  LegalTermsRoute: LegalTermsRoute,
   SettingsAccountRoute: SettingsAccountRoute,
   SettingsBillingRoute: SettingsBillingRoute,
   SettingsProfileRoute: SettingsProfileRoute,
