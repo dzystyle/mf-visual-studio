@@ -19,6 +19,7 @@ import { Route as ElementsRouteImport } from './routes/elements'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SettingsTeamRouteImport } from './routes/settings/team'
+import { Route as SettingsRedeemRouteImport } from './routes/settings/redeem'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as SettingsBillingRouteImport } from './routes/settings/billing'
 import { Route as SettingsAccountRouteImport } from './routes/settings/account'
@@ -73,6 +74,11 @@ const SettingsTeamRoute = SettingsTeamRouteImport.update({
   path: '/settings/team',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRedeemRoute = SettingsRedeemRouteImport.update({
+  id: '/settings/redeem',
+  path: '/settings/redeem',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsProfileRoute = SettingsProfileRouteImport.update({
   id: '/settings/profile',
   path: '/settings/profile',
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/settings/account': typeof SettingsAccountRoute
   '/settings/billing': typeof SettingsBillingRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/settings/redeem': typeof SettingsRedeemRoute
   '/settings/team': typeof SettingsTeamRoute
   '/settings/': typeof SettingsIndexRoute
 }
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/settings/account': typeof SettingsAccountRoute
   '/settings/billing': typeof SettingsBillingRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/settings/redeem': typeof SettingsRedeemRoute
   '/settings/team': typeof SettingsTeamRoute
   '/settings': typeof SettingsIndexRoute
 }
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/settings/account': typeof SettingsAccountRoute
   '/settings/billing': typeof SettingsBillingRoute
   '/settings/profile': typeof SettingsProfileRoute
+  '/settings/redeem': typeof SettingsRedeemRoute
   '/settings/team': typeof SettingsTeamRoute
   '/settings/': typeof SettingsIndexRoute
 }
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/billing'
     | '/settings/profile'
+    | '/settings/redeem'
     | '/settings/team'
     | '/settings/'
   fileRoutesByTo: FileRoutesByTo
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/billing'
     | '/settings/profile'
+    | '/settings/redeem'
     | '/settings/team'
     | '/settings'
   id:
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/billing'
     | '/settings/profile'
+    | '/settings/redeem'
     | '/settings/team'
     | '/settings/'
   fileRoutesById: FileRoutesById
@@ -195,6 +207,7 @@ export interface RootRouteChildren {
   SettingsAccountRoute: typeof SettingsAccountRoute
   SettingsBillingRoute: typeof SettingsBillingRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
+  SettingsRedeemRoute: typeof SettingsRedeemRoute
   SettingsTeamRoute: typeof SettingsTeamRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
 }
@@ -271,6 +284,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsTeamRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/redeem': {
+      id: '/settings/redeem'
+      path: '/settings/redeem'
+      fullPath: '/settings/redeem'
+      preLoaderRoute: typeof SettingsRedeemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings/profile': {
       id: '/settings/profile'
       path: '/settings/profile'
@@ -307,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsAccountRoute: SettingsAccountRoute,
   SettingsBillingRoute: SettingsBillingRoute,
   SettingsProfileRoute: SettingsProfileRoute,
+  SettingsRedeemRoute: SettingsRedeemRoute,
   SettingsTeamRoute: SettingsTeamRoute,
   SettingsIndexRoute: SettingsIndexRoute,
 }
