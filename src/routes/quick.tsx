@@ -546,7 +546,7 @@ function Composer({
           />
           
           {mentionOpen && (
-            <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[9999] animate-in fade-in slide-in-from-bottom-2 duration-200">
+            <div className="absolute bottom-[calc(100%+24px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[99999] animate-in fade-in slide-in-from-bottom-2 duration-200">
               <div className="p-3 border-b border-white/5">
                 <div className="relative">
                   <Plus className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground rotate-45" />
