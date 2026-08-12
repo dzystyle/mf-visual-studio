@@ -109,8 +109,14 @@ function UserMenu({
       <FeedbackDialog open={showFeedback} onOpenChange={setShowFeedback} />
       <NotificationDrawer open={showNotifications} onOpenChange={setShowNotifications} />
       <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild className="pointer-events-none">
-        <div className="h-8 w-8 rounded-full bg-foreground/10 flex items-center justify-center overflow-hidden">
+      <PopoverTrigger asChild>
+        <div 
+          className="h-8 w-8 rounded-full bg-foreground/10 flex items-center justify-center overflow-hidden cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpen(!open);
+          }}
+        >
           <Users className="h-5 w-5 text-foreground/40" />
         </div>
       </PopoverTrigger>
