@@ -34,8 +34,13 @@ function NotificationTrigger() {
   return (
     <>
       <button 
-        onClick={() => setShowNotifications(true)}
-        className="relative flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card/50 text-foreground/60 backdrop-blur transition-all hover:bg-card hover:text-foreground"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setShowNotifications(true);
+        }}
+        className="relative flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card/50 text-foreground/60 backdrop-blur transition-all hover:bg-card hover:text-foreground cursor-pointer"
+        style={{ pointerEvents: 'auto' }}
       >
         <Bell className="h-4 w-4" />
         {hasUnread && (
