@@ -46,7 +46,12 @@ function TeamManagementPage() {
               {[
                 { id: "overview", label: "团队概览" },
                 { id: "members", label: "团队成员" },
-                { id: "approval", label: "加入审核" },
+                { id: "approval", label: (
+                  <div className="flex items-center gap-1.5">
+                    加入审核
+                    <span className="flex h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
+                  </div>
+                ) },
                 { id: "structure", label: "组织架构" },
                 { id: "projects", label: "项目成员" },
                 { id: "budget", label: "预算流水" },

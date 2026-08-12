@@ -114,8 +114,13 @@ export function TeamApproval() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-foreground">待审核加入请求</h3>
-        <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs border-border/50">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-sm font-bold text-foreground">待审核加入请求</h3>
+          <p className="text-xs text-muted-foreground font-medium">
+            用户通过邀请链接申请加入，审核通过后将正式成为团队成员
+          </p>
+        </div>
+        <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs border-border/50 bg-card/50">
           <RefreshCw className="h-3 w-3" />
           刷新
         </Button>
@@ -124,29 +129,38 @@ export function TeamApproval() {
       {pendingApprovals.length > 0 ? (
         <div className="space-y-3">
           {pendingApprovals.map((req) => (
-            <div key={req.id} className="rounded-2xl border border-border/40 bg-card/20 p-4 px-6 hover:bg-card/40 transition-colors">
+            <div key={req.id} className="rounded-2xl border border-border/40 bg-card/20 p-4 px-6 hover:bg-card/40 transition-colors group">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted/40 text-muted-foreground font-bold text-sm">
-                    {req.initial}
+                  <div className="relative">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted/40 text-muted-foreground font-bold text-sm">
+                      {req.initial}
+                    </div>
+                    <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 border-2 border-card" />
                   </div>
                   <div className="flex flex-col">
                     <div className="flex items-center gap-1.5">
                       <span className="text-[15px] font-bold text-foreground">{req.name}</span>
-                      <span className="text-[10px] text-muted-foreground font-medium bg-muted/20 px-1.5 py-0.5 rounded">通过链接邀请</span>
+                      <span className="text-[10px] text-primary font-bold bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full uppercase tracking-tighter">新申请</span>
                     </div>
-                    <span className="text-xs text-muted-foreground/70">{req.email} • {req.time}</span>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground/70">
+                      <span>{req.email}</span>
+                      <span className="h-1 w-1 rounded-full bg-muted/30" />
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {req.time}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="sm" className="h-9 px-4 gap-1.5 text-xs font-bold text-destructive hover:bg-destructive/10">
-                    <X className="h-4 w-4" />
-                    拒绝
+                  <Button variant="ghost" size="sm" className="h-9 px-4 gap-1.5 text-xs font-bold text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all">
+                    拒绝申请
                   </Button>
-                  <Button size="sm" className="h-9 px-4 gap-1.5 text-xs font-bold bg-primary hover:bg-primary/90 text-white">
-                    <Check className="h-4 w-4" />
-                    同意加入
+                  <Button size="sm" className="h-9 px-6 gap-2 text-xs font-bold bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 transition-all">
+                    <UserCheck className="h-4 w-4" />
+                    准许加入
                   </Button>
                 </div>
               </div>
@@ -154,9 +168,12 @@ export function TeamApproval() {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-20 border border-dashed border-border/40 rounded-2xl bg-card/5">
-          <UserPlus className="h-10 w-10 text-muted-foreground/30 mb-4" />
+        <div className="flex flex-col items-center justify-center py-20 border border-dashed border-border/40 rounded-3xl bg-card/5">
+          <div className="h-16 w-16 rounded-full bg-muted/20 flex items-center justify-center mb-4">
+            <ShieldCheck className="h-8 w-8 text-muted-foreground/30" />
+          </div>
           <p className="text-sm text-muted-foreground font-medium">暂无待审核的加入请求</p>
+          <p className="text-xs text-muted-foreground/50 mt-1">当有新成员申请加入时，这里会显示提醒</p>
         </div>
       )}
     </div>
