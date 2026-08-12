@@ -223,7 +223,9 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
             </div>
 
             <div className="flex-1 overflow-y-auto p-8 space-y-8">
-              <h2 className="text-4xl font-bold mb-8">反馈对话</h2>
+              <div className="flex flex-col gap-6 mb-8">
+                <h2 className="text-4xl font-bold">反馈对话</h2>
+              </div>
 
               {/* Original Feedback Card */}
               <div className="bg-[#1A1A1A] border border-white/5 rounded-3xl p-8 max-w-[800px]">
