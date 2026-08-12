@@ -164,7 +164,7 @@ function UserMenu({
             className="py-2" 
             onClick={() => { setShowNotifications(true); setOpen(false); }}
           />
-          <Link to="/settings/billing" search={{ tab: 'pricing' }} onClick={() => setOpen(false)}><MenuItem icon={Gift} label="兑换码" className="py-2" /></Link>
+          <Link to="/settings/redeem" onClick={() => setOpen(false)}><MenuItem icon={Gift} label="兑换码" className="py-2" /></Link>
 
           <div className="border-t border-border/50 opacity-50" />
 
