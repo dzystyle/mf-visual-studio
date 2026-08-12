@@ -47,16 +47,38 @@ export function SubscriptionDialog({
       discount = 0.83;
     }
 
-    return [
+    const plans: any[] = [
       { name: "Starter Team", basePrice: 160, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 20, single: 7, avatars: 5 },
       { name: "Basic Team", basePrice: 400, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 40, single: 10, avatars: 10 },
       { name: "Plus Team", basePrice: 800, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 80, single: 15, avatars: 20 },
       { name: "Pro Team", basePrice: 1600, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 100, single: 20, avatars: 30 },
-    ].map(plan => ({
-      ...plan,
-      price: Math.round(plan.basePrice * (teamCycle === "1year" ? 0.83 : 1)), // Use month unit price for card
-      credits: `${Math.round(plan.baseCredits * (teamCycle === "1year" ? 2 : 1.5))} + ${plan.extra}`
-    }));
+    ];
+
+    if (teamCycle === "1month") {
+      return plans.map(plan => ({
+        ...plan,
+        price: plan.basePrice,
+        credits: `${plan.baseCredits} + ${plan.extra}`,
+        bonus: plan.bonus
+      }));
+    } else if (teamCycle === "3month") {
+      return plans.map(plan => ({
+        ...plan,
+        price: plan.basePrice * 3,
+        credits: `${plan.baseCredits} + ${plan.extra}`,
+        bonus: plan.bonus
+      }));
+    } else {
+      // 1year
+      const yearBonus = ["多送40%", "多送60%", "多送80%", "多送100%"];
+      const yearExtra = [800, 3000, 8000, 20000];
+      return plans.map((plan, idx) => ({
+        ...plan,
+        price: plan.basePrice * 10,
+        credits: `${plan.baseCredits} + ${yearExtra[idx]}`,
+        bonus: yearBonus[idx]
+      }));
+    }
   }, [teamCycle]);
 
   return (
