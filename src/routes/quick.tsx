@@ -90,22 +90,24 @@ function QuickPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    
     const handleScroll = () => {
-      const scrollPos = window.innerHeight + window.scrollY;
-      const totalHeight = document.documentElement.scrollHeight;
-      const isNearBottom = totalHeight - scrollPos < 100;
+      // Logic for mini input: when scrolled up enough from the bottom
+      const isNearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 100;
       setShowMini(!isNearBottom);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    el.addEventListener('scroll', handleScroll);
     
     // Initial scroll to bottom
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
+    el.scrollTo({
+      top: el.scrollHeight,
       behavior: "smooth",
     });
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => el.removeEventListener('scroll', handleScroll);
   }, [msgs.length]);
 
   function submit() {
@@ -133,8 +135,8 @@ function QuickPage() {
   }
 
   return (
-    <div className="relative flex h-screen flex-col overflow-y-auto overflow-x-hidden bg-black scrollbar-hide">
-      <section className="aurora-bg relative flex min-h-full flex-col px-8 pt-6">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-black">
+      <section className="aurora-bg relative flex flex-1 flex-col overflow-hidden px-8 pt-6">
         <BrandMark />
         <TopBar />
 
@@ -153,18 +155,19 @@ function QuickPage() {
 
         {/* Conversation stream */}
         <div
-          className="mx-auto w-full max-w-7xl flex-1 space-y-12 pt-4"
+          ref={scrollRef}
+          className="scrollbar-hide mx-auto w-full max-w-7xl flex-1 space-y-12 overflow-y-auto pt-4"
         >
           {msgs.map((m) => (
             <MessageBlock key={m.id} msg={m} onHdClick={() => setHdOpen(true)} />
           ))}
           <VideoHdDialog open={hdOpen} onOpenChange={setHdOpen} />
+          <div className="h-40" />
         </div>
 
         {/* Bottom composer container */}
-        <div className="sticky bottom-0 left-0 w-full z-[100] pb-6 px-8 bg-gradient-to-t from-black via-black/80 to-transparent pt-10">
-          <div className="mx-auto w-full max-w-7xl relative">
-            {showMini ? (
+        <div className="absolute bottom-6 left-1/2 w-full max-w-7xl -translate-x-1/2 px-8 z-[50]">
+          {showMini ? (
             <div 
               className="mx-auto w-[600px] animate-in fade-in slide-in-from-bottom-4 duration-300"
               onMouseEnter={() => setShowMini(false)}
@@ -194,8 +197,7 @@ function QuickPage() {
                 setMentions={setMentions}
               />
             </div>
-            )}
-          </div>
+          )}
         </div>
       </section>
     </div>
@@ -525,7 +527,7 @@ function Composer({
         )}
 
         {/* Row 3: Textarea + Mention Popover */}
-        <div className="relative">
+        <div className="relative z-50">
           <textarea
             ref={textareaRef}
             value={input}
@@ -546,7 +548,7 @@ function Composer({
           />
           
           {mentionOpen && (
-            <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[9999] animate-in fade-in slide-in-from-bottom-2 duration-200">
+            <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[99999] animate-in fade-in slide-in-from-bottom-2 duration-200">
               <div className="p-3 border-b border-white/5">
                 <div className="relative">
                   <Plus className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground rotate-45" />
