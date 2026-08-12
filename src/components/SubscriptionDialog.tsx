@@ -85,27 +85,63 @@ export function SubscriptionDialog({
     <>
     <CreditPurchaseDialog open={showCreditPurchase} onOpenChange={setShowCreditPurchase} />
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-border bg-background p-0 text-foreground scrollbar-hide">
-        <div className="relative pb-20 pt-10">
+      <DialogContent className="max-w-[1200px] max-h-[90vh] overflow-y-auto border-border bg-[#0D0D0D] p-0 text-foreground scrollbar-hide">
+        <div className="relative pb-20">
           {/* Header Section */}
-          <div className="mx-auto max-w-4xl px-6 text-center">
-            <div className="mb-8 inline-flex items-center gap-4 rounded-2xl bg-gradient-to-r from-[#2A1F15] to-[#151A25] p-1 pr-6 border border-border">
-              <div className="flex flex-col items-start px-4 py-2">
-                <div className="text-sm font-semibold text-[#E6B380]">Seedance 2.5 满血版上线, 积分限时买一送一</div>
-                <div className="text-xs text-white/60">480p 再享 5.3折, 低至 ¥ 0.23/秒</div>
+          <div className="mx-auto max-w-[1100px] px-6 pt-10">
+            <div className="mb-12 rounded-3xl bg-gradient-to-r from-[#1A1A1A] to-[#0D0D0D] p-8 border border-white/5 flex items-center justify-between shadow-2xl">
+              <div className="flex flex-col gap-4">
+                <div className="space-y-1">
+                  <h2 className="text-2xl font-bold text-[#E6B380]">Seedance 2.5 满血版上线，积分限时买一送一</h2>
+                  <p className="text-lg font-bold text-white">480p 再享 5.3 折，低至 ¥ 0.23/秒</p>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-white/40">解锁完整的视频 Agent:</span>
+                  <div className="flex gap-2">
+                    <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] text-white/60 border border-white/10 flex items-center gap-1.5"><Users className="h-3 w-3" /> 团队版</span>
+                    <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] text-white/60 border border-white/10 flex items-center gap-1.5"><LayoutGrid className="h-3 w-3" /> Agent Skills</span>
+                    <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] text-white/60 border border-white/10 flex items-center gap-1.5"><Monitor className="h-3 w-3" /> Agent 画布</span>
+                    <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] text-white/60 border border-white/10 flex items-center gap-1.5"><Key className="h-3 w-3" /> CLI</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex gap-2">
-                <CountdownItem value="07" label="日" />
-                <CountdownItem value="20" label="时" />
-                <CountdownItem value="48" label="分" />
-                <CountdownItem value="33" label="秒" />
+              
+              <div className="flex gap-4">
+                <CountdownItem value="05" label="日" />
+                <CountdownItem value="01" label="时" />
+                <CountdownItem value="07" label="分" />
+                <CountdownItem value="28" label="秒" />
               </div>
             </div>
 
-            <h1 className="text-2xl font-bold tracking-tight">Artrail - 价格与套餐</h1>
+            <h1 className="text-3xl font-black text-center mb-10 tracking-tight">Artrail - 价格与套餐</h1>
 
-            <div className="mt-8 flex justify-center">
-              <div className="flex border-b border-white/10 w-full max-w-md hidden">
+            <div className="flex justify-center mb-12">
+              <div className="flex border-b border-white/10 w-full max-w-md relative">
+                <button 
+                  onClick={() => setActiveTab("personal")}
+                  className={cn(
+                    "flex-1 pb-4 text-sm font-bold transition-all relative",
+                    activeTab === "personal" ? "text-white" : "text-white/40"
+                  )}
+                >
+                  个人版
+                  {activeTab === "personal" && <div className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-[#E6B380] shadow-[0_0_10px_rgba(230,179,128,0.5)]" />}
+                </button>
+                <button 
+                  onClick={() => setActiveTab("team")}
+                  className={cn(
+                    "flex-1 pb-4 text-sm font-bold transition-all relative",
+                    activeTab === "team" ? "text-white" : "text-white/40"
+                  )}
+                >
+                  团队版 <span className="text-[10px] opacity-40 font-normal ml-1">(均支持真人合规生成)</span>
+                  {activeTab === "team" && <div className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-[#E6B380] shadow-[0_0_10px_rgba(230,179,128,0.5)]" />}
+                </button>
+              </div>
+            </div>
+          </div>
                 <button 
                   onClick={() => setActiveTab("personal")}
                   className={cn(
