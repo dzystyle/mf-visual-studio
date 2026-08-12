@@ -60,10 +60,10 @@ export function SubscriptionDialog({
     }
 
     const plans: any[] = [
-      { name: "Starter Team", basePrice: 160, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 20, single: 7, avatars: 5 },
-      { name: "Basic Team", basePrice: 400, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 40, single: 10, avatars: 10 },
-      { name: "Plus Team", basePrice: 800, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 80, single: 15, avatars: 20 },
-      { name: "Pro Team", basePrice: 1600, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 100, single: 20, avatars: 30 },
+      { name: "Starter Team", basePrice: 480, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 20, single: 7, avatars: 5 },
+      { name: "Basic Team", basePrice: 1200, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 40, single: 10, avatars: 10 },
+      { name: "Plus Team", basePrice: 2400, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 80, single: 15, avatars: 20 },
+      { name: "Pro Team", basePrice: 4800, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 100, single: 20, avatars: 30 },
     ];
 
     if (teamCycle === "1month") {
@@ -76,7 +76,7 @@ export function SubscriptionDialog({
     } else if (teamCycle === "3month") {
       return plans.map(plan => ({
         ...plan,
-        price: plan.basePrice * 3,
+        price: plan.basePrice, // Screenshot shows ¥480/席/季 even for 3-month cycle, but unit price changes based on label
         credits: `${plan.baseCredits} + ${plan.extra}`,
         bonus: plan.bonus
       }));
@@ -84,9 +84,10 @@ export function SubscriptionDialog({
       // 1year
       const yearBonus = ["多送40%", "多送60%", "多送80%", "多送100%"];
       const yearExtra = [800, 3000, 8000, 20000];
+      const yearPrices = [1600, 4000, 8000, 16000];
       return plans.map((plan, idx) => ({
         ...plan,
-        price: plan.basePrice * 10,
+        price: yearPrices[idx],
         credits: `${plan.baseCredits} + ${yearExtra[idx]}`,
         bonus: yearBonus[idx]
       }));
