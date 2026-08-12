@@ -84,7 +84,7 @@ function QuickPage() {
   const [showMini, setShowMini] = useState(false);
   const [hdOpen, setHdOpen] = useState(false);
   const [attachments, setAttachments] = useState<{ id: string; url: string; name: string }[]>([]);
-  const [mentions, setMentions] = useState<{ id: string; url: string; name: string }[]>([]);
+  const [mentions, setMentions] = useState<{ id: string; url: string; name: string; position: number }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -296,8 +296,8 @@ function Composer({
   onSubmit: () => void;
   attachments: { id: string; url: string; name: string }[];
   setAttachments: Dispatch<SetStateAction<{ id: string; url: string; name: string }[]>>;
-  mentions: { id: string; url: string; name: string }[];
-  setMentions: Dispatch<SetStateAction<{ id: string; url: string; name: string }[]>>;
+  mentions: { id: string; url: string; name: string; position: number }[];
+  setMentions: Dispatch<SetStateAction<{ id: string; url: string; name: string; position: number }[]>>;
 }) {
   const [mentionOpen, setMentionOpen] = useState(false);
   const [mentionFilter, setMentionFilter] = useState("");
@@ -332,9 +332,10 @@ function Composer({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = input.slice(0, lastAtPos);
       const after = input.slice(cursorPos);
-      // Remove the @mention text entirely from input
-      newInput = `${before.trimEnd()}${after.startsWith(" ") ? after : " " + after}`.trim();
-      newCursorPos = before.trimEnd().length;
+      
+      // Keep the character space for the chip, but clear the @name text
+      newInput = `${before} ${after.startsWith(" ") ? after : " " + after}`;
+      newCursorPos = before.length + 1;
     } else {
       newInput = input;
       newCursorPos = cursorPos;
@@ -351,10 +352,8 @@ function Composer({
     
     setMentionOpen(false);
     
-    // Add to mentions list for visual chip display below input
-    if (!mentions.find((a: any) => a.url === url)) {
-      setMentions((prev: any) => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
-    }
+    // Add to mentions list with its character position
+    setMentions((prev) => [...prev, { id: `${Date.now()}-${name}`, name, url, position: lastAtPos }]);
   };
 
   const onFiles = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -527,24 +526,56 @@ function Composer({
               ))}
             </div>
           )}
-          <textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-              setCursorPos(e.target.selectionStart);
-            }}
-            onKeyUp={(e) => setCursorPos((e.target as HTMLTextAreaElement).selectionStart)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                onSubmit();
-              }
-            }}
-            rows={2}
-            placeholder="使用@快速调用参考能力，支持文本、图片、音频、视频全能参考，例如：@图片1参考 @音频1的音色，模仿@视频1的动作"
-            className="min-h-[60px] w-full resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none"
-          />
+          
+          <div className="relative min-h-[60px] w-full text-sm">
+            <div className="absolute inset-0 pointer-events-none whitespace-pre-wrap break-words text-transparent font-sans leading-relaxed">
+              {input.split("").map((char, index) => {
+                const mention = mentions.find(m => m.position === index);
+                if (mention) {
+                  return (
+                    <span key={index} className="inline-flex items-center align-middle mx-0.5">
+                      <span className="pointer-events-auto inline-flex items-center gap-1.5 rounded-lg bg-[#2A2A2A] border border-white/10 pl-1 pr-1.5 py-0.5 text-[11px] text-white/90 shadow-sm leading-none">
+                        <div className="h-3.5 w-3.5 rounded-sm overflow-hidden border border-white/10">
+                          <img src={mention.url} alt="" className="w-full h-full object-cover" />
+                        </div>
+                        <span className="max-w-[100px] truncate">{mention.name}</span>
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setMentions(prev => prev.filter(x => x.id !== mention.id));
+                          }}
+                          className="hover:text-white transition-colors"
+                        >
+                          <Plus className="h-2.5 w-2.5 rotate-45 text-muted-foreground" />
+                        </button>
+                      </span>
+                    </span>
+                  );
+                }
+                return <span key={index}>{char}</span>;
+              })}
+            </div>
+
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value);
+                setCursorPos(e.target.selectionStart);
+              }}
+              onKeyUp={(e) => setCursorPos((e.target as HTMLTextAreaElement).selectionStart)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  onSubmit();
+                }
+              }}
+              rows={2}
+              placeholder="使用@快速调用参考能力，支持文本、图片、音频、视频全能参考，例如：@图片1参考 @音频1的音色，模仿@视频1的动作"
+              className="relative w-full min-h-[60px] resize-none bg-transparent text-foreground placeholder:text-muted-foreground/40 focus:outline-none z-10 font-sans leading-relaxed"
+            />
+          </div>
           
           {mentionOpen && (
             <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[99999] animate-in fade-in slide-in-from-bottom-2 duration-200">
