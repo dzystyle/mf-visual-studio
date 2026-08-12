@@ -1,8 +1,10 @@
 import * as React from "react";
 import { Edit3, Share2, Trash2, Users, Folder, LayoutGrid, TrendingUp, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CreditPurchaseDialog } from "@/components/subscription/CreditPurchaseDialog";
 
 export function TeamOverview() {
+  const [purchaseDialogOpen, setPurchaseDialogOpen] = React.useState(false);
   return (
     <div className="space-y-6">
       {/* Team Header Card */}
@@ -73,11 +75,20 @@ export function TeamOverview() {
             <UsageRow color="bg-muted-foreground/20" label="总额度" value="0" />
           </div>
 
-          <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground py-3 text-sm font-bold text-background transition-opacity hover:opacity-90">
+          <button 
+            onClick={() => setPurchaseDialogOpen(true)}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground py-3 text-sm font-bold text-background transition-opacity hover:opacity-90"
+          >
             <CreditCard className="h-4 w-4" />
             购买额度
           </button>
         </div>
+
+        {/* Purchase Dialog */}
+        <CreditPurchaseDialog 
+          open={purchaseDialogOpen} 
+          onOpenChange={setPurchaseDialogOpen} 
+        />
 
         {/* Active Projects Card */}
         <div className="col-span-2 rounded-2xl border border-border bg-card p-6 shadow-sm">
