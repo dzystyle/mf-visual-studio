@@ -141,31 +141,6 @@ export function SubscriptionDialog({
                 </button>
               </div>
             </div>
-          </div>
-                <button 
-                  onClick={() => setActiveTab("personal")}
-                  className={cn(
-                    "flex-1 pb-3 text-sm font-medium transition-colors relative",
-                    activeTab === "personal" ? "text-white" : "text-white/40"
-                  )}
-                >
-                  个人版
-                  {activeTab === "personal" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />}
-                </button>
-                <button 
-                  onClick={() => setActiveTab("team")}
-                  className={cn(
-                    "flex-1 pb-3 text-sm font-medium transition-colors relative",
-                    activeTab === "team" ? "text-white" : "text-white/40"
-                  )}
-                >
-                  团队版 <span className="text-[10px] opacity-60 font-normal">(均支持真人合规生成)</span>
-                  {activeTab === "team" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />}
-                </button>
-              </div>
-            </div>
-          </div>
-
           <div className="mx-auto mt-8 max-w-[1100px] px-6">
             {activeTab === "personal" ? (
               <>
