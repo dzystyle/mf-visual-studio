@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { SubscriptionDialog } from "./SubscriptionDialog";
+import { CreditPurchaseDialog } from "./subscription/CreditPurchaseDialog";
 import { FeedbackDialog } from "./FeedbackDialog";
 import { NotificationDrawer } from "./NotificationDrawer";
 import { useTheme } from "@/hooks/use-theme";
@@ -100,12 +101,14 @@ function UserMenu({
 }) {
   const [showSubscription, setShowSubscription] = React.useState(false);
   const [showFeedback, setShowFeedback] = React.useState(false);
+  const [showCreditPurchase, setShowCreditPurchase] = React.useState(false);
   const [showNotifications, setShowNotifications] = React.useState(false);
   const { theme, setTheme } = useTheme();
 
   return (
     <>
       <SubscriptionDialog open={showSubscription} onOpenChange={setShowSubscription} />
+      <CreditPurchaseDialog open={showCreditPurchase} onOpenChange={setShowCreditPurchase} />
       <FeedbackDialog open={showFeedback} onOpenChange={setShowFeedback} />
       <NotificationDrawer open={showNotifications} onOpenChange={setShowNotifications} />
       <Popover open={open} onOpenChange={setOpen}>
@@ -158,10 +161,30 @@ function UserMenu({
               <span className="font-bold text-foreground text-[13px]">2081</span>
             </div>
             <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
-              <div className="flex justify-between"><span>套餐</span><span>2000</span></div>
-              <div className="flex justify-between"><span>通用积分</span><span>0</span></div>
-              <div className="flex justify-between"><span>模型专属积分</span><span>0</span></div>
-              <div className="flex justify-between"><span>额外</span><span>81</span></div>
+              <div 
+                className="flex justify-between cursor-pointer hover:text-foreground/50 transition-colors"
+                onClick={() => { setShowCreditPurchase(true); setOpen(false); }}
+              >
+                <span>套餐</span><span>2000</span>
+              </div>
+              <div 
+                className="flex justify-between cursor-pointer hover:text-foreground/50 transition-colors"
+                onClick={() => { setShowCreditPurchase(true); setOpen(false); }}
+              >
+                <span>通用积分</span><span>0</span>
+              </div>
+              <div 
+                className="flex justify-between cursor-pointer hover:text-foreground/50 transition-colors"
+                onClick={() => { setShowCreditPurchase(true); setOpen(false); }}
+              >
+                <span>模型专属积分</span><span>0</span>
+              </div>
+              <div 
+                className="flex justify-between cursor-pointer hover:text-foreground/50 transition-colors"
+                onClick={() => { setShowCreditPurchase(true); setOpen(false); }}
+              >
+                <span>额外</span><span>81</span>
+              </div>
             </div>
           </div>
 
