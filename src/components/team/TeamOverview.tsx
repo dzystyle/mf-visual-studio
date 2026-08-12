@@ -21,9 +21,9 @@ export function TeamOverview() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <ActionButton icon={Edit3} label="重命名" />
-            <ActionButton icon={Share2} label="转让负责人" />
-            <ActionButton icon={Trash2} label="解散团队" className="text-destructive hover:bg-destructive/10 border-destructive/20" />
+            <ActionButton icon={Edit3} label="重命名" onClick={() => console.log('Rename team')} />
+            <ActionButton icon={Share2} label="转让负责人" onClick={() => console.log('Transfer ownership')} />
+            <ActionButton icon={Trash2} label="解散团队" className="text-destructive hover:bg-destructive/10 border-destructive/20" onClick={() => console.log('Dissolve team')} />
           </div>
         </div>
 
@@ -95,12 +95,15 @@ export function TeamOverview() {
   );
 }
 
-function ActionButton({ icon: Icon, label, className }: { icon: any, label: string, className?: string }) {
+function ActionButton({ icon: Icon, label, className, onClick }: { icon: any, label: string, className?: string, onClick?: () => void }) {
   return (
-    <button className={cn(
-      "flex items-center gap-2 rounded-xl border border-border/60 bg-muted/20 px-4 py-2 text-sm font-semibold text-foreground transition-all hover:bg-muted/40 active:scale-95",
-      className
-    )}>
+    <button 
+      onClick={onClick}
+      className={cn(
+        "flex items-center gap-2 rounded-xl border border-border/60 bg-muted/20 px-4 py-2 text-sm font-semibold text-foreground transition-all hover:bg-muted/40 active:scale-95",
+        className
+      )}
+    >
       <Icon className="h-4 w-4 opacity-70" />
       {label}
     </button>

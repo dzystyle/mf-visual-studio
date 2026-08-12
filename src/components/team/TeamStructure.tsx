@@ -102,6 +102,7 @@ export function TeamStructure() {
                   className="text-xs font-bold text-primary hover:text-primary/80 transition-colors"
                   onClick={(e) => {
                     e.stopPropagation();
+                    console.log('Manage group members:', group.name);
                   }}
                 >
                   分组成员管理
@@ -110,6 +111,7 @@ export function TeamStructure() {
                   className="text-xs font-bold text-muted-foreground hover:text-foreground transition-colors"
                   onClick={(e) => {
                     e.stopPropagation();
+                    console.log('Rename group:', group.name);
                   }}
                 >
                   重命名
@@ -118,6 +120,7 @@ export function TeamStructure() {
                   className="text-xs font-bold text-destructive/70 hover:text-destructive transition-colors"
                   onClick={(e) => {
                     e.stopPropagation();
+                    console.log('Delete group:', group.name);
                   }}
                 >
                   删除分组

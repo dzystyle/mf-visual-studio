@@ -52,11 +52,21 @@ export function ConsumptionStats() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs border-border/50">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="h-9 gap-1.5 text-xs border-border/50"
+            onClick={() => console.log('Refresh consumption stats')}
+          >
             <RefreshCw className="h-3.5 w-3.5" />
             刷新
           </Button>
-          <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs border-border/50">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="h-9 gap-1.5 text-xs border-border/50"
+            onClick={() => console.log('Export CSV')}
+          >
             <Download className="h-3.5 w-3.5" />
             导出 CSV
           </Button>
