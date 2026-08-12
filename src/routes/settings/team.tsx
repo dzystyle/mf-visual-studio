@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { TopBar } from "@/components/TopBar";
 import { Sidebar } from "@/components/Sidebar";
 import { TeamOverview } from "@/components/team/TeamOverview";
+import { TeamMembers } from "@/components/team/TeamMembers";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/settings/team")({
@@ -10,7 +11,16 @@ export const Route = createFileRoute("/settings/team")({
 });
 
 function TeamManagementPage() {
-  const [activeTab, setActiveTab] = React.useState("overview");
+  const [activeTab, setActiveTab] = React.useState("members");
+
+  const tabLabels = {
+    overview: "团队概览",
+    members: "团队成员",
+    structure: "组织架构",
+    projects: "项目成员",
+    budget: "预算流水",
+    stats: "消费统计",
+  };
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
@@ -48,9 +58,10 @@ function TeamManagementPage() {
 
             <div className="mt-4">
               {activeTab === "overview" && <TeamOverview />}
-              {activeTab !== "overview" && (
-                <div className="flex h-[400px] items-center justify-center rounded-2xl bg-white border border-black/5 text-[#6F767E]">
-                  {activeTab} Content Area
+              {activeTab === "members" && <TeamMembers />}
+              {activeTab !== "overview" && activeTab !== "members" && (
+                <div className="flex h-[400px] items-center justify-center rounded-2xl border border-border/40 bg-card/30 text-muted-foreground">
+                  {tabLabels[activeTab as keyof typeof tabLabels]} 功能开发中
                 </div>
               )}
             </div>
