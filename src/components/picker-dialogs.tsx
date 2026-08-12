@@ -215,7 +215,7 @@ export function ModelPickerDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[600px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl">
+      <DialogContent className="max-w-[600px] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl [&>button[data-radix-collection-item]]:hidden">
         <ModelPicker value={value} onSelect={(name) => { onSelect?.(name); onOpenChange(false); }} />
       </DialogContent>
     </Dialog>
