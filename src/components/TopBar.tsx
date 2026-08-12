@@ -19,10 +19,31 @@ export function TopBar({ title }: { title?: string }) {
         <span className="font-medium">全新 Artrail 1.0 使用教程</span>
       </button>
 
+      <NotificationTrigger />
       <UserMenuContainer />
 
       {title ? <span className="sr-only">{title}</span> : null}
     </div>
+  );
+}
+
+function NotificationTrigger() {
+  const [showNotifications, setShowNotifications] = React.useState(false);
+  const hasUnread = true; // Hardcoded for design representation
+
+  return (
+    <>
+      <button 
+        onClick={() => setShowNotifications(true)}
+        className="relative flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card/50 text-foreground/60 backdrop-blur transition-all hover:bg-card hover:text-foreground"
+      >
+        <Bell className="h-4 w-4" />
+        {hasUnread && (
+          <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
+        )}
+      </button>
+      <NotificationDrawer open={showNotifications} onOpenChange={setShowNotifications} />
+    </>
   );
 }
 
