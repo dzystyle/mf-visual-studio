@@ -296,8 +296,8 @@ function Composer({
   onSubmit: () => void;
   attachments: { id: string; url: string; name: string }[];
   setAttachments: Dispatch<SetStateAction<{ id: string; url: string; name: string }[]>>;
-  mentions: { id: string; url: string; name: string }[];
-  setMentions: Dispatch<SetStateAction<{ id: string; url: string; name: string }[]>>;
+  mentions: { id: string; url: string; name: string; position: number }[];
+  setMentions: Dispatch<SetStateAction<{ id: string; url: string; name: string; position: number }[]>>;
 }) {
   const [mentionOpen, setMentionOpen] = useState(false);
   const [mentionFilter, setMentionFilter] = useState("");
