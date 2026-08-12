@@ -162,7 +162,7 @@ function QuickPage() {
         </div>
 
         {/* Bottom composer container */}
-        <div className="sticky bottom-0 left-0 w-full z-[100] pb-6 px-8 bg-gradient-to-t from-black via-black/80 to-transparent pt-10">
+        <div className="sticky bottom-0 left-0 w-full z-[10] pb-6 px-8 bg-gradient-to-t from-black via-black/80 to-transparent pt-10">
           <div className="mx-auto w-full max-w-7xl relative">
             {showMini ? (
             <div 
