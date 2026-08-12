@@ -47,9 +47,9 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
         {view === "list" ? (
           <div className="flex flex-col min-h-[600px]">
             <div className="p-6 flex items-center justify-between border-b border-border">
-              <div>
-                <h2 className="text-2xl font-bold">反馈记录</h2>
-                <p className="text-sm text-muted-foreground mt-1">查看你的反馈进展与官方回复</p>
+              <div className="px-2">
+                <h2 className="text-4xl font-bold">反馈记录</h2>
+                <p className="text-base text-muted-foreground mt-2">查看你的反馈进展与官方回复</p>
               </div>
               <div className="flex items-center gap-3">
                 <Button 
