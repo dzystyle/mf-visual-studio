@@ -205,18 +205,9 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
         ) : view === "detail" ? (
           <div className="flex flex-col h-[700px]">
             <div className="p-6 flex items-center justify-between border-b border-border">
-              <div className="flex items-center gap-3">
-                <button 
-                  onClick={() => setView("list")}
-                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  返回反馈记录
-                </button>
-              </div>
               <button 
                 onClick={() => onOpenChange(false)}
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-muted-foreground transition-colors"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-muted-foreground transition-colors ml-auto"
               >
                 <X className="w-5 h-5" />
               </button>
