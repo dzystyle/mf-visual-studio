@@ -155,8 +155,7 @@ function QuickPage() {
 
         {/* Conversation stream */}
         <div
-          ref={scrollRef}
-          className="scrollbar-hide mx-auto w-full max-w-7xl flex-1 space-y-12 overflow-y-auto pt-4"
+          className="mx-auto w-full max-w-7xl flex-1 space-y-12 pt-4"
         >
           {msgs.map((m) => (
             <MessageBlock key={m.id} msg={m} onHdClick={() => setHdOpen(true)} />
