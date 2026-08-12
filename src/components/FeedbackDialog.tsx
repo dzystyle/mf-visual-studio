@@ -58,12 +58,6 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                 >
                   + 提交新反馈
                 </Button>
-                <button 
-                  onClick={() => onOpenChange(false)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-muted-foreground transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
               </div>
             </div>
             
@@ -119,12 +113,6 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
           </div>
         ) : view === "form" ? (
           <div className="p-10 relative">
-            <button 
-              onClick={() => onOpenChange(false)}
-              className="absolute right-8 top-8 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-foreground/5 transition-colors"
-            >
-              <X className="w-6 h-6" />
-            </button>
             
             <div className="flex flex-col items-center mb-10">
               <div className="flex items-center gap-2 text-2xl font-bold mb-2">
@@ -214,12 +202,6 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                   >
                     <ArrowLeft className="w-4 h-4" />
                     返回反馈记录
-                  </button>
-                  <button 
-                    onClick={() => onOpenChange(false)}
-                    className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-muted-foreground transition-colors"
-                  >
-                    <X className="w-5 h-5" />
                   </button>
                 </div>
               </div>
@@ -314,12 +296,6 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
           </div>
         ) : (
           <div className="relative p-10 flex flex-col items-center justify-center text-center">
-            <button 
-              onClick={() => onOpenChange(false)}
-              className="absolute right-6 top-6 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-foreground/5 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
             
             <div className="mb-6 mt-4">
               <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-6">
