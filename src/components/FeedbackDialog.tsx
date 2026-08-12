@@ -17,6 +17,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
   const [view, setView] = React.useState<"list" | "form" | "success" | "detail">("list");
   const [type, setType] = React.useState<string>("建议");
   const [messages, setMessages] = React.useState<Array<{role: 'user' | 'system', content: string}>>([
+    { role: 'system', content: '请查看积分明细。' },
     { role: 'user', content: '这个计费是怎么计算的' }
   ]);
   const [input, setInput] = React.useState("");
