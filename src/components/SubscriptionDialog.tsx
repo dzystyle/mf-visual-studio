@@ -390,54 +390,60 @@ function CountdownItem({ value, label }: { value: string; label: string }) {
   );
 }
 
-function PersonalCard({ name, price, credits, bonus, features, highlight }: any) {
+function PersonalCard({ name, price, credits, bonus, features }: any) {
   return (
-    <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
+    <div className="group relative flex flex-col rounded-3xl border border-white/5 bg-[#1A1A1A] p-6 transition-all hover:border-white/10 hover:shadow-2xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
-          <span className="text-sm font-semibold">{name}</span>
+           <div className="h-4 w-4 rounded-sm bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+             <Play fill="white" className="h-2 w-2 text-white ml-0.5" />
+           </div>
+           <span className="text-sm font-bold text-white">{name}</span>
         </div>
-        <div className="rounded-full bg-[#E6B380]/10 px-2 py-0.5 text-[10px] font-medium text-[#E6B380]">{bonus}</div>
+        <span className="rounded-full bg-[#E6B380]/10 px-2 py-0.5 text-[10px] font-bold text-[#E6B380]">{bonus}</span>
       </div>
 
       <div className="mt-6 flex items-baseline gap-1">
-        <span className="text-lg font-bold">¥</span>
-        <span className="text-3xl font-bold">{price}</span>
-        <span className="text-xs text-foreground/40">/月</span>
+        <span className="text-2xl font-bold">¥</span>
+        <span className="text-5xl font-black tracking-tighter">{price}</span>
+        <span className="text-[10px] text-white/40 ml-1">/月</span>
       </div>
 
-      <div className="mt-2 text-lg font-medium">{credits} 积分</div>
-      
-      <div className="mt-4 flex gap-1">
-        {Array.from({ length: 8 }).map((_, i) => (
+      <div className="mt-2 text-xl font-bold text-white/90">
+        {credits} <span className="text-sm font-normal text-white/40">积分</span>
+      </div>
+
+      <div className="mt-6 flex justify-between gap-1">
+        {[...Array(10)].map((_, i) => (
           <div key={i} className={cn("h-1.5 w-1.5 rounded-full", i < (name === "Starter" ? 3 : name === "Basic" ? 5 : 8) ? "bg-[#E6B380]" : "bg-white/10")} />
         ))}
       </div>
 
-      <Link to="/checkout">
-        <button className="mt-6 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
-          立即订阅
-        </button>
+      <Link 
+        to="/checkout"
+        className="mt-8 flex w-full items-center justify-center rounded-full bg-white py-3 text-sm font-black text-black transition-transform hover:scale-[1.02] active:scale-[0.98]"
+      >
+        立即订阅
       </Link>
 
-      <div className="mt-8 space-y-6 overflow-hidden">
+      <div className="mt-8 space-y-4">
         {features.map((group: any) => (
-          <div key={group.title}>
-            <div className="mb-3 text-[10px] font-medium text-foreground/40 uppercase tracking-wider">{group.title}</div>
-            <div className="space-y-2.5">
-              {group.items.map((item: any) => (
-                <div key={item.label} className="flex items-start gap-2">
-                  <Check className="mt-0.5 h-3 w-3 shrink-0 text-[#E6B380]" />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] text-foreground/80">{item.label}</span>
-                      {item.info && <Info className="h-2.5 w-2.5 text-foreground/20" />}
-                      {item.tag && <span className="rounded bg-white/10 px-1 py-0.5 text-[8px] text-foreground/60">{item.tag}</span>}
+          <div key={group.title} className="space-y-4">
+            <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{group.title}</div>
+            <div className="space-y-3">
+              {group.items.map((item: any, i: number) => (
+                <div key={i} className="flex items-start justify-between text-[11px] text-white/70">
+                  <div className="flex items-center gap-2">
+                    <Check className="h-3 w-3 text-[#E6B380] shrink-0 mt-0.5" />
+                    <div>
+                      <div>{item.label}</div>
+                      {item.sub && <div className="text-[9px] text-white/20">{item.sub}</div>}
                     </div>
-                    {item.sub && <div className="mt-0.5 text-[9px] text-foreground/40">{item.sub}</div>}
                   </div>
-                  {item.value && <div className="text-[10px] text-foreground/40">{item.value}</div>}
+                  <div className="flex flex-col items-end gap-1">
+                    {item.value && <span className="text-[9px] text-white/40">{item.value}</span>}
+                    {item.tag && <span className="text-[8px] bg-white/10 px-1 py-0.5 rounded text-white/60">{item.tag}</span>}
+                  </div>
                 </div>
               ))}
             </div>
