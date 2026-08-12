@@ -90,24 +90,22 @@ function QuickPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    
     const handleScroll = () => {
-      // Logic for mini input: when scrolled up enough from the bottom
-      const isNearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 100;
+      const scrollPos = window.innerHeight + window.scrollY;
+      const totalHeight = document.documentElement.scrollHeight;
+      const isNearBottom = totalHeight - scrollPos < 100;
       setShowMini(!isNearBottom);
     };
 
-    el.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
     
     // Initial scroll to bottom
-    el.scrollTo({
-      top: el.scrollHeight,
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
       behavior: "smooth",
     });
 
-    return () => el.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [msgs.length]);
 
   function submit() {
@@ -135,8 +133,8 @@ function QuickPage() {
   }
 
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden bg-black">
-      <section className="aurora-bg relative flex flex-1 flex-col overflow-hidden px-8 pt-6">
+    <div className="relative flex h-screen flex-col overflow-y-auto overflow-x-hidden bg-black scrollbar-hide">
+      <section className="aurora-bg relative flex min-h-full flex-col px-8 pt-6">
         <BrandMark />
         <TopBar />
 
@@ -155,8 +153,7 @@ function QuickPage() {
 
         {/* Conversation stream */}
         <div
-          ref={scrollRef}
-          className="scrollbar-hide mx-auto w-full max-w-7xl flex-1 space-y-12 overflow-y-auto pt-4"
+          className="mx-auto w-full max-w-7xl flex-1 space-y-12 pt-4"
         >
           {msgs.map((m) => (
             <MessageBlock key={m.id} msg={m} onHdClick={() => setHdOpen(true)} />
@@ -165,7 +162,7 @@ function QuickPage() {
         </div>
 
         {/* Bottom composer container */}
-        <div className="sticky bottom-0 left-0 w-full z-[50] pb-6 px-8 bg-gradient-to-t from-black via-black/80 to-transparent pt-10">
+        <div className="sticky bottom-0 left-0 w-full z-[100] pb-6 px-8 bg-gradient-to-t from-black via-black/80 to-transparent pt-10">
           <div className="mx-auto w-full max-w-7xl relative">
             {showMini ? (
             <div 
