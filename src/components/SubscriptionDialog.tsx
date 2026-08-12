@@ -588,7 +588,7 @@ const getPersonalFeatures = (concurrency: number, vipStyle: boolean = false) => 
       { label: "去水印导出" },
       { label: "商用授权" },
       { label: "图片视频HD超清增强", tag: "新" },
-      ...(vipStyle ? [{ label: "尊享真人画风合规生成", tag: "新" }] : []),
+      ...(vipStyle ? [{ label: "尊享真人画画合规生成", tag: "新" }] : []),
     ]
   }
 ];
@@ -606,26 +606,10 @@ const getTeamFeatures = (concurrency: number, singleModel: number, avatars: numb
   {
     title: "模型权益",
     items: [
-      { label: "大语言模型", tag: "无限免费" },
-      { label: "图生成模型", sub: "包含 Nano Banana 2 / GPT Image 2", value: "5-25 积分/张" },
-      { label: "视频模型(480P/720P/1080P/4K)", sub: "包含 Seedance 2.5SOTA", value: "5-135 积分/秒" },
-      { label: "视频模型", sub: "包含 MiniMax H3", value: "8-39 积分/秒" },
-      { label: "视频模型", sub: "包含 其他模型", value: "12-42 积分/秒" },
-      { label: "音乐/旁白", value: "1-5 积分/生成" },
-    ]
-  },
-  {
-    title: "使用权益",
-    items: [
-      { label: `专享 Seedance 2.5 & 2.0 高并发：${concurrency}`, tag: "新" },
-      { label: "快速生成功能，单素材自由创作", tag: "新" },
-      { label: `单模型并发：${singleModel}` },
-      { label: `授权人像容量：${avatars} 个` },
-      { label: "去水印导出" },
-      { label: "商用授权" },
-      { label: "尊享真人画风合规生成", tag: "新" },
+      { label: "大语言模型", info: "无限免费" },
+      { label: "图生成模型", value: "5-25 积分/张" },
+      { label: "视频生成模型", value: "10-25 积分/秒" },
+      { label: "对口型生成模型", value: "10-25 积分/秒" },
     ]
   }
 ];
-
-const TEAM_FEATURES = []; // Keep for backward compatibility if needed, but we use getTeamFeatures now
