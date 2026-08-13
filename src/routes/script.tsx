@@ -326,11 +326,11 @@ function StoryboardPanel({ onClose, viewMode }: { onClose: () => void; viewMode?
               <div className="glass rounded-xl p-4 border border-white/10">
                 <div className="text-[12px] font-medium mb-2">Audio_BGM_Industrial_Tense</div>
                 <div className="flex h-12 items-center justify-around gap-1">
-                  {Array.from({ length: 30 }).map((_, i) => (
+                  {[34, 65, 43, 89, 56, 72, 45, 98, 32, 67, 84, 51, 76, 49, 92, 38, 63, 81, 55, 70, 42, 95, 31, 66, 83, 50, 75, 48, 91, 37].map((h, i) => (
                     <div 
                       key={i} 
                       className="w-0.5 rounded-full bg-aurora-blue/60" 
-                      style={{ height: `${20 + Math.random() * 80}%` }} 
+                      style={{ height: `${h}%` }} 
                     />
                   ))}
                 </div>
@@ -677,7 +677,7 @@ function BotMessage({ nodes }: { nodes: BotNode[] }) {
     <div className="space-y-3">
       <div className="flex items-center gap-1.5 text-[13px] font-semibold">
         <span className="text-aurora-pink">✦</span>
-        <span>Flova</span>
+        <span>Artrail</span>
       </div>
       {nodes.map((n, i) => (
         <BotNodeView key={i} node={n} />
