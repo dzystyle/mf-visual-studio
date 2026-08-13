@@ -135,6 +135,17 @@ function CreativeAssistantPage() {
       role: "assistant",
       timestamp: "2026/8/13 14:38:57",
     },
+    {
+      id: "10",
+      role: "user",
+      content: "继续生成这个宣发视频。",
+      timestamp: "2026/8/13 14:40:12",
+    },
+    {
+      id: "11",
+      role: "assistant",
+      timestamp: "2026/8/13 14:40:15",
+    },
   ]);
 
   return (
