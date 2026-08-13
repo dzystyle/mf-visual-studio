@@ -460,13 +460,13 @@ function TeamCard({ name, price, credits, bonus, features, isCurrent, isUpgrade 
         <button 
           className={cn(
             "w-full rounded-full py-2.5 text-sm font-bold transition-colors",
-            isCurrent 
+            isCurrent && seats === 2
               ? "bg-white/10 text-white/40 cursor-default border border-white/5" 
               : "bg-white text-black hover:bg-white/90"
           )}
-          disabled={isCurrent}
+          disabled={isCurrent && seats === 2}
         >
-          {isCurrent ? "已购买" : (isUpgrade ? `升级 ${seats} 席位` : `购买 ${seats} 席位`)}
+          {isCurrent && seats === 2 ? "已购买" : (isUpgrade ? `升级 ${seats} 席位` : `购买 ${seats} 席位`)}
         </button>
       </Link>
 
