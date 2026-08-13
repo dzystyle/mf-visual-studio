@@ -15,7 +15,7 @@ export const Route = createFileRoute("/settings/team")({
 });
 
 function TeamManagementPage() {
-  const [activeTab, setActiveTab] = React.useState("members");
+  const [activeTab, setActiveTab] = React.useState("overview");
 
   const tabLabels = {
     overview: "团队概览",
