@@ -84,7 +84,7 @@ function CreativeAssistantPage() {
   ]);
 
   return (
-    <div className="flex h-screen flex-col bg-[#F5F5F7] text-[#1D1D1F] overflow-hidden font-sans">
+    <div className="flex h-screen flex-col bg-[var(--color-background)] text-[var(--color-foreground)] overflow-hidden font-sans">
       <div className="absolute top-0 left-0 right-0 z-50 p-6 flex items-center justify-between pointer-events-none">
         <div className="pointer-events-auto">
           <BrandMark variant="dark" />
@@ -112,10 +112,10 @@ function CreativeAssistantPage() {
                 >
                   {msg.content && (
                     <div className={cn(
-                      "max-w-[85%] px-5 py-3 text-[15px] leading-relaxed tracking-tight shadow-sm",
+                      "max-w-[85%] px-5 py-3 text-[15px] leading-relaxed tracking-tight shadow-sm border",
                       msg.role === "user" 
-                        ? "rounded-2xl rounded-tr-sm bg-[#FFFFFF] text-[#1D1D1F] border border-[#E5E5E7]" 
-                        : "text-[#1D1D1F] font-medium"
+                        ? "rounded-2xl rounded-tr-sm bg-[var(--color-primary)] text-[var(--color-primary-foreground)] border-transparent" 
+                        : "rounded-2xl rounded-tl-sm bg-[var(--color-card)] text-[var(--color-foreground)] border-[var(--color-border)]"
                     )}>
                       {msg.content}
                     </div>
@@ -146,48 +146,48 @@ function CreativeAssistantPage() {
           {/* Bottom Input Area */}
           <div className="px-6 pb-10">
             <div className="mx-auto max-w-5xl">
-              <div className="bg-[#FFFFFF] rounded-[2.5rem] border border-[#E5E5E7] p-4 shadow-[0_8px_40px_rgba(0,0,0,0.04)] transition-all focus-within:shadow-[0_8px_40px_rgba(0,0,0,0.08)]">
+              <div className="bg-[var(--color-card)] rounded-[2.5rem] border border-[var(--color-border)] p-4 shadow-[0_8px_40px_rgba(0,0,0,0.04)] transition-all focus-within:shadow-[0_8px_40px_rgba(0,0,0,0.08)]">
                 <div className="flex flex-wrap gap-2 px-4 mb-2">
                    {/* Prompt chips could go here */}
                 </div>
                 <textarea 
                   rows={1}
                   placeholder="与综合助手对话，支持多种能力..."
-                  className="w-full bg-transparent text-[16px] text-[#1D1D1F] placeholder:text-[#86868B] focus:outline-none resize-none px-4 py-2 font-medium"
+                  className="w-full bg-transparent text-[16px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none resize-none px-4 py-2 font-medium"
                 />
                 <div className="mt-4 flex items-center justify-between px-2">
                   <div className="flex items-center gap-2.5">
-                    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F5F5F7] text-[#1D1D1F] hover:bg-[#E5E5E7] transition-colors border border-transparent active:scale-95">
+                    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-secondary)] text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-colors border border-transparent active:scale-95">
                       <Plus className="h-5 w-5" />
                     </button>
                     <div className="h-5 w-px bg-[#E5E5E7] mx-1" />
                     
-                    <button className="flex items-center gap-2 rounded-full border border-[#E5E5E7] bg-[#F5F5F7] px-4 py-2 text-[13px] font-semibold text-[#1D1D1F] hover:bg-[#E5E5E7] transition-all">
+                    <button className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-2 text-[13px] font-semibold text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all">
                       <div className="w-4 h-3 border-2 border-current rounded-[2px]" />
                       16:9 (横屏)
                       <ChevronDown className="h-4 w-4 opacity-50" />
                     </button>
 
-                    <button className="flex items-center gap-2 rounded-full border border-[#E5E5E7] bg-[#F5F5F7] px-4 py-2 text-[13px] font-semibold text-[#1D1D1F] hover:bg-[#E5E5E7] transition-all">
+                    <button className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-2 text-[13px] font-semibold text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all">
                       <LayoutGrid className="h-4 w-4" />
                       技能
                       <ChevronDown className="h-4 w-4 opacity-50" />
                     </button>
 
-                    <button className="flex items-center gap-2 rounded-full border border-[#E5E5E7] bg-[#F5F5F7] px-4 py-2 text-[13px] font-bold text-[#1D1D1F] hover:bg-[#E5E5E7] transition-all uppercase tracking-tight">
+                    <button className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-2 text-[13px] font-bold text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all uppercase tracking-tight">
                       720P
                     </button>
 
-                    <button className="flex items-center gap-2 rounded-full border border-[#E5E5E7] bg-[#F5F5F7] px-4 py-2 text-[13px] font-bold text-[#1D1D1F] hover:bg-[#E5E5E7] transition-all uppercase tracking-tight">
+                    <button className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-2 text-[13px] font-bold text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all uppercase tracking-tight">
                       2K
                       <ChevronDown className="h-4 w-4 opacity-50" />
                     </button>
                   </div>
                   <div className="flex items-center gap-4">
-                    <button className="text-[#86868B] hover:text-[#1D1D1F] transition-colors p-2 rounded-full hover:bg-[#F5F5F7]">
+                    <button className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors p-2 rounded-full hover:bg-[var(--color-secondary)]">
                       <Mic className="h-5 w-5" />
                     </button>
-                    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[#000000] text-[#FFFFFF] shadow-lg hover:bg-[#1D1D1F] transition-all active:scale-90">
+                    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-foreground)] text-[var(--color-background)] shadow-lg hover:opacity-90 transition-all active:scale-90">
                       <ArrowUp className="h-5 w-5" />
                     </button>
                   </div>
@@ -203,12 +203,12 @@ function CreativeAssistantPage() {
           <button 
             onClick={() => setShowResources(!showResources)}
             className={cn(
-              "absolute right-0 top-1/2 -translate-y-1/2 z-[60] flex flex-col items-center gap-2 px-3 py-8 bg-[#FFFFFF] border border-[#E5E5E7] rounded-l-[1.5rem] shadow-xl transition-all duration-500 hover:pr-5 group",
+              "absolute right-0 top-1/2 -translate-y-1/2 z-[60] flex flex-col items-center gap-2 px-3 py-8 bg-[var(--color-card)] border border-[var(--color-border)] rounded-l-[1.5rem] shadow-xl transition-all duration-500 hover:pr-5 group",
               showResources ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"
             )}
           >
-            <LayoutGrid className="h-5 w-5 text-[#1D1D1F]" />
-            <span className="text-[12px] [writing-mode:vertical-lr] text-[#1D1D1F] font-bold tracking-widest uppercase py-2">查看对话资源</span>
+            <LayoutGrid className="h-5 w-5 text-[var(--color-foreground)]" />
+            <span className="text-[12px] [writing-mode:vertical-lr] text-[var(--color-foreground)] font-bold tracking-widest uppercase py-2">查看对话资源</span>
           </button>
         </div>
 
