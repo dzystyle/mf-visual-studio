@@ -7,9 +7,10 @@ import { X } from 'lucide-react';
 interface EnterpriseVerificationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onSuccess?: () => void;
 }
 
-export function EnterpriseVerificationDialog({ open, onOpenChange }: EnterpriseVerificationDialogProps) {
+export function EnterpriseVerificationDialog({ open, onOpenChange, onSuccess }: EnterpriseVerificationDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[500px] overflow-hidden border-none bg-zinc-900 p-0 text-white sm:rounded-[32px]">
@@ -35,7 +36,12 @@ export function EnterpriseVerificationDialog({ open, onOpenChange }: EnterpriseV
             </div>
           </DialogHeader>
 
-          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); onOpenChange(false); }}>
+          <form className="space-y-4" onSubmit={(e) => { 
+            e.preventDefault(); 
+            localStorage.setItem('enterprise_verified', 'true');
+            onSuccess?.();
+            onOpenChange(false); 
+          }}>
             <div className="space-y-4">
               <div className="relative">
                 <Input 
