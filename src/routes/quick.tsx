@@ -70,6 +70,17 @@ const initialMsgs: Msg[] = [
     resultImage: skillProduct,
     time: "18:53",
   },
+  {
+    id: "m3",
+    prompt: "生成直播带货的视频",
+    model: "OmniHuman 1.5",
+    ratio: "16:9",
+    size: "720p",
+    resultKind: "video",
+    resultImage: skillReenact,
+    status: "failed",
+    time: "19:02",
+  },
 ];
 
 export const Route = createFileRoute("/quick")({
