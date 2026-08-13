@@ -111,6 +111,30 @@ function CreativeAssistantPage() {
       content: "收到，15秒内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。",
       timestamp: "2026/8/13 14:37:18",
     },
+    {
+      id: "6",
+      role: "assistant",
+      content: "好的，我已经准备好处理素材并开始制作营销视频了。我们会先读取文件并规划任务，确保脚本准确还原一拳超人的热血燃战风格。",
+      timestamp: "2026/8/13 14:38:50",
+    },
+    {
+      id: "7",
+      role: "user",
+      content: "这个就是一拳超人的图片。",
+      timestamp: "2026/8/13 14:38:55",
+      attachments: [{ name: "saitama.webp", type: "IMAGE", url: charSam }]
+    },
+    {
+      id: "8",
+      role: "assistant",
+      content: "埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。",
+      timestamp: "2026/8/13 14:38:56",
+    },
+    {
+      id: "9",
+      role: "assistant",
+      timestamp: "2026/8/13 14:38:57",
+    },
   ]);
 
   return (
@@ -142,7 +166,7 @@ function CreativeAssistantPage() {
                 >
                   {msg.content && (
                     <div className={cn(
-                      "max-w-[85%] px-5 py-3 text-[15px] leading-relaxed tracking-tight shadow-sm border",
+                      "max-w-[85%] px-5 py-3 text-[15px] leading-relaxed tracking-tight shadow-sm border whitespace-pre-wrap",
                       msg.role === "user" 
                         ? "rounded-2xl rounded-tr-sm bg-[var(--color-primary)] text-[var(--color-primary-foreground)] border-transparent" 
                         : "rounded-2xl rounded-tl-sm bg-[var(--color-card)] text-[var(--color-foreground)] border-[var(--color-border)]"
@@ -245,6 +269,53 @@ function CreativeAssistantPage() {
                     </div>
                   )}
 
+                  {msg.role === 'assistant' && msg.id === '9' && (
+                    <div className="flex flex-col gap-2 w-full max-w-xl">
+                      <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
+                      <div className="ml-8 mt-1 mb-4 flex items-center gap-3 p-3 rounded-2xl bg-[var(--color-secondary)] border border-[var(--color-border)] w-fit">
+                        <div className="h-10 w-10 rounded-lg overflow-hidden shrink-0 border border-[var(--color-border)]">
+                          <img src={charSam} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="text-[14px] font-bold text-[var(--color-foreground)]">saitama.webp</div>
+                      </div>
+                      <div className="text-[15px] mb-4">素材确认完毕，埼玉的战斗姿态非常适合做宣发开场。接下来加载营销视频制作流程。</div>
+                      <StatusLine icon="check" text="技能学习" subText="营销视频大师" />
+                      <StatusLine icon="loading" text="正在加载技能: 营销视频大师" />
+                      <StatusLine icon="check" text="任务规划" />
+                      <div className="text-[15px] mt-2 mb-2">先读取输入规范文件，确认产物格式和项目状态定义。</div>
+                      <StatusLine icon="check" text="读取文件" subText="读取输入与项目状态参考文件" />
+                      <StatusLine icon="check" text="任务规划" />
+                      <div className="text-[15px] mt-2 mb-2">现在读取营销基础与路由文件，确定方向创意路由。</div>
+                      <StatusLine icon="check" text="读取文件" subText="读取营销基础与路由参考文件" />
+                      <div className="text-[15px] mt-2 mb-2">这是一个游戏宣发视频，核心说服力来自品牌含义和情感关联，路由到品牌片方向。现在读取品牌片方向创意文件。</div>
+                      <StatusLine icon="check" text="读取文件" subText="读取品牌片方向创意文件" />
+                      <StatusLine icon="check" text="任务规划" />
+                      <div className="text-[15px] mt-2 mb-2">现在创建项目目录并编写内部营销脑图和故事脚本。先搜索一下掌趣一拳超人游戏的相关信息，确保脚本内容准确。</div>
+                      <StatusLine icon="check" text="联网搜索" subText="完成 2 次搜索" />
+                      <StatusLine icon="check" text="执行命令" subText="创建项目目录" />
+                      <div className="text-[15px] mt-2 mb-2">搜索结果很全面。掌趣科技的《一拳超人：最强之男》是一款策略卡牌手游，核心卖点包括正版授权、还原动画剧情、原版声优、策略阵容搭配、埼玉一拳秒杀等。现在编写内部营销脑图和故事脚本。</div>
+                      <StatusLine icon="check" text="写入文件" subText="编写内部营销脑图story-brief.md" />
+                      <div className="text-[15px] mt-2 mb-2">现在编写故事脚本，这是需要你确认的第一个产物。</div>
+                      <StatusLine icon="check" text="写入文件" subText="编写故事脚本story-script.md" />
+                      <div className="text-[15px] mt-2 mb-2">故事脚本已写好。这份脚本请你确认：埼玉蓄力开场、一拳冲击波过渡、英雄阵容快剪展示、埼玉一拳秒杀收尾 + 品牌口号 + 下载引导，5个镜头共15秒。画面节奏和卖点顺序对齐后，我再进入素材检查和视频方案环节。如果要改，直接告诉我，改完再发你看。</div>
+                      <StatusLine icon="check" text="发送产物" />
+                      <div className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 flex items-center justify-between shadow-sm max-w-sm hover:border-[var(--color-muted-foreground)] cursor-pointer transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center text-[var(--color-primary)]">
+                            <FileText className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <div className="text-[14px] font-bold">story-script.md</div>
+                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-...</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1 text-[12px] text-[var(--color-muted-foreground)]">
+                          查看文件 <ChevronRight className="h-3 w-3" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="text-[11px] text-[var(--color-muted-foreground)] px-1 font-medium">{msg.timestamp}</div>
                 </div>
               ))}
@@ -260,7 +331,7 @@ function CreativeAssistantPage() {
                 </div>
                 <textarea 
                   rows={1}
-                  defaultValue="Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.&#10;                                        &#10;                                            &#10;                                            &#10;                                            现在这个切换还是切换不了下一步,结合项目深度思考一下。"
+                  defaultValue="'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            creative-assistant页面的是否有参考素材需要提供？弹窗点击继续,结合项目颜色设置1比1还原下面接下来的流程。"
                   placeholder="与综合助手对话，支持多种能力..."
                   className="w-full bg-transparent text-[16px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none resize-none px-4 py-2 font-medium"
                 />
