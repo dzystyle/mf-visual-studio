@@ -117,7 +117,12 @@ function Home() {
         <div className={`transition-all duration-300 ${isHoveredInMini ? 'w-[800px]' : 'w-[400px]'}`}>
           <PromptBox 
             isMini={!isHoveredInMini}
-            onSubmit={(prompt) => navigate({ to: "/script", search: { prompt } })}
+            onSubmit={(prompt, canvasMode) => 
+              navigate({ 
+                to: canvasMode ? "/script" : "/creative-assistant", 
+                search: { prompt } 
+              })
+            }
           />
         </div>
       </div>
