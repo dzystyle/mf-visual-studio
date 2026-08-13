@@ -96,6 +96,7 @@ function RootComponent() {
           <main className="ml-[72px]">
             <Outlet />
           </main>
+          <Toaster position="top-center" expand={true} richColors closeButton />
         </div>
       </QueryClientProvider>
     </ThemeProvider>
