@@ -151,7 +151,18 @@ function CheckoutPage() {
             </div>
           </div>
 
-          <button className="w-full rounded-lg bg-primary py-4 text-center text-[15px] font-bold text-primary-foreground shadow-lg transition-all hover:opacity-90 active:scale-[0.98]">
+          <button 
+            onClick={() => {
+              // Mock success toast
+              import('sonner').then(({ toast }) => {
+                toast.success("Payment successful!");
+                setTimeout(() => {
+                  navigate({ to: "/settings/team" });
+                }, 1500);
+              });
+            }}
+            className="w-full rounded-lg bg-primary py-4 text-center text-[15px] font-bold text-primary-foreground shadow-lg transition-all hover:opacity-90 active:scale-[0.98]"
+          >
             Pay
           </button>
 
