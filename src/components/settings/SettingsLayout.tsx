@@ -31,7 +31,7 @@ export function SettingsLayout({ children, activeTab }: SettingsLayoutProps) {
     { id: 'invoices', label: '订单发票', icon: FileText, path: '/settings/billing', search: { tab: 'invoices' } },
     { id: 'pricing', label: '价格详情', icon: Tag, path: '/settings/billing', search: { tab: 'pricing' } },
     { id: 'redeem', label: '兑换码', icon: Ticket, path: '/settings/redeem' },
-    { id: 'api', label: '平台 API 密钥', icon: Key, path: '/settings/account' },
+    { id: 'api', label: '平台 API 密钥', icon: Key, path: '/settings/account', search: { tab: 'api' } },
 
     { separator: true },
     { id: 'terms', label: '使用条款', icon: ShieldCheck, path: '/legal/terms' },
