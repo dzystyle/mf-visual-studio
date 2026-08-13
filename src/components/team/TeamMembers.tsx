@@ -100,7 +100,12 @@ export function TeamMembers() {
                         成员 <ChevronDown className="h-3 w-3" />
                       </Button>
                       <div className="flex items-center gap-3">
-                        <button className="text-[12px] font-bold text-primary hover:opacity-80 transition-opacity">额度设置</button>
+                        <button 
+                          onClick={() => handleOpenQuotaSettings(member)}
+                          className="text-[12px] font-bold text-primary hover:opacity-80 transition-opacity"
+                        >
+                          额度设置
+                        </button>
                         <button className="text-[12px] font-bold text-muted-foreground hover:text-foreground transition-colors">移除成员</button>
                       </div>
                     </div>
@@ -111,6 +116,14 @@ export function TeamMembers() {
           </div>
         ))}
       </div>
+
+      {selectedMember && (
+        <QuotaSettingsDialog
+          open={quotaDialogOpen}
+          onOpenChange={setQuotaDialogOpen}
+          memberName={selectedMember.name}
+        />
+      )}
     </div>
   );
 }
