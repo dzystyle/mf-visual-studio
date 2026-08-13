@@ -220,37 +220,37 @@ function CreativeAssistantPage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 bottom-0 w-[600px] z-[100] bg-[#121212] border-l border-white/5 flex flex-col"
+              className="fixed top-0 right-0 bottom-0 w-[600px] z-[100] bg-[#FFFFFF] border-l border-[#E5E5E7] flex flex-col shadow-2xl"
             >
-              <div className="p-6 flex items-center justify-between border-b border-white/5">
+              <div className="p-6 flex items-center justify-between border-b border-[#E5E5E7]">
                 <div className="flex items-center gap-6">
-                  <h2 className="text-lg font-bold">资源</h2>
-                  <div className="flex items-center bg-white/5 rounded-lg p-1">
-                    <button className="p-1.5 bg-white/10 rounded-md"><LayoutGrid className="h-4 w-4" /></button>
-                    <button className="p-1.5 text-white/40"><ChevronDown className="h-4 w-4 rotate-180" /></button>
+                  <h2 className="text-xl font-bold text-[#1D1D1F]">资源</h2>
+                  <div className="flex items-center bg-[#F5F5F7] rounded-lg p-1 border border-[#E5E5E7]">
+                    <button className="p-1.5 bg-[#FFFFFF] rounded-md shadow-sm text-[#1D1D1F]"><LayoutGrid className="h-4 w-4" /></button>
+                    <button className="p-1.5 text-[#86868B] hover:text-[#1D1D1F]"><ChevronDown className="h-4 w-4 rotate-180" /></button>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="relative">
-                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/20" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#86868B]" />
                     <input 
                       type="text" 
                       placeholder="查找..." 
-                      className="bg-white/5 border border-white/10 rounded-full pl-8 pr-4 py-1.5 text-xs text-white placeholder:text-white/20 focus:outline-none w-48"
+                      className="bg-[#F5F5F7] border border-[#E5E5E7] rounded-full pl-9 pr-4 py-2 text-sm text-[#1D1D1F] placeholder:text-[#86868B] focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20 w-56 transition-all"
                     />
                   </div>
-                  <button onClick={() => setShowResources(false)} className="text-white/40 hover:text-white"><X className="h-5 w-5" /></button>
+                  <button onClick={() => setShowResources(false)} className="text-[#86868B] hover:text-[#1D1D1F] p-1 rounded-full hover:bg-[#F5F5F7] transition-colors"><X className="h-6 w-6" /></button>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-hide">
+              <div className="flex-1 overflow-y-auto p-8 space-y-10 scrollbar-hide">
                 {/* Documents */}
                 <section>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest flex items-center gap-2">文稿</h3>
-                    <span className="text-[10px] text-white/20">共 5 个</span>
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-[13px] font-bold text-[#86868B] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
+                    <span className="text-[12px] text-[#86868B] font-medium">共 5 个</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-5">
                     <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
                     <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
                     <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
@@ -261,11 +261,11 @@ function CreativeAssistantPage() {
 
                 {/* Images */}
                 <section>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest flex items-center gap-2">图片</h3>
-                    <span className="text-[10px] text-white/20">共 2 个</span>
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-[13px] font-bold text-[#86868B] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
+                    <span className="text-[12px] text-[#86868B] font-medium">共 2 个</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-5">
                     <ImageResourceCard title="user_upload_image_1.webp" type="WEBP" date="1小时前" img={charSam} />
                     <ImageResourceCard title="genos-reference.png" type="PNG" date="1小时前" img={charBoss} />
                   </div>
@@ -273,11 +273,11 @@ function CreativeAssistantPage() {
 
                 {/* Videos */}
                 <section>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest flex items-center gap-2">视频</h3>
-                    <span className="text-[10px] text-white/20">共 1 个</span>
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-[13px] font-bold text-[#86868B] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
+                    <span className="text-[12px] text-[#86868B] font-medium">共 1 个</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-5">
                     <ImageResourceCard title="intro-animation.mp4" type="MP4" date="刚刚" img={skillReenact} />
                   </div>
                 </section>
@@ -286,9 +286,9 @@ function CreativeAssistantPage() {
               {/* Collapse handle */}
               <button 
                 onClick={() => setShowResources(false)}
-                className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 h-12 w-6 bg-[#121212] border border-white/5 rounded-full flex items-center justify-center text-white/40 hover:text-white"
+                className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 h-16 w-8 bg-[#FFFFFF] border border-[#E5E5E7] rounded-full flex items-center justify-center text-[#86868B] hover:text-[#1D1D1F] shadow-lg transition-all hover:scale-110 active:scale-95 z-[110]"
               >
-                <ChevronRight className="h-4 w-4 rotate-180" />
+                <ChevronRight className="h-5 w-5 rotate-180" />
               </button>
             </motion.div>
           )}
