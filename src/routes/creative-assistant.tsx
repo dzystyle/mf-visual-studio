@@ -27,6 +27,9 @@ const charSam = saitamaAsset.url;
 import genosAsset from "@/assets/genos.webp.asset.json";
 const charBoss = genosAsset.url;
 import skillReenact from "@/assets/skill-reenact.jpg";
+import videoPreviewAsset from "@/assets/generated-video-preview.jpg.asset.json";
+const videoPreview = videoPreviewAsset.url;
+
 
 type Search = { prompt?: string };
 
@@ -147,6 +150,17 @@ function CreativeAssistantPage() {
       id: "11",
       role: "assistant",
       timestamp: "2026/8/13 14:40:15",
+    },
+    {
+      id: "12",
+      role: "user",
+      content: "继续",
+      timestamp: "2026/8/13 15:30:10",
+    },
+    {
+      id: "13",
+      role: "assistant",
+      timestamp: "2026/8/13 15:31:31",
     },
   ]);
 
@@ -392,6 +406,32 @@ function CreativeAssistantPage() {
                       </div>
                     </div>
                   )}
+                  
+                  {msg.role === 'assistant' && msg.id === '13' && (
+                    <div className="flex flex-col gap-2 w-full max-w-xl">
+                      <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl mb-2">
+                        <img src={videoPreview} className="w-full h-full object-cover" />
+                        <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-1">
+                          <span className="opacity-70">AI 生成</span>
+                        </div>
+                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white">
+                          0:15
+                        </div>
+                      </div>
+                      <div className="text-[15px] mb-4">视频已生成成功。先确认一下效果。</div>
+                      
+                      <StatusLine icon="check" text="读取文件" subText="查看生成的视频效果" />
+                      <StatusLine icon="check" text="任务规划" />
+                      
+                      <div className="text-[15px] mb-4">视频已生成完成，15秒热血燃战风格的游戏宣发成片。赤焰拳客在废墟战场中双拳燃烧火焰，结尾定格在「英雄参上 一拳K.O.」品牌口号和游戏Logo。</div>
+                      
+                      <div className="text-[15px] mb-4">由于IP形象审核限制，角色已从埼玉/杰诺斯替换为原创的赤焰拳客形象，保留了热血战斗的宣发调性。成片已交付，你可以审阅后告诉我是否需要调整。</div>
+                      
+                      <StatusLine icon="check" text="发送产物" />
+                      
+                      <div className="text-[15px] mb-2">成片已交付。由于平台审核限制，原IP角色形象（埼玉/杰诺斯）无法直接生成，已替换为原创的赤焰拳客角色，保留了热血燃战的游戏宣发风格。如果你有官方授权的角色素材，可以上传后重新生成更贴近原作的画面。需要调整什么直接说。</div>
+                    </div>
+                  )}
 
                   <div className="text-[11px] text-[var(--color-muted-foreground)] px-1 font-medium">{msg.timestamp}</div>
                 </div>
@@ -408,7 +448,7 @@ function CreativeAssistantPage() {
                 </div>
                 <textarea 
                   rows={1}
-                  defaultValue="'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            Creative Assistant页面的杰诺斯参考图不对,换成图2"
+                  defaultValue="'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            Creative Assistant页面用户输入继续结合系统的配色参考上面图片1比1还原一下这个页面,以你资深UI设计师的角度思考一下."
                   placeholder="与综合助手对话，支持多种能力..."
                   className="w-full bg-transparent text-[16px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none resize-none px-4 py-2 font-medium"
                 />
