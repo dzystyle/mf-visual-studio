@@ -600,8 +600,17 @@ function CreativeAssistantPage() {
                     <button className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors p-2 rounded-full hover:bg-[var(--color-secondary)]">
                       <Mic className="h-5 w-5" />
                     </button>
-                    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-foreground)] text-[var(--color-background)] shadow-lg hover:opacity-90 transition-all active:scale-90">
-                      <ArrowUp className="h-5 w-5" />
+                    <button 
+                      onClick={handleSendMessage}
+                      disabled={isProcessing}
+                      className={cn(
+                        "flex h-10 w-10 items-center justify-center rounded-full shadow-lg transition-all active:scale-90",
+                        isProcessing 
+                          ? "bg-[var(--color-muted-foreground)] cursor-not-allowed" 
+                          : "bg-[var(--color-foreground)] text-[var(--color-background)] hover:opacity-90"
+                      )}
+                    >
+                      <ArrowUp className={cn("h-5 w-5", isProcessing && "animate-pulse")} />
                     </button>
                   </div>
                 </div>
