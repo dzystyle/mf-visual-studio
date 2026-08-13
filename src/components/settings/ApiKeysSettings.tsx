@@ -50,14 +50,16 @@ export function ApiKeysSettings() {
     setGeneratedKey(newKey);
     
     const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + parseInt(newKeyData.expiry));
+    if (newKeyData.expiry !== 'permanent') {
+      expiryDate.setDate(expiryDate.getDate() + parseInt(newKeyData.expiry));
+    }
     
     const newEntry: AccessKey = {
       id: Math.random().toString(36).substring(7),
       name: newKeyData.name || '未命名 Key',
       key: newKey,
       status: 'active',
-      expiry: expiryDate.toISOString().split('T')[0] + ' ' + expiryDate.toTimeString().split(' ')[0].substring(0, 5),
+      expiry: newKeyData.expiry === 'permanent' ? '永久' : (expiryDate.toISOString().split('T')[0] + ' ' + expiryDate.toTimeString().split(' ')[0].substring(0, 5)),
       createdAt: new Date().toLocaleString(),
       description: newKeyData.description
     };
@@ -200,7 +202,7 @@ export function ApiKeysSettings() {
             <div className="space-y-3">
               <label className="text-[13px] font-medium text-white/60">有效期</label>
               <div className="flex gap-2">
-                {['7', '30', '90', '365'].map((d) => (
+                {['7', '30', '90', '365', 'permanent'].map((d) => (
                   <button
                     key={d}
                     onClick={() => setNewKeyData({...newKeyData, expiry: d})}
@@ -211,7 +213,7 @@ export function ApiKeysSettings() {
                         : "bg-white/5 text-white/40 hover:bg-white/10"
                     )}
                   >
-                    {d} 天
+                    {d === 'permanent' ? '永久' : `${d} 天`}
                   </button>
                 ))}
               </div>
