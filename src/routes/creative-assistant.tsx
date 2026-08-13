@@ -305,6 +305,34 @@ function CreativeAssistantPage() {
   );
 }
 
+function StatusLine({ icon, text, subText }: { icon: 'check' | 'loading'; text: string; subText?: string }) {
+  return (
+    <div className="flex items-center gap-3 px-1 py-1 group">
+      <div className={cn(
+        "flex h-5 w-5 items-center justify-center rounded-full text-white shrink-0",
+        icon === 'check' ? "bg-green-500" : "bg-blue-500 animate-pulse"
+      )}>
+        {icon === 'check' ? (
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        ) : (
+          <div className="w-2.5 h-2.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+        )}
+      </div>
+      <div className="flex items-center gap-2 text-[14px]">
+        <span className="font-semibold text-[#1D1D1F]">{text}</span>
+        {subText && <span className="text-[#86868B]">{subText}</span>}
+      </div>
+      {icon === 'check' && (
+        <button className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
+          <ChevronDown className="h-4 w-4 text-[#86868B]" />
+        </button>
+      )}
+    </div>
+  );
+}
+
 function DurationChoiceCard() {
   return (
     <div className="w-full max-w-xl glass border border-white/10 rounded-3xl p-6 space-y-6">
