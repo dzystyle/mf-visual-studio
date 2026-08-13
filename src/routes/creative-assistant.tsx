@@ -52,6 +52,11 @@ type Message = {
   card?: React.ReactNode;
   timestamp: string;
   attachments?: { name: string; type: string; url?: string }[];
+  isChoiceCard?: boolean;
+  statusLines?: { icon: 'check' | 'loading'; text: string; subText?: string }[];
+  isDetailedAssistant?: boolean;
+  isDetailedAssistant2?: boolean;
+  isVideoOutput?: boolean;
 };
 
 function CreativeAssistantPage() {
