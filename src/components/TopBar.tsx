@@ -12,25 +12,33 @@ import { useTheme } from "@/hooks/use-theme";
 import logoAsset from "@/assets/logo.png.asset.json";
 import { cn } from "@/lib/utils";
 
-export function TopBar({ title }: { title?: string }) {
+export function TopBar({ title, variant = "dark" }: { title?: string; variant?: "light" | "dark" }) {
+  const isLight = variant === "light";
+  
   return (
     <div className="absolute right-6 top-4 z-50 flex items-center gap-3">
-      <button className="flex items-center gap-2 rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-xs text-foreground backdrop-blur hover:bg-card">
+      <button className={cn(
+        "flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs backdrop-blur transition-all",
+        isLight 
+          ? "border-[#E5E5E7] bg-white/80 text-[#1D1D1F] hover:bg-white" 
+          : "border-border bg-card/80 text-foreground hover:bg-card"
+      )}>
         <BookOpen className="h-3.5 w-3.5 text-aurora-orange" />
         <span className="font-medium">全新 Artrail 1.0 使用教程</span>
       </button>
 
-      <NotificationTrigger />
-      <UserMenuContainer />
+      <NotificationTrigger variant={variant} />
+      <UserMenuContainer variant={variant} />
 
       {title ? <span className="sr-only">{title}</span> : null}
     </div>
   );
 }
 
-function NotificationTrigger() {
+function NotificationTrigger({ variant = "dark" }: { variant?: "light" | "dark" }) {
   const [showNotifications, setShowNotifications] = React.useState(false);
   const hasUnread = true; // Hardcoded for design representation
+  const isLight = variant === "light";
 
   return (
     <>
@@ -40,7 +48,12 @@ function NotificationTrigger() {
           e.stopPropagation();
           setShowNotifications(true);
         }}
-        className="relative flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card/50 text-foreground/60 backdrop-blur transition-all hover:bg-card hover:text-foreground cursor-pointer"
+        className={cn(
+          "relative flex h-8 w-8 items-center justify-center rounded-full border backdrop-blur transition-all cursor-pointer",
+          isLight 
+            ? "border-[#E5E5E7] bg-white/50 text-[#1D1D1F]/60 hover:bg-white hover:text-[#1D1D1F]"
+            : "border-border bg-card/50 text-foreground/60 backdrop-blur hover:bg-card hover:text-foreground"
+        )}
         style={{ pointerEvents: 'auto' }}
       >
         <Bell className="h-4 w-4" />
@@ -53,9 +66,10 @@ function NotificationTrigger() {
   );
 }
 
-function UserMenuContainer() {
+function UserMenuContainer({ variant = "dark" }: { variant?: "light" | "dark" }) {
   const [open, setOpen] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const isLight = variant === "light";
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -70,17 +84,31 @@ function UserMenuContainer() {
   
   return (
     <div 
-      className="flex items-center gap-2 rounded-full border border-border bg-card/50 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-card group cursor-pointer relative z-[60]"
+      className={cn(
+        "flex items-center gap-2 rounded-full border pl-3 pr-1 py-1 text-sm backdrop-blur transition group cursor-pointer relative z-[60]",
+        isLight
+          ? "border-[#E5E5E7] bg-white/50 hover:bg-white"
+          : "border-border bg-card/50 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-card"
+      )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="flex items-center gap-2 pr-2 border-r border-border">
+      <div className={cn(
+        "flex items-center gap-2 pr-2 border-r",
+        isLight ? "border-[#E5E5E7]" : "border-border"
+      )}>
         <FilmIconGradient className="h-4 w-4" />
-        <span className="font-bold text-foreground tracking-tight text-[13px]">2,081</span>
+        <span className={cn(
+          "font-bold tracking-tight text-[13px]",
+          isLight ? "text-[#1D1D1F]" : "text-foreground"
+        )}>2,081</span>
       </div>
 
       <div className="flex items-center gap-2 px-1">
-        <span className="font-bold text-foreground tracking-tight">Free</span>
+        <span className={cn(
+          "font-bold tracking-tight",
+          isLight ? "text-[#1D1D1F]" : "text-foreground"
+        )}>Free</span>
       </div>
 
       <UserMenu open={open} setOpen={setOpen} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
@@ -401,12 +429,16 @@ function FilmIconGradient({ className }: { className?: string }) {
   );
 }
 
-export function BrandMark() {
+export function BrandMark({ variant = "dark" }: { variant?: "light" | "dark" }) {
+  const isLight = variant === "light";
 
   return (
     <div className="absolute left-6 top-5 z-20 flex items-center gap-2">
       <img src={logoAsset.url} alt="Artrail Logo" className="h-6 w-auto" />
-      <span className="text-[15px] font-semibold tracking-tight">artrail.ai</span>
+      <span className={cn(
+        "text-[15px] font-semibold tracking-tight",
+        isLight ? "text-[#1D1D1F]" : "text-white"
+      )}>artrail.ai</span>
     </div>
   );
 }
