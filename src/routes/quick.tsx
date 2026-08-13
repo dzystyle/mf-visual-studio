@@ -508,14 +508,14 @@ function Composer({
 
 
         {/* Row 3: Textarea + Mention Popover */}
-        <div className="relative z-50 flex flex-col gap-2 p-3 bg-white/5 border border-white/10 rounded-xl mb-4">
+        <div className="relative z-50 flex flex-col gap-2 mb-4">
           <div className="flex flex-wrap items-center gap-2">
             {mentions.map((a: any) => (
-              <div key={a.id} className="inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
-                <div className="h-4 w-4 rounded overflow-hidden border border-white/10">
+              <div key={a.id} className="inline-flex h-[32px] items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
+                <div className="h-5 w-5 shrink-0 rounded overflow-hidden border border-white/10">
                   <img src={a.url} alt="" className="w-full h-full object-cover" />
                 </div>
-                <span>{a.name}</span>
+                <span className="leading-none">{a.name}</span>
                 <button 
                   onClick={() => setMentions((prev: any) => prev.filter((x: any) => x.id !== a.id))}
                   className="hover:text-white transition-colors"
@@ -540,7 +540,7 @@ function Composer({
               }}
               rows={1}
               placeholder="使用@快速调用参考能力"
-              className="flex-1 min-w-[200px] min-h-[32px] bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none"
+              className="flex-1 min-w-[200px] min-h-[32px] self-center bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none py-1.5"
             />
           </div>
           
