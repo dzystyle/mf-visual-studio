@@ -12,16 +12,23 @@ import { useTheme } from "@/hooks/use-theme";
 import logoAsset from "@/assets/logo.png.asset.json";
 import { cn } from "@/lib/utils";
 
-export function TopBar({ title }: { title?: string }) {
+export function TopBar({ title, variant = "dark" }: { title?: string; variant?: "light" | "dark" }) {
+  const isLight = variant === "light";
+  
   return (
     <div className="absolute right-6 top-4 z-50 flex items-center gap-3">
-      <button className="flex items-center gap-2 rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-xs text-foreground backdrop-blur hover:bg-card">
+      <button className={cn(
+        "flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs backdrop-blur transition-all",
+        isLight 
+          ? "border-[#E5E5E7] bg-white/80 text-[#1D1D1F] hover:bg-white" 
+          : "border-border bg-card/80 text-foreground hover:bg-card"
+      )}>
         <BookOpen className="h-3.5 w-3.5 text-aurora-orange" />
         <span className="font-medium">全新 Artrail 1.0 使用教程</span>
       </button>
 
-      <NotificationTrigger />
-      <UserMenuContainer />
+      <NotificationTrigger variant={variant} />
+      <UserMenuContainer variant={variant} />
 
       {title ? <span className="sr-only">{title}</span> : null}
     </div>
