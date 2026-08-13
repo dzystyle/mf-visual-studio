@@ -61,8 +61,11 @@ function Home() {
 
           <div className={`mt-8 transition-all duration-500 ${isScrolledToBottom ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
             <PromptBox
-              onSubmit={(prompt) =>
-                navigate({ to: "/script", search: { prompt } })
+              onSubmit={(prompt, canvasMode) =>
+                navigate({ 
+                  to: canvasMode ? "/script" : "/creative-assistant", 
+                  search: { prompt } 
+                })
               }
             />
           </div>
@@ -114,7 +117,12 @@ function Home() {
         <div className={`transition-all duration-300 ${isHoveredInMini ? 'w-[800px]' : 'w-[400px]'}`}>
           <PromptBox 
             isMini={!isHoveredInMini}
-            onSubmit={(prompt) => navigate({ to: "/script", search: { prompt } })}
+            onSubmit={(prompt, canvasMode) => 
+              navigate({ 
+                to: canvasMode ? "/script" : "/creative-assistant", 
+                search: { prompt } 
+              })
+            }
           />
         </div>
       </div>
