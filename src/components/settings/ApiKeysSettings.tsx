@@ -202,7 +202,7 @@ export function ApiKeysSettings() {
             <div className="space-y-3">
               <label className="text-[13px] font-medium text-white/60">有效期</label>
               <div className="flex gap-2">
-                {['7', '30', '90', '365'].map((d) => (
+                {['7', '30', '90', '365', 'permanent'].map((d) => (
                   <button
                     key={d}
                     onClick={() => setNewKeyData({...newKeyData, expiry: d})}
