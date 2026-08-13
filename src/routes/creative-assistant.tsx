@@ -296,9 +296,9 @@ function CreativeAssistantPage() {
       </div>
       
       {/* Footer Question Mark */}
-      <div className="fixed bottom-6 right-6">
-        <button className="h-8 w-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/60">
-          <span className="text-sm font-bold">?</span>
+      <div className="fixed bottom-6 right-6 z-[60]">
+        <button className="h-10 w-10 rounded-full border border-[#E5E5E7] bg-[#FFFFFF] flex items-center justify-center text-[#1D1D1F] shadow-lg hover:shadow-xl transition-all active:scale-95">
+          <span className="text-base font-bold">?</span>
         </button>
       </div>
     </div>
