@@ -333,40 +333,74 @@ function StatusLine({ icon, text, subText }: { icon: 'check' | 'loading'; text: 
   );
 }
 
-function DurationChoiceCard() {
+interface StepOption {
+  num: string;
+  label: string;
+  desc?: string;
+  active?: boolean;
+}
+
+interface ChoiceCardProps {
+  step: number;
+  totalSteps: number;
+  title: string;
+  options: StepOption[];
+  onOptionClick?: (index: number) => void;
+  onNext?: () => void;
+  onPrev?: () => void;
+  isMulti?: boolean;
+}
+
+function ChoiceCard({ 
+  step, 
+  totalSteps, 
+  title, 
+  options, 
+  onOptionClick, 
+  onNext, 
+  onPrev,
+  isMulti = false
+}: ChoiceCardProps) {
   return (
     <div className="w-full max-w-xl bg-[var(--color-card)] border border-[var(--color-border)] rounded-[2rem] p-8 space-y-8 shadow-[0_8px_32px_rgba(0,0,0,0.04)]">
       <div className="flex items-center justify-between">
-        <h3 className="text-[17px] font-bold text-[var(--color-foreground)]">视频时长希望控制在多少秒以内？</h3>
-        <div className="flex items-center gap-4">
+        <h3 className="text-[17px] font-bold text-[var(--color-foreground)]">{title}</h3>
+        <div className="flex items-center gap-4 shrink-0">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500" />
             <span className="text-[13px] text-[var(--color-muted-foreground)] font-bold">已提交</span>
           </div>
           <div className="flex items-center gap-2 bg-[var(--color-secondary)] rounded-lg px-2 py-1 border border-[var(--color-border)]">
-            <button className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors"><ChevronRight className="h-4 w-4 rotate-180" /></button>
-            <span className="text-[12px] text-[var(--color-foreground)] font-bold">1/4</span>
-            <button className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors"><ChevronRight className="h-4 w-4" /></button>
+            <button 
+              onClick={onPrev}
+              disabled={step === 1}
+              className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors disabled:opacity-30"
+            >
+              <ChevronRight className="h-4 w-4 rotate-180" />
+            </button>
+            <span className="text-[12px] text-[var(--color-foreground)] font-bold">{step}/{totalSteps}</span>
+            <button 
+              onClick={onNext}
+              disabled={step === totalSteps}
+              className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors disabled:opacity-30"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>
       <div className="space-y-4">
-        <ChoiceItem 
-          num="1" 
-          label="15秒以内" 
-          desc="节奏紧凑，适合信息流投放" 
-          active 
-        />
-        <ChoiceItem 
-          num="2" 
-          label="15-30秒" 
-          desc="可展示更多角色和玩法细节" 
-        />
-        <ChoiceItem 
-          num="3" 
-          label="30-60秒" 
-          desc="完整剧情+玩法展示" 
-        />
+        {options.map((opt, idx) => (
+          <ChoiceItem 
+            key={idx}
+            num={opt.num}
+            label={opt.label}
+            desc={opt.desc}
+            active={opt.active}
+            isMulti={isMulti}
+            onClick={() => onOptionClick?.(idx)}
+          />
+        ))}
         
         <button className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-[var(--color-secondary)] text-[var(--color-foreground)] text-sm font-bold border border-[var(--color-border)] hover:bg-[var(--color-accent)] transition-all">
           <Plus className="h-4 w-4" />
@@ -375,7 +409,10 @@ function DurationChoiceCard() {
       </div>
 
       <div className="flex justify-end pt-4">
-        <button className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[var(--color-foreground)] text-[var(--color-background)] text-[14px] font-bold hover:opacity-90 transition-all active:scale-95 shadow-lg">
+        <button 
+          onClick={onNext}
+          className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[var(--color-foreground)] text-[var(--color-background)] text-[14px] font-bold hover:opacity-90 transition-all active:scale-95 shadow-lg"
+        >
           继续
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -384,25 +421,48 @@ function DurationChoiceCard() {
   );
 }
 
-function ChoiceItem({ num, label, desc, active = false }: { num: string; label: string; desc: string; active?: boolean }) {
+function ChoiceItem({ 
+  num, 
+  label, 
+  desc, 
+  active = false, 
+  isMulti = false,
+  onClick 
+}: StepOption & { isMulti?: boolean; onClick?: () => void }) {
   return (
-    <div className={cn(
-      "flex items-center gap-5 p-5 rounded-[1.25rem] transition-all border-2",
-      active 
-        ? "bg-[var(--color-secondary)] border-[var(--color-foreground)] shadow-sm" 
-        : "bg-[var(--color-card)] border-transparent hover:bg-[var(--color-secondary)] hover:border-[var(--color-border)]"
-    )}>
+    <div 
+      onClick={onClick}
+      className={cn(
+        "flex items-center gap-5 p-5 rounded-[1.25rem] transition-all border-2 cursor-pointer",
+        active 
+          ? "bg-[var(--color-secondary)] border-[var(--color-foreground)] shadow-sm" 
+          : "bg-[var(--color-card)] border-transparent hover:bg-[var(--color-secondary)] hover:border-[var(--color-border)]"
+      )}
+    >
       <div className={cn(
-        "h-8 w-8 rounded-xl flex items-center justify-center text-[15px] font-bold shrink-0 shadow-sm",
-        active ? "bg-[var(--color-foreground)] text-[var(--color-background)]" : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)]"
+        "h-8 w-8 rounded-xl flex items-center justify-center text-[15px] font-bold shrink-0 shadow-sm transition-colors",
+        active 
+          ? "bg-[var(--color-foreground)] text-[var(--color-background)]" 
+          : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)]"
       )}>
-        {num}
+        {isMulti ? (
+          <div className={cn(
+            "w-5 h-5 rounded border-2 flex items-center justify-center transition-colors",
+            active ? "bg-white border-white" : "border-[var(--color-muted-foreground)]"
+          )}>
+            {active && (
+              <svg className="w-3.5 h-3.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </div>
+        ) : num}
       </div>
       <div>
         <div className={cn("text-[16px] font-bold", active ? "text-[var(--color-foreground)]" : "text-[var(--color-foreground)]/60")}>{label}</div>
-        <div className="text-[13px] text-[var(--color-muted-foreground)] mt-0.5 font-medium">{desc}</div>
+        {desc && <div className="text-[13px] text-[var(--color-muted-foreground)] mt-0.5 font-medium">{desc}</div>}
       </div>
-      {active && (
+      {active && !isMulti && (
         <div className="ml-auto w-6 h-6 rounded-full bg-[var(--color-foreground)] flex items-center justify-center text-[var(--color-background)]">
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
