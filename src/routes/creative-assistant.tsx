@@ -247,8 +247,8 @@ function CreativeAssistantPage() {
                 {/* Documents */}
                 <section>
                   <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[13px] font-bold text-[#86868B] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
-                    <span className="text-[12px] text-[#86868B] font-medium">共 5 个</span>
+                    <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
+                    <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
                   </div>
                   <div className="grid grid-cols-2 gap-5">
                     <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
@@ -262,8 +262,8 @@ function CreativeAssistantPage() {
                 {/* Images */}
                 <section>
                   <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[13px] font-bold text-[#86868B] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
-                    <span className="text-[12px] text-[#86868B] font-medium">共 2 个</span>
+                    <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
+                    <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
                   </div>
                   <div className="grid grid-cols-2 gap-5">
                     <ImageResourceCard title="user_upload_image_1.webp" type="WEBP" date="1小时前" img={charSam} />
@@ -274,8 +274,8 @@ function CreativeAssistantPage() {
                 {/* Videos */}
                 <section>
                   <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[13px] font-bold text-[#86868B] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
-                    <span className="text-[12px] text-[#86868B] font-medium">共 1 个</span>
+                    <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
+                    <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
                   </div>
                   <div className="grid grid-cols-2 gap-5">
                     <ImageResourceCard title="intro-animation.mp4" type="MP4" date="刚刚" img={skillReenact} />
