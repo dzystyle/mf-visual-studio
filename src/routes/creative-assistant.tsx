@@ -96,7 +96,7 @@ function CreativeAssistantPage() {
     {
       id: "3",
       role: "assistant",
-      card: null, // We'll render the card separately below to maintain interactivity
+      card: null,
       timestamp: "2026/8/13 14:33:05",
     },
     {
