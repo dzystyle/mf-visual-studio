@@ -375,7 +375,7 @@ function DurationChoiceCard() {
       </div>
 
       <div className="flex justify-end pt-4">
-        <button className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-black text-white text-[14px] font-bold hover:bg-zinc-800 transition-all active:scale-95 shadow-lg">
+        <button className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[var(--color-foreground)] text-[var(--color-background)] text-[14px] font-bold hover:opacity-90 transition-all active:scale-95 shadow-lg">
           继续
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -389,21 +389,21 @@ function ChoiceItem({ num, label, desc, active = false }: { num: string; label: 
     <div className={cn(
       "flex items-center gap-5 p-5 rounded-[1.25rem] transition-all border-2",
       active 
-        ? "bg-[#F5F5F7] border-[#000000] shadow-sm" 
-        : "bg-[#FFFFFF] border-transparent hover:bg-[#F5F5F7] hover:border-[#E5E5E7]"
+        ? "bg-[var(--color-secondary)] border-[var(--color-foreground)] shadow-sm" 
+        : "bg-[var(--color-card)] border-transparent hover:bg-[var(--color-secondary)] hover:border-[var(--color-border)]"
     )}>
       <div className={cn(
         "h-8 w-8 rounded-xl flex items-center justify-center text-[15px] font-bold shrink-0 shadow-sm",
-        active ? "bg-[#000000] text-[#FFFFFF]" : "bg-[#F5F5F7] text-[#86868B]"
+        active ? "bg-[var(--color-foreground)] text-[var(--color-background)]" : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)]"
       )}>
         {num}
       </div>
       <div>
-        <div className={cn("text-[16px] font-bold", active ? "text-[#1D1D1F]" : "text-[#1D1D1F]/60")}>{label}</div>
-        <div className="text-[13px] text-[#86868B] mt-0.5 font-medium">{desc}</div>
+        <div className={cn("text-[16px] font-bold", active ? "text-[var(--color-foreground)]" : "text-[var(--color-foreground)]/60")}>{label}</div>
+        <div className="text-[13px] text-[var(--color-muted-foreground)] mt-0.5 font-medium">{desc}</div>
       </div>
       {active && (
-        <div className="ml-auto w-6 h-6 rounded-full bg-black flex items-center justify-center text-white">
+        <div className="ml-auto w-6 h-6 rounded-full bg-[var(--color-foreground)] flex items-center justify-center text-[var(--color-background)]">
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
@@ -415,13 +415,13 @@ function ChoiceItem({ num, label, desc, active = false }: { num: string; label: 
 
 function ResourceCard({ title, type, date }: { title: string; type: string; date: string }) {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E7] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[#D2D2D7] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer">
-      <div className="h-28 w-full bg-[#F5F5F7] rounded-2xl flex items-center justify-center border border-[#E5E5E7]">
-        <div className="text-[12px] font-bold text-[#86868B] uppercase tracking-[0.2em]">{type}</div>
+    <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[var(--color-muted-foreground)] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer">
+      <div className="h-28 w-full bg-[var(--color-secondary)] rounded-2xl flex items-center justify-center border border-[var(--color-border)]">
+        <div className="text-[12px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.2em]">{type}</div>
       </div>
       <div>
-        <div className="text-[14px] font-bold text-[#1D1D1F] truncate mb-1.5">{title}</div>
-        <div className="text-[12px] text-[#86868B] flex items-center gap-2 font-medium">
+        <div className="text-[14px] font-bold text-[var(--color-foreground)] truncate mb-1.5">{title}</div>
+        <div className="text-[12px] text-[var(--color-muted-foreground)] flex items-center gap-2 font-medium">
           <span>文稿</span>
           <span className="opacity-30">·</span>
           <span>{date}</span>
@@ -433,14 +433,14 @@ function ResourceCard({ title, type, date }: { title: string; type: string; date
 
 function ImageResourceCard({ title, type, date, img }: { title: string; type: string; date: string; img: string }) {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E7] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[#D2D2D7] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer">
-      <div className="h-28 w-full rounded-2xl overflow-hidden relative border border-[#E5E5E7]">
+    <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[var(--color-muted-foreground)] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer">
+      <div className="h-28 w-full rounded-2xl overflow-hidden relative border border-[var(--color-border)]">
         <img src={img} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
-        <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-white/90 backdrop-blur-md text-[10px] font-bold text-[#1D1D1F] uppercase tracking-wider shadow-sm">{type}</div>
+        <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-[var(--color-card)]/90 backdrop-blur-md text-[10px] font-bold text-[var(--color-foreground)] uppercase tracking-wider shadow-sm">{type}</div>
       </div>
       <div>
-        <div className="text-[14px] font-bold text-[#1D1D1F] truncate mb-1.5">{title}</div>
-        <div className="text-[12px] text-[#86868B] flex items-center gap-2 font-medium">
+        <div className="text-[14px] font-bold text-[var(--color-foreground)] truncate mb-1.5">{title}</div>
+        <div className="text-[12px] text-[var(--color-muted-foreground)] flex items-center gap-2 font-medium">
           <span>{date}</span>
         </div>
       </div>
