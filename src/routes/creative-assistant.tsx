@@ -77,109 +77,115 @@ function CreativeAssistantPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [visibleMessageCount, setVisibleMessageCount] = useState(0);
 
-  // Define the workflow stages
-  const workflow = [
-    {
-      id: "1",
-      role: "user",
-      content: initialPrompt || "我想生成掌趣的一拳超人的游戏宣发视频。",
-      timestamp: "2026/8/13 14:32:15",
-    },
-    {
-      id: "2",
-      role: "assistant",
-      content: "掌趣一拳超人游戏宣发，埼玉一拳秒杀的震撼感很适合做营销短视频的开场钩子。我先确认几个关键信息，帮你把方向定准。",
-      timestamp: "2026/8/13 14:33:02",
-      statusLines: [{ icon: "check", text: "读取文件", subText: "查看用户上传的一拳超人素材" }]
-    },
-    {
-      id: "3",
-      role: "assistant",
-      isChoiceCard: true,
-      timestamp: "2026/8/13 14:33:05",
-    },
-    {
-      id: "4",
-      role: "user",
-      content: "我已确认以上信息",
-      timestamp: "2026/8/13 14:34:37",
-    },
-    {
-      id: "5",
-      role: "assistant",
-      content: "收到，15秒内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。",
-      timestamp: "2026/8/13 14:37:18",
-      statusLines: [
-        { icon: "check", text: "技能学习", subText: "营销视频大师" },
-        { icon: "loading", text: "正在加载技能: 营销视频大师" },
-        { icon: "check", text: "任务规划" }
-      ]
-    },
-    {
-      id: "6",
-      role: "assistant",
-      content: "好的，我已经准备好处理素材并开始制作营销视频了。我们会先读取文件并规划任务，确保脚本准确还原一拳超人的热血燃战风格。",
-      timestamp: "2026/8/13 14:38:50",
-    },
-    {
-      id: "7",
-      role: "user",
-      content: "这个就是一拳超人的图片。",
-      timestamp: "2026/8/13 14:38:55",
-      attachments: [{ name: "saitama.webp", type: "IMAGE", url: charSam }]
-    },
-    {
-      id: "8",
-      role: "assistant",
-      content: "埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。",
-      timestamp: "2026/8/13 14:38:56",
-    },
-    {
-      id: "9",
-      role: "assistant",
-      timestamp: "2026/8/13 14:38:57",
-      isDetailedAssistant: true,
-    },
-    {
-      id: "10",
-      role: "user",
-      content: "继续生成这个宣发视频。",
-      timestamp: "2026/8/13 14:40:12",
-    },
-    {
-      id: "11",
-      role: "assistant",
-      timestamp: "2026/8/13 14:40:15",
-      isDetailedAssistant2: true,
-    },
-    {
-      id: "12",
-      role: "user",
-      content: "继续",
-      timestamp: "2026/8/13 15:30:10",
-    },
-    {
-      id: "13",
-      role: "assistant",
-      timestamp: "2026/8/13 15:31:31",
-      isVideoOutput: true,
-    },
-  ];
+  const [workflow, setWorkflow] = useState<any[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
+  // Initial workflow from search param if present
   useEffect(() => {
-    if (visibleMessageCount < workflow.length) {
-      const timer = setTimeout(() => {
-        setIsTyping(true);
-        const typingTimer = setTimeout(() => {
-          setMessages(prev => [...prev, workflow[visibleMessageCount] as Message]);
-          setVisibleMessageCount(prev => prev + 1);
-          setIsTyping(false);
-        }, 1200);
-        return () => clearTimeout(typingTimer);
-      }, 500);
-      return () => clearTimeout(timer);
+    if (initialPrompt && messages.length === 0) {
+      const firstMsg: Message = {
+        id: "1",
+        role: "user",
+        content: initialPrompt,
+        timestamp: new Date().toLocaleString(),
+      };
+      setMessages([firstMsg]);
+      triggerAssistantResponse(1);
     }
-  }, [visibleMessageCount]);
+  }, [initialPrompt]);
+
+  const triggerAssistantResponse = (stepIndex: number) => {
+    setIsProcessing(true);
+    const fullWorkflow = [
+      {
+        id: "2",
+        role: "assistant",
+        content: "掌趣一拳超人游戏宣发，埼玉一拳秒杀的震撼感很适合做营销短视频的开场钩子。我先确认几个关键信息，帮你把方向定准。",
+        timestamp: new Date().toLocaleString(),
+        statusLines: [{ icon: "check", text: "读取文件", subText: "查看用户上传的一拳超人素材" }]
+      },
+      {
+        id: "3",
+        role: "assistant",
+        isChoiceCard: true,
+        timestamp: new Date().toLocaleString(),
+      },
+      {
+        id: "5",
+        role: "assistant",
+        content: "收到，15秒内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。",
+        timestamp: new Date().toLocaleString(),
+        statusLines: [
+          { icon: "check", text: "技能学习", subText: "营销视频大师" },
+          { icon: "loading", text: "正在加载技能: 营销视频大师" },
+          { icon: "check", text: "任务规划" }
+        ]
+      },
+      {
+        id: "6",
+        role: "assistant",
+        content: "好的，我已经准备好处理素材并开始制作营销视频了。我们会先读取文件并规划任务，确保脚本准确还原一拳超人的热血燃战风格。",
+        timestamp: new Date().toLocaleString(),
+      },
+      {
+        id: "8",
+        role: "assistant",
+        content: "埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。",
+        timestamp: new Date().toLocaleString(),
+      },
+      {
+        id: "9",
+        role: "assistant",
+        timestamp: new Date().toLocaleString(),
+        isDetailedAssistant: true,
+      },
+      {
+        id: "11",
+        role: "assistant",
+        timestamp: new Date().toLocaleString(),
+        isDetailedAssistant2: true,
+      },
+      {
+        id: "13",
+        role: "assistant",
+        timestamp: new Date().toLocaleString(),
+        isVideoOutput: true,
+      },
+    ];
+
+    const nextAssistantMsg = fullWorkflow.find(m => {
+      if (stepIndex === 1) return m.id === "2" || m.id === "3";
+      if (stepIndex === 2) return m.id === "5" || m.id === "6";
+      if (stepIndex === 3) return m.id === "8" || m.id === "9";
+      if (stepIndex === 4) return m.id === "11";
+      if (stepIndex === 5) return m.id === "13";
+      return false;
+    });
+
+    // In this simulation, we'll just add the relevant response based on step
+    const timer = setTimeout(() => {
+      setIsTyping(true);
+      const typingTimer = setTimeout(() => {
+        const msgsToAdd: Message[] = [];
+        if (stepIndex === 1) {
+          msgsToAdd.push(fullWorkflow[0] as Message, fullWorkflow[1] as Message);
+        } else if (stepIndex === 2) {
+          msgsToAdd.push(fullWorkflow[2] as Message, fullWorkflow[3] as Message);
+        } else if (stepIndex === 3) {
+          msgsToAdd.push(fullWorkflow[4] as Message, fullWorkflow[5] as Message);
+        } else if (stepIndex === 4) {
+          msgsToAdd.push(fullWorkflow[6] as Message);
+        } else if (stepIndex === 5) {
+          msgsToAdd.push(fullWorkflow[7] as Message);
+        }
+        
+        setMessages(prev => [...prev, ...msgsToAdd]);
+        setIsTyping(false);
+        setIsProcessing(false);
+      }, 1500);
+      return () => clearTimeout(typingTimer);
+    }, 500);
+  };
 
   useEffect(() => {
     if (scrollContainerRef.current) {
