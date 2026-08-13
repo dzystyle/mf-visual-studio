@@ -281,6 +281,15 @@ function CreativeAssistantPage() {
         )}>
           <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide">
             <div className="mx-auto max-w-4xl space-y-10">
+              {messages.length === 0 && (
+                <div className="h-[60vh] flex flex-col items-center justify-center text-center opacity-60">
+                  <div className="w-20 h-20 rounded-3xl bg-[var(--color-secondary)] flex items-center justify-center mb-6 border border-[var(--color-border)] shadow-sm">
+                    <MessageSquare className="w-10 h-10 text-[var(--color-foreground)]" />
+                  </div>
+                  <h1 className="text-3xl font-bold mb-3">Creative Assistant</h1>
+                  <p className="text-lg font-medium max-w-md">输入一段话，让我帮你策划并生成精美的宣发视频。</p>
+                </div>
+              )}
               {messages.map((msg) => (
                 <div 
                   key={msg.id} 
