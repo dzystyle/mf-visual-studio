@@ -213,7 +213,7 @@ export function ApiKeysSettings() {
                         : "bg-white/5 text-white/40 hover:bg-white/10"
                     )}
                   >
-                    {d} 天
+                    {d === 'permanent' ? '永久' : `${d} 天`}
                   </button>
                 ))}
               </div>
