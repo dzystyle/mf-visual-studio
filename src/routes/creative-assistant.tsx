@@ -211,13 +211,55 @@ function CreativeAssistantPage() {
     });
   };
 
-  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
+  const nextStep = () => {
+    setCurrentStep(prev => {
+      const next = Math.min(prev + 1, 4);
+      if (prev === 4) {
+        // When user finishes the choice card, simulate a user message
+        const userMsg: Message = {
+          id: Math.random().toString(),
+          role: "user",
+          content: "我已确认以上信息",
+          timestamp: new Date().toLocaleString(),
+        };
+        setMessages(prevMsgs => [...prevMsgs, userMsg]);
+        triggerAssistantResponse(2);
+      }
+      return next;
+    });
+  };
+
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
   const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || isProcessing) return;
+    
+    const userMsg: Message = {
+      id: Math.random().toString(),
+      role: "user",
+      content: inputValue,
+      timestamp: new Date().toLocaleString(),
+    };
+    
+    // Check for specific keywords to trigger next stages
+    let nextStage = 0;
+    if (inputValue.includes("图片") || inputValue.includes("素材")) {
+      userMsg.attachments = [{ name: "saitama.webp", type: "IMAGE", url: charSam }];
+      nextStage = 3;
+    } else if (inputValue.includes("生成") || inputValue.includes("宣发")) {
+      nextStage = 4;
+    } else if (inputValue.includes("继续")) {
+      nextStage = 5;
+    } else if (messages.length === 0) {
+      nextStage = 1;
+    }
+
+    setMessages(prev => [...prev, userMsg]);
     setInputValue("");
-    // In a real app, this would trigger a new message chain
+    
+    if (nextStage > 0) {
+      triggerAssistantResponse(nextStage);
+    }
   };
 
   return (
