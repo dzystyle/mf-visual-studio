@@ -10,10 +10,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { QuotaSettingsDialog } from "./QuotaSettingsDialog";
 
 // --- Team Members Tab ---
 
 export function TeamMembers() {
+  const [quotaDialogOpen, setQuotaDialogOpen] = React.useState(false);
+  const [selectedMember, setSelectedMember] = React.useState<{ name: string } | null>(null);
+
   const members = [
     { id: 1, name: "Zhangyu_4n6h", email: "zy28511116@gmail.com", role: "所有者", type: "内部", initial: "Z", limit: "无额度限制" },
     { id: 2, name: "猫咪", email: "t1@aaa.com", role: "成员", type: "内部", initial: "猫", limit: "无额度限制" },
@@ -21,6 +25,12 @@ export function TeamMembers() {
     { id: 4, name: "猫咪3", email: "t6@aaa.com", role: "成员", type: "内部", initial: "猫", limit: "无额度限制" },
     { id: 5, name: "aaa22", email: "a22@aaa.com", role: "成员", type: "内部", initial: "A", limit: "无额度限制" },
   ];
+
+  const handleOpenQuotaSettings = (member: { name: string }) => {
+    setSelectedMember(member);
+    setQuotaDialogOpen(true);
+  };
+
 
   return (
     <div className="space-y-6">
@@ -90,7 +100,12 @@ export function TeamMembers() {
                         成员 <ChevronDown className="h-3 w-3" />
                       </Button>
                       <div className="flex items-center gap-3">
-                        <button className="text-[12px] font-bold text-primary hover:opacity-80 transition-opacity">额度设置</button>
+                        <button 
+                          onClick={() => handleOpenQuotaSettings(member)}
+                          className="text-[12px] font-bold text-primary hover:opacity-80 transition-opacity"
+                        >
+                          额度设置
+                        </button>
                         <button className="text-[12px] font-bold text-muted-foreground hover:text-foreground transition-colors">移除成员</button>
                       </div>
                     </div>
@@ -101,6 +116,14 @@ export function TeamMembers() {
           </div>
         ))}
       </div>
+
+      {selectedMember && (
+        <QuotaSettingsDialog
+          open={quotaDialogOpen}
+          onOpenChange={setQuotaDialogOpen}
+          memberName={selectedMember.name}
+        />
+      )}
     </div>
   );
 }
