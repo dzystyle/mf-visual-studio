@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState, useEffect, Dispatch, SetStateAction, useCallback } from "react";
 import { toast } from "sonner";
-import { XCircle, RotateCcw } from "lucide-react";
+import { XCircle, RotateCcw, Loader2 } from "lucide-react";
 import {
   Plus,
   Video,
@@ -43,7 +43,8 @@ type Msg = {
   resultKind: "image" | "video";
   resultImage: string;
   time: string;
-  status?: "success" | "failed";
+  status?: "success" | "failed" | "processing";
+  progress?: number;
 };
 
 const initialMsgs: Msg[] = [
@@ -117,27 +118,44 @@ function QuickPage() {
     
     // Simulate failure if prompt contains "fail" or "失败"
     const isFailed = text.toLowerCase().includes("fail") || text.includes("失败");
+    const id = String(Date.now());
     
     const sample = [skillProduct, skillStory, skillReenact];
-    setMsgs((m) => [
-      ...m,
-      {
-        id: String(Date.now()),
-        prompt: text,
-        model: tab === "image" ? "Nano Banana Pro" : "Seedance 2.0",
-        badge: tab === "video" ? "新" : undefined,
-        ratio: "16:9",
-        size: tab === "image" ? "2K" : "720p",
-        resultKind: tab === "image" ? "image" : "video",
-        resultImage: sample[m.length % sample.length],
-        status: isFailed ? "failed" : "success",
-        time: new Date().toLocaleTimeString("zh-CN", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      },
-    ]);
+    const newMsg: Msg = {
+      id,
+      prompt: text,
+      model: tab === "image" ? "Nano Banana Pro" : "Seedance 2.0",
+      badge: tab === "video" ? "新" : undefined,
+      ratio: "16:9",
+      size: tab === "image" ? "2K" : "720p",
+      resultKind: tab === "image" ? "image" : "video",
+      resultImage: sample[msgs.length % sample.length],
+      status: "processing",
+      progress: 0,
+      time: new Date().toLocaleTimeString("zh-CN", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+
+    setMsgs((m) => [...m, newMsg]);
     setInput("");
+
+    // Simulate progress
+    let prog = 0;
+    const interval = setInterval(() => {
+      prog += Math.random() * 15;
+      if (prog >= 100) {
+        clearInterval(interval);
+        setMsgs(prev => prev.map(m => 
+          m.id === id ? { ...m, status: isFailed ? "failed" : "success", progress: 100 } : m
+        ));
+      } else {
+        setMsgs(prev => prev.map(m => 
+          m.id === id ? { ...m, progress: Math.floor(prog) } : m
+        ));
+      }
+    }, 800);
   }
 
   return (
@@ -233,7 +251,43 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
       </div>
 
       <div className="grid grid-cols-4 gap-4">
-        {msg.status === "failed" ? (
+        {msg.status === "processing" ? (
+          <>
+            {[1, 2].map((i) => (
+              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 flex flex-col items-center justify-center gap-4 bg-white/[0.02]">
+                <div className="relative flex h-16 w-16 items-center justify-center">
+                  <Loader2 className="h-8 w-8 text-white/40 animate-spin" />
+                  <svg className="absolute inset-0 h-full w-full -rotate-90">
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      fill="transparent"
+                      className="text-white/5"
+                    />
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      fill="transparent"
+                      strokeDasharray={175.9}
+                      strokeDashoffset={175.9 * (1 - (msg.progress || 0) / 100)}
+                      className="text-white/60 transition-all duration-500 ease-out"
+                    />
+                  </svg>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <div className="text-xs font-medium text-white/60">正在生成中...</div>
+                  <div className="text-[10px] text-white/30 font-mono">{msg.progress}%</div>
+                </div>
+              </div>
+            ))}
+          </>
+        ) : msg.status === "failed" ? (
           <>
             {[1, 2].map((i) => (
               <div key={i} className={cn(
