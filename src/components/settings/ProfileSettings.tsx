@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Camera } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
@@ -7,6 +7,11 @@ import { EnterpriseVerificationDialog } from './EnterpriseVerificationDialog';
 
 export function ProfileSettings() {
   const [showEnterpriseVerify, setShowEnterpriseVerify] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+
+  useEffect(() => {
+    setIsVerified(localStorage.getItem('enterprise_verified') === 'true');
+  }, []);
   return (
     <div className="mx-auto max-w-2xl space-y-12">
       <div className="flex flex-col items-center">
@@ -62,19 +67,24 @@ export function ProfileSettings() {
           <div className="space-y-1">
             <div className="text-sm font-medium text-white">企业认证</div>
           </div>
-          <Button 
-            variant="outline" 
-            className="rounded-full border-white/10 bg-white/5 text-xs text-white hover:bg-white/10"
-            onClick={() => setShowEnterpriseVerify(true)}
-          >
-            去认证
-          </Button>
+          {isVerified ? (
+            <span className="text-sm text-white/40 font-medium">已企业认证</span>
+          ) : (
+            <Button 
+              variant="outline" 
+              className="rounded-full border-white/10 bg-white/5 text-xs text-white hover:bg-white/10"
+              onClick={() => setShowEnterpriseVerify(true)}
+            >
+              去认证
+            </Button>
+          )}
         </div>
       </div>
 
       <EnterpriseVerificationDialog 
         open={showEnterpriseVerify} 
         onOpenChange={setShowEnterpriseVerify} 
+        onSuccess={() => setIsVerified(true)}
       />
     </div>
   );
