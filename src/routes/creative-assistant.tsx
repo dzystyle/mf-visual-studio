@@ -151,6 +151,17 @@ function CreativeAssistantPage() {
       role: "assistant",
       timestamp: "2026/8/13 14:40:15",
     },
+    {
+      id: "12",
+      role: "user",
+      content: "继续",
+      timestamp: "2026/8/13 15:30:10",
+    },
+    {
+      id: "13",
+      role: "assistant",
+      timestamp: "2026/8/13 15:31:31",
+    },
   ]);
 
   return (
