@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState, useEffect, Dispatch, SetStateAction, useCallback } from "react";
 import { toast } from "sonner";
-import { XCircle, RotateCcw } from "lucide-react";
+import { XCircle, RotateCcw, Loader2 } from "lucide-react";
 import {
   Plus,
   Video,
