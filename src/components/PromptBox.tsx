@@ -437,6 +437,17 @@ export function PromptBox({
                 </div>
               </PopoverContent>
             </Popover>
+            <div className="flex items-center gap-2 px-3 py-1 bg-card/40 border border-border rounded-full hover:bg-card transition">
+              <span className="text-[11px] font-medium text-muted-foreground">画布</span>
+              <button 
+                onClick={() => setCanvasMode(!canvasMode)}
+                className={`relative inline-flex h-4 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-aurora-blue' : 'bg-white/10'}`}
+              >
+                <span
+                  className={`pointer-events-none block h-2.5 w-2.5 rounded-full shadow-lg ring-0 transition-transform ${canvasMode ? 'translate-x-4.5 bg-white' : 'translate-x-1 bg-white/60'}`}
+                />
+              </button>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <button type="button" className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition hover:bg-accent hover:text-foreground" onClick={() => console.log("Voice input triggered")}>
@@ -449,17 +460,6 @@ export function PromptBox({
             >
               <ArrowUp className="h-4 w-4" />
             </button>
-            <div className="flex items-center gap-2 ml-1 px-3 py-1 bg-card/40 border border-border rounded-full hover:bg-card transition">
-              <span className="text-[11px] font-medium text-muted-foreground">画布</span>
-              <button 
-                onClick={() => setCanvasMode(!canvasMode)}
-                className={`relative inline-flex h-4 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-aurora-blue' : 'bg-white/10'}`}
-              >
-                <span
-                  className={`pointer-events-none block h-2.5 w-2.5 rounded-full shadow-lg ring-0 transition-transform ${canvasMode ? 'translate-x-4.5 bg-white' : 'translate-x-1 bg-white/60'}`}
-                />
-              </button>
-            </div>
           </div>
         </div>
       )}
