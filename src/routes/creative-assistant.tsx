@@ -509,7 +509,7 @@ function CreativeAssistantPage() {
                 </div>
                 <textarea 
                   rows={1}
-                  defaultValue="'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            Creative Assistant的这个视频播放直接用我上面上床的.mp4文件.集合项目以你资深产品经理的角度思考一下。"
+                  defaultValue="'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            深度梳理一下Creative Assistant页面的所有流程我希望的是用户输入一段话出来用户输入对应的内容,可以先把这个做成静态的交互先写假的loding然后实时显示.以你资深产品经理的角度深度思考一下。"
                   placeholder="与综合助手对话，支持多种能力..."
                   className="w-full bg-transparent text-[16px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none resize-none px-4 py-2 font-medium"
                 />
