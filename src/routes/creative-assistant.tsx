@@ -231,7 +231,7 @@ function CreativeAssistantPage() {
           "flex flex-1 flex-col transition-all duration-500 ease-in-out relative",
           showResources ? "mr-[600px]" : "mr-0"
         )}>
-          <div className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide">
+          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide">
             <div className="mx-auto max-w-4xl space-y-10">
               {messages.map((msg) => (
                 <div 
@@ -241,6 +241,18 @@ function CreativeAssistantPage() {
                     msg.role === "user" ? "items-end" : "items-start"
                   )}
                 >
+                  {msg.attachments && msg.attachments.length > 0 && (
+                    <div className="flex flex-wrap gap-3 mb-1">
+                      {msg.attachments.map((file, i) => (
+                        <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] w-fit shadow-sm">
+                          <div className="h-10 w-10 rounded-lg overflow-hidden shrink-0 border border-[var(--color-border)]">
+                            <img src={file.url} className="w-full h-full object-cover" />
+                          </div>
+                          <div className="text-[14px] font-bold text-[var(--color-foreground)]">{file.name}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   {msg.content && (
                     <div className={cn(
                       "max-w-[85%] px-5 py-3 text-[15px] leading-relaxed tracking-tight shadow-sm border whitespace-pre-wrap",
@@ -252,7 +264,7 @@ function CreativeAssistantPage() {
                     </div>
                   )}
 
-                  {msg.id === '3' && (
+                  {msg.isChoiceCard && (
                     <div className="w-full">
                       <AnimatePresence mode="wait">
                         {currentStep === 1 && (
