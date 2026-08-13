@@ -114,6 +114,10 @@ function QuickPage() {
   function submit() {
     const text = input.trim();
     if (!text) return;
+    
+    // Simulate failure if prompt contains "fail" or "失败"
+    const isFailed = text.toLowerCase().includes("fail") || text.includes("失败");
+    
     const sample = [skillProduct, skillStory, skillReenact];
     setMsgs((m) => [
       ...m,
@@ -126,6 +130,7 @@ function QuickPage() {
         size: tab === "image" ? "2K" : "720p",
         resultKind: tab === "image" ? "image" : "video",
         resultImage: sample[m.length % sample.length],
+        status: isFailed ? "failed" : "success",
         time: new Date().toLocaleTimeString("zh-CN", {
           hour: "2-digit",
           minute: "2-digit",
