@@ -408,12 +408,16 @@ function FilmIconGradient({ className }: { className?: string }) {
   );
 }
 
-export function BrandMark() {
+export function BrandMark({ variant = "dark" }: { variant?: "light" | "dark" }) {
+  const isLight = variant === "light";
 
   return (
     <div className="absolute left-6 top-5 z-20 flex items-center gap-2">
       <img src={logoAsset.url} alt="Artrail Logo" className="h-6 w-auto" />
-      <span className="text-[15px] font-semibold tracking-tight">artrail.ai</span>
+      <span className={cn(
+        "text-[15px] font-semibold tracking-tight",
+        isLight ? "text-[#1D1D1F]" : "text-white"
+      )}>artrail.ai</span>
     </div>
   );
 }
