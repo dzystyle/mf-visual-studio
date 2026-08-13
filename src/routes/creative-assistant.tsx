@@ -87,10 +87,10 @@ function CreativeAssistantPage() {
     <div className="flex h-screen flex-col bg-[var(--color-background)] text-[var(--color-foreground)] overflow-hidden font-sans">
       <div className="absolute top-0 left-0 right-0 z-50 p-6 flex items-center justify-between pointer-events-none">
         <div className="pointer-events-auto">
-          <BrandMark variant="dark" />
+          <BrandMark />
         </div>
         <div className="pointer-events-auto">
-          <TopBar variant="light" />
+          <TopBar />
         </div>
       </div>
 
