@@ -228,39 +228,64 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
       </div>
 
       <div className="grid grid-cols-4 gap-4">
-        {/* Placeholder for multiple images as shown in ref */}
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-          <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 bg-white/[0.02]">
-            <img
-              src={msg.resultImage}
-              alt={msg.prompt}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover/item:scale-110"
-            />
-            
-            {/* Hover overlay icons */}
-            <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/40 opacity-0 transition-opacity duration-300 group-hover/item:opacity-100 backdrop-blur-[2px]">
-              <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
-                <Download className="h-4 w-4" />
-              </button>
-              <button 
-                onClick={onHdClick}
-                className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20"
-              >
-                <span className="text-[10px] font-bold">HD</span>
-              </button>
-              <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
-                <Star className="h-4 w-4" />
-              </button>
-              <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
-                <Trash2 className="h-4 w-4" />
-              </button>
+        {msg.status === "failed" ? (
+          <>
+            {[1, 2].map((i) => (
+              <div key={i} className={cn(
+                "group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 flex flex-col items-center justify-center gap-4",
+                i === 1 ? "bg-green-950/20" : "bg-red-950/20"
+              )}>
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20">
+                  <XCircle className="h-6 w-6 text-red-500" />
+                </div>
+                <div className="text-sm text-white/60">生成失败</div>
+                
+                <div className="flex gap-2">
+                  <button className="flex items-center gap-1.5 rounded-full bg-white/5 px-4 py-1.5 text-xs text-white/40 transition hover:bg-white/10 hover:text-white/60">
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    重试
+                  </button>
+                  <button className="flex items-center gap-1.5 rounded-full bg-white/5 px-4 py-1.5 text-xs text-white/40 transition hover:bg-white/10 hover:text-white/60">
+                    <Trash2 className="h-3.5 w-3.5" />
+                    删除
+                  </button>
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+            <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 bg-white/[0.02]">
+              <img
+                src={msg.resultImage}
+                alt={msg.prompt}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover/item:scale-110"
+              />
+              
+              <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/40 opacity-0 transition-opacity duration-300 group-hover/item:opacity-100 backdrop-blur-[2px]">
+                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                  <Download className="h-4 w-4" />
+                </button>
+                <button 
+                  onClick={onHdClick}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20"
+                >
+                  <span className="text-[10px] font-bold">HD</span>
+                </button>
+                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                  <Star className="h-4 w-4" />
+                </button>
+                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+              
+              <div className="absolute bottom-2 left-2 flex gap-1 opacity-0 transition-opacity group-hover/item:opacity-100">
+                <span className="text-[10px] text-white/40 bg-black/60 px-1.5 rounded">{i}</span>
+              </div>
             </div>
-            
-            <div className="absolute bottom-2 left-2 flex gap-1 opacity-0 transition-opacity group-hover/item:opacity-100">
-              <span className="text-[10px] text-white/40 bg-black/60 px-1.5 rounded">{i}</span>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       <div className="mt-6 flex gap-3 opacity-60 transition-opacity group-hover:opacity-100">
