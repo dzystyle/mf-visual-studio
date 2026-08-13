@@ -59,7 +59,7 @@ export function ApiKeysSettings() {
       name: newKeyData.name || '未命名 Key',
       key: newKey,
       status: 'active',
-      expiry: expiryDate.toISOString().split('T')[0] + ' ' + expiryDate.toTimeString().split(' ')[0].substring(0, 5),
+      expiry: newKeyData.expiry === 'permanent' ? '永久' : (expiryDate.toISOString().split('T')[0] + ' ' + expiryDate.toTimeString().split(' ')[0].substring(0, 5)),
       createdAt: new Date().toLocaleString(),
       description: newKeyData.description
     };
