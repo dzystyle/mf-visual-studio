@@ -32,7 +32,7 @@ export function QuotaSettingsDialog({
 }: QuotaSettingsDialogProps) {
   const [type, setType] = React.useState<QuotaType>("unlimited");
   const [period, setPeriod] = React.useState("monthly");
-  const [quotaValue, setQuotaValue] = React.useState("111");
+  const [quotaValue, setQuotaValue] = React.useState("0");
 
   const handleSave = () => {
     // In a real app, this would call an API
@@ -143,15 +143,37 @@ export function QuotaSettingsDialog({
             )}
 
             {type === "fixed" && (
-              <div className="space-y-3">
-                <label className="text-sm font-bold text-foreground/70">固定额度</label>
-                <Input
-                  type="number"
-                  value={quotaValue}
-                  onChange={(e) => setQuotaValue(e.target.value)}
-                  className="h-12 bg-muted/30 border-border/40 text-[15px] font-medium rounded-xl"
-                  placeholder="输入固定积分额度"
-                />
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <label className="text-sm font-bold text-foreground/70">固定额度</label>
+                  <div className="flex items-center gap-3">
+                    <button 
+                      onClick={() => setQuotaValue(String(Math.max(0, Number(quotaValue) - 100)))}
+                      className="h-12 w-12 rounded-xl bg-muted/20 border border-border/40 flex items-center justify-center hover:bg-muted transition-colors font-bold text-xl"
+                    >-</button>
+                    <div className="flex-1 relative">
+                      <Input
+                        type="number"
+                        value={quotaValue}
+                        onChange={(e) => setQuotaValue(e.target.value)}
+                        className="h-12 bg-muted/30 border-border/40 text-[18px] font-bold rounded-xl text-center pr-16"
+                      />
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Credits</span>
+                    </div>
+                    <button 
+                      onClick={() => setQuotaValue(String(Number(quotaValue) + 100))}
+                      className="h-12 w-12 rounded-xl bg-muted/20 border border-border/40 flex items-center justify-center hover:bg-muted transition-colors font-bold text-xl"
+                    >+</button>
+                  </div>
+                </div>
+                
+                <div className="rounded-xl bg-primary/5 p-4 border border-primary/20 flex justify-between items-center">
+                  <span className="text-xs text-muted-foreground font-medium">账户额度概览 (本月)</span>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-primary">{quotaValue} 积分</div>
+                    <div className="text-[10px] text-muted-foreground">分配后立即生效</div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
