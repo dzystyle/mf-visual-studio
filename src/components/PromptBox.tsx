@@ -184,19 +184,7 @@ export function PromptBox({
     <div className={`glass shadow-2xl relative z-20 transition-all duration-500 ease-out-expo ${
       isMini ? 'rounded-full p-2 pl-6' : 'rounded-2xl p-5'
     }`}>
-      {!isMini && (
-        <div className="absolute -top-3 left-4 flex items-center gap-2 px-3 py-1 bg-[#1A1A1A] border border-white/10 rounded-full shadow-lg z-30">
-          <span className="text-[11px] font-medium text-white/80">画布</span>
-          <button 
-            onClick={() => setCanvasMode(!canvasMode)}
-            className={`relative inline-flex h-4 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-white' : 'bg-white/10'}`}
-          >
-            <span
-              className={`pointer-events-none block h-2.5 w-2.5 rounded-full shadow-lg ring-0 transition-transform ${canvasMode ? 'translate-x-4.5 bg-black' : 'translate-x-1 bg-white/60'}`}
-            />
-          </button>
-        </div>
-      )}
+      {/* Canvas mode toggle removed from here */}
       <div className="relative">
         {!isMini && (attachments.length > 0 || skill) && (
           <div className="mb-3 flex flex-wrap gap-2">
