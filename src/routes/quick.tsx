@@ -118,27 +118,44 @@ function QuickPage() {
     
     // Simulate failure if prompt contains "fail" or "失败"
     const isFailed = text.toLowerCase().includes("fail") || text.includes("失败");
+    const id = String(Date.now());
     
     const sample = [skillProduct, skillStory, skillReenact];
-    setMsgs((m) => [
-      ...m,
-      {
-        id: String(Date.now()),
-        prompt: text,
-        model: tab === "image" ? "Nano Banana Pro" : "Seedance 2.0",
-        badge: tab === "video" ? "新" : undefined,
-        ratio: "16:9",
-        size: tab === "image" ? "2K" : "720p",
-        resultKind: tab === "image" ? "image" : "video",
-        resultImage: sample[m.length % sample.length],
-        status: isFailed ? "failed" : "success",
-        time: new Date().toLocaleTimeString("zh-CN", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      },
-    ]);
+    const newMsg: Msg = {
+      id,
+      prompt: text,
+      model: tab === "image" ? "Nano Banana Pro" : "Seedance 2.0",
+      badge: tab === "video" ? "新" : undefined,
+      ratio: "16:9",
+      size: tab === "image" ? "2K" : "720p",
+      resultKind: tab === "image" ? "image" : "video",
+      resultImage: sample[msgs.length % sample.length],
+      status: "processing",
+      progress: 0,
+      time: new Date().toLocaleTimeString("zh-CN", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+
+    setMsgs((m) => [...m, newMsg]);
     setInput("");
+
+    // Simulate progress
+    let prog = 0;
+    const interval = setInterval(() => {
+      prog += Math.random() * 15;
+      if (prog >= 100) {
+        clearInterval(interval);
+        setMsgs(prev => prev.map(m => 
+          m.id === id ? { ...m, status: isFailed ? "failed" : "success", progress: 100 } : m
+        ));
+      } else {
+        setMsgs(prev => prev.map(m => 
+          m.id === id ? { ...m, progress: Math.floor(prog) } : m
+        ));
+      }
+    }, 800);
   }
 
   return (
