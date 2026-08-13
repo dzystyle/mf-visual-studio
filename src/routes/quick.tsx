@@ -301,10 +301,8 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         ) : msg.status === "failed" ? (
           <>
             {[1, 2].map((i) => (
-              <div key={i} className={cn(
-                "group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 flex flex-col items-center justify-center gap-4 bg-white/[0.02]"
+              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 flex flex-col items-center justify-center gap-4 bg-white/[0.02]">
 
-              )}>
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20">
                   <XCircle className="h-6 w-6 text-red-500" />
                 </div>
