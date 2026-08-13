@@ -335,19 +335,22 @@ function StatusLine({ icon, text, subText }: { icon: 'check' | 'loading'; text: 
 
 function DurationChoiceCard() {
   return (
-    <div className="w-full max-w-xl glass border border-white/10 rounded-3xl p-6 space-y-6">
+    <div className="w-full max-w-xl bg-[#FFFFFF] border border-[#E5E5E7] rounded-[2rem] p-8 space-y-8 shadow-[0_8px_32px_rgba(0,0,0,0.04)]">
       <div className="flex items-center justify-between">
-        <h3 className="text-[15px] font-medium text-white/90">视频时长希望控制在多少秒以内？</h3>
-        <div className="flex items-center gap-3">
-          <span className="text-xs text-white/40 font-medium">已提交</span>
-          <div className="flex items-center gap-1">
-            <button className="text-white/20"><ChevronRight className="h-4 w-4 rotate-180" /></button>
-            <span className="text-[11px] text-white/40">1/4</span>
-            <button className="text-white/20"><ChevronRight className="h-4 w-4" /></button>
+        <h3 className="text-[17px] font-bold text-[#1D1D1F]">视频时长希望控制在多少秒以内？</h3>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-500" />
+            <span className="text-[13px] text-[#86868B] font-bold">已提交</span>
+          </div>
+          <div className="flex items-center gap-2 bg-[#F5F5F7] rounded-lg px-2 py-1 border border-[#E5E5E7]">
+            <button className="text-[#86868B] hover:text-[#1D1D1F] transition-colors"><ChevronRight className="h-4 w-4 rotate-180" /></button>
+            <span className="text-[12px] text-[#1D1D1F] font-bold">1/4</span>
+            <button className="text-[#86868B] hover:text-[#1D1D1F] transition-colors"><ChevronRight className="h-4 w-4" /></button>
           </div>
         </div>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-4">
         <ChoiceItem 
           num="1" 
           label="15秒以内" 
@@ -364,6 +367,18 @@ function DurationChoiceCard() {
           label="30-60秒" 
           desc="完整剧情+玩法展示" 
         />
+        
+        <button className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#F5F5F7] text-[#1D1D1F] text-sm font-bold border border-[#E5E5E7] hover:bg-[#E5E5E7] transition-all">
+          <Plus className="h-4 w-4" />
+          添加选项
+        </button>
+      </div>
+
+      <div className="flex justify-end pt-4">
+        <button className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-black text-white text-[14px] font-bold hover:bg-zinc-800 transition-all active:scale-95 shadow-lg">
+          继续
+          <ChevronRight className="h-4 w-4" />
+        </button>
       </div>
     </div>
   );
@@ -372,19 +387,28 @@ function DurationChoiceCard() {
 function ChoiceItem({ num, label, desc, active = false }: { num: string; label: string; desc: string; active?: boolean }) {
   return (
     <div className={cn(
-      "flex items-center gap-4 p-4 rounded-2xl transition-all border",
-      active ? "bg-white/10 border-white/10 shadow-lg" : "bg-white/[0.02] border-transparent"
+      "flex items-center gap-5 p-5 rounded-[1.25rem] transition-all border-2",
+      active 
+        ? "bg-[#F5F5F7] border-[#000000] shadow-sm" 
+        : "bg-[#FFFFFF] border-transparent hover:bg-[#F5F5F7] hover:border-[#E5E5E7]"
     )}>
       <div className={cn(
-        "h-6 w-6 rounded-lg flex items-center justify-center text-xs font-bold shrink-0",
-        active ? "bg-white/40 text-white" : "bg-white/10 text-white/20"
+        "h-8 w-8 rounded-xl flex items-center justify-center text-[15px] font-bold shrink-0 shadow-sm",
+        active ? "bg-[#000000] text-[#FFFFFF]" : "bg-[#F5F5F7] text-[#86868B]"
       )}>
         {num}
       </div>
       <div>
-        <div className={cn("text-sm font-bold", active ? "text-white" : "text-white/60")}>{label}</div>
-        <div className="text-[11px] text-white/20 mt-0.5">{desc}</div>
+        <div className={cn("text-[16px] font-bold", active ? "text-[#1D1D1F]" : "text-[#1D1D1F]/60")}>{label}</div>
+        <div className="text-[13px] text-[#86868B] mt-0.5 font-medium">{desc}</div>
       </div>
+      {active && (
+        <div className="ml-auto w-6 h-6 rounded-full bg-black flex items-center justify-center text-white">
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+      )}
     </div>
   );
 }
