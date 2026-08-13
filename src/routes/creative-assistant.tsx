@@ -27,6 +27,9 @@ const charSam = saitamaAsset.url;
 import genosAsset from "@/assets/genos.webp.asset.json";
 const charBoss = genosAsset.url;
 import skillReenact from "@/assets/skill-reenact.jpg";
+import videoPreviewAsset from "@/assets/generated-video-preview.jpg.asset.json";
+const videoPreview = videoPreviewAsset.url;
+
 
 type Search = { prompt?: string };
 
