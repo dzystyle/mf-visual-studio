@@ -403,10 +403,18 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
   );
 }
 
-function TeamCard({ name, price, credits, bonus, features }: any) {
+function TeamCard({ name, price, credits, bonus, features, isCurrent, isUpgrade }: any) {
   const [seats, setSeats] = React.useState(2);
   return (
-    <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
+    <div className={cn(
+      "relative flex flex-col rounded-3xl border p-6 text-left transition hover:border-accent bg-card",
+      isCurrent ? "border-accent ring-1 ring-accent/20" : "border-border"
+    )}>
+      {isCurrent && (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3 py-1 text-[10px] font-bold text-black uppercase">
+          当前套餐
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
@@ -444,9 +452,17 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
         </div>
       </div>
 
-      <Link to="/checkout">
-        <button className="mt-4 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
-          购买 {seats} 席位
+      <Link to="/checkout" className="mt-4">
+        <button 
+          className={cn(
+            "w-full rounded-full py-2.5 text-sm font-bold transition-colors",
+            isCurrent 
+              ? "bg-white/10 text-white/40 cursor-default border border-white/5" 
+              : "bg-white text-black hover:bg-white/90"
+          )}
+          disabled={isCurrent}
+        >
+          {isCurrent ? "已购买" : (isUpgrade ? `升级 ${seats} 席位` : `购买 ${seats} 席位`)}
         </button>
       </Link>
 
