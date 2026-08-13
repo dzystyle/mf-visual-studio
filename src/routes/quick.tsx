@@ -361,20 +361,39 @@ function Composer({
     const files = Array.from(e.target.files ?? []);
     if (!files.length) return;
 
+    // Reset input so the same file can be selected again if fixed
+    if (fileInputRef.current) fileInputRef.current.value = "";
+
     const validFiles: { id: string; url: string; name: string }[] = [];
+    const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
     
     for (const file of files) {
+      // 1. Check file size
+      if (file.size > MAX_FILE_SIZE) {
+        toast.custom((t) => (
+          <div className="flex w-[400px] items-center gap-3 rounded-xl border border-white/5 bg-[#1A1111]/90 px-4 py-3 text-white/90 shadow-2xl backdrop-blur-xl">
+            <XCircle className="h-5 w-5 text-red-500 shrink-0" />
+            <div className="flex-1">
+              <div className="text-sm font-medium tracking-wide">{file.name}</div>
+              <div className="text-[11px] text-white/40 mt-0.5">文件过大 (上限 50MB)</div>
+            </div>
+            <button onClick={() => toast.dismiss(t)} className="text-white/20 hover:text-white/40 transition">
+              <Plus className="h-4 w-4 rotate-45" />
+            </button>
+          </div>
+        ), { duration: 4000 });
+        continue;
+      }
+
       const objectUrl = URL.createObjectURL(file);
 
-      // Video validation
+      // 2. Video validation
       if (file.type.startsWith('video/')) {
         const video = document.createElement('video');
         video.preload = 'metadata';
         
         const duration = await new Promise<number>((resolve) => {
-          video.onloadedmetadata = () => {
-            resolve(video.duration);
-          };
+          video.onloadedmetadata = () => resolve(video.duration);
           video.onerror = () => resolve(0);
           video.src = objectUrl;
         });
@@ -383,9 +402,10 @@ function Composer({
           toast.custom((t) => (
             <div className="flex w-[400px] items-center gap-3 rounded-xl border border-white/5 bg-[#1A1111]/90 px-4 py-3 text-white/90 shadow-2xl backdrop-blur-xl">
               <XCircle className="h-5 w-5 text-red-500 shrink-0" />
-              <span className="flex-1 text-sm font-medium tracking-wide">
-                {file.name}: 视频时长需在 2s ~ 30s 之间
-              </span>
+              <div className="flex-1">
+                <div className="text-sm font-medium tracking-wide">{file.name}</div>
+                <div className="text-[11px] text-white/40 mt-0.5">视频时长需在 2s ~ 30s 之间 (当前: {Math.round(duration)}s)</div>
+              </div>
               <button onClick={() => toast.dismiss(t)} className="text-white/20 hover:text-white/40 transition">
                 <Plus className="h-4 w-4 rotate-45" />
               </button>
@@ -395,13 +415,11 @@ function Composer({
           continue;
         }
       } 
-      // Image validation
+      // 3. Image validation
       else if (file.type.startsWith('image/')) {
         const img = new Image();
         const dimensions = await new Promise<{ width: number; height: number }>((resolve) => {
-          img.onload = () => {
-            resolve({ width: img.naturalWidth, height: img.naturalHeight });
-          };
+          img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
           img.onerror = () => resolve({ width: 0, height: 0 });
           img.src = objectUrl;
         });
@@ -410,9 +428,10 @@ function Composer({
           toast.custom((t) => (
             <div className="flex w-[400px] items-center gap-3 rounded-xl border border-white/5 bg-[#1A1111]/90 px-4 py-3 text-white/90 shadow-2xl backdrop-blur-xl">
               <XCircle className="h-5 w-5 text-red-500 shrink-0" />
-              <span className="flex-1 text-sm font-medium tracking-wide">
-                {file.name}: 宽度需在 480px 到 4096px 之间
-              </span>
+              <div className="flex-1">
+                <div className="text-sm font-medium tracking-wide">{file.name}</div>
+                <div className="text-[11px] text-white/40 mt-0.5">宽度需在 480px 到 4096px 之间 (当前: {dimensions.width}px)</div>
+              </div>
               <button onClick={() => toast.dismiss(t)} className="text-white/20 hover:text-white/40 transition">
                 <Plus className="h-4 w-4 rotate-45" />
               </button>
@@ -422,6 +441,19 @@ function Composer({
           continue;
         }
       } else {
+        // 4. Unsupported format
+        toast.custom((t) => (
+          <div className="flex w-[400px] items-center gap-3 rounded-xl border border-white/5 bg-[#1A1111]/90 px-4 py-3 text-white/90 shadow-2xl backdrop-blur-xl">
+            <XCircle className="h-5 w-5 text-red-500 shrink-0" />
+            <div className="flex-1">
+              <div className="text-sm font-medium tracking-wide">{file.name}</div>
+              <div className="text-[11px] text-white/40 mt-0.5">不支持的文件格式</div>
+            </div>
+            <button onClick={() => toast.dismiss(t)} className="text-white/20 hover:text-white/40 transition">
+              <Plus className="h-4 w-4 rotate-45" />
+            </button>
+          </div>
+        ), { duration: 4000 });
         URL.revokeObjectURL(objectUrl);
         continue;
       }
