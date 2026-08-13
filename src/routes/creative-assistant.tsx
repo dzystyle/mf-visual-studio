@@ -84,100 +84,116 @@ function CreativeAssistantPage() {
   ]);
 
   return (
-    <div className="flex h-screen flex-col bg-[#0A0A0A] text-foreground overflow-hidden">
+    <div className="flex h-screen flex-col bg-[#F5F5F7] text-[#1D1D1F] overflow-hidden font-sans">
       <div className="absolute top-0 left-0 right-0 z-50 p-6 flex items-center justify-between pointer-events-none">
-        <div className="pointer-events-auto"><BrandMark /></div>
-        <div className="pointer-events-auto"><TopBar /></div>
+        <div className="pointer-events-auto">
+          <BrandMark variant="dark" />
+        </div>
+        <div className="pointer-events-auto">
+          <TopBar variant="light" />
+        </div>
       </div>
 
       <div className="flex flex-1 overflow-hidden pt-20">
         {/* Main Chat Area */}
         <div className={cn(
           "flex flex-1 flex-col transition-all duration-500 ease-in-out relative",
-          showResources ? "mr-[400px]" : "mr-0"
+          showResources ? "mr-[600px]" : "mr-0"
         )}>
           <div className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide">
-            <div className="mx-auto max-w-3xl space-y-8">
+            <div className="mx-auto max-w-4xl space-y-10">
               {messages.map((msg) => (
                 <div 
                   key={msg.id} 
                   className={cn(
-                    "flex flex-col gap-2",
+                    "flex flex-col gap-3",
                     msg.role === "user" ? "items-end" : "items-start"
                   )}
                 >
                   {msg.content && (
                     <div className={cn(
-                      "max-w-[85%] px-4 py-2.5 text-sm leading-relaxed",
+                      "max-w-[85%] px-5 py-3 text-[15px] leading-relaxed tracking-tight shadow-sm",
                       msg.role === "user" 
-                        ? "rounded-2xl rounded-tr-sm bg-white/10 text-white" 
-                        : "text-white/90"
+                        ? "rounded-2xl rounded-tr-sm bg-[#FFFFFF] text-[#1D1D1F] border border-[#E5E5E7]" 
+                        : "text-[#1D1D1F] font-medium"
                     )}>
                       {msg.content}
                     </div>
                   )}
                   {msg.card}
-                  <div className="text-[10px] text-white/20 px-1">{msg.timestamp}</div>
+                  
+                  {/* Status indicators like in reference image */}
+                  {msg.role === 'assistant' && msg.id === '2' && (
+                    <div className="flex flex-col gap-2 w-full max-w-xl">
+                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
+                    </div>
+                  )}
+
+                  {msg.role === 'assistant' && msg.id === '5' && (
+                    <div className="flex flex-col gap-2 w-full max-w-xl">
+                       <StatusLine icon="check" text="技能学习" subText="营销视频大师" />
+                       <StatusLine icon="loading" text="正在加载技能: 营销视频大师" />
+                       <StatusLine icon="check" text="任务规划" />
+                    </div>
+                  )}
+
+                  <div className="text-[11px] text-[#86868B] px-1 font-medium">{msg.timestamp}</div>
                 </div>
               ))}
-              
-              {/* Image attachment dummy in chat */}
-              <div className="flex flex-col items-start gap-2">
-                <div className="h-12 w-12 rounded-xl overflow-hidden border border-white/10 shadow-lg">
-                  <img src={charSam} className="w-full h-full object-cover" />
-                </div>
-              </div>
             </div>
           </div>
 
           {/* Bottom Input Area */}
-          <div className="px-6 pb-8">
-            <div className="mx-auto max-w-4xl">
-              <div className="glass rounded-3xl border border-white/10 bg-white/[0.03] p-4 shadow-2xl backdrop-blur-3xl">
+          <div className="px-6 pb-10">
+            <div className="mx-auto max-w-5xl">
+              <div className="bg-[#FFFFFF] rounded-[2.5rem] border border-[#E5E5E7] p-4 shadow-[0_8px_40px_rgba(0,0,0,0.04)] transition-all focus-within:shadow-[0_8px_40px_rgba(0,0,0,0.08)]">
+                <div className="flex flex-wrap gap-2 px-4 mb-2">
+                   {/* Prompt chips could go here */}
+                </div>
                 <textarea 
                   rows={1}
                   placeholder="与综合助手对话，支持多种能力..."
-                  className="w-full bg-transparent text-sm text-white placeholder:text-white/20 focus:outline-none resize-none px-2"
+                  className="w-full bg-transparent text-[16px] text-[#1D1D1F] placeholder:text-[#86868B] focus:outline-none resize-none px-4 py-2 font-medium"
                 />
-                <div className="mt-4 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 border border-white/10 text-white/40 hover:bg-white/10 transition">
-                      <Plus className="h-4 w-4" />
+                <div className="mt-4 flex items-center justify-between px-2">
+                  <div className="flex items-center gap-2.5">
+                    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F5F5F7] text-[#1D1D1F] hover:bg-[#E5E5E7] transition-colors border border-transparent active:scale-95">
+                      <Plus className="h-5 w-5" />
                     </button>
-                    <div className="h-4 w-px bg-white/10 mx-1" />
+                    <div className="h-5 w-px bg-[#E5E5E7] mx-1" />
                     
-                    <button className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] text-white/60">
-                      <div className="w-3.5 h-2.5 border border-current rounded-[1px]" />
+                    <button className="flex items-center gap-2 rounded-full border border-[#E5E5E7] bg-[#F5F5F7] px-4 py-2 text-[13px] font-semibold text-[#1D1D1F] hover:bg-[#E5E5E7] transition-all">
+                      <div className="w-4 h-3 border-2 border-current rounded-[2px]" />
                       16:9 (横屏)
-                      <ChevronDown className="h-3 w-3" />
+                      <ChevronDown className="h-4 w-4 opacity-50" />
                     </button>
 
-                    <button className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] text-white/60">
-                      <LayoutGrid className="h-3 w-3" />
+                    <button className="flex items-center gap-2 rounded-full border border-[#E5E5E7] bg-[#F5F5F7] px-4 py-2 text-[13px] font-semibold text-[#1D1D1F] hover:bg-[#E5E5E7] transition-all">
+                      <LayoutGrid className="h-4 w-4" />
                       技能
-                      <ChevronDown className="h-3 w-3" />
+                      <ChevronDown className="h-4 w-4 opacity-50" />
                     </button>
 
-                    <button className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] text-white/60 uppercase">
+                    <button className="flex items-center gap-2 rounded-full border border-[#E5E5E7] bg-[#F5F5F7] px-4 py-2 text-[13px] font-bold text-[#1D1D1F] hover:bg-[#E5E5E7] transition-all uppercase tracking-tight">
                       720P
                     </button>
 
-                    <button className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] text-white/60 uppercase">
+                    <button className="flex items-center gap-2 rounded-full border border-[#E5E5E7] bg-[#F5F5F7] px-4 py-2 text-[13px] font-bold text-[#1D1D1F] hover:bg-[#E5E5E7] transition-all uppercase tracking-tight">
                       2K
-                      <ChevronDown className="h-3 w-3" />
+                      <ChevronDown className="h-4 w-4 opacity-50" />
                     </button>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <button className="text-white/20 hover:text-white/40 transition">
-                      <Mic className="h-4 w-4" />
+                  <div className="flex items-center gap-4">
+                    <button className="text-[#86868B] hover:text-[#1D1D1F] transition-colors p-2 rounded-full hover:bg-[#F5F5F7]">
+                      <Mic className="h-5 w-5" />
                     </button>
-                    <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white/20">
-                      <ArrowUp className="h-4 w-4" />
+                    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[#000000] text-[#FFFFFF] shadow-lg hover:bg-[#1D1D1F] transition-all active:scale-90">
+                      <ArrowUp className="h-5 w-5" />
                     </button>
                   </div>
                 </div>
               </div>
-              <div className="mt-4 text-center text-[10px] text-white/10">
+              <div className="mt-5 text-center text-[11px] text-[#86868B] font-medium">
                 AI 可能会犯错，内容仅供参考，请核查重要信息。
               </div>
             </div>
@@ -187,12 +203,12 @@ function CreativeAssistantPage() {
           <button 
             onClick={() => setShowResources(!showResources)}
             className={cn(
-              "absolute right-0 top-1/2 -translate-y-1/2 z-[60] flex flex-col items-center gap-2 px-3 py-6 bg-white/5 border border-white/10 rounded-l-2xl backdrop-blur-xl transition-all duration-500",
+              "absolute right-0 top-1/2 -translate-y-1/2 z-[60] flex flex-col items-center gap-2 px-3 py-8 bg-[#FFFFFF] border border-[#E5E5E7] rounded-l-[1.5rem] shadow-xl transition-all duration-500 hover:pr-5 group",
               showResources ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"
             )}
           >
-            <LayoutGrid className="h-4 w-4 text-white/60" />
-            <span className="text-[11px] [writing-mode:vertical-lr] text-white/60 font-medium tracking-widest">查看对话资源</span>
+            <LayoutGrid className="h-5 w-5 text-[#1D1D1F]" />
+            <span className="text-[12px] [writing-mode:vertical-lr] text-[#1D1D1F] font-bold tracking-widest uppercase py-2">查看对话资源</span>
           </button>
         </div>
 
