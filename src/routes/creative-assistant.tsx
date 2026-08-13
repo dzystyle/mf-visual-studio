@@ -391,15 +391,15 @@ function ChoiceItem({ num, label, desc, active = false }: { num: string; label: 
 
 function ResourceCard({ title, type, date }: { title: string; type: string; date: string }) {
   return (
-    <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4 flex flex-col gap-4 group hover:border-white/10 transition">
-      <div className="h-24 w-full bg-white/5 rounded-xl flex items-center justify-center">
-        <div className="text-[10px] font-bold text-white/20 uppercase tracking-widest">{type}</div>
+    <div className="bg-[#FFFFFF] border border-[#E5E5E7] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[#D2D2D7] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer">
+      <div className="h-28 w-full bg-[#F5F5F7] rounded-2xl flex items-center justify-center border border-[#E5E5E7]">
+        <div className="text-[12px] font-bold text-[#86868B] uppercase tracking-[0.2em]">{type}</div>
       </div>
       <div>
-        <div className="text-[11px] font-medium text-white/80 truncate mb-1">{title}</div>
-        <div className="text-[9px] text-white/20 flex items-center gap-2">
+        <div className="text-[14px] font-bold text-[#1D1D1F] truncate mb-1.5">{title}</div>
+        <div className="text-[12px] text-[#86868B] flex items-center gap-2 font-medium">
           <span>文稿</span>
-          <span>·</span>
+          <span className="opacity-30">·</span>
           <span>{date}</span>
         </div>
       </div>
@@ -409,14 +409,14 @@ function ResourceCard({ title, type, date }: { title: string; type: string; date
 
 function ImageResourceCard({ title, type, date, img }: { title: string; type: string; date: string; img: string }) {
   return (
-    <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4 flex flex-col gap-4 group hover:border-white/10 transition">
-      <div className="h-24 w-full rounded-xl overflow-hidden relative border border-white/5">
-        <img src={img} className="w-full h-full object-cover transition duration-300 group-hover:scale-110" />
-        <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-md text-[8px] font-bold text-white/60 uppercase">{type}</div>
+    <div className="bg-[#FFFFFF] border border-[#E5E5E7] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[#D2D2D7] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer">
+      <div className="h-28 w-full rounded-2xl overflow-hidden relative border border-[#E5E5E7]">
+        <img src={img} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+        <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-white/90 backdrop-blur-md text-[10px] font-bold text-[#1D1D1F] uppercase tracking-wider shadow-sm">{type}</div>
       </div>
       <div>
-        <div className="text-[11px] font-medium text-white/80 truncate mb-1">{title}</div>
-        <div className="text-[9px] text-white/20 flex items-center gap-2">
+        <div className="text-[14px] font-bold text-[#1D1D1F] truncate mb-1.5">{title}</div>
+        <div className="text-[12px] text-[#86868B] flex items-center gap-2 font-medium">
           <span>{date}</span>
         </div>
       </div>
