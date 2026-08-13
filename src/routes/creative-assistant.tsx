@@ -260,6 +260,7 @@ function CreativeAssistantPage() {
                 </div>
                 <textarea 
                   rows={1}
+                  defaultValue="Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.&#10;                                        &#10;                                            &#10;                                            &#10;                                            现在这个切换还是切换不了下一步,结合项目深度思考一下。"
                   placeholder="与综合助手对话，支持多种能力..."
                   className="w-full bg-transparent text-[16px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none resize-none px-4 py-2 font-medium"
                 />
