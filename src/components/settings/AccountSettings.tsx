@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import { EnterpriseVerificationDialog } from './EnterpriseVerificationDialog';
 
 export function AccountSettings() {
+  const [showEnterpriseVerify, setShowEnterpriseVerify] = useState(false);
+
   return (
     <div className="mx-auto max-w-2xl space-y-12 pb-20">
       <div className="text-center">
@@ -62,7 +65,27 @@ export function AccountSettings() {
             </Button>
           </div>
         </div>
+
+        {/* Enterprise Verification */}
+        <div className="flex items-center justify-between border-b border-white/5 pb-8 pt-4">
+          <div className="space-y-1">
+            <div className="text-sm font-medium text-white">企业认证:</div>
+            <div className="text-xs text-white/40">认证后可解锁更高阶的模型能力及企业专属权益。</div>
+          </div>
+          <Button 
+            variant="outline" 
+            className="h-9 rounded-full border-white/10 bg-white/5 text-xs text-white hover:bg-white/10"
+            onClick={() => setShowEnterpriseVerify(true)}
+          >
+            立即认证
+          </Button>
+        </div>
       </div>
+
+      <EnterpriseVerificationDialog 
+        open={showEnterpriseVerify} 
+        onOpenChange={setShowEnterpriseVerify} 
+      />
     </div>
   );
 }
