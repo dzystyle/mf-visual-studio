@@ -6,6 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import { CreditPurchaseDialog } from "./subscription/CreditPurchaseDialog";
+import { SeatProrationDialog } from "./subscription/SeatProrationDialog";
+
 
 export function SubscriptionDialog({
   open,
@@ -403,8 +405,51 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
 
 function TeamCard({ name, price, credits, bonus, features }: any) {
   const [seats, setSeats] = React.useState(2);
+  const [showProration, setShowProration] = React.useState(false);
+  const [prorationDetails, setProrationDetails] = React.useState<any>(null);
+
+  // Initial seats for a mock "current subscription"
+  const currentSubSeats = 3;
+
+  const handleSeatChange = (newSeats: number) => {
+    if (newSeats === seats) return;
+    
+    // Simulate proration logic
+    const diff = newSeats - currentSubSeats;
+    const isIncrease = newSeats > currentSubSeats;
+    
+    setProrationDetails({
+      type: isIncrease ? 'increase' : 'decrease',
+      currentSeats: currentSubSeats,
+      newSeats: newSeats,
+      chargeAmount: isIncrease ? Math.abs(diff * Math.round(price * 0.5)) : newSeats * price, // Mock proration
+      effectiveDate: isIncrease ? 'immediate' : 'next_cycle'
+    });
+    
+    setSeats(newSeats);
+  };
+
+  const handleAction = () => {
+    if (seats !== currentSubSeats) {
+      setShowProration(true);
+    } else {
+      // Direct to checkout for normal flow
+      window.location.href = '/checkout';
+    }
+  };
+
   return (
     <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
+      <SeatProrationDialog 
+        open={showProration} 
+        onOpenChange={setShowProration} 
+        details={prorationDetails || {}} 
+        onConfirm={() => {
+          setShowProration(false);
+          console.log("Confirmed seat change to", seats);
+        }}
+      />
+      
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
@@ -427,26 +472,60 @@ function TeamCard({ name, price, credits, bonus, features }: any) {
         ))}
       </div>
 
-      <div className="mt-6 rounded-xl bg-white/5 p-3">
+      <div className="mt-6 rounded-xl bg-white/5 p-3 relative group/seats">
         <div className="flex items-center justify-between text-[11px] text-foreground/60">
-          <span>席位</span>
+          <div className="flex items-center gap-1">
+            <span>席位管理</span>
+            {seats !== currentSubSeats && (
+              <span className={cn(
+                "text-[9px] px-1 rounded bg-opacity-20",
+                seats > currentSubSeats ? "bg-primary text-primary" : "bg-amber-500 text-amber-500"
+              )}>
+                待生效
+              </span>
+            )}
+          </div>
           <div className="flex items-center gap-3">
-            <button onClick={() => setSeats(Math.max(2, seats - 1))} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><Minus className="h-3 w-3" /></button>
-            <span className="text-foreground font-medium">{seats} 席</span>
-            <button onClick={() => setSeats(seats + 1)} className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10"><PlusIcon className="h-3 w-3" /></button>
+            <button 
+              onClick={() => handleSeatChange(Math.max(2, seats - 1))} 
+              className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10 active:scale-95 transition-all"
+            >
+              <Minus className="h-3 w-3" />
+            </button>
+            <span className="text-foreground font-medium min-w-[30px] text-center">{seats} 席</span>
+            <button 
+              onClick={() => handleSeatChange(seats + 1)} 
+              className="h-5 w-5 rounded bg-white/5 flex items-center justify-center hover:bg-white/10 active:scale-95 transition-all"
+            >
+              <PlusIcon className="h-3 w-3" />
+            </button>
           </div>
         </div>
-        <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
-          <div className="text-[9px] text-foreground/30">总积分 {(parseInt(credits.split(' ')[0]) + parseInt(credits.split(' ')[2])) * seats}/月</div>
-          <div className="text-[9px] text-foreground/30">总价 ¥{price * seats}/月</div>
+        <div className="mt-3 flex items-center justify-between border-t border-border/40 pt-3">
+          <div className="flex flex-col">
+            <div className="text-[9px] text-foreground/30">总价预估</div>
+            <div className="text-[11px] font-bold">¥{price * seats}<span className="text-[9px] font-normal text-foreground/40">/月</span></div>
+          </div>
+          <div className="text-right">
+             <div className="text-[9px] text-foreground/30 text-right">总积分奖励</div>
+             <div className="text-[11px] font-bold text-[#E6B380]">
+               {(parseInt(credits.split(' ')[0]) + (credits.includes('+') ? parseInt(credits.split('+')[1]) : 0)) * seats}
+             </div>
+          </div>
         </div>
       </div>
 
-      <Link to="/checkout">
-        <button className="mt-4 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
-          购买 {seats} 席位
-        </button>
-      </Link>
+      <button 
+        onClick={handleAction}
+        className={cn(
+          "mt-4 w-full rounded-full py-2.5 text-sm font-bold transition-all active:scale-[0.98]",
+          seats !== currentSubSeats 
+            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" 
+            : "bg-white text-black hover:bg-white/90"
+        )}
+      >
+        {seats === currentSubSeats ? "立即订阅" : seats > currentSubSeats ? `补差价增加至 ${seats} 席` : `下月缩减至 ${seats} 席`}
+      </button>
 
       <div className="mt-8 space-y-6 overflow-hidden">
         {features.map((group: any) => (
