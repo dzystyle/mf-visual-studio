@@ -50,7 +50,9 @@ export function ApiKeysSettings() {
     setGeneratedKey(newKey);
     
     const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + parseInt(newKeyData.expiry));
+    if (newKeyData.expiry !== 'permanent') {
+      expiryDate.setDate(expiryDate.getDate() + parseInt(newKeyData.expiry));
+    }
     
     const newEntry: AccessKey = {
       id: Math.random().toString(36).substring(7),
