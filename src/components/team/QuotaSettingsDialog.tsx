@@ -93,11 +93,8 @@ export function QuotaSettingsDialog({
                     : "bg-muted/20 border-border/40 hover:bg-muted/30"
                 )}
               >
-                <div className={cn(
-                  "h-8 w-8 flex items-center justify-center rounded-lg",
-                  type === "fixed" ? "bg-amber-500/20" : "bg-foreground/5"
-                )}>
-                  <Lock className={cn("h-5 w-5", type === "fixed" ? "text-amber-500" : "text-foreground/60")} fill={type === "fixed" ? "currentColor" : "none"} />
+                <div className="relative h-8 w-8 flex items-center justify-center">
+                  <Lock className={cn("h-7 w-7", type === "fixed" ? "text-amber-500" : "text-foreground/60")} fill={type === "fixed" ? "#F59E0B" : "none"} />
                 </div>
                 <span className={cn("text-[15px] font-bold", type === "fixed" ? "text-primary" : "text-foreground/70")}>
                   固定额度
