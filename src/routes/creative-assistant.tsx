@@ -404,6 +404,39 @@ function CreativeAssistantPage() {
                     </div>
                   )}
 
+                  {msg.role === 'assistant' && msg.id === '13' && (
+                    <div className="flex flex-col gap-2 w-full max-w-xl">
+                      <StatusLine icon="check" text="读取文件" subText="查看用户提供的杰诺斯参考图" />
+                      <div className="ml-8 mt-1 mb-4 flex items-center gap-3 p-3 rounded-2xl bg-[var(--color-secondary)] border border-[var(--color-border)] w-fit">
+                        <div className="h-10 w-10 rounded-lg overflow-hidden shrink-0 border border-[var(--color-border)]">
+                          <img src={genosV2Asset.url} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="text-[14px] font-bold text-[var(--color-foreground)]">genos-reference.jpg</div>
+                      </div>
+                      <div className="text-[15px] mb-4">收到。这张参考图的细节非常到位，机械臂的构造和整体光影感更加硬朗。我会以这张图作为杰诺斯的最终形象参考，并重新调整后续的生成方案。</div>
+                      <StatusLine icon="check" text="任务规划" />
+                      <div className="text-[15px] mt-2 mb-4">正在基于新素材更新Seedance编译方案...</div>
+                      <StatusLine icon="check" text="资料探索" subText="读取 Seedance 编译指导文件" />
+                      <StatusLine icon="check" text="写入文件" subText="更新最终生成方案final-generation-info-v2.md" />
+                      <div className="text-[15px] mt-2 mb-4">最终生成方案已更新：确认使用你提供的新杰诺斯参考图。15秒一次生成，整体风格和节奏保持原样。如果没问题，我立刻开始生成成片。</div>
+                      <StatusLine icon="check" text="发送产物" />
+                      <div className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 flex items-center justify-between shadow-sm max-w-sm hover:border-[var(--color-muted-foreground)] cursor-pointer transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center text-[var(--color-primary)]">
+                            <FileText className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <div className="text-[14px] font-bold">final-generation-info-v2.md</div>
+                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-...</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1 text-[12px] text-[var(--color-muted-foreground)]">
+                          查看文件 <ChevronRight className="h-3 w-3" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="text-[11px] text-[var(--color-muted-foreground)] px-1 font-medium">{msg.timestamp}</div>
                 </div>
               ))}
