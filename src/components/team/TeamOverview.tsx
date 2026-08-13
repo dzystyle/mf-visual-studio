@@ -19,7 +19,7 @@ export function TeamOverview() {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-xl font-bold text-foreground">D</h3>
-                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary border border-primary/20">专业版</span>
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary border border-primary/20">Starter Team</span>
               </div>
               <p className="text-sm text-muted-foreground font-medium">团队 ID: 29384756</p>
             </div>

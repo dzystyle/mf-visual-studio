@@ -9,7 +9,11 @@ export const Route = createFileRoute("/checkout")({
 
 function CheckoutPage() {
   const navigate = useNavigate();
+  const search = Route.useSearch() as { amount?: number; description?: string };
   const [paymentMethod, setPaymentMethod] = React.useState<"alipay" | "card">("alipay");
+  
+  const displayAmount = search.amount || 19.00;
+  const displayDescription = search.description || "Purchase 2923 credits for video processing services";
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col md:flex-row font-sans">
@@ -28,23 +32,23 @@ function CheckoutPage() {
               <span className="text-white font-bold text-xl">M</span>
             </div>
             <p className="text-muted-foreground text-sm font-medium">Pay MovieFlow</p>
-            <h1 className="text-[44px] font-bold tracking-tight mt-1 text-foreground">$19.00</h1>
+            <h1 className="text-[44px] font-bold tracking-tight mt-1 text-foreground">¥{displayAmount.toFixed(2)}</h1>
           </div>
 
           <div className="space-y-6 mt-12">
             <div className="flex justify-between items-start">
               <div>
-                <p className="font-bold text-[15px]">2923 Credits</p>
-                <p className="text-muted-foreground text-[13px] mt-1">Purchase 2923 credits for video processing services</p>
+                <p className="font-bold text-[15px]">订单详情</p>
+                <p className="text-muted-foreground text-[13px] mt-1">{displayDescription}</p>
               </div>
-              <span className="font-medium text-[15px]">$19.00</span>
+              <span className="font-medium text-[15px]">¥{displayAmount.toFixed(2)}</span>
             </div>
 
             <div className="h-[1px] bg-border/40 w-full" />
 
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground text-[15px]">Subtotal</span>
-              <span className="font-medium text-[15px]">$19.00</span>
+              <span className="font-medium text-[15px]">¥{displayAmount.toFixed(2)}</span>
             </div>
 
             <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted text-[13px] font-semibold text-muted-foreground hover:bg-muted/80 transition-colors w-fit">
@@ -55,7 +59,7 @@ function CheckoutPage() {
 
             <div className="flex justify-between items-center mt-6">
               <span className="text-muted-foreground font-medium text-[15px]">Total due</span>
-              <span className="font-bold text-[15px]">$19.00</span>
+              <span className="font-bold text-[15px]">¥{displayAmount.toFixed(2)}</span>
             </div>
           </div>
         </div>
