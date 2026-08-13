@@ -1,10 +1,12 @@
 import * as React from "react";
-import { Edit3, Share2, Trash2, Users, Folder, LayoutGrid, TrendingUp, CreditCard } from "lucide-react";
+import { Edit3, Share2, Trash2, Users, Folder, LayoutGrid, TrendingUp, CreditCard, UserPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CreditPurchaseDialog } from "@/components/subscription/CreditPurchaseDialog";
+import { PurchaseSeatsDialog } from "./PurchaseSeatsDialog";
 
 export function TeamOverview() {
   const [purchaseDialogOpen, setPurchaseDialogOpen] = React.useState(false);
+  const [seatsDialogOpen, setSeatsDialogOpen] = React.useState(false);
   return (
     <div className="space-y-6">
       {/* Team Header Card */}
@@ -30,7 +32,11 @@ export function TeamOverview() {
         </div>
 
         <div className="mt-10 grid grid-cols-3 gap-6">
-          <StatBox icon={Users} label="团队成员" value="1" subValue="/ 50 人" />
+          <StatBox icon={Users} label="团队成员" value="1" subValue="/ 50 人" action={
+            <button onClick={() => setSeatsDialogOpen(true)} className="flex items-center gap-1 text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-md hover:bg-primary/20">
+              <UserPlus className="h-3 w-3" /> 购买席位
+            </button>
+          } />
           <StatBox icon={Folder} label="团队项目" value="0" subValue="个活跃项目" />
           <StatBox icon={LayoutGrid} label="分组数" value="0" subValue="个管理分组" />
         </div>
@@ -84,10 +90,14 @@ export function TeamOverview() {
           </button>
         </div>
 
-        {/* Purchase Dialog */}
+        {/* Purchase Dialogs */}
         <CreditPurchaseDialog 
           open={purchaseDialogOpen} 
           onOpenChange={setPurchaseDialogOpen} 
+        />
+        <PurchaseSeatsDialog 
+          open={seatsDialogOpen}
+          onOpenChange={setSeatsDialogOpen}
         />
 
         {/* Active Projects Card */}
@@ -121,14 +131,17 @@ function ActionButton({ icon: Icon, label, className, onClick }: { icon: any, la
   );
 }
 
-function StatBox({ icon: Icon, label, value, subValue }: { icon: any, label: string, value: string, subValue?: string }) {
+function StatBox({ icon: Icon, label, value, subValue, action }: { icon: any, label: string, value: string, subValue?: string, action?: React.ReactNode }) {
   return (
     <div className="rounded-2xl bg-muted/20 p-6 border border-border/30 hover:border-primary/30 transition-colors group">
-      <div className="flex items-center gap-2 text-muted-foreground mb-4">
-        <div className="p-2 rounded-lg bg-background/50 border border-border/20 group-hover:text-primary transition-colors">
-          <Icon className="h-4 w-4" />
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <div className="p-2 rounded-lg bg-background/50 border border-border/20 group-hover:text-primary transition-colors">
+            <Icon className="h-4 w-4" />
+          </div>
+          <span className="text-[11px] font-bold uppercase tracking-wider">{label}</span>
         </div>
-        <span className="text-[11px] font-bold uppercase tracking-wider">{label}</span>
+        {action}
       </div>
       <div className="flex items-baseline gap-2">
         <div className="text-3xl font-bold text-foreground">{value}</div>
