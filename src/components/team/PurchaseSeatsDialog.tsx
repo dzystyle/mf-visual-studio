@@ -12,13 +12,21 @@ export function PurchaseSeatsDialog({
   onOpenChange: (v: boolean) => void;
 }) {
   const navigate = useNavigate();
-  const [seats, setSeats] = React.useState(3);
+  const [seats, setSeats] = React.useState(1);
+  
+  // Starter Team configuration
+  const PRICE_PER_SEAT = 160;
+  const CREDITS_PER_SEAT = 3200;
 
   const handlePurchase = () => {
-    // In a real app, this would initiate the Stripe checkout session
-    // For this mock, we redirect to checkout and assume success
     onOpenChange(false);
-    navigate({ to: "/checkout" });
+    navigate({ 
+      to: "/checkout",
+      search: {
+        amount: seats * PRICE_PER_SEAT,
+        description: `Purchase ${seats} Additional Seats for Starter Team`
+      }
+    });
   };
 
   return (
@@ -29,7 +37,10 @@ export function PurchaseSeatsDialog({
             <X className="h-4 w-4" />
           </DialogClose>
 
-          <h2 className="text-xl font-bold mb-6">购买团队席位</h2>
+          <div className="flex flex-col gap-1 mb-6">
+            <h2 className="text-xl font-bold text-foreground">购买团队席位</h2>
+            <p className="text-xs text-muted-foreground font-medium">Starter Team 套餐方案</p>
+          </div>
 
           <div className="space-y-6">
             <div className="rounded-xl bg-muted/30 p-4 border border-border">
@@ -40,8 +51,8 @@ export function PurchaseSeatsDialog({
                     <Users className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="text-sm font-bold">{seats} 席位</div>
-                    <div className="text-xs text-muted-foreground">每月 ¥{seats * 99}</div>
+                    <div className="text-sm font-bold">新增 {seats} 个席位</div>
+                    <div className="text-xs text-muted-foreground">¥{PRICE_PER_SEAT} / 席位 · 每月</div>
                   </div>
                 </div>
                 
@@ -59,9 +70,16 @@ export function PurchaseSeatsDialog({
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">总计</span>
-              <span className="font-bold text-lg">¥{seats * 99}</span>
+            <div className="space-y-3 rounded-xl bg-primary/5 p-4 border border-primary/20">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground font-medium">新增团队积分 (每月)</span>
+                <span className="text-primary font-bold">+{seats * CREDITS_PER_SEAT} Credits</span>
+              </div>
+              <div className="h-[1px] bg-primary/10 w-full" />
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-foreground font-bold">补差合计</span>
+                <span className="font-bold text-lg text-primary">¥{seats * PRICE_PER_SEAT}</span>
+              </div>
             </div>
 
             <button 
