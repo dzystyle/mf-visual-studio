@@ -410,11 +410,15 @@ function TeamCard({ name, price, credits, bonus, features, isCurrent, isUpgrade 
       "relative flex flex-col rounded-3xl border p-6 text-left transition hover:border-accent bg-card",
       isCurrent ? "border-accent ring-1 ring-accent/20" : "border-border"
     )}>
-      {isCurrent && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3 py-1 text-[10px] font-bold text-black uppercase">
+      {isCurrent ? (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3 py-1 text-[10px] font-bold text-black uppercase whitespace-nowrap">
           当前套餐
         </div>
-      )}
+      ) : isUpgrade ? (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-3 py-1 text-[10px] font-bold text-white uppercase whitespace-nowrap">
+          升级套餐
+        </div>
+      ) : null}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-gradient-to-br from-[#FF7E5F] to-[#FEB47B]" />
