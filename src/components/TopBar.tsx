@@ -35,9 +35,10 @@ export function TopBar({ title, variant = "dark" }: { title?: string; variant?: 
   );
 }
 
-function NotificationTrigger() {
+function NotificationTrigger({ variant = "dark" }: { variant?: "light" | "dark" }) {
   const [showNotifications, setShowNotifications] = React.useState(false);
   const hasUnread = true; // Hardcoded for design representation
+  const isLight = variant === "light";
 
   return (
     <>
@@ -47,7 +48,12 @@ function NotificationTrigger() {
           e.stopPropagation();
           setShowNotifications(true);
         }}
-        className="relative flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card/50 text-foreground/60 backdrop-blur transition-all hover:bg-card hover:text-foreground cursor-pointer"
+        className={cn(
+          "relative flex h-8 w-8 items-center justify-center rounded-full border backdrop-blur transition-all cursor-pointer",
+          isLight 
+            ? "border-[#E5E5E7] bg-white/50 text-[#1D1D1F]/60 hover:bg-white hover:text-[#1D1D1F]"
+            : "border-border bg-card/50 text-foreground/60 backdrop-blur hover:bg-card hover:text-foreground"
+        )}
         style={{ pointerEvents: 'auto' }}
       >
         <Bell className="h-4 w-4" />
@@ -60,9 +66,10 @@ function NotificationTrigger() {
   );
 }
 
-function UserMenuContainer() {
+function UserMenuContainer({ variant = "dark" }: { variant?: "light" | "dark" }) {
   const [open, setOpen] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const isLight = variant === "light";
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -77,17 +84,31 @@ function UserMenuContainer() {
   
   return (
     <div 
-      className="flex items-center gap-2 rounded-full border border-border bg-card/50 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-card group cursor-pointer relative z-[60]"
+      className={cn(
+        "flex items-center gap-2 rounded-full border pl-3 pr-1 py-1 text-sm backdrop-blur transition group cursor-pointer relative z-[60]",
+        isLight
+          ? "border-[#E5E5E7] bg-white/50 hover:bg-white"
+          : "border-border bg-card/50 pl-3 pr-1 py-1 text-sm backdrop-blur transition hover:bg-card"
+      )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="flex items-center gap-2 pr-2 border-r border-border">
+      <div className={cn(
+        "flex items-center gap-2 pr-2 border-r",
+        isLight ? "border-[#E5E5E7]" : "border-border"
+      )}>
         <FilmIconGradient className="h-4 w-4" />
-        <span className="font-bold text-foreground tracking-tight text-[13px]">2,081</span>
+        <span className={cn(
+          "font-bold tracking-tight text-[13px]",
+          isLight ? "text-[#1D1D1F]" : "text-foreground"
+        )}>2,081</span>
       </div>
 
       <div className="flex items-center gap-2 px-1">
-        <span className="font-bold text-foreground tracking-tight">Free</span>
+        <span className={cn(
+          "font-bold tracking-tight",
+          isLight ? "text-[#1D1D1F]" : "text-foreground"
+        )}>Free</span>
       </div>
 
       <UserMenu open={open} setOpen={setOpen} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
