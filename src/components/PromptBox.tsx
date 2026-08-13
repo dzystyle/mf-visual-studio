@@ -455,7 +455,7 @@ export function PromptBox({
             </button>
             <button onClick={() => {
                 const v = text.trim();
-                if (v && onSubmit) { onSubmit(v); setText(""); }
+                if (v && onSubmit) { onSubmit(v, canvasMode); setText(""); }
               }} className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
             >
               <ArrowUp className="h-4 w-4" />
