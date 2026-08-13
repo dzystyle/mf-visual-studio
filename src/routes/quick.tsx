@@ -43,6 +43,7 @@ type Msg = {
   resultKind: "image" | "video";
   resultImage: string;
   time: string;
+  status?: "success" | "failed";
 };
 
 const initialMsgs: Msg[] = [
