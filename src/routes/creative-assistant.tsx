@@ -147,6 +147,18 @@ function CreativeAssistantPage() {
       role: "assistant",
       timestamp: "2026/8/13 14:40:15",
     },
+    {
+      id: "12",
+      role: "user",
+      content: "杰诺斯参考图不对,应该是这种照片。",
+      timestamp: "2026/8/13 14:41:20",
+      attachments: [{ name: "genos-reference.jpg", type: "IMAGE", url: genosV2Asset.url }]
+    },
+    {
+      id: "13",
+      role: "assistant",
+      timestamp: "2026/8/13 14:41:25",
+    },
   ]);
 
   return (
