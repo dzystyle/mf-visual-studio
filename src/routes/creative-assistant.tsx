@@ -341,24 +341,15 @@ function CreativeAssistantPage() {
                     </div>
                   )}
 
-                  {msg.card}
-                  
-                  {/* Status indicators like in reference image */}
-                  {msg.role === 'assistant' && msg.id === '2' && (
+                  {msg.statusLines && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
-                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
+                      {msg.statusLines.map((line, i) => (
+                        <StatusLine key={i} icon={line.icon} text={line.text} subText={line.subText} />
+                      ))}
                     </div>
                   )}
 
-                  {msg.role === 'assistant' && msg.id === '5' && (
-                    <div className="flex flex-col gap-2 w-full max-w-xl">
-                       <StatusLine icon="check" text="技能学习" subText="营销视频大师" />
-                       <StatusLine icon="loading" text="正在加载技能: 营销视频大师" />
-                       <StatusLine icon="check" text="任务规划" />
-                    </div>
-                  )}
-
-                  {msg.role === 'assistant' && msg.id === '9' && (
+                  {msg.isDetailedAssistant && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
                       <div className="ml-8 mt-1 mb-4 flex items-center gap-3 p-3 rounded-2xl bg-[var(--color-secondary)] border border-[var(--color-border)] w-fit">
@@ -405,7 +396,7 @@ function CreativeAssistantPage() {
                     </div>
                   )}
 
-                  {msg.role === 'assistant' && msg.id === '11' && (
+                  {msg.isDetailedAssistant2 && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-4">故事脚本已确认通过。现在进入素材完整性检查。</div>
