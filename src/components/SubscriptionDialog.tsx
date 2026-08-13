@@ -195,6 +195,8 @@ export function SubscriptionDialog({
                       credits={plan.credits} 
                       bonus={plan.bonus} 
                       features={getTeamFeatures(plan.concurrency, plan.single, plan.avatars)}
+                      isCurrent={plan.name === "Starter Team"}
+                      isUpgrade={["Basic Team", "Plus Team", "Pro Team"].includes(plan.name)}
                     />
                   ))}
                 </div>
