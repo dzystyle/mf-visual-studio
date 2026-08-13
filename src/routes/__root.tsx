@@ -10,6 +10,7 @@ import {
 import appCss from "../styles.css?url";
 import { Sidebar } from "@/components/Sidebar";
 import { ThemeProvider } from "@/hooks/use-theme";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -95,6 +96,7 @@ function RootComponent() {
           <main className="ml-[72px]">
             <Outlet />
           </main>
+          <Toaster position="top-center" expand={true} richColors closeButton />
         </div>
       </QueryClientProvider>
     </ThemeProvider>

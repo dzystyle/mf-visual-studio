@@ -361,7 +361,7 @@ function Composer({
     const files = Array.from(e.target.files ?? []);
     if (!files.length) return;
 
-    // Reset input so the same file can be selected again if fixed
+    // Reset input so the same file can be selected again
     if (fileInputRef.current) fileInputRef.current.value = "";
 
     const validFiles: { id: string; url: string; name: string }[] = [];
@@ -394,9 +394,26 @@ function Composer({
         
         const duration = await new Promise<number>((resolve) => {
           video.onloadedmetadata = () => resolve(video.duration);
-          video.onerror = () => resolve(0);
+          video.onerror = () => resolve(-1); // -1 indicates load error
           video.src = objectUrl;
         });
+
+        if (duration === -1) {
+          toast.custom((t) => (
+            <div className="flex w-[400px] items-center gap-3 rounded-xl border border-white/5 bg-[#1A1111]/90 px-4 py-3 text-white/90 shadow-2xl backdrop-blur-xl">
+              <XCircle className="h-5 w-5 text-red-500 shrink-0" />
+              <div className="flex-1">
+                <div className="text-sm font-medium tracking-wide">{file.name}</div>
+                <div className="text-[11px] text-white/40 mt-0.5">视频文件损坏或无法识别</div>
+              </div>
+              <button onClick={() => toast.dismiss(t)} className="text-white/20 hover:text-white/40 transition">
+                <Plus className="h-4 w-4 rotate-45" />
+              </button>
+            </div>
+          ), { duration: 4000 });
+          URL.revokeObjectURL(objectUrl);
+          continue;
+        }
 
         if (duration < 2 || duration > 30) {
           toast.custom((t) => (
@@ -418,19 +435,36 @@ function Composer({
       // 3. Image validation
       else if (file.type.startsWith('image/')) {
         const img = new Image();
-        const dimensions = await new Promise<{ width: number; height: number }>((resolve) => {
-          img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
-          img.onerror = () => resolve({ width: 0, height: 0 });
+        const dimensions = await new Promise<{ width: number; height: number; error: boolean }>((resolve) => {
+          img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight, error: false });
+          img.onerror = () => resolve({ width: 0, height: 0, error: true });
           img.src = objectUrl;
         });
 
-        if (dimensions.width < 480 || dimensions.width > 4096) {
+        if (dimensions.error) {
           toast.custom((t) => (
             <div className="flex w-[400px] items-center gap-3 rounded-xl border border-white/5 bg-[#1A1111]/90 px-4 py-3 text-white/90 shadow-2xl backdrop-blur-xl">
               <XCircle className="h-5 w-5 text-red-500 shrink-0" />
               <div className="flex-1">
                 <div className="text-sm font-medium tracking-wide">{file.name}</div>
-                <div className="text-[11px] text-white/40 mt-0.5">宽度需在 480px 到 4096px 之间 (当前: {dimensions.width}px)</div>
+                <div className="text-[11px] text-white/40 mt-0.5">图片文件损坏或无法识别</div>
+              </div>
+              <button onClick={() => toast.dismiss(t)} className="text-white/20 hover:text-white/40 transition">
+                <Plus className="h-4 w-4 rotate-45" />
+              </button>
+            </div>
+          ), { duration: 4000 });
+          URL.revokeObjectURL(objectUrl);
+          continue;
+        }
+
+        if (dimensions.width < 480 || dimensions.width > 8192 || dimensions.height < 480 || dimensions.height > 8192) {
+          toast.custom((t) => (
+            <div className="flex w-[400px] items-center gap-3 rounded-xl border border-white/5 bg-[#1A1111]/90 px-4 py-3 text-white/90 shadow-2xl backdrop-blur-xl">
+              <XCircle className="h-5 w-5 text-red-500 shrink-0" />
+              <div className="flex-1">
+                <div className="text-sm font-medium tracking-wide">{file.name}</div>
+                <div className="text-[11px] text-white/40 mt-0.5">尺寸不合规 (需在 480px 到 8192px 之间, 当前: {dimensions.width}x{dimensions.height})</div>
               </div>
               <button onClick={() => toast.dismiss(t)} className="text-white/20 hover:text-white/40 transition">
                 <Plus className="h-4 w-4 rotate-45" />
