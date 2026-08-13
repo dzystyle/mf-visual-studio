@@ -251,7 +251,43 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
       </div>
 
       <div className="grid grid-cols-4 gap-4">
-        {msg.status === "failed" ? (
+        {msg.status === "processing" ? (
+          <>
+            {[1, 2].map((i) => (
+              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 flex flex-col items-center justify-center gap-4 bg-white/[0.02]">
+                <div className="relative flex h-16 w-16 items-center justify-center">
+                  <Loader2 className="h-8 w-8 text-white/40 animate-spin" />
+                  <svg className="absolute inset-0 h-full w-full -rotate-90">
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      fill="transparent"
+                      className="text-white/5"
+                    />
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      fill="transparent"
+                      strokeDasharray={175.9}
+                      strokeDashoffset={175.9 * (1 - (msg.progress || 0) / 100)}
+                      className="text-white/60 transition-all duration-500 ease-out"
+                    />
+                  </svg>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <div className="text-xs font-medium text-white/60">正在生成中...</div>
+                  <div className="text-[10px] text-white/30 font-mono">{msg.progress}%</div>
+                </div>
+              </div>
+            ))}
+          </>
+        ) : msg.status === "failed" ? (
           <>
             {[1, 2].map((i) => (
               <div key={i} className={cn(
