@@ -50,6 +50,36 @@ type Message = {
 function CreativeAssistantPage() {
   const { prompt } = Route.useSearch();
   const [showResources, setShowResources] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [stepStates, setStepStates] = useState({
+    1: [true, false, false], // Duration options
+    2: [true, false, false, false], // Style options
+    3: [true, true, false, false], // Content options (multi)
+    4: [false, true], // Asset options
+  });
+
+  const handleOptionClick = (step: number, index: number) => {
+    setStepStates(prev => {
+      const newState = { ...prev };
+      const stepOptions = [...(newState[step as keyof typeof newState] as boolean[])];
+      
+      if (step === 3) {
+        // Multi-select for step 3
+        stepOptions[index] = !stepOptions[index];
+      } else {
+        // Single select for others
+        stepOptions.fill(false);
+        stepOptions[index] = true;
+      }
+      
+      newState[step as keyof typeof newState] = stepOptions;
+      return newState;
+    });
+  };
+
+  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
+  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -66,7 +96,80 @@ function CreativeAssistantPage() {
     {
       id: "3",
       role: "assistant",
-      card: <DurationChoiceCard />,
+      card: (
+        <AnimatePresence mode="wait">
+          {currentStep === 1 && (
+            <motion.div key="step1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+              <ChoiceCard 
+                step={1}
+                totalSteps={4}
+                title="视频时长希望控制在多少秒以内？"
+                options={[
+                  { num: "1", label: "15秒以内", desc: "节奏紧凑，适合信息流投放", active: stepStates[1][0] },
+                  { num: "2", label: "15-30秒", desc: "可展示更多角色和玩法细节", active: stepStates[1][1] },
+                  { num: "3", label: "30-60秒", desc: "完整剧情+玩法展示", active: stepStates[1][2] },
+                ]}
+                onOptionClick={(i) => handleOptionClick(1, i)}
+                onNext={nextStep}
+                onPrev={prevStep}
+              />
+            </motion.div>
+          )}
+          {currentStep === 2 && (
+            <motion.div key="step2" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+              <ChoiceCard 
+                step={2}
+                totalSteps={4}
+                title="视频风格偏向哪种？"
+                options={[
+                  { num: "1", label: "热血燃战", desc: "高燃打斗、特效炸裂，突出战斗爽感", active: stepStates[2][0] },
+                  { num: "2", label: "电影质感", desc: "大场面、史诗感、氛围渲染", active: stepStates[2][1] },
+                  { num: "3", label: "搞笑反差", desc: "埼玉日常呆萌 vs 战斗无敌的反差感", active: stepStates[2][2] },
+                  { num: "4", label: "潮酷炫技", desc: "快节奏剪辑、潮流视觉、炫酷转场", active: stepStates[2][3] },
+                ]}
+                onOptionClick={(i) => handleOptionClick(2, i)}
+                onNext={nextStep}
+                onPrev={prevStep}
+              />
+            </motion.div>
+          )}
+          {currentStep === 3 && (
+            <motion.div key="step3" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+              <ChoiceCard 
+                step={3}
+                totalSteps={4}
+                isMulti
+                title="视频主要想突出什么内容？"
+                options={[
+                  { num: "1", label: "角色展示（埼玉、杰诺斯等）", active: stepStates[3][0] },
+                  { num: "2", label: "战斗特效与打斗场面", active: stepStates[3][1] },
+                  { num: "3", label: "游戏玩法特色", active: stepStates[3][2] },
+                  { num: "4", label: "下载引导/预约转化", active: stepStates[3][3] },
+                ]}
+                onOptionClick={(i) => handleOptionClick(3, i)}
+                onNext={nextStep}
+                onPrev={prevStep}
+              />
+            </motion.div>
+          )}
+          {currentStep === 4 && (
+            <motion.div key="step4" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+              <ChoiceCard 
+                step={4}
+                totalSteps={4}
+                title="是否有参考素材需要提供？（游戏画面截图、角色立绘等）"
+                options={[
+                  { num: "1", label: "没有，直接帮我做", desc: "由AI根据描述生成", active: stepStates[4][0] },
+                  { num: "2", label: "有素材，我来上传", desc: "上传后我会基于素材创作", active: stepStates[4][1] },
+                ]}
+                onOptionClick={(i) => handleOptionClick(4, i)}
+                onNext={nextStep}
+                onPrev={prevStep}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      ),
       timestamp: "2026/8/13 14:33:05",
     },
     {
@@ -333,40 +436,74 @@ function StatusLine({ icon, text, subText }: { icon: 'check' | 'loading'; text: 
   );
 }
 
-function DurationChoiceCard() {
+interface StepOption {
+  num: string;
+  label: string;
+  desc?: string;
+  active?: boolean;
+}
+
+interface ChoiceCardProps {
+  step: number;
+  totalSteps: number;
+  title: string;
+  options: StepOption[];
+  onOptionClick?: (index: number) => void;
+  onNext?: () => void;
+  onPrev?: () => void;
+  isMulti?: boolean;
+}
+
+function ChoiceCard({ 
+  step, 
+  totalSteps, 
+  title, 
+  options, 
+  onOptionClick, 
+  onNext, 
+  onPrev,
+  isMulti = false
+}: ChoiceCardProps) {
   return (
     <div className="w-full max-w-xl bg-[var(--color-card)] border border-[var(--color-border)] rounded-[2rem] p-8 space-y-8 shadow-[0_8px_32px_rgba(0,0,0,0.04)]">
       <div className="flex items-center justify-between">
-        <h3 className="text-[17px] font-bold text-[var(--color-foreground)]">视频时长希望控制在多少秒以内？</h3>
-        <div className="flex items-center gap-4">
+        <h3 className="text-[17px] font-bold text-[var(--color-foreground)]">{title}</h3>
+        <div className="flex items-center gap-4 shrink-0">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500" />
             <span className="text-[13px] text-[var(--color-muted-foreground)] font-bold">已提交</span>
           </div>
           <div className="flex items-center gap-2 bg-[var(--color-secondary)] rounded-lg px-2 py-1 border border-[var(--color-border)]">
-            <button className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors"><ChevronRight className="h-4 w-4 rotate-180" /></button>
-            <span className="text-[12px] text-[var(--color-foreground)] font-bold">1/4</span>
-            <button className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors"><ChevronRight className="h-4 w-4" /></button>
+            <button 
+              onClick={onPrev}
+              disabled={step === 1}
+              className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors disabled:opacity-30"
+            >
+              <ChevronRight className="h-4 w-4 rotate-180" />
+            </button>
+            <span className="text-[12px] text-[var(--color-foreground)] font-bold">{step}/{totalSteps}</span>
+            <button 
+              onClick={onNext}
+              disabled={step === totalSteps}
+              className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors disabled:opacity-30"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>
       <div className="space-y-4">
-        <ChoiceItem 
-          num="1" 
-          label="15秒以内" 
-          desc="节奏紧凑，适合信息流投放" 
-          active 
-        />
-        <ChoiceItem 
-          num="2" 
-          label="15-30秒" 
-          desc="可展示更多角色和玩法细节" 
-        />
-        <ChoiceItem 
-          num="3" 
-          label="30-60秒" 
-          desc="完整剧情+玩法展示" 
-        />
+        {options.map((opt, idx) => (
+          <ChoiceItem 
+            key={idx}
+            num={opt.num}
+            label={opt.label}
+            desc={opt.desc}
+            active={opt.active}
+            isMulti={isMulti}
+            onClick={() => onOptionClick?.(idx)}
+          />
+        ))}
         
         <button className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-[var(--color-secondary)] text-[var(--color-foreground)] text-sm font-bold border border-[var(--color-border)] hover:bg-[var(--color-accent)] transition-all">
           <Plus className="h-4 w-4" />
@@ -375,7 +512,10 @@ function DurationChoiceCard() {
       </div>
 
       <div className="flex justify-end pt-4">
-        <button className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[var(--color-foreground)] text-[var(--color-background)] text-[14px] font-bold hover:opacity-90 transition-all active:scale-95 shadow-lg">
+        <button 
+          onClick={onNext}
+          className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[var(--color-foreground)] text-[var(--color-background)] text-[14px] font-bold hover:opacity-90 transition-all active:scale-95 shadow-lg"
+        >
           继续
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -384,25 +524,48 @@ function DurationChoiceCard() {
   );
 }
 
-function ChoiceItem({ num, label, desc, active = false }: { num: string; label: string; desc: string; active?: boolean }) {
+function ChoiceItem({ 
+  num, 
+  label, 
+  desc, 
+  active = false, 
+  isMulti = false,
+  onClick 
+}: StepOption & { isMulti?: boolean; onClick?: () => void }) {
   return (
-    <div className={cn(
-      "flex items-center gap-5 p-5 rounded-[1.25rem] transition-all border-2",
-      active 
-        ? "bg-[var(--color-secondary)] border-[var(--color-foreground)] shadow-sm" 
-        : "bg-[var(--color-card)] border-transparent hover:bg-[var(--color-secondary)] hover:border-[var(--color-border)]"
-    )}>
+    <div 
+      onClick={onClick}
+      className={cn(
+        "flex items-center gap-5 p-5 rounded-[1.25rem] transition-all border-2 cursor-pointer",
+        active 
+          ? "bg-[var(--color-secondary)] border-[var(--color-foreground)] shadow-sm" 
+          : "bg-[var(--color-card)] border-transparent hover:bg-[var(--color-secondary)] hover:border-[var(--color-border)]"
+      )}
+    >
       <div className={cn(
-        "h-8 w-8 rounded-xl flex items-center justify-center text-[15px] font-bold shrink-0 shadow-sm",
-        active ? "bg-[var(--color-foreground)] text-[var(--color-background)]" : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)]"
+        "h-8 w-8 rounded-xl flex items-center justify-center text-[15px] font-bold shrink-0 shadow-sm transition-colors",
+        active 
+          ? "bg-[var(--color-foreground)] text-[var(--color-background)]" 
+          : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)]"
       )}>
-        {num}
+        {isMulti ? (
+          <div className={cn(
+            "w-5 h-5 rounded border-2 flex items-center justify-center transition-colors",
+            active ? "bg-white border-white" : "border-[var(--color-muted-foreground)]"
+          )}>
+            {active && (
+              <svg className="w-3.5 h-3.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </div>
+        ) : num}
       </div>
       <div>
         <div className={cn("text-[16px] font-bold", active ? "text-[var(--color-foreground)]" : "text-[var(--color-foreground)]/60")}>{label}</div>
-        <div className="text-[13px] text-[var(--color-muted-foreground)] mt-0.5 font-medium">{desc}</div>
+        {desc && <div className="text-[13px] text-[var(--color-muted-foreground)] mt-0.5 font-medium">{desc}</div>}
       </div>
-      {active && (
+      {active && !isMulti && (
         <div className="ml-auto w-6 h-6 rounded-full bg-[var(--color-foreground)] flex items-center justify-center text-[var(--color-background)]">
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
