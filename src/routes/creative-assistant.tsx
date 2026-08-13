@@ -25,6 +25,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import charSam from "@/assets/char-sam.jpg";
 import charBoss from "@/assets/char-boss.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
+import genosV2Asset from "@/assets/genos-v2.jpg.asset.json";
 
 type Search = { prompt?: string };
 
