@@ -24,7 +24,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import saitamaAsset from "@/assets/saitama.webp.asset.json";
 const charSam = saitamaAsset.url;
-import charBoss from "@/assets/char-boss.jpg";
+import genosAsset from "@/assets/genos.webp.asset.json";
+const charBoss = genosAsset.url;
 import skillReenact from "@/assets/skill-reenact.jpg";
 
 type Search = { prompt?: string };
