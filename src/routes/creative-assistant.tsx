@@ -137,7 +137,7 @@ function CreativeAssistantPage() {
                     </div>
                   )}
 
-                  <div className="text-[11px] text-[#86868B] px-1 font-medium">{msg.timestamp}</div>
+                  <div className="text-[11px] text-[var(--color-muted-foreground)] px-1 font-medium">{msg.timestamp}</div>
                 </div>
               ))}
             </div>
@@ -193,7 +193,7 @@ function CreativeAssistantPage() {
                   </div>
                 </div>
               </div>
-              <div className="mt-5 text-center text-[11px] text-[#86868B] font-medium">
+              <div className="mt-5 text-center text-[11px] text-[var(--color-muted-foreground)] font-medium">
                 AI 可能会犯错，内容仅供参考，请核查重要信息。
               </div>
             </div>
