@@ -29,6 +29,8 @@ const charBoss = genosAsset.url;
 import skillReenact from "@/assets/skill-reenact.jpg";
 import videoPreviewAsset from "@/assets/generated-video-preview.jpg.asset.json";
 const videoPreview = videoPreviewAsset.url;
+import videoFileAsset from "@/assets/video-preview.mp4.asset.json";
+const videoFileUrl = videoFileAsset.url;
 
 
 type Search = { prompt?: string };
@@ -409,12 +411,20 @@ function CreativeAssistantPage() {
                   
                   {msg.role === 'assistant' && msg.id === '13' && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
-                      <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl mb-2">
-                        <img src={videoPreview} className="w-full h-full object-cover" />
-                        <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-1">
+                      <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl mb-2 group">
+                        <video 
+                          src={videoFileUrl} 
+                          className="w-full h-full object-cover" 
+                          controls
+                          autoPlay
+                          muted
+                          loop
+                          poster={videoPreview}
+                        />
+                        <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-1 pointer-events-none">
                           <span className="opacity-70">AI 生成</span>
                         </div>
-                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white">
+                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white pointer-events-none">
                           0:15
                         </div>
                       </div>
@@ -448,7 +458,7 @@ function CreativeAssistantPage() {
                 </div>
                 <textarea 
                   rows={1}
-                  defaultValue="'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            Creative Assistant页面用户输入继续结合系统的配色参考上面图片1比1还原一下这个页面,以你资深UI设计师的角度思考一下."
+                  defaultValue="'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            Creative Assistant的这个视频播放直接用我上面上床的.mp4文件.集合项目以你资深产品经理的角度思考一下。"
                   placeholder="与综合助手对话，支持多种能力..."
                   className="w-full bg-transparent text-[16px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none resize-none px-4 py-2 font-medium"
                 />
