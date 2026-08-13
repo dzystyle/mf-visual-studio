@@ -308,7 +308,7 @@ function CreativeAssistantPage() {
                       <StatusLine icon="check" text="写入文件" subText="编写内部营销脑图story-brief.md" />
                       <div className="text-[15px] mt-2 mb-2">现在编写故事脚本，这是需要你确认的第一个产物。</div>
                       <StatusLine icon="check" text="写入文件" subText="编写故事脚本story-script.md" />
-                      <div className="text-[15px] mt-2 mb-2">故事脚本已写好。这份脚本请你确认：埼玉蓄力开场、一拳冲击波过渡、英雄阵容快剪展示、埼玉一拳秒杀收尾 + 品牌口号 + 下载引导，5个镜头共15秒。画面节奏和卖点顺序对齐后，我再进入素材检查和视频方案环节。如果要改，直接告诉我，改完再发你看。</div>
+                      <div className="text-[15px] mt-2 mb-2">故事脚本已写好。这份脚本请你确认：埼玉蓄力开场、一拳冲击波过渡、英雄阵容快剪展示、埼玉一拳秒杀收尾 + brand slogan + 下载引导，5个镜头共15秒。画面节奏和卖点顺序对齐后，我再进入素材检查和视频方案环节。如果要改，直接告诉我，改完再发你看。</div>
                       <StatusLine icon="check" text="发送产物" />
                       <div className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 flex items-center justify-between shadow-sm max-w-sm hover:border-[var(--color-muted-foreground)] cursor-pointer transition-all">
                         <div className="flex items-center gap-3">
@@ -317,6 +317,70 @@ function CreativeAssistantPage() {
                           </div>
                           <div>
                             <div className="text-[14px] font-bold">story-script.md</div>
+                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-...</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1 text-[12px] text-[var(--color-muted-foreground)]">
+                          查看文件 <ChevronRight className="h-3 w-3" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {msg.role === 'assistant' && msg.id === '11' && (
+                    <div className="flex flex-col gap-2 w-full max-w-xl">
+                      <StatusLine icon="check" text="任务规划" />
+                      <div className="text-[15px] mt-2 mb-4">故事脚本已确认通过。现在进入素材完整性检查。</div>
+                      <div className="text-[15px] mb-2 font-medium">脚本中引用的实体有：</div>
+                      <ol className="list-decimal ml-5 space-y-2 text-[15px] mb-4">
+                        <li><span className="font-bold">埼玉</span> - 已有用户上传立绘 (./upload/user_upload_image_1.webp)，可用</li>
+                        <li><span className="font-bold">杰诺斯</span> - 脚本中出现，但没有参考素材，需要生成</li>
+                        <li><span className="font-bold">战栗的龙卷、原子武士、银色獠牙</span> - 快剪镜头中短暂出现，可由视频模型根据描述生成，不需要单独素材图</li>
+                        <li><span className="font-bold">游戏Logo/品牌定帧</span> - 文字元素，由视频模型渲染</li>
+                      </ol>
+                      <div className="text-[15px] mb-4">埼玉的素材已齐备。杰诺斯在脚本中有3秒重要展示镜头，需要生成一张角色参考图来稳定形象一致性。我来生成这张素材。</div>
+                      
+                      <div className="w-full bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <StatusLine icon="check" text="生成图像" subText="日系少年热血动漫风格，赛璐珞平涂动画质感。杰诺斯（魔鬼改造人），年轻男性，金色短发，锐利的眼神，..." />
+                        </div>
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4">
+                          日系少年热血动漫风格，赛璐珞平涂动画质感。杰诺斯（魔鬼改造人），年轻男性，金色短发，锐利的眼神，面容冷峻英俊。身穿深色金属质感战斗服，右臂为复杂的金色机械臂改造，手掌处有喷射口结构。身体为机械改造人，胸口的金属核心发出微弱蓝光。站立战斗姿态，背景为纯黑色，高对比明暗光影，线条清晰利落，色彩饱和度高。角色占据画面中心。
+                        </div>
+                        <div className="flex items-center gap-6 text-[13px] text-[var(--color-muted-foreground)]">
+                          <span>比例 3:4</span>
+                          <div className="flex items-center gap-2">
+                            <span>输出</span>
+                            <div className="h-8 w-8 rounded-full overflow-hidden border border-[var(--color-border)]">
+                              <img src={charBoss} className="w-full h-full object-cover" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 mb-4">
+                        <div className="w-48 h-64 rounded-2xl overflow-hidden border-2 border-[var(--color-border)] shadow-lg">
+                          <img src={charBoss} className="w-full h-full object-cover" />
+                        </div>
+                      </div>
+
+                      <div className="text-[15px] mb-4">杰诺斯参考图已生成。我先确认一下效果是否符合预期。</div>
+                      <StatusLine icon="check" text="读取文件" subText="查看杰诺斯参考图生成效果" />
+                      <div className="text-[15px] mt-2 mb-4">杰诺斯参考图效果不错，金色机械臂、冷峻面容、赛璐珞动画风格都与埼玉素材风格统一。素材已齐备：埼玉有用户上传立绘，杰诺斯有生成的参考图。</div>
+                      <StatusLine icon="check" text="任务规划" />
+                      <div className="text-[15px] mt-2 mb-4">现在读取协作与质量文件和Seedance编译指导文件，编译最终生成方案。</div>
+                      <StatusLine icon="check" text="资料探索" subText="读取 2 个文件" />
+                      <div className="text-[15px] mt-2 mb-4">当前单个请求最大生成时长是15秒，整片15秒可以在一次请求中完成。现在编译最终生成方案。</div>
+                      <StatusLine icon="check" text="写入文件" subText="编译最终生成方案final-generation-info.md" />
+                      <div className="text-[15px] mt-2 mb-4">这是可直接生成视频的完整方案，请你最终确认：15秒一次生成，埼玉蓄力开场、冲击波过渡、英雄阵容快剪、一拳秒杀收尾加品牌口号、品牌定帧下载引导。参考素材为埼玉立绘 (@图1) 和杰诺斯参考图 (@图2)。确认后我会按此方案生成视频并交付成片。如果要改，直接告诉我。</div>
+                      <StatusLine icon="check" text="发送产物" />
+                      <div className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 flex items-center justify-between shadow-sm max-w-sm hover:border-[var(--color-muted-foreground)] cursor-pointer transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center text-[var(--color-primary)]">
+                            <FileText className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <div className="text-[14px] font-bold">final-generation-info.md</div>
                             <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-...</div>
                           </div>
                         </div>
