@@ -43,7 +43,8 @@ type Msg = {
   resultKind: "image" | "video";
   resultImage: string;
   time: string;
-  status?: "success" | "failed";
+  status?: "success" | "failed" | "processing";
+  progress?: number;
 };
 
 const initialMsgs: Msg[] = [
