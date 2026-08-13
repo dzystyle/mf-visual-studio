@@ -16,6 +16,7 @@ import { Route as ScriptRouteImport } from './routes/script'
 import { Route as QuickRouteImport } from './routes/quick'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ElementsRouteImport } from './routes/elements'
+import { Route as CreativeAssistantRouteImport } from './routes/creative-assistant'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
@@ -60,6 +61,11 @@ const ProjectsRoute = ProjectsRouteImport.update({
 const ElementsRoute = ElementsRouteImport.update({
   id: '/elements',
   path: '/elements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreativeAssistantRoute = CreativeAssistantRouteImport.update({
+  id: '/creative-assistant',
+  path: '/creative-assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -116,6 +122,7 @@ const LegalPrivacyRoute = LegalPrivacyRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
+  '/creative-assistant': typeof CreativeAssistantRoute
   '/elements': typeof ElementsRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
+  '/creative-assistant': typeof CreativeAssistantRoute
   '/elements': typeof ElementsRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
+  '/creative-assistant': typeof CreativeAssistantRoute
   '/elements': typeof ElementsRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/checkout'
+    | '/creative-assistant'
     | '/elements'
     | '/projects'
     | '/quick'
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/checkout'
+    | '/creative-assistant'
     | '/elements'
     | '/projects'
     | '/quick'
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/checkout'
+    | '/creative-assistant'
     | '/elements'
     | '/projects'
     | '/quick'
@@ -234,6 +246,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CheckoutRoute: typeof CheckoutRoute
+  CreativeAssistantRoute: typeof CreativeAssistantRoute
   ElementsRoute: typeof ElementsRoute
   ProjectsRoute: typeof ProjectsRoute
   QuickRoute: typeof QuickRoute
@@ -300,6 +313,13 @@ declare module '@tanstack/react-router' {
       path: '/elements'
       fullPath: '/elements'
       preLoaderRoute: typeof ElementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creative-assistant': {
+      id: '/creative-assistant'
+      path: '/creative-assistant'
+      fullPath: '/creative-assistant'
+      preLoaderRoute: typeof CreativeAssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -378,6 +398,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CheckoutRoute: CheckoutRoute,
+  CreativeAssistantRoute: CreativeAssistantRoute,
   ElementsRoute: ElementsRoute,
   ProjectsRoute: ProjectsRoute,
   QuickRoute: QuickRoute,
