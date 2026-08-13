@@ -52,12 +52,21 @@ type Message = {
   card?: React.ReactNode;
   timestamp: string;
   attachments?: { name: string; type: string; url?: string }[];
+  isChoiceCard?: boolean;
+  statusLines?: { icon: 'check' | 'loading'; text: string; subText?: string }[];
+  isDetailedAssistant?: boolean;
+  isDetailedAssistant2?: boolean;
+  isVideoOutput?: boolean;
 };
 
 function CreativeAssistantPage() {
-  const { prompt } = Route.useSearch();
+  const { prompt: initialPrompt } = Route.useSearch();
   const [showResources, setShowResources] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [inputValue, setInputValue] = useState(initialPrompt || "");
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
   const [stepStates, setStepStates] = useState({
     1: [true, false, false], // Duration options
     2: [true, false, false, false], // Style options
@@ -65,33 +74,15 @@ function CreativeAssistantPage() {
     4: [false, true], // Asset options
   });
 
-  const handleOptionClick = (step: number, index: number) => {
-    setStepStates(prev => {
-      const newState = { ...prev };
-      const stepOptions = [...(newState[step as keyof typeof newState] as boolean[])];
-      
-      if (step === 3) {
-        // Multi-select for step 3
-        stepOptions[index] = !stepOptions[index];
-      } else {
-        // Single select for others
-        stepOptions.fill(false);
-        stepOptions[index] = true;
-      }
-      
-      newState[step as keyof typeof newState] = stepOptions;
-      return newState;
-    });
-  };
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [visibleMessageCount, setVisibleMessageCount] = useState(0);
 
-  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
-  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
-
-  const [messages, setMessages] = useState<Message[]>([
+  // Define the workflow stages
+  const workflow = [
     {
       id: "1",
       role: "user",
-      content: prompt || "我想生成掌趣的一拳超人的游戏宣发视频。",
+      content: initialPrompt || "我想生成掌趣的一拳超人的游戏宣发视频。",
       timestamp: "2026/8/13 14:32:15",
     },
     {
@@ -99,11 +90,12 @@ function CreativeAssistantPage() {
       role: "assistant",
       content: "掌趣一拳超人游戏宣发，埼玉一拳秒杀的震撼感很适合做营销短视频的开场钩子。我先确认几个关键信息，帮你把方向定准。",
       timestamp: "2026/8/13 14:33:02",
+      statusLines: [{ icon: "check", text: "读取文件", subText: "查看用户上传的一拳超人素材" }]
     },
     {
       id: "3",
       role: "assistant",
-      card: null,
+      isChoiceCard: true,
       timestamp: "2026/8/13 14:33:05",
     },
     {
@@ -117,6 +109,11 @@ function CreativeAssistantPage() {
       role: "assistant",
       content: "收到，15秒内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。",
       timestamp: "2026/8/13 14:37:18",
+      statusLines: [
+        { icon: "check", text: "技能学习", subText: "营销视频大师" },
+        { icon: "loading", text: "正在加载技能: 营销视频大师" },
+        { icon: "check", text: "任务规划" }
+      ]
     },
     {
       id: "6",
@@ -141,6 +138,7 @@ function CreativeAssistantPage() {
       id: "9",
       role: "assistant",
       timestamp: "2026/8/13 14:38:57",
+      isDetailedAssistant: true,
     },
     {
       id: "10",
@@ -152,6 +150,7 @@ function CreativeAssistantPage() {
       id: "11",
       role: "assistant",
       timestamp: "2026/8/13 14:40:15",
+      isDetailedAssistant2: true,
     },
     {
       id: "12",
@@ -163,8 +162,57 @@ function CreativeAssistantPage() {
       id: "13",
       role: "assistant",
       timestamp: "2026/8/13 15:31:31",
+      isVideoOutput: true,
     },
-  ]);
+  ];
+
+  useEffect(() => {
+    if (visibleMessageCount < workflow.length) {
+      const timer = setTimeout(() => {
+        setIsTyping(true);
+        const typingTimer = setTimeout(() => {
+          setMessages(prev => [...prev, workflow[visibleMessageCount] as Message]);
+          setVisibleMessageCount(prev => prev + 1);
+          setIsTyping(false);
+        }, 1200);
+        return () => clearTimeout(typingTimer);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [visibleMessageCount]);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+  }, [messages, isTyping]);
+
+  const handleOptionClick = (step: number, index: number) => {
+    setStepStates(prev => {
+      const newState = { ...prev };
+      const stepOptions = [...(newState[step as keyof typeof newState] as boolean[])];
+      if (step === 3) {
+        stepOptions[index] = !stepOptions[index];
+      } else {
+        stepOptions.fill(false);
+        stepOptions[index] = true;
+      }
+      newState[step as keyof typeof newState] = stepOptions;
+      return newState;
+    });
+  };
+
+  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
+  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
+
+  const handleSendMessage = () => {
+    if (!inputValue.trim()) return;
+    setInputValue("");
+    // In a real app, this would trigger a new message chain
+  };
 
   return (
     <div className="flex h-screen flex-col bg-[var(--color-background)] text-[var(--color-foreground)] overflow-hidden font-sans">
@@ -183,7 +231,7 @@ function CreativeAssistantPage() {
           "flex flex-1 flex-col transition-all duration-500 ease-in-out relative",
           showResources ? "mr-[600px]" : "mr-0"
         )}>
-          <div className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide">
+          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide">
             <div className="mx-auto max-w-4xl space-y-10">
               {messages.map((msg) => (
                 <div 
@@ -193,6 +241,18 @@ function CreativeAssistantPage() {
                     msg.role === "user" ? "items-end" : "items-start"
                   )}
                 >
+                  {msg.attachments && msg.attachments.length > 0 && (
+                    <div className="flex flex-wrap gap-3 mb-1">
+                      {msg.attachments.map((file, i) => (
+                        <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] w-fit shadow-sm">
+                          <div className="h-10 w-10 rounded-lg overflow-hidden shrink-0 border border-[var(--color-border)]">
+                            <img src={file.url} className="w-full h-full object-cover" />
+                          </div>
+                          <div className="text-[14px] font-bold text-[var(--color-foreground)]">{file.name}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   {msg.content && (
                     <div className={cn(
                       "max-w-[85%] px-5 py-3 text-[15px] leading-relaxed tracking-tight shadow-sm border whitespace-pre-wrap",
@@ -204,7 +264,7 @@ function CreativeAssistantPage() {
                     </div>
                   )}
 
-                  {msg.id === '3' && (
+                  {msg.isChoiceCard && (
                     <div className="w-full">
                       <AnimatePresence mode="wait">
                         {currentStep === 1 && (
@@ -281,24 +341,15 @@ function CreativeAssistantPage() {
                     </div>
                   )}
 
-                  {msg.card}
-                  
-                  {/* Status indicators like in reference image */}
-                  {msg.role === 'assistant' && msg.id === '2' && (
+                  {msg.statusLines && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
-                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
+                      {msg.statusLines.map((line, i) => (
+                        <StatusLine key={i} icon={line.icon} text={line.text} subText={line.subText} />
+                      ))}
                     </div>
                   )}
 
-                  {msg.role === 'assistant' && msg.id === '5' && (
-                    <div className="flex flex-col gap-2 w-full max-w-xl">
-                       <StatusLine icon="check" text="技能学习" subText="营销视频大师" />
-                       <StatusLine icon="loading" text="正在加载技能: 营销视频大师" />
-                       <StatusLine icon="check" text="任务规划" />
-                    </div>
-                  )}
-
-                  {msg.role === 'assistant' && msg.id === '9' && (
+                  {msg.isDetailedAssistant && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
                       <div className="ml-8 mt-1 mb-4 flex items-center gap-3 p-3 rounded-2xl bg-[var(--color-secondary)] border border-[var(--color-border)] w-fit">
@@ -345,7 +396,7 @@ function CreativeAssistantPage() {
                     </div>
                   )}
 
-                  {msg.role === 'assistant' && msg.id === '11' && (
+                  {msg.isDetailedAssistant2 && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-4">故事脚本已确认通过。现在进入素材完整性检查。</div>
@@ -458,7 +509,7 @@ function CreativeAssistantPage() {
                 </div>
                 <textarea 
                   rows={1}
-                  defaultValue="'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            Creative Assistant的这个视频播放直接用我上面上床的.mp4文件.集合项目以你资深产品经理的角度思考一下。"
+                  defaultValue="'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            深度梳理一下Creative Assistant页面的所有流程我希望的是用户输入一段话出来用户输入对应的内容,可以先把这个做成静态的交互先写假的loding然后实时显示.以你资深产品经理的角度深度思考一下。"
                   placeholder="与综合助手对话，支持多种能力..."
                   className="w-full bg-transparent text-[16px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none resize-none px-4 py-2 font-medium"
                 />
