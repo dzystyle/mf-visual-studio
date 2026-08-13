@@ -46,33 +46,49 @@ function Home() {
     <div className="relative">
       <PromoBanner />
 
-      {/* Hero with aurora */}
-      <section className="aurora-bg relative px-6 pb-16 pt-16">
-        <BrandMark />
-        <TopBar />
-
-        <div className="mx-auto max-w-4xl pt-10 text-center">
-          <h1 className="text-[44px] font-semibold leading-tight tracking-tight text-foreground">
-            Artrail 1.0 — 你的专属 AI 创作 平台
-          </h1>
-          <p className="mt-3 text-sm text-muted-foreground">
-            把品味和习惯写进 Skill,让精力回归创意
-          </p>
-
-          <div className={`mt-8 transition-all duration-500 ${isScrolledToBottom ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
-            <PromptBox
-              onSubmit={(prompt) =>
-                navigate({ to: "/script", search: { prompt } })
-              }
-            />
-          </div>
+      {/* Hero with full-screen background video */}
+      <section className="relative min-h-[700px] w-full overflow-hidden px-6 pb-24 pt-16">
+        {/* Background Video */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-full w-full object-cover brightness-[0.6]"
+            src="https://cdn.artrail.ai/videos/hero-bg-new.mp4" 
+          />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-background" />
         </div>
 
-        <div className="mx-auto mt-12 max-w-6xl">
-          <div className="mb-3 text-center text-xs text-muted-foreground">
-            热门 Skills
+        <div className="relative z-10">
+          <BrandMark />
+          <TopBar />
+
+          <div className="mx-auto max-w-4xl pt-20 text-center">
+            <h1 className="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
+              你的想法，一部电影，几分钟之内
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80">
+              从灵感到银幕：你的愿景，即刻上演。
+            </p>
+
+            <div className={`mt-12 transition-all duration-500 ${isScrolledToBottom ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+              <PromptBox
+                onSubmit={(prompt) =>
+                  navigate({ to: "/script", search: { prompt } })
+                }
+              />
+            </div>
           </div>
-          <SkillsWithPreview />
+
+          <div className="mx-auto mt-16 max-w-6xl">
+            <div className="mb-4 text-center text-xs font-medium tracking-wider text-white/40 uppercase">
+              热门 Skills
+            </div>
+            <SkillsWithPreview />
+          </div>
         </div>
       </section>
 
