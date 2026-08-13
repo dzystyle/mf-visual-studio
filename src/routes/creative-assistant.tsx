@@ -22,7 +22,8 @@ import {
   PopoverTrigger 
 } from "@/components/ui/popover";
 import { motion, AnimatePresence } from "framer-motion";
-import charSam from "@/assets/char-sam.jpg";
+import saitamaAsset from "@/assets/saitama.webp.asset.json";
+const charSam = saitamaAsset.url;
 import charBoss from "@/assets/char-boss.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
 
