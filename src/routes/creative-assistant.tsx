@@ -55,9 +55,13 @@ type Message = {
 };
 
 function CreativeAssistantPage() {
-  const { prompt } = Route.useSearch();
+  const { prompt: initialPrompt } = Route.useSearch();
   const [showResources, setShowResources] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [inputValue, setInputValue] = useState(initialPrompt || "");
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
   const [stepStates, setStepStates] = useState({
     1: [true, false, false], // Duration options
     2: [true, false, false, false], // Style options
@@ -65,33 +69,15 @@ function CreativeAssistantPage() {
     4: [false, true], // Asset options
   });
 
-  const handleOptionClick = (step: number, index: number) => {
-    setStepStates(prev => {
-      const newState = { ...prev };
-      const stepOptions = [...(newState[step as keyof typeof newState] as boolean[])];
-      
-      if (step === 3) {
-        // Multi-select for step 3
-        stepOptions[index] = !stepOptions[index];
-      } else {
-        // Single select for others
-        stepOptions.fill(false);
-        stepOptions[index] = true;
-      }
-      
-      newState[step as keyof typeof newState] = stepOptions;
-      return newState;
-    });
-  };
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [visibleMessageCount, setVisibleMessageCount] = useState(0);
 
-  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
-  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
-
-  const [messages, setMessages] = useState<Message[]>([
+  // Define the workflow stages
+  const workflow = [
     {
       id: "1",
       role: "user",
-      content: prompt || "我想生成掌趣的一拳超人的游戏宣发视频。",
+      content: initialPrompt || "我想生成掌趣的一拳超人的游戏宣发视频。",
       timestamp: "2026/8/13 14:32:15",
     },
     {
@@ -99,11 +85,12 @@ function CreativeAssistantPage() {
       role: "assistant",
       content: "掌趣一拳超人游戏宣发，埼玉一拳秒杀的震撼感很适合做营销短视频的开场钩子。我先确认几个关键信息，帮你把方向定准。",
       timestamp: "2026/8/13 14:33:02",
+      statusLines: [{ icon: "check", text: "读取文件", subText: "查看用户上传的一拳超人素材" }]
     },
     {
       id: "3",
       role: "assistant",
-      card: null,
+      isChoiceCard: true,
       timestamp: "2026/8/13 14:33:05",
     },
     {
@@ -117,6 +104,11 @@ function CreativeAssistantPage() {
       role: "assistant",
       content: "收到，15秒内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。",
       timestamp: "2026/8/13 14:37:18",
+      statusLines: [
+        { icon: "check", text: "技能学习", subText: "营销视频大师" },
+        { icon: "loading", text: "正在加载技能: 营销视频大师" },
+        { icon: "check", text: "任务规划" }
+      ]
     },
     {
       id: "6",
@@ -141,6 +133,7 @@ function CreativeAssistantPage() {
       id: "9",
       role: "assistant",
       timestamp: "2026/8/13 14:38:57",
+      isDetailedAssistant: true,
     },
     {
       id: "10",
@@ -152,6 +145,7 @@ function CreativeAssistantPage() {
       id: "11",
       role: "assistant",
       timestamp: "2026/8/13 14:40:15",
+      isDetailedAssistant2: true,
     },
     {
       id: "12",
@@ -163,8 +157,57 @@ function CreativeAssistantPage() {
       id: "13",
       role: "assistant",
       timestamp: "2026/8/13 15:31:31",
+      isVideoOutput: true,
     },
-  ]);
+  ];
+
+  useEffect(() => {
+    if (visibleMessageCount < workflow.length) {
+      const timer = setTimeout(() => {
+        setIsTyping(true);
+        const typingTimer = setTimeout(() => {
+          setMessages(prev => [...prev, workflow[visibleMessageCount] as Message]);
+          setVisibleMessageCount(prev => prev + 1);
+          setIsTyping(false);
+        }, 1200);
+        return () => clearTimeout(typingTimer);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [visibleMessageCount]);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+  }, [messages, isTyping]);
+
+  const handleOptionClick = (step: number, index: number) => {
+    setStepStates(prev => {
+      const newState = { ...prev };
+      const stepOptions = [...(newState[step as keyof typeof newState] as boolean[])];
+      if (step === 3) {
+        stepOptions[index] = !stepOptions[index];
+      } else {
+        stepOptions.fill(false);
+        stepOptions[index] = true;
+      }
+      newState[step as keyof typeof newState] = stepOptions;
+      return newState;
+    });
+  };
+
+  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
+  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
+
+  const handleSendMessage = () => {
+    if (!inputValue.trim()) return;
+    setInputValue("");
+    // In a real app, this would trigger a new message chain
+  };
 
   return (
     <div className="flex h-screen flex-col bg-[var(--color-background)] text-[var(--color-foreground)] overflow-hidden font-sans">
