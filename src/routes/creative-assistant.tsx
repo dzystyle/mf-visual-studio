@@ -29,6 +29,8 @@ const charBoss = genosAsset.url;
 import skillReenact from "@/assets/skill-reenact.jpg";
 import videoPreviewAsset from "@/assets/generated-video-preview.jpg.asset.json";
 const videoPreview = videoPreviewAsset.url;
+import videoFileAsset from "@/assets/video-preview.mp4.asset.json";
+const videoFileUrl = videoFileAsset.url;
 
 
 type Search = { prompt?: string };
