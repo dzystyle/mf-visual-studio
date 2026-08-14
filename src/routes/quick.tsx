@@ -170,20 +170,20 @@ function QuickPage() {
   }
 
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden bg-black">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-background">
       <section className="aurora-bg relative flex flex-1 flex-col overflow-hidden px-8 pt-6">
         <BrandMark />
         <TopBar />
 
         <div className="mx-auto mb-4 flex w-full max-w-7xl items-center gap-2 pt-16 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-3xl font-bold text-white/90">5.21</span>
+            <span className="text-3xl font-bold text-foreground/90">5.21</span>
           </div>
-          <div className="ml-auto flex items-center overflow-hidden rounded-full border border-white/10">
+          <div className="ml-auto flex items-center overflow-hidden rounded-full border border-border bg-background/50 backdrop-blur-sm">
             <FilterMenu label="全部时间" options={['全部', '今天', '近7天', '近30天']} isFirst />
-            <div className="h-4 w-[1px] bg-white/10" />
+            <div className="h-4 w-[1px] bg-border" />
             <FilterMenu label="全部类型" options={['全部', '图片', '视频', '音乐', '音频']} />
-            <div className="h-4 w-[1px] bg-white/10" />
+            <div className="h-4 w-[1px] bg-border" />
             <FilterMenu label="全部操作" options={['全部', '收藏']} isLast />
           </div>
         </div>
@@ -207,12 +207,12 @@ function QuickPage() {
               className="mx-auto w-[600px] animate-in fade-in slide-in-from-bottom-4 duration-300"
               onMouseEnter={() => setShowMini(false)}
             >
-              <div className="flex items-center gap-3 rounded-full border border-white/10 bg-black/60 px-4 py-2 shadow-2xl backdrop-blur-2xl transition hover:bg-black/80">
-                <Plus className="h-4 w-4 text-white/40" />
-                <div className="flex-1 text-sm text-white/40">使用@快速调用参考能力，支持文本、图片、音频、视频全能参考...</div>
+              <div className="flex items-center gap-3 rounded-full border border-border bg-background/60 px-4 py-2 shadow-2xl backdrop-blur-2xl transition hover:bg-background/80">
+                <Plus className="h-4 w-4 text-muted-foreground/40" />
+                <div className="flex-1 text-sm text-muted-foreground/40">使用@快速调用参考能力，支持文本、图片、音频、视频全能参考...</div>
                 <div className="flex items-center gap-2">
-                  <ChevronDown className="h-4 w-4 text-white/40" />
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white/60">
+                  <ChevronDown className="h-4 w-4 text-muted-foreground/40" />
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-foreground/60">
                     <ArrowUp className="h-4 w-4" />
                   </div>
                 </div>
@@ -252,12 +252,12 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
             -5
           </span>
         )}
-        <span className="ml-auto text-[11px] text-white/20">
+        <span className="ml-auto text-[11px] text-muted-foreground/40">
           {msg.time}
         </span>
       </div>
 
-      <div className="text-sm leading-relaxed text-white/60 mb-6 max-w-4xl">
+      <div className="text-sm leading-relaxed text-foreground/60 mb-6 max-w-4xl">
         {msg.prompt}
       </div>
 
