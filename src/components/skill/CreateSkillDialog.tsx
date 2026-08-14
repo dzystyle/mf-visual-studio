@@ -157,47 +157,62 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
               <p className="text-[15px] text-foreground/90">你可以根据实际情况进一步细化，比如：</p>
 
               {/* Choice Card */}
-              <div className="mt-4 rounded-2xl bg-[#1a1a1c] border border-white/[0.03] overflow-hidden shadow-2xl">
-                <div className="p-6 space-y-6">
-                  <h4 className="text-[15px] font-medium text-white/90">你想优先完善哪个方向？</h4>
+              <div className="mt-4 rounded-[20px] bg-[#1a1a1c] border border-white/[0.03] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <div className="p-7 space-y-6">
+                  <h4 className="text-[17px] font-medium text-white/95">你想优先完善哪个方向？</h4>
                   
-                  <div className="border-t border-dashed border-white/10 pt-6 space-y-6">
+                  <div className="border-t border-dashed border-white/5 pt-6 space-y-7">
                     {[
                       { title: "指定游戏类型", desc: "告诉我是 RPG、FPS、MOBA 还是其他类型，我来针对性调整视觉风格和节奏规则" },
                       { title: "调整视频模型", desc: "换用其他视频生成模型（如 Seedance 2.5），或指定分辨率、时长等参数" },
                       { title: "加入角色声音一致性", desc: "为角色添加 key_element_audio（声音参考绑定），保证多镜头中同一角色对白音色一致" },
                       { title: "补充用户提供素材的处理流程", desc: "详细规定当用户上传官方截图、立绘或已有宣传片时，如何分析并融入生成工作流" }
-                    ].map((option, idx) => (
-                      <div key={idx} className="flex gap-4 items-start group cursor-pointer">
-                        <div className="mt-0.5 h-5 w-5 rounded-full border border-white/10 flex items-center justify-center shrink-0 text-white/10 group-hover:border-white/30 transition-colors">
-                          <CheckCircle2 className="h-4 w-4" />
+                    ].map((option, idx) => {
+                      const isSelected = idx === 0; // "指定游戏类型" is selected in the reference
+                      return (
+                        <div key={idx} className="flex gap-4 items-start group cursor-pointer">
+                          <div className={cn(
+                            "mt-1 h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-200",
+                            isSelected 
+                              ? "bg-[#E1B166] text-black shadow-[0_0_12px_rgba(225,177,102,0.4)]" 
+                              : "bg-white/[0.05] text-transparent border border-white/10 group-hover:border-white/20"
+                          )}>
+                            <Check className="h-3 w-3" strokeWidth={4} />
+                          </div>
+                          <div className="space-y-1">
+                            <div className={cn(
+                              "text-[15px] font-medium transition-colors",
+                              isSelected ? "text-white/95" : "text-white/70 group-hover:text-white/90"
+                            )}>
+                              {option.title}
+                            </div>
+                            <div className="text-[14px] text-white/40 leading-relaxed font-light">
+                              {option.desc}
+                            </div>
+                          </div>
                         </div>
-                        <div className="space-y-1">
-                          <div className="text-[14px] font-medium text-white/90">{option.title}</div>
-                          <div className="text-[13px] text-white/40 leading-relaxed font-light">{option.desc}</div>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
-                </div>
 
-                {/* Selection Input Style Row */}
-                <div className="px-6 pb-4">
-                  <div className="flex items-center gap-3 rounded-xl bg-white/[0.02] border border-white/[0.08] px-4 py-3 group-within:border-white/20 transition-colors">
-                    <div className="h-5 w-5 rounded-full bg-[#E1B166] flex items-center justify-center text-black shrink-0 shadow-[0_0_10px_rgba(225,177,102,0.3)]">
-                      <Check className="h-3.5 w-3.5" strokeWidth={4} />
+                  {/* Other Input Field */}
+                  <div className="flex items-center gap-4 group cursor-pointer pt-1">
+                    <div className="h-5 w-5 rounded-full bg-white/[0.05] border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-all">
+                      <Check className="h-3 w-3 text-transparent" strokeWidth={4} />
                     </div>
-                    <input 
-                      type="text"
-                      defaultValue="其它"
-                      className="bg-transparent border-none outline-none text-[14px] font-medium text-white/90 w-full placeholder:text-white/20"
-                    />
+                    <div className="flex-1 rounded-xl bg-white/[0.02] border border-white/[0.08] px-4 py-3 group-hover:border-white/20 transition-all">
+                      <input 
+                        type="text"
+                        defaultValue="其它"
+                        className="bg-transparent border-none outline-none text-[14px] font-medium text-white/90 w-full placeholder:text-white/20"
+                      />
+                    </div>
                   </div>
                 </div>
 
                 {/* Send Button Row */}
-                <div className="flex justify-end px-6 pb-6">
-                  <button className="h-[38px] px-7 rounded-full bg-[#2a2a2c] text-[#E1B166] font-medium text-[14px] hover:bg-[#323235] transition-all shadow-lg active:scale-95">
+                <div className="flex justify-end px-7 pb-7">
+                  <button className="h-[42px] px-8 rounded-full bg-[#2a2a2c] text-[#E1B166] font-medium text-[15px] hover:bg-[#323235] transition-all shadow-lg active:scale-95">
                     发送
                   </button>
                 </div>
