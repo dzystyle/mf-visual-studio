@@ -246,22 +246,6 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                 currentSelection={selectedDirection} 
                 onSelect={(idx) => setSelectedDirection(idx)} 
               />
-                      <input 
-                        type="text"
-                        defaultValue="其它"
-                        className="bg-transparent border-none outline-none text-[14px] font-medium text-white/90 w-full placeholder:text-white/20"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Send Button Row */}
-                <div className="flex justify-end px-7 pb-7">
-                  <button className="h-[42px] px-8 rounded-full bg-[#2a2a2c] text-[#E1B166] font-medium text-[15px] hover:bg-[#323235] transition-all shadow-lg active:scale-95">
-                    发送
-                  </button>
-                </div>
-              </div>
 
               {/* Page Controls */}
               <div className="flex items-center justify-center gap-4 py-4">
