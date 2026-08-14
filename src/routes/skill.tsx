@@ -4,6 +4,7 @@ import { useState } from "react";
 import { TopBar } from "@/components/TopBar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { CreateSkillDialog } from "@/components/skill/CreateSkillDialog";
 import skillJojo from "@/assets/skill-jojo.png.asset.json";
 import skillDimension from "@/assets/skill-dimension.png.asset.json";
 import skillDestiny from "@/assets/skill-destiny.png.asset.json";
@@ -122,6 +123,7 @@ function SkillDiscoveryPage() {
   const [activeCategory, setActiveCategory] = useState("全部");
   const [sortOption, setSortOption] = useState("精选");
   const [myFilter, setMyFilter] = useState("全部");
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const myFilters = ["全部", "我创建的", "历史使用", "草稿"];
 
@@ -147,11 +149,19 @@ function SkillDiscoveryPage() {
             </button>
           </div>
           
-          <button className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium transition hover:bg-white/10">
+          <button 
+            onClick={() => setIsCreateDialogOpen(true)}
+            className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium transition hover:bg-white/10"
+          >
             <Plus className="h-4 w-4" />
             新建Skill
           </button>
         </div>
+
+        <CreateSkillDialog 
+          open={isCreateDialogOpen} 
+          onOpenChange={setIsCreateDialogOpen} 
+        />
 
         {activeTab === "精选" ? (
           <>
