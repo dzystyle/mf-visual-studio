@@ -44,82 +44,87 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
         setMessages(prev => [...prev, { 
           role: 'assistant', 
           content: (
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="flex items-center gap-1 font-bold text-lg">
-                  <span className="text-[#ff4d4d]">A</span>
-                  <span className="text-[#ff9933]">r</span>
-                  <span className="text-[#ffff00]">t</span>
-                  <span className="text-[#33cc33]">r</span>
-                  <span className="text-[#3399ff]">a</span>
-                  <span className="text-[#8888ff]">i</span>
-                  <span className="text-[#cc88ff]">l</span>
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-white/5 bg-white/5 p-4 flex items-center justify-between group cursor-pointer hover:bg-white/10 transition">
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-500">
-                    <LayoutGrid className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium text-emerald-500">Skill 已完成</div>
-                  </div>
-                </div>
-                <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition" />
-              </div>
-
-              <p className="text-sm leading-relaxed text-foreground/90">
+            <div className="space-y-5">
+              <p className="text-[15px] leading-relaxed text-foreground/90">
                 游戏宣发视频是个很棒的方向！我先帮你搭起一个基础框架，你可以在此基础上继续细化。
               </p>
               
-              <p className="text-sm leading-relaxed text-foreground/90">
-                已为你搭起一套完整的游戏宣发视频 Skill 框架，覆盖了从策划到剪辑的全流程。以下是各部分的核心设计思路：
+              <p className="text-[15px] leading-relaxed text-foreground/90">
+                已为你搭起一套完整的<strong className="text-foreground">游戏宣发视频</strong> Skill 框架，覆盖了从策划到剪辑的全流程。以下是各部分的核心设计思路：
               </p>
 
-              <ul className="space-y-3 text-sm">
-                <li className="flex gap-2">
-                  <span className="text-muted-foreground mt-1.5 h-1 w-1 rounded-full bg-current shrink-0" />
+              <ul className="space-y-2 text-[15px]">
+                <li className="flex gap-3">
+                  <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <span className="text-foreground/80"><strong className="text-foreground">规划阶段：</strong>先锁定宣发目标和规格，再逐步推进，每个关键节点暂停确认</span>
                 </li>
-                <li className="flex gap-2">
-                  <span className="text-muted-foreground mt-1.5 h-1 w-1 rounded-full bg-current shrink-0" />
+                <li className="flex gap-3">
+                  <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <span className="text-foreground/80"><strong className="text-foreground">素材分析：</strong>支持导入原画、截图、品牌规范文档，自动提炼视觉风格作为后续生成的约束</span>
                 </li>
-                <li className="flex gap-2">
-                  <span className="text-muted-foreground mt-1.5 h-1 w-1 rounded-full bg-current shrink-0" />
+                <li className="flex gap-3">
+                  <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <span className="text-foreground/80"><strong className="text-foreground">分镜设计：</strong>强调前 3 秒视觉钩子、长镜头内部节拍、史诗感摄影语言</span>
                 </li>
-                <li className="flex gap-2">
-                  <span className="text-muted-foreground mt-1.5 h-1 w-1 rounded-full bg-current shrink-0" />
+                <li className="flex gap-3">
+                  <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <span className="text-foreground/80"><strong className="text-foreground">生成策略：</strong>以 Seedance 2.0 为主力视频模型，角色一致性靠元素参考图保障</span>
                 </li>
-                <li className="flex gap-2">
-                  <span className="text-muted-foreground mt-1.5 h-1 w-1 rounded-full bg-current shrink-0" />
+                <li className="flex gap-3">
+                  <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-foreground/40 shrink-0" />
                   <span className="text-foreground/80"><strong className="text-foreground">剪辑组装：</strong>动作段硬切、场景切换闪白/黑场，BGM 高潮对齐视觉高潮</span>
                 </li>
               </ul>
 
-              <p className="text-sm text-foreground/90 mt-4">你可以根据实际情况进一步细化，比如：</p>
+              <p className="text-[15px] text-foreground/90">你可以根据实际情况进一步细化，比如：</p>
 
-              <div className="space-y-2 rounded-xl border border-white/5 bg-white/5 p-4">
-                <h4 className="text-sm font-medium mb-3">你想优先完善哪个方向？</h4>
-                {[
-                  { title: "指定游戏类型", desc: "告诉我是 RPG、FPS、MOBA 还是其他类型，我来针对性调整视觉风格和节奏规则" },
-                  { title: "调整视频模型", desc: "换用其他视频生成模型（如 Seedance 2.5），或指定分辨率、时长等参数" },
-                  { title: "加入角色声音一致性", desc: "为角色添加 key_element_audio（声音参考绑定），保证多镜头中同一角色对白音色一致" },
-                  { title: "补充用户提供素材的处理流程", desc: "详细规定当用户上传官方截图、立绘或已有宣传片时，如何分析并融入生成工作流" }
-                ].map((option, idx) => (
-                  <div key={idx} className="flex gap-3 items-start group cursor-pointer hover:bg-white/5 p-2 rounded-lg transition">
-                    <div className="mt-1 h-4 w-4 rounded-full border border-white/20 flex items-center justify-center group-hover:border-emerald-500 transition">
-                      <div className="h-2 w-2 rounded-full bg-emerald-500 opacity-0 group-hover:opacity-100 transition" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-medium text-foreground/90">{option.title}</div>
-                      <div className="text-xs text-muted-foreground leading-relaxed">{option.desc}</div>
-                    </div>
+              {/* Choice Card */}
+              <div className="mt-4 rounded-2xl bg-white/[0.03] border border-white/5 overflow-hidden">
+                <div className="p-5 space-y-4">
+                  <h4 className="text-[15px] font-medium text-foreground">你想优先完善哪个方向？</h4>
+                  
+                  <div className="border-t border-dashed border-white/10 pt-4 space-y-5">
+                    {[
+                      { title: "指定游戏类型", desc: "告诉我是 RPG、FPS、MOBA 还是其他类型，我来针对性调整视觉风格和节奏规则" },
+                      { title: "调整视频模型", desc: "换用其他视频生成模型（如 Seedance 2.5），或指定分辨率、时长等参数" },
+                      { title: "加入角色声音一致性", desc: "为角色添加 key_element_audio（声音参考绑定），保证多镜头中同一角色对白音色一致" },
+                      { title: "补充用户提供素材的处理流程", desc: "详细规定当用户上传官方截图、立绘或已有宣传片时，如何分析并融入生成工作流" }
+                    ].map((option, idx) => (
+                      <div key={idx} className="flex gap-4 items-start group cursor-pointer">
+                        <div className="mt-0.5 h-5 w-5 rounded-full border border-white/20 flex items-center justify-center shrink-0 text-white/20 group-hover:border-[#E1B166] group-hover:text-[#E1B166] transition-colors">
+                          <Check className="h-3 w-3" />
+                        </div>
+                        <div className="space-y-1">
+                          <div className="text-[14px] font-medium text-foreground/90 group-hover:text-foreground transition-colors">{option.title}</div>
+                          <div className="text-[13px] text-muted-foreground leading-relaxed">{option.desc}</div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                {/* Selection Input Style Row */}
+                <div className="px-5 pb-5">
+                  <div className="flex items-center gap-3 rounded-xl bg-white/[0.05] border border-white/10 px-4 py-2.5">
+                    <div className="h-5 w-5 rounded-full bg-[#E1B166] flex items-center justify-center text-black shrink-0">
+                      <Check className="h-3 w-3" strokeWidth={3} />
+                    </div>
+                    <span className="text-sm font-medium text-foreground">RPG</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons Row */}
+              <div className="flex items-center justify-center gap-4 py-2">
+                <button className="h-9 w-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:bg-white/10 hover:text-foreground transition">
+                  <ChevronDown className="h-5 w-5" />
+                </button>
+                <button className="h-10 px-6 rounded-full bg-[#E1B166] text-black font-semibold text-sm hover:opacity-90 transition shadow-[0_0_20px_rgba(225,177,102,0.2)]">
+                  发送
+                </button>
+                <button className="h-9 w-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:bg-white/10 hover:text-foreground transition">
+                  <ArrowUp className="h-5 w-5" />
+                </button>
               </div>
             </div>
           )
