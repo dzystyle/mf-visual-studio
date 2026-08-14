@@ -72,8 +72,14 @@ function Home() {
         </div>
 
         <div className="mx-auto mt-12 max-w-6xl">
-          <div className="mb-3 text-center text-xs text-muted-foreground">
-            热门 Skills
+          <div className="mb-3 flex items-center justify-between px-1">
+            <div className="text-xs text-muted-foreground">热门 Skills</div>
+            <Link
+              to="/skill"
+              className="flex items-center gap-1 text-[10px] text-muted-foreground transition hover:text-foreground"
+            >
+              更多 Skill <ChevronRight className="h-2.5 w-2.5" />
+            </Link>
           </div>
           <SkillsWithPreview />
         </div>
