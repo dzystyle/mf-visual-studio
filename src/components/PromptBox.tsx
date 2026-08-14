@@ -131,6 +131,7 @@ export function PromptBox({
 
   const remove = (id: string, name?: string) => {
     setAttachments((prev) => prev.filter((a) => a.id !== id));
+    // When removing an attachment, also remove any corresponding @mentions from the text
     if (name) {
       setText(prev => {
         const mention = `@${name}`;
@@ -149,17 +150,20 @@ export function PromptBox({
     let newText: string;
     let newCursorPos: number;
 
+    // In "Quick" mode (implied by user request to match interaction), 
+    // selecting a mention removes the @text and shows a chip.
+    // However, PromptBox currently uses the chip-only-above-input style.
+    // The user wants "@uploaded image" to work like Quick page.
+    // In QuickPage, @mention select removes @ from input and adds a chip below.
+    
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
-      newText = `${before}@${name} ${after}`;
-      newCursorPos = before.length + name.length + 2;
+      newText = `${before.trimEnd()}${after.startsWith(" ") ? after : " " + after}`.trim();
+      newCursorPos = before.trimEnd().length;
     } else {
-      const before = text.slice(0, cursorPos);
-      const after = text.slice(cursorPos);
-      const prefix = before.endsWith(" ") || before === "" ? "" : " ";
-      newText = `${before}${prefix}@${name} ${after}`;
-      newCursorPos = before.length + prefix.length + name.length + 2;
+      newText = text;
+      newCursorPos = cursorPos;
     }
 
     setText(newText);
@@ -173,17 +177,21 @@ export function PromptBox({
     
     setMentionOpen(false);
     
-    if (url && (kind === "image" || kind === "video")) {
-      const id = `${Date.now()}-${name}`;
-      setAttachments(prev => [
-        ...prev,
-        {
-          id,
-          name,
-          kind: kind as any,
-          url
-        }
-      ]);
+    // Add to attachments if it has a URL (coming from Asset Library or already uploaded)
+    if (url) {
+      const exists = attachments.find(a => a.url === url);
+      if (!exists) {
+        const id = `${Date.now()}-${name}`;
+        setAttachments(prev => [
+          ...prev,
+          {
+            id,
+            name,
+            kind: (kind as any) || "image",
+            url
+          }
+        ]);
+      }
     }
   };
 
@@ -208,16 +216,20 @@ export function PromptBox({
               </div>
             )}
             {attachments.map((a) => (
-              <AttachmentChip 
-                key={a.id} 
-                a={a} 
-                onRemove={() => remove(a.id, a.name)} 
-                onAtClick={() => {
-                  setMentionOpen(true);
-                  setMentionFilter("");
-                  textareaRef.current?.focus();
-                }}
-              />
+              <div key={a.id} className="inline-flex h-[32px] items-center gap-2 rounded-lg bg-white/10 border border-white/20 pl-1.5 pr-2 py-1 text-xs text-white">
+                {a.url && (
+                  <div className="h-5 w-5 shrink-0 rounded overflow-hidden border border-white/10">
+                    <img src={a.url} alt="" className="w-full h-full object-cover" />
+                  </div>
+                )}
+                <span className="leading-none">{a.name}</span>
+                <button 
+                  onClick={() => remove(a.id, a.name)}
+                  className="hover:text-white/60 transition-colors"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
             ))}
           </div>
         )}
@@ -287,10 +299,14 @@ export function PromptBox({
             <div className="max-h-64 overflow-y-auto p-1.5 scrollbar-hide">
               <div className="px-2 py-1.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">最近使用</div>
               {[
+                ...attachments.map(a => ({ name: a.name, kind: a.kind, url: a.url })),
                 { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
                 { name: "角色01", kind: "image", url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" },
                 { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
-              ].filter(i => i.name.includes(mentionFilter)).map((item, idx) => (
+              ].filter((item, index, self) => 
+                item.name.toLowerCase().includes(mentionFilter.toLowerCase()) && 
+                self.findIndex(t => t.url === item.url) === index
+              ).map((item, idx) => (
                 <MentionListItem 
                   key={idx}
                   item={item}
