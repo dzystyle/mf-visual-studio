@@ -331,19 +331,19 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
               />
               
               <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/40 opacity-0 transition-opacity duration-300 group-hover/item:opacity-100 backdrop-blur-[2px]">
-                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/20 text-foreground transition hover:bg-background/40">
                   <Download className="h-4 w-4" />
                 </button>
                 <button 
                   onClick={onHdClick}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/20 text-foreground transition hover:bg-background/40"
                 >
                   <span className="text-[10px] font-bold">HD</span>
                 </button>
-                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/20 text-foreground transition hover:bg-background/40">
                   <Star className="h-4 w-4" />
                 </button>
-                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/20 text-foreground transition hover:bg-background/40">
                   <Trash2 className="h-4 w-4" />
                 </button>
               </div>
