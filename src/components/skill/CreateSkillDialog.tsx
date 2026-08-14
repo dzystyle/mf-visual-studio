@@ -30,6 +30,21 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
   const [viewMode, setViewMode] = React.useState<"preview" | "markdown">("preview");
   const [messages, setMessages] = React.useState<Array<{ role: 'user' | 'assistant', content: string | React.ReactNode }>>([]);
   const [inputValue, setInputValue] = React.useState("");
+  const [showSuggestions, setShowSuggestions] = React.useState(false);
+  const [currentSuggestionIndex, setCurrentSuggestionIndex] = React.useState(1);
+  const [acceptedChanges, setAcceptedChanges] = React.useState<Set<number>>(new Set());
+  const [rejectedChanges, setRejectedChanges] = React.useState<Set<number>>(new Set());
+  
+  const gameSkillSuggestions = {
+    name: "游戏宣发视频",
+    rules: "适用于游戏宣传推广视频的制作，包括新游预告、版本更新宣传、角色/英雄展示、活动推广等场景；以强视觉冲击、氛围感和信息传达为核心目标。",
+    planning: `**整体流程与阶段逻辑：**\n\n1. 与用户确认宣发目标（新游预告 / 版本更新 / 角色展示 / 活动促销等）、核心受众、视频时长与比例，写入 Final_Video_Spec.md（标题、类型、宣发目标、画面比例、时长、视觉风格、输出语言）→ **text_editor**。\n\n2. 若用户已提供游戏截图、原画、角色立绘、UI 素材或品牌规范文档，先交由 **resource_prepare_and_analyze** 分析提炼，生成可复用的视觉风格摘要与素材清单，输出 \`semantic_output\` 供后续步骤引用。\n\n3. 根据宣发目标设计分镜：明确关键视觉元素（英雄/角色、场景、UI 高光、Logo）、镜头节奏与情绪弧线、配乐风格和 VO 策略 → **storyboard_designer**。\n\n4. 依次生成：关键元素形象图（角色/场景）→ 各分镜视频 → 配乐/VO → **media_generator**。\n\n5. 完成所有媒体资产后，按分镜剪辑合成、对齐音画节奏 → **video_assembler**。\n\n**暂停节点：** 每个主要里程碑后（规格确认、分镜完成、关键元素图完成、全部视频片段完成）暂停，等待用户确认后再继续。\n\n**用户素材处理：** 若用户提供游戏内截图或品牌视觉素材，优先将其绑定到对应分镜元素，不重复生成已有素材。`,
+    assets: `**素材分析重点：**\n\n- 游戏截图 / 原画 / 角色立绘：提炼主色调、光影风格（写实 / 卡通 / 赛博朋克等）、角色外观特征（服装、武器、配色），输出结构化 \`semantic_output\` 供分镜描述 and 生成提示词复用。\n\n- 品牌规范文档 / 游戏官方物料：提取字体风格、Logo 使用规则、禁用色、品牌关键词，写入可编辑的项目文档，作为全局视觉约束。\n\n- 已有宣发视频：分析剪辑节奏、转场风格、BGM 类型，摘要输出，帮助新视频保持品牌一致性。\n\n原始上传素材保持只读；所有整理后的风格摘要和素材清单需创建为独立的可编辑项目文档。`,
+    storyboard: `**关键元素设计**\n\n- **角色/英雄（element character）：** 注明外观特征、标志性技能动作、情绪状态；若同一角色有多个皮肤或形态，逐一描述。\n\n- **场景（element scene）：** 描述光影、氛围、标志性地标；区分战斗场景、过场场景、UI 展示场景。\n\n- **Logo / 游戏标题（key_element）：** 记录官方字体、颜色、出现时机和动效要求。\n\n**分镜设计原则**\n\n- **节奏先行：** 宣发视频通常在前 3 秒内需建立视觉钩子（爆炸感、悬念感或情绪共鸣），以保持受众注意力。\n\n- **镜头设计：** 每个分镜须包含：\n\n - **场景：** 引用对应 element scene ID。\n\n - **叙事节拍：** 角色动作、技能特效、情绪走向；对白或 VO 台词（若有）写明原文。\n\n - **摄影语言：** 景别（特写 / 中景 / 全景）、机位（低角度仰拍增强压迫感、航拍俯瞰展示世界观）、运镜（快速推进、旋转、锁定）。\n\n- **信息层次：** 关键信息（游戏名、版本、上线时间）安排在视觉节奏稳定段或结尾，避免在高速剪辑中淹没。\n\n- **优先较长镜头配合内部剪辑：** 每个生成单元尽量设计 8–15s 并包含内部节拍变化，减少碎片化镜头数量。\n\n**音频轨道设计**\n\n- **BGM（music）：** 结合游戏类型选择风格（史诗管弦 / 电子 / 战斗金属等）；高潮节点与视觉高潮对齐；通常贯穿全片。\n\n- **旁白 VO（narration）：** 如有品牌旁白或版本更新说明，规划 \`narration_speaker_profile\`（如"低沉有力男声"/"干净清晰女声"）和对应台词。`,
+    media: `**关键元素图生成**\n\n- 使用 **TextToImage** 生成角色/场景参考图；同一角色的多个皮肤使用 **ImageToImage** 保证一致性。\n\n- 角色参考图采用横向双图布局：左侧半身/面部特写（锁定脸部、配色、特征），右侧全身（服装、武器、轮廓）。\n\n**分镜视频生成**\n\n- 优先使用 **MultiModalToVideo**（推荐模型：**Seedance 2.0**，720p），以元素图作为视觉参考。\n\n- 每个分镜引用输入：\n\n 1. 对应角色/场景的 **element 图像**；\n\n 2. 若与上一分镜有极强视觉连贯性需求，可附加上一镜头视频作为 **reference_video**；其余情况不附加，避免过度约束运镜创意。\n\n- 高强度动作或纯场景空镜可考虑 **TextToVideo** 辅助生成，但角色一致性镜头仍以 MultiModalToVideo 为主。\n\n**音频生成**\n\n- BGM：使用 **text_to_instrumental**，按游戏风格关键词描述。\n\n- VO 旁白：使用 **TextToSpeech**（中文默认 Seed Audio 1.0，英文/多语言默认 ElevenLabs）。\n\n**Asset Binding Contract**\n\n- 遵循当前 \`manage_item_assets\` 合约，使用分镜中实际目标 ID 进行绑定；不在 Skill 中额外定义 ID 模板。\n\n- 每次绑定前调用 \`query_assets_info\` 确认现有绑定状态，执行 \`manage_item_assets\` 时保留完整 \`asset_bindings\` 数组，完成后重新查询验证。`,
+    prompts: `**全局优先规则：** 中文界面或用户使用中文交互时，提示词正文用中文书写；台词/旁白文字跟随 Final_Video_Spec 中规定的输出语言。\n\n**图像提示词（TextToImage / ImageToImage）**\n\n- 用导演+美术指导语言描述：主体外观 + 动作/姿态 + 环境/背景 + 光效/色调 + 构图。\n\n- 游戏宣发图须强调：游戏视觉风格标签（如"写实战争风"/"奇幻卡通渲染\"）、主光方向与对比度、标志性道具/特效细节。\n\n- 避免描述不可见的心理活动；只写镜头能捕捉到的视觉信息。\n\n**视频提示词（MultiModalToVideo / Seedance 2.0）**\n\n- 参考图使用占位符 \`<<<image_1>>>\`、\`<<<image_2>>>\` 逐一标注对应角色/场景。\n\n- 运动描述顺序：**镜头运动**（推 / 拉 / 旋转 / 锁定）→ **主体动作**（技能释放 / 奔跑 / 特效爆发）→ **环境动态**（烟尘 / 光效 / 粒子）→ **音频备注**（若有对白或 SFX 注记）。`,
+    editing: `**剪辑节奏**\n\n- 宣发视频整体节奏偏快：动作/高能段落单镜不超过 3s；叙事/情绪段落可放宽至 5–8s。\n\n- 片头 3 秒优先安排视觉冲击力最强的镜头（技能特效、世界观展示或悬念画面）。\n\n- 游戏标题 / Logo 出现时机：通常在高潮节点后或视频结尾，配合 BGM 节拍落点。\n\n**转场偏好**\n\n- 动作场景：硬切为主，保持节奏紧张感。\n\n- 场景/章节切换：闪白、速度模糊（motion blur wipe）或黑场渐入/渐出。\n\n- 避免过多花哨转场效果，以免分散对游戏内容的注意力。\n\n**音画同步**\n\n- BGM 高潮节拍与视觉高潮严格对齐。\n\n- VO 旁白与对应视觉信息同步展示；信息密度高时适当延长镜头停留时间。\n\n- 结尾留 1–2s 静帧展示 Logo + 上线信息，淡出 BGM。`
+  };
 
   const handleSend = () => {
     if (!inputValue.trim()) return;
