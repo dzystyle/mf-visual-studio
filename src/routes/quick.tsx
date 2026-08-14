@@ -208,7 +208,7 @@ function QuickPage() {
               onMouseEnter={() => setShowMini(false)}
             >
               <div className="flex items-center gap-3 rounded-full border border-border bg-background/60 px-4 py-2 shadow-2xl backdrop-blur-2xl transition hover:bg-background/80">
-                <Plus className="h-4 w-4 text-muted-foreground/40" />
+                <Plus className="h-4 w-4 text-muted-foreground/60 dark:text-muted-foreground/40" />
                 <div className="flex-1 text-sm text-muted-foreground/40">使用@快速调用参考能力，支持文本、图片、音频、视频全能参考...</div>
                 <div className="flex items-center gap-2">
                   <ChevronDown className="h-4 w-4 text-muted-foreground/40" />
