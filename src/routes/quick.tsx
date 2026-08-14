@@ -953,7 +953,7 @@ function ActionBtn({
   children: React.ReactNode;
 }) {
   return (
-    <button className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card/60 px-2.5 py-1.5 text-xs text-foreground/90 transition hover:bg-card">
+    <button className="inline-flex items-center gap-1.5 rounded-md border border-border bg-muted/20 px-2.5 py-1.5 text-xs text-foreground/90 transition hover:bg-muted/40">
       {icon}
       {children}
     </button>
