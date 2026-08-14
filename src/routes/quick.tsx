@@ -287,13 +287,13 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
                       fill="transparent"
                       strokeDasharray={175.9}
                       strokeDashoffset={175.9 * (1 - (msg.progress || 0) / 100)}
-                      className="text-white/60 transition-all duration-500 ease-out"
+                      className="text-foreground/60 transition-all duration-500 ease-out"
                     />
                   </svg>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <div className="text-xs font-medium text-white/60">正在生成中...</div>
-                  <div className="text-[10px] text-white/30 font-mono">{msg.progress}%</div>
+                  <div className="text-xs font-medium text-foreground/60">正在生成中...</div>
+                  <div className="text-[10px] text-foreground/30 font-mono">{msg.progress}%</div>
                 </div>
               </div>
             ))}
