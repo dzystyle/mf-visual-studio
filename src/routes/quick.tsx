@@ -654,9 +654,9 @@ function Composer({
           {attachments.length < 50 && (
             <button 
               onClick={() => fileInputRef.current?.click()}
-              className="relative flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/[0.02] text-white/40 transition hover:border-white/20 hover:text-white/60"
+              className="relative flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/20 text-muted-foreground/40 transition hover:border-foreground/20 hover:text-foreground/60"
             >
-              <span className="absolute right-1 top-1 rounded bg-black/40 px-1 text-[9px] text-white/40">
+              <span className="absolute right-1 top-1 rounded bg-background/40 px-1 text-[9px] text-muted-foreground/40">
                 {attachments.length}/50
               </span>
               <Plus className="h-4 w-4" />
