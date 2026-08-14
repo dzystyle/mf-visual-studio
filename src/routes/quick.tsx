@@ -435,20 +435,20 @@ function Composer({
     }
 
     setInput(newInput);
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
-        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
-        setCursorPos(newCursorPos);
-      }
-    }, 0);
-    
     setMentionOpen(false);
     
     // Add to mentions list for visual chip display below input
     if (!mentions.find((a: any) => a.url === url)) {
       setMentions((prev: any) => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
     }
+
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
+        setCursorPos(newCursorPos);
+      }
+    }, 50);
   };
 
   const onFiles = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -700,8 +700,7 @@ function Composer({
               }}
               rows={1}
               placeholder="使用@快速调用参考能力"
-              style={{ order: 9999 }}
-              className="flex-1 min-w-[200px] min-h-[32px] self-center bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none py-1.5"
+              className="flex-1 min-w-[200px] min-h-[32px] self-center bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none py-1.5 order-last"
             />
           </div>
           
