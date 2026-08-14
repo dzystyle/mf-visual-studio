@@ -170,20 +170,20 @@ function QuickPage() {
   }
 
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden bg-black">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-background">
       <section className="aurora-bg relative flex flex-1 flex-col overflow-hidden px-8 pt-6">
         <BrandMark />
         <TopBar />
 
         <div className="mx-auto mb-4 flex w-full max-w-7xl items-center gap-2 pt-16 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-3xl font-bold text-white/90">5.21</span>
+            <span className="text-3xl font-bold text-foreground/90">5.21</span>
           </div>
-          <div className="ml-auto flex items-center overflow-hidden rounded-full border border-white/10">
+          <div className="ml-auto flex items-center overflow-hidden rounded-full border border-border bg-background/50 backdrop-blur-sm">
             <FilterMenu label="全部时间" options={['全部', '今天', '近7天', '近30天']} isFirst />
-            <div className="h-4 w-[1px] bg-white/10" />
+            <div className="h-4 w-[1px] bg-border" />
             <FilterMenu label="全部类型" options={['全部', '图片', '视频', '音乐', '音频']} />
-            <div className="h-4 w-[1px] bg-white/10" />
+            <div className="h-4 w-[1px] bg-border" />
             <FilterMenu label="全部操作" options={['全部', '收藏']} isLast />
           </div>
         </div>
@@ -207,12 +207,12 @@ function QuickPage() {
               className="mx-auto w-[600px] animate-in fade-in slide-in-from-bottom-4 duration-300"
               onMouseEnter={() => setShowMini(false)}
             >
-              <div className="flex items-center gap-3 rounded-full border border-white/10 bg-black/60 px-4 py-2 shadow-2xl backdrop-blur-2xl transition hover:bg-black/80">
-                <Plus className="h-4 w-4 text-white/40" />
-                <div className="flex-1 text-sm text-white/40">使用@快速调用参考能力，支持文本、图片、音频、视频全能参考...</div>
+              <div className="flex items-center gap-3 rounded-full border border-border bg-background/60 px-4 py-2 shadow-2xl backdrop-blur-2xl transition hover:bg-background/80">
+                <Plus className="h-4 w-4 text-muted-foreground/40" />
+                <div className="flex-1 text-sm text-muted-foreground/40">使用@快速调用参考能力，支持文本、图片、音频、视频全能参考...</div>
                 <div className="flex items-center gap-2">
-                  <ChevronDown className="h-4 w-4 text-white/40" />
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white/60">
+                  <ChevronDown className="h-4 w-4 text-muted-foreground/40" />
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-foreground/60">
                     <ArrowUp className="h-4 w-4" />
                   </div>
                 </div>
@@ -252,12 +252,12 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
             -5
           </span>
         )}
-        <span className="ml-auto text-[11px] text-white/20">
+        <span className="ml-auto text-[11px] text-muted-foreground/40">
           {msg.time}
         </span>
       </div>
 
-      <div className="text-sm leading-relaxed text-white/60 mb-6 max-w-4xl">
+      <div className="text-sm leading-relaxed text-foreground/60 mb-6 max-w-4xl">
         {msg.prompt}
       </div>
 
@@ -265,9 +265,9 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         {msg.status === "processing" ? (
           <>
             {[1, 2].map((i) => (
-              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 flex flex-col items-center justify-center gap-4 bg-white/[0.02]">
+              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/20">
                 <div className="relative flex h-16 w-16 items-center justify-center">
-                  <Loader2 className="h-8 w-8 text-white/40 animate-spin" />
+                  <Loader2 className="h-8 w-8 text-foreground/40 animate-spin" />
                   <svg className="absolute inset-0 h-full w-full -rotate-90">
                     <circle
                       cx="32"
@@ -276,7 +276,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
                       stroke="currentColor"
                       strokeWidth="2"
                       fill="transparent"
-                      className="text-white/5"
+                      className="text-foreground/5"
                     />
                     <circle
                       cx="32"
@@ -287,13 +287,13 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
                       fill="transparent"
                       strokeDasharray={175.9}
                       strokeDashoffset={175.9 * (1 - (msg.progress || 0) / 100)}
-                      className="text-white/60 transition-all duration-500 ease-out"
+                      className="text-foreground/60 transition-all duration-500 ease-out"
                     />
                   </svg>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <div className="text-xs font-medium text-white/60">正在生成中...</div>
-                  <div className="text-[10px] text-white/30 font-mono">{msg.progress}%</div>
+                  <div className="text-xs font-medium text-foreground/60">正在生成中...</div>
+                  <div className="text-[10px] text-foreground/30 font-mono">{msg.progress}%</div>
                 </div>
               </div>
             ))}
@@ -301,19 +301,19 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         ) : msg.status === "failed" ? (
           <>
             {[1, 2].map((i) => (
-              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 flex flex-col items-center justify-center gap-4 bg-white/[0.02]">
+              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/20">
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20">
-                  <XCircle className="h-6 w-6 text-red-500" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/20">
+                  <XCircle className="h-6 w-6 text-destructive" />
                 </div>
-                <div className="text-sm text-white/60">生成失败</div>
+                <div className="text-sm text-foreground/60">生成失败</div>
                 
                 <div className="flex gap-2">
-                  <button className="flex items-center gap-1.5 rounded-full bg-white/5 px-4 py-1.5 text-xs text-white/40 transition hover:bg-white/10 hover:text-white/60">
+                  <button className="flex items-center gap-1.5 rounded-full bg-muted/40 px-4 py-1.5 text-xs text-muted-foreground/60 transition hover:bg-muted/60 hover:text-foreground/80">
                     <RotateCcw className="h-3.5 w-3.5" />
                     重试
                   </button>
-                  <button className="flex items-center gap-1.5 rounded-full bg-white/5 px-4 py-1.5 text-xs text-white/40 transition hover:bg-white/10 hover:text-white/60">
+                  <button className="flex items-center gap-1.5 rounded-full bg-muted/40 px-4 py-1.5 text-xs text-muted-foreground/60 transition hover:bg-muted/60 hover:text-foreground/80">
                     <Trash2 className="h-3.5 w-3.5" />
                     删除
                   </button>
@@ -323,7 +323,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
           </>
         ) : (
           [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-            <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 bg-white/[0.02]">
+            <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border bg-muted/20">
               <img
                 src={msg.resultImage}
                 alt={msg.prompt}
@@ -331,25 +331,25 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
               />
               
               <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/40 opacity-0 transition-opacity duration-300 group-hover/item:opacity-100 backdrop-blur-[2px]">
-                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/20 text-foreground transition hover:bg-background/40">
                   <Download className="h-4 w-4" />
                 </button>
                 <button 
                   onClick={onHdClick}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/20 text-foreground transition hover:bg-background/40"
                 >
                   <span className="text-[10px] font-bold">HD</span>
                 </button>
-                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/20 text-foreground transition hover:bg-background/40">
                   <Star className="h-4 w-4" />
                 </button>
-                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20">
+                <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/20 text-foreground transition hover:bg-background/40">
                   <Trash2 className="h-4 w-4" />
                 </button>
               </div>
               
               <div className="absolute bottom-2 left-2 flex gap-1 opacity-0 transition-opacity group-hover/item:opacity-100">
-                <span className="text-[10px] text-white/40 bg-black/60 px-1.5 rounded">{i}</span>
+                <span className="text-[10px] text-foreground/40 bg-background/60 px-1.5 rounded">{i}</span>
               </div>
             </div>
           ))
@@ -357,17 +357,17 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
       </div>
 
       <div className="mt-6 flex gap-3 opacity-60 transition-opacity group-hover:opacity-100">
-        <button className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-white transition hover:bg-white/10">
+        <button className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-xs font-medium text-foreground transition hover:bg-muted/40">
           <Edit3 className="h-3.5 w-3.5" />
           重新编辑
         </button>
-        <button className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-white transition hover:bg-white/10">
+        <button className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-xs font-medium text-foreground transition hover:bg-muted/40">
           <RefreshCw className="h-3.5 w-3.5" />
           重新生成
         </button>
       </div>
 
-      <div className="mt-12 w-full border-b border-white/5" />
+      <div className="mt-12 w-full border-b border-border" />
     </div>
   );
 }
@@ -611,9 +611,9 @@ function Composer({
   const [duration, setDuration] = useState("4s");
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card/70 backdrop-blur-xl">
+    <div className="overflow-hidden rounded-2xl border border-border bg-background/60 p-0 shadow-2xl backdrop-blur-2xl">
       {/* Tabs */}
-      <div className="grid grid-cols-4 border-b border-border/60">
+      <div className="grid grid-cols-4 border-b border-border">
         {tabs.map((t) => {
           const Icon = t.icon;
           const active = t.id === tab;
@@ -641,11 +641,11 @@ function Composer({
         {/* Row 1: Add Image button */}
         <div className="mb-4 flex items-center gap-3">
           {attachments.map((a) => (
-            <div key={a.id} className="relative group h-16 w-16 shrink-0 rounded-xl overflow-hidden border border-white/10">
+            <div key={a.id} className="relative group h-16 w-16 shrink-0 rounded-xl overflow-hidden border border-border">
               <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
               <button 
                 onClick={() => setAttachments(prev => prev.filter(x => x.id !== a.id))}
-                className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
+                className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-background/60 text-foreground opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
               >
                 <Plus className="h-3 w-3 rotate-45" />
               </button>
@@ -654,9 +654,9 @@ function Composer({
           {attachments.length < 50 && (
             <button 
               onClick={() => fileInputRef.current?.click()}
-              className="relative flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/[0.02] text-white/40 transition hover:border-white/20 hover:text-white/60"
+              className="relative flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/20 text-muted-foreground/40 transition hover:border-foreground/20 hover:text-foreground/60"
             >
-              <span className="absolute right-1 top-1 rounded bg-black/40 px-1 text-[9px] text-white/40">
+              <span className="absolute right-1 top-1 rounded bg-background/40 px-1 text-[9px] text-muted-foreground/40">
                 {attachments.length}/50
               </span>
               <Plus className="h-4 w-4" />
@@ -671,14 +671,14 @@ function Composer({
         <div className="relative z-50 flex flex-col gap-2 mb-4">
           <div className="flex flex-wrap items-center gap-2">
             {mentions.map((a: any) => (
-              <div key={a.id} className="inline-flex h-[32px] items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
-                <div className="h-5 w-5 shrink-0 rounded overflow-hidden border border-white/10">
+              <div key={a.id} className="inline-flex h-[32px] items-center gap-2 rounded-lg bg-muted/20 border border-border pl-1.5 pr-2 py-1 text-xs text-foreground/90">
+                <div className="h-5 w-5 shrink-0 rounded overflow-hidden border border-border">
                   <img src={a.url} alt="" className="w-full h-full object-cover" />
                 </div>
                 <span className="leading-none">{a.name}</span>
                 <button 
                   onClick={() => setMentions((prev: any) => prev.filter((x: any) => x.id !== a.id))}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-foreground transition-colors"
                 >
                   <Plus className="h-3 w-3 rotate-45 text-muted-foreground" />
                 </button>
@@ -705,8 +705,8 @@ function Composer({
           </div>
           
           {mentionOpen && (
-            <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[99999] animate-in fade-in slide-in-from-bottom-2 duration-200">
-              <div className="p-3 border-b border-white/5">
+            <div className="absolute bottom-[calc(100%+8px)] left-0 w-72 bg-popover border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[99999] animate-in fade-in slide-in-from-bottom-2 duration-200">
+              <div className="p-3 border-b border-border">
                 <div className="relative">
                   <Plus className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground rotate-45" />
                   <input 
@@ -715,7 +715,7 @@ function Composer({
                     value={mentionFilter}
                     onChange={(e) => setMentionFilter(e.target.value)}
                     placeholder="搜索素材、角色、商品..."
-                    className="w-full bg-white/5 border-none rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:ring-1 focus:ring-white/10 focus:outline-none"
+                    className="w-full bg-muted/40 border-none rounded-lg pl-8 pr-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-border focus:outline-none"
                   />
                 </div>
               </div>
@@ -733,13 +733,13 @@ function Composer({
                       <button
                         key={item.id}
                         onClick={() => handleMentionSelect(item.name, item.url)}
-                        className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition group"
+                        className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-muted/40 transition group"
                       >
-                        <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden border border-white/5">
+                        <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden border border-border">
                           <img src={item.url} alt={item.name} className="h-full w-full object-cover" />
                         </div>
                         <div className="flex-1 text-left">
-                          <div className="text-xs font-medium text-white group-hover:text-aurora-purple transition truncate max-w-[160px]">{item.name}</div>
+                          <div className="text-xs font-medium text-foreground group-hover:text-primary transition truncate max-w-[160px]">{item.name}</div>
                           <div className="text-[10px] text-muted-foreground">
                             {item.name.match(/\.(mp4|webm|ogg|mov)$/i) ? '视频' : '图片'}
                           </div>
@@ -772,12 +772,12 @@ function Composer({
               <ChevronDown className="h-3 w-3 opacity-60" />
             </button>
           </PopoverTrigger>
-          <PopoverContent align="start" className="w-36 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+          <PopoverContent align="start" className="w-36 p-1 border-border bg-popover backdrop-blur-xl rounded-xl shadow-2xl">
             {["全能参考", "图生视频", "首尾帧生视频", "对口型数字人"].map((item) => (
               <button 
                 key={item}
                 onClick={() => setVideoMode(item)}
-                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${videoMode === item ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${videoMode === item ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'}`}
               >
                 {item}
               </button>
@@ -794,12 +794,12 @@ function Composer({
               <ChevronDown className="h-3 w-3 opacity-60" />
             </button>
           </PopoverTrigger>
-          <PopoverContent align="start" className="w-48 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+          <PopoverContent align="start" className="w-48 p-1 border-border bg-popover backdrop-blur-xl rounded-xl shadow-2xl">
             {["Seedance 2.0", "Seedance 2.5", "Seedance 1.5"].map((m) => (
               <button 
                 key={m}
                 onClick={() => setModel(m)}
-                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${model === m ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${model === m ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'}`}
               >
                 {m}
               </button>
@@ -816,12 +816,12 @@ function Composer({
               <ChevronDown className="h-3 w-3 opacity-60" />
             </button>
           </PopoverTrigger>
-          <PopoverContent align="start" className="w-32 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+          <PopoverContent align="start" className="w-32 p-1 border-border bg-popover backdrop-blur-xl rounded-xl shadow-2xl">
             {["480p", "720p", "1080p"].map((res) => (
               <button 
                 key={res}
                 onClick={() => setResolution(res)}
-                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${resolution === res ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${resolution === res ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'}`}
               >
                 {res}
               </button>
@@ -837,12 +837,12 @@ function Composer({
               <ChevronDown className="h-3 w-3 opacity-60" />
             </button>
           </PopoverTrigger>
-          <PopoverContent align="start" className="w-24 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+          <PopoverContent align="start" className="w-24 p-1 border-border bg-popover backdrop-blur-xl rounded-xl shadow-2xl">
             {["21:9", "16:9", "4:3", "1:1", "9:16"].map((r) => (
               <button 
                 key={r}
                 onClick={() => setRatio(r)}
-                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${ratio === r ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${ratio === r ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'}`}
               >
                 {r}
               </button>
@@ -858,12 +858,12 @@ function Composer({
               <ChevronDown className="h-3 w-3 opacity-60" />
             </button>
           </PopoverTrigger>
-          <PopoverContent align="start" className="w-24 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+          <PopoverContent align="start" className="w-24 p-1 border-border bg-popover backdrop-blur-xl rounded-xl shadow-2xl">
             {["4s", "10s", "30s"].map((d) => (
               <button 
                 key={d}
                 onClick={() => setDuration(d)}
-                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${duration === d ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${duration === d ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'}`}
               >
                 {d}
               </button>
@@ -893,18 +893,18 @@ function FilterMenu({ label, options, isFirst, isLast }: { label: string; option
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button className={cn(
-          "inline-flex items-center gap-1.5 px-4 py-1.5 text-xs transition-all hover:bg-white/5",
-          open ? "text-white" : "text-white/60",
+          "inline-flex items-center gap-1.5 px-4 py-1.5 text-xs transition-all hover:bg-muted/40",
+          open ? "text-foreground" : "text-muted-foreground/60",
           isFirst && "rounded-l-full pl-5",
           isLast && "rounded-r-full pr-5",
           !isFirst && !isLast && "",
-          "bg-[#1A1A1A]/40"
+          "bg-muted/20"
         )}>
           {selected === options[0] ? label : selected}
           {open ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[120px] border-white/10 bg-[#1A1A1A]/95 p-1 shadow-2xl backdrop-blur-xl" align={isLast ? "end" : "start"}>
+      <PopoverContent className="w-[120px] border-border bg-popover p-1 shadow-2xl backdrop-blur-xl" align={isLast ? "end" : "start"}>
         <div className="flex flex-col gap-0.5">
           {options.map((opt) => (
             <button
@@ -914,8 +914,8 @@ function FilterMenu({ label, options, isFirst, isLast }: { label: string; option
                 setOpen(false);
               }}
               className={cn(
-                "flex items-center justify-between rounded-md px-3 py-2 text-[13px] transition-colors hover:bg-white/5",
-                selected === opt ? "bg-white/10 text-white" : "text-white/60 hover:text-white"
+                "flex items-center justify-between rounded-md px-3 py-2 text-[13px] transition-colors hover:bg-muted/40",
+                selected === opt ? "bg-muted text-foreground" : "text-muted-foreground/60 hover:text-foreground"
               )}
             >
               {opt}
@@ -939,7 +939,7 @@ function FilterChip({ label }: { label: string }) {
 
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-white/40">
+    <span className="inline-flex items-center rounded-md border border-border bg-muted/20 px-2.5 py-1 text-[11px] text-muted-foreground/60">
       {children}
     </span>
   );
@@ -953,7 +953,7 @@ function ActionBtn({
   children: React.ReactNode;
 }) {
   return (
-    <button className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card/60 px-2.5 py-1.5 text-xs text-foreground/90 transition hover:bg-card">
+    <button className="inline-flex items-center gap-1.5 rounded-md border border-border bg-muted/20 px-2.5 py-1.5 text-xs text-foreground/90 transition hover:bg-muted/40">
       {icon}
       {children}
     </button>
