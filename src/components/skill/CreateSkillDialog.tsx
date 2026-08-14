@@ -105,17 +105,21 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
                 {/* Selection Input Style Row */}
                 <div className="px-6 pb-4">
-                  <div className="flex items-center gap-3 rounded-xl bg-white/[0.02] border border-white/[0.05] px-4 py-3">
-                    <div className="h-5 w-5 rounded-full bg-[#E1B166] flex items-center justify-center text-black shrink-0">
-                      <Check className="h-3 w-3" strokeWidth={4} />
+                  <div className="flex items-center gap-3 rounded-xl bg-white/[0.02] border border-white/[0.08] px-4 py-3 group-within:border-white/20 transition-colors">
+                    <div className="h-5 w-5 rounded-full bg-[#E1B166] flex items-center justify-center text-black shrink-0 shadow-[0_0_10px_rgba(225,177,102,0.3)]">
+                      <Check className="h-3.5 w-3.5" strokeWidth={4} />
                     </div>
-                    <span className="text-[14px] font-medium text-white/90">RPG</span>
+                    <input 
+                      type="text"
+                      defaultValue="其它"
+                      className="bg-transparent border-none outline-none text-[14px] font-medium text-white/90 w-full placeholder:text-white/20"
+                    />
                   </div>
                 </div>
 
                 {/* Send Button Row */}
                 <div className="flex justify-end px-6 pb-6">
-                  <button className="h-9 px-6 rounded-full bg-[#333335] text-[#E1B166] font-medium text-[14px] hover:bg-[#3d3d40] transition shadow-lg">
+                  <button className="h-[38px] px-7 rounded-full bg-[#2a2a2c] text-[#E1B166] font-medium text-[14px] hover:bg-[#323235] transition-all shadow-lg active:scale-95">
                     发送
                   </button>
                 </div>
