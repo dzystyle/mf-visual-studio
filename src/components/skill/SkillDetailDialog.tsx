@@ -9,9 +9,11 @@ interface SkillDetailDialogProps {
   onOpenChange: (open: boolean) => void;
   skill: any;
   onEdit?: (skill: any) => void;
+  onUseSkill?: (skillTitle: string) => void;
 }
 
-export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDetailDialogProps) {
+export function SkillDetailDialog({ open, onOpenChange, skill, onEdit, onUseSkill }: SkillDetailDialogProps) {
+
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = React.useState<"intro" | "content">("intro");
   
