@@ -301,12 +301,12 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         ) : msg.status === "failed" ? (
           <>
             {[1, 2].map((i) => (
-              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 flex flex-col items-center justify-center gap-4 bg-white/[0.02]">
+              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/20">
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20">
-                  <XCircle className="h-6 w-6 text-red-500" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/20">
+                  <XCircle className="h-6 w-6 text-destructive" />
                 </div>
-                <div className="text-sm text-white/60">生成失败</div>
+                <div className="text-sm text-foreground/60">生成失败</div>
                 
                 <div className="flex gap-2">
                   <button className="flex items-center gap-1.5 rounded-full bg-white/5 px-4 py-1.5 text-xs text-white/40 transition hover:bg-white/10 hover:text-white/60">
