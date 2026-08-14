@@ -893,12 +893,12 @@ function FilterMenu({ label, options, isFirst, isLast }: { label: string; option
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button className={cn(
-          "inline-flex items-center gap-1.5 px-4 py-1.5 text-xs transition-all hover:bg-white/5",
-          open ? "text-white" : "text-white/60",
+          "inline-flex items-center gap-1.5 px-4 py-1.5 text-xs transition-all hover:bg-muted/40",
+          open ? "text-foreground" : "text-muted-foreground/60",
           isFirst && "rounded-l-full pl-5",
           isLast && "rounded-r-full pr-5",
           !isFirst && !isLast && "",
-          "bg-[#1A1A1A]/40"
+          "bg-muted/20"
         )}>
           {selected === options[0] ? label : selected}
           {open ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
