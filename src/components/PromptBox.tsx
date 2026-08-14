@@ -147,8 +147,13 @@ export function PromptBox({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
-      newText = `${before.trimEnd()}${after.startsWith(" ") ? after : " " + after}`.trim();
-      newCursorPos = before.trimEnd().length;
+      
+      // If there's non-whitespace text before the @, we preserve it.
+      // But the requirement specifically mentions "IMG_2883.JPG输入111然后@选择角色01"
+      // If "111" was before @, we should keep it.
+      // The current logic does this: before + after.
+      newText = (before + after).trim();
+      newCursorPos = before.length;
     } else {
       newText = text;
       newCursorPos = cursorPos;
