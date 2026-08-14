@@ -47,11 +47,13 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex items-center gap-1 font-bold text-lg">
-                  <span className="text-[#ff4d4d]">F</span>
-                  <span className="text-[#ff9933]">l</span>
-                  <span className="text-[#ffff00]">o</span>
-                  <span className="text-[#33cc33]">v</span>
+                  <span className="text-[#ff4d4d]">A</span>
+                  <span className="text-[#ff9933]">r</span>
+                  <span className="text-[#ffff00]">t</span>
+                  <span className="text-[#33cc33]">r</span>
                   <span className="text-[#3399ff]">a</span>
+                  <span className="text-[#8888ff]">i</span>
+                  <span className="text-[#cc88ff]">l</span>
                 </div>
               </div>
 
