@@ -341,25 +341,28 @@ export function SkillPicker({
             </div>
           ))}
         </div>
+      </div>
 
-      {/* Skill Detail Preview Modal - Reusing the unified SkillDetailDialog */}
       <SkillDetailDialog 
         open={!!previewSkill} 
         onOpenChange={(open) => !open && setPreviewSkill(null)}
         skill={previewSkill ? {
           ...previewSkill,
-          image: previewSkill.img, // Mapping field names
+          image: previewSkill.img,
           tags: ["全部", tab === "newbie" ? "新手必用" : tab === "master" ? "大师美学" : "剧情短片"]
         } : null}
         onEdit={(skill) => {
           setPreviewSkill(null);
-          // Navigate to home or trigger edit mode if needed
+        }}
+        onUseSkill={(skillTitle) => {
+          onSelect?.(skillTitle);
+          setPreviewSkill(null);
         }}
       />
     </div>
-
   );
 }
+
 
 export function SkillPickerDialog({
   open,
