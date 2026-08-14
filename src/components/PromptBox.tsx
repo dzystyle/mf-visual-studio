@@ -71,12 +71,12 @@ export function PromptBox({
     const handleSelectSkill = (e: any) => {
       const skillTitle = e.detail;
       setSkill(skillTitle);
-      setText(prev => {
-        const mention = `@${skillTitle}`;
-        if (!prev) return mention;
-        if (prev.endsWith(' ')) return prev + mention;
-        return prev + ' ' + mention;
-      });
+      
+      // If we're selecting a skill, we often don't want it to just be an @ mention in text
+      // but also a primary visual chip. The visual chip is already rendered if skill state is set.
+      
+      // We focus the textarea to show the user where the input is
+      textareaRef.current?.focus();
     };
     window.addEventListener('select-skill', handleSelectSkill);
     return () => window.removeEventListener('select-skill', handleSelectSkill);
@@ -191,17 +191,14 @@ export function PromptBox({
       {/* Canvas mode toggle removed from here */}
       <div className="relative">
         {!isMini && (attachments.length > 0 || skill) && (
-          <div className="mb-3 flex flex-wrap gap-2">
+          <div className="mb-3 flex flex-wrap items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-300">
             {skill && (
-              <div className="flex items-center gap-1.5 rounded-lg bg-white/5 border border-white/10 px-2 py-1 text-xs text-white/80 group">
-                <Package className="h-3 w-3 text-white/40" />
+              <div className="flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1.5 text-[13px] text-white font-medium group transition-all hover:bg-white/15">
+                <Package className="h-3.5 w-3.5 text-white/60" />
                 <span>{skill}</span>
                 <button 
-                  onClick={() => {
-                    setSkill(null);
-                    setText(prev => prev.replace(new RegExp(`@${skill}\\s?`), ""));
-                  }}
-                  className="hover:text-white transition-colors"
+                  onClick={() => setSkill(null)}
+                  className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-white/20 text-white/40 hover:text-white transition-all"
                 >
                   <X className="h-3 w-3" />
                 </button>
