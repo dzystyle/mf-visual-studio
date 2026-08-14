@@ -168,7 +168,7 @@ function CreativeAssistantPage() {
       const typingTimer = setTimeout(() => {
         const msgsToAdd: Message[] = [];
         if (stepIndex === 1) {
-          msgsToAdd.push(fullWorkflow[1] as Message);
+          msgsToAdd.push(fullWorkflow[0] as Message, fullWorkflow[1] as Message);
         } else if (stepIndex === 2) {
           msgsToAdd.push(fullWorkflow[2] as Message, fullWorkflow[3] as Message);
         } else if (stepIndex === 3) {
