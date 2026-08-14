@@ -357,7 +357,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
       </div>
 
       <div className="mt-6 flex gap-3 opacity-60 transition-opacity group-hover:opacity-100">
-        <button className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-xs font-medium text-foreground transition hover:bg-muted/40">
+        <button className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-xs font-medium text-foreground/80 dark:text-foreground transition hover:bg-muted/40">
           <Edit3 className="h-3.5 w-3.5" />
           重新编辑
         </button>
