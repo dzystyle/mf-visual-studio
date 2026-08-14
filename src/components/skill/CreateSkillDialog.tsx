@@ -349,6 +349,29 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
   const [currentSuggestionIndex, setCurrentSuggestionIndex] = React.useState(1);
   const [acceptedChanges, setAcceptedChanges] = React.useState<Set<number>>(new Set());
   const [rejectedChanges, setRejectedChanges] = React.useState<Set<number>>(new Set());
+  const [selectedDirection, setSelectedDirection] = React.useState<number | null>(null);
+
+  const handleSelect = (idx: number) => {
+    setSelectedDirection(idx);
+  };
+
+  const handleSend = () => {
+    if (!inputValue.trim()) return;
+    
+    const userMsg = { role: 'user' as const, content: inputValue };
+    setMessages(prev => [...prev, userMsg]);
+    
+    if (inputValue.includes("游戏宣发")) {
+      setTimeout(() => {
+        setMessages(prev => [...prev, { role: 'assistant', content: 'GAME_SKILL_FLOW' }]);
+        setShowSuggestions(true);
+        setMarkdownContent(GAME_SKILL_MARKDOWN);
+      }, 600);
+    }
+    
+    setInputValue("");
+  };
+
   
   const gameSkillSuggestions = {
     name: "游戏宣发视频",
