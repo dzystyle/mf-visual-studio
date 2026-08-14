@@ -190,11 +190,6 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
   const [selectedDirection, setSelectedDirection] = React.useState<number | null>(0);
 
-  // We need to keep a ref or local state for the assistant message content
-  // because the React element in setMessages uses the state from the component scope at the time of creation.
-  // Using a separate component for the Choice Card to handle its own selection state
-  // or updating the messages array when the state changes.
-
   const handleSend = () => {
     if (!inputValue.trim()) return;
     
@@ -207,57 +202,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
       setTimeout(() => {
         setMessages(prev => [...prev, { 
           role: 'assistant', 
-          content: (
-            <div className="space-y-6">
-              <p className="text-[14px] leading-relaxed text-white/90">
-                游戏宣发视频是个很棒的方向！我先帮你搭起一个基础框架，你可以在此基础上继续细化。
-              </p>
-              
-              <p className="text-[14px] leading-relaxed text-white/90">
-                已为你搭起一套完整的<strong className="text-white font-medium">游戏宣发视频</strong> Skill 框架，覆盖了从策划到剪辑的全流程。以下是各部分的核心设计思路：
-              </p>
-
-              <ul className="space-y-4 text-[14px]">
-                <li className="flex gap-4">
-                  <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                  <span className="text-foreground/70"><strong className="text-white font-medium">规划阶段：</strong>先锁定宣发目标和规格，再逐步推进，每个关键节点暂停确认</span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                  <span className="text-foreground/70"><strong className="text-white font-medium">素材分析：</strong>支持导入原画、截图、品牌规范文档，自动提炼视觉风格作为后续生成的约束</span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                  <span className="text-foreground/70"><strong className="text-white font-medium">分镜设计：</strong>强调前 3 秒视觉钩子、长镜头内部节拍、史诗感摄影语言</span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                  <span className="text-foreground/70"><strong className="text-white font-medium">生成策略：</strong>以 Seedance 2.0 为主力视频模型，角色一致性靠元素参考图保障</span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                  <span className="text-foreground/70"><strong className="text-white font-medium">剪辑组装：</strong>动作段硬切、场景切换闪白/黑场，BGM 高潮对齐视觉高潮</span>
-                </li>
-              </ul>
-
-              <p className="text-[15px] text-foreground/90">你可以根据实际情况进一步细化，比如：</p>
-
-              <ChoiceCard 
-                currentSelection={selectedDirection} 
-                onSelect={(idx) => setSelectedDirection(idx)} 
-              />
-
-              {/* Page Controls */}
-              <div className="flex items-center justify-center gap-4 py-4">
-                <button className="h-9 w-9 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white/60 transition">
-                  <ArrowUp className="h-5 w-5 rotate-180" />
-                </button>
-                <button className="h-9 w-9 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white/60 transition">
-                  <ArrowUp className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-          )
+          content: 'GAME_SKILL_FLOW'
         }]);
       }, 600);
       setTimeout(() => {
@@ -266,6 +211,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
       }, 1500);
     }
   };
+
 
   const handleNextSuggestion = () => {
     setCurrentSuggestionIndex(prev => (prev < 8 ? prev + 1 : 1));
