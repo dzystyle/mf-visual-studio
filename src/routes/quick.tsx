@@ -323,7 +323,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
           </>
         ) : (
           [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-            <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 bg-white/[0.02]">
+            <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border bg-muted/20">
               <img
                 src={msg.resultImage}
                 alt={msg.prompt}
