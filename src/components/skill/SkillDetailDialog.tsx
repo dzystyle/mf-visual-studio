@@ -18,14 +18,17 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
   if (!skill) return null;
 
   const handleUseSkill = () => {
-    // 1. Dispatch event to select skill in PromptBox
+    // 1. Save skill to localStorage to persist across navigation
+    localStorage.setItem('selected-skill', skill.title);
+    
+    // 2. Dispatch event for immediate use if on the same page
     const event = new CustomEvent('select-skill', { detail: skill.title });
     window.dispatchEvent(event);
     
-    // 2. Navigate to home page
+    // 3. Navigate to home page
     navigate({ to: "/" });
     
-    // 3. Close dialog
+    // 4. Close dialog
     onOpenChange(false);
   };
 
