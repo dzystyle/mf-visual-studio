@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X, ChevronRight, Save, LayoutGrid, Eye, Code2, Plus, Mic, ArrowUp, CheckCircle2, MoreHorizontal, Send, ChevronDown, Check, Undo2, Redo2, RotateCcw, Share2, Copy, Trash2, Edit2, PlayCircle } from "lucide-react";
+import { X, ChevronRight, Save, LayoutGrid, Eye, Code2, Plus, Mic, ArrowUp, CheckCircle2, MoreHorizontal, Send, ChevronDown, Check, Undo2, Redo2, RotateCcw, Share2, Copy, Trash2, Edit2, PlayCircle, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "@tanstack/react-router";
 
 interface SkillDetailDialogProps {
   open: boolean;
@@ -11,16 +12,31 @@ interface SkillDetailDialogProps {
 }
 
 export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDetailDialogProps) {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = React.useState<"intro" | "content">("intro");
+  
   if (!skill) return null;
+
+  const handleUseSkill = () => {
+    // 1. Dispatch event to select skill in PromptBox
+    const event = new CustomEvent('select-skill', { detail: skill.title });
+    window.dispatchEvent(event);
+    
+    // 2. Navigate to home page
+    navigate({ to: "/" });
+    
+    // 3. Close dialog
+    onOpenChange(false);
+  };
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-md transition-all duration-300" />
-        <DialogPrimitive.Content className="fixed left-1/2 top-1/2 z-[60] w-full max-w-[800px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] border border-white/10 bg-[#0a0a0c] text-foreground shadow-2xl focus:outline-none focus-visible:ring-0">
+        <DialogPrimitive.Content className="fixed left-1/2 top-1/2 z-[60] w-full max-w-[800px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#0a0a0c] text-foreground shadow-2xl focus:outline-none focus-visible:ring-0">
           
           {/* Header Image Area */}
-          <div className="relative aspect-[16/7] w-full overflow-hidden">
+          <div className="relative aspect-[16/9] w-full overflow-hidden">
             <img 
               src={skill.image} 
               alt={skill.title} 
@@ -31,104 +47,141 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
             {/* Close Button */}
             <button 
               onClick={() => onOpenChange(false)}
-              className="absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white/60 backdrop-blur-md transition hover:bg-black/60 hover:text-white"
+              className="absolute right-6 top-6 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white/60 backdrop-blur-md transition hover:bg-black/60 hover:text-white"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             </button>
 
             {/* Title & Author Overlay */}
-            <div className="absolute bottom-8 left-8 right-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500 text-sm font-bold text-white shadow-xl">
-                  {skill.authorAvatar || skill.author?.[1]?.toUpperCase() || 'A'}
-                </div>
-                <div>
-                  <h2 className="text-3xl font-bold tracking-tight text-white">{skill.title}</h2>
-                  <p className="text-sm text-white/60">{skill.author} · {skill.version || 'V1'}</p>
-                </div>
-              </div>
+            <div className="absolute bottom-6 left-8 right-8">
+              <h2 className="text-3xl font-bold tracking-tight text-white mb-2">{skill.title}</h2>
+              <p className="text-sm text-white/60">@{skill.author?.replace('@', '') || 'Artrail'}</p>
+            </div>
+          </div>
+
+          {/* Navigation Tabs */}
+          <div className="px-8 pt-4 border-b border-white/5">
+            <div className="flex gap-8">
+              <button 
+                onClick={() => setActiveTab("intro")}
+                className={cn(
+                  "pb-4 text-sm font-medium transition-colors relative",
+                  activeTab === "intro" ? "text-white" : "text-white/40 hover:text-white/60"
+                )}
+              >
+                简介
+                {activeTab === "intro" && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full" />
+                )}
+              </button>
+              <button 
+                onClick={() => setActiveTab("content")}
+                className={cn(
+                  "pb-4 text-sm font-medium transition-colors relative",
+                  activeTab === "content" ? "text-white" : "text-white/40 hover:text-white/60"
+                )}
+              >
+                内容
+                {activeTab === "content" && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full" />
+                )}
+              </button>
             </div>
           </div>
 
           {/* Content Area */}
-          <div className="px-8 pb-8 pt-2">
-            <div className="flex gap-2 mb-8">
-               <div className="flex items-center gap-1 rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[11px] text-white/60">
-                 {skill.model || "Seedance 2.5"}
-               </div>
-               {skill.tags?.map((tag: string) => (
-                 <div key={tag} className="flex items-center gap-1 rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[11px] text-white/60">
-                   {tag}
-                 </div>
-               ))}
-            </div>
-
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-xs font-semibold text-white/30 uppercase tracking-widest">
-                  内容
-                  <div className="h-[1px] flex-1 bg-white/5" />
-                </div>
-                <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-                   <div className="flex items-center justify-between mb-4">
-                     <span className="text-sm font-bold text-white/90">流程规划:</span>
-                     <div className="flex items-center gap-1">
-                        <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40">
-                          <Eye className="h-4 w-4" />
-                        </div>
-                        <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40">
-                          <Code2 className="h-4 w-4" />
-                        </div>
-                     </div>
+          <div className="px-8 pb-8 pt-6 min-h-[320px]">
+            {activeTab === "intro" ? (
+              <div className="space-y-6">
+                <p className="text-[15px] leading-relaxed text-white/70 whitespace-pre-wrap">
+                  {skill.desc || "专为具有完整故事线的视频而设计。通过深度分析剧本结构，自动规划镜头语言与视觉节奏。"}
+                </p>
+                
+                <div className="flex flex-wrap gap-2">
+                   <div className="flex items-center gap-1 rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-white/40">
+                     {skill.model || "Seedance 2.5"}
                    </div>
-                   <p className="text-sm leading-relaxed text-white/60 whitespace-pre-wrap">
-                     {skill.desc || "专为具有完整故事线的视频而设计。通过深度分析剧本结构，自动规划镜头语言与视觉节奏。"}
-                   </p>
+                   {skill.tags?.map((tag: string) => (
+                     <div key={tag} className="flex items-center gap-1 rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-white/40">
+                       {tag}
+                     </div>
+                   ))}
                 </div>
-              </div>
 
-              {/* Bottom Info */}
-              <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                <div className="flex items-center gap-6">
-                  <div className="text-[11px] text-white/20">
-                    最近一次更新时间 <span className="text-white/40">2026-08-14 16:35</span>
-                  </div>
+                <div className="space-y-4 pt-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-white/20">取消默认</span>
-                    <div className="h-4 w-8 rounded-full bg-white/10 p-0.5">
-                      <div className="h-3 w-3 rounded-full bg-white/20" />
+                    <div className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-white/40">历史使用</div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="text-[11px] text-white/20">
+                      最近一次更新时间 <span className="text-white/30">2026-08-14 17:29</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[11px] text-emerald-500 font-medium">取消默认</span>
+                      <div className="h-4 w-8 rounded-full bg-emerald-500/20 p-0.5 border border-emerald-500/30">
+                        <div className="h-3 w-3 rounded-full bg-emerald-500 translate-x-4 transition-transform" />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-6">
-                <div className="flex items-center gap-2">
-                  <button className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-500/10 text-red-500 transition hover:bg-red-500/20">
-                    <Trash2 className="h-5 w-5" />
-                  </button>
-                  <button 
-                    onClick={() => onEdit?.(skill)}
-                    className="flex items-center gap-2 rounded-xl bg-white/5 px-5 py-2.5 text-sm font-medium text-white/80 transition hover:bg-white/10"
-                  >
-                    <Edit2 className="h-4 w-4" />
-                    编辑
-                  </button>
-                  <button className="flex items-center gap-2 rounded-xl bg-white/5 px-5 py-2.5 text-sm font-medium text-white/80 transition hover:bg-white/10">
-                    <Copy className="h-4 w-4" />
-                    创建副本
-                  </button>
-                  <button className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 text-white/60 transition hover:bg-white/10">
-                    <Share2 className="h-5 w-5" />
-                  </button>
+            ) : (
+              <div className="space-y-4">
+                <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-sm font-bold text-white/90">流程规划:</span>
+                    <div className="flex items-center gap-1">
+                       <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40 hover:bg-white/10 transition cursor-pointer">
+                         <Eye className="h-4 w-4" />
+                       </div>
+                       <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40 hover:bg-white/10 transition cursor-pointer">
+                         <Code2 className="h-4 w-4" />
+                       </div>
+                    </div>
+                  </div>
+                  <p className="text-sm leading-relaxed text-white/60">
+                    基于视频主题自动生成多组分镜脚本，涵盖特写、中景、远景等专业镜头语言。
+                  </p>
                 </div>
-                
-                <button className="flex items-center gap-2 rounded-full bg-[#E1B166] px-8 py-3 text-[15px] font-bold text-black transition hover:bg-[#f0c07d] active:scale-95 shadow-xl shadow-[#E1B166]/10">
-                  <PlayCircle className="h-5 w-5" />
-                  去使用 Skill
+                {/* Add more sections for content if needed */}
+              </div>
+            )}
+
+            <div className="h-[1px] w-full bg-white/5 my-8" />
+
+            {/* Action Buttons */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => console.log("Delete skill")}
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/5 text-red-500/60 transition hover:bg-red-500/10 hover:text-red-500"
+                  title="删除"
+                >
+                  <Trash2 className="h-5 w-5" />
+                </button>
+                <button 
+                  onClick={() => onEdit?.(skill)}
+                  className="flex items-center gap-2 h-11 rounded-xl border border-white/10 bg-white/5 px-6 text-sm font-medium text-white/80 transition hover:bg-white/10"
+                >
+                  <Edit2 className="h-4 w-4" />
+                  创建副本
+                </button>
+                <button 
+                  onClick={() => console.log("Share skill")}
+                  className="flex items-center gap-2 h-11 rounded-xl border border-white/10 bg-white/5 px-6 text-sm font-medium text-white/80 transition hover:bg-white/10"
+                >
+                  <Share2 className="h-4 w-4" />
+                  分享
                 </button>
               </div>
+              
+              <button 
+                onClick={handleUseSkill}
+                className="flex items-center gap-2 rounded-full bg-[#E1B166] px-10 py-3 text-[15px] font-bold text-black transition hover:bg-[#f0c07d] active:scale-95 shadow-xl shadow-[#E1B166]/10"
+              >
+                <PlayCircle className="h-5 w-5 fill-black" />
+                去使用 Skill
+              </button>
             </div>
           </div>
         </DialogPrimitive.Content>
