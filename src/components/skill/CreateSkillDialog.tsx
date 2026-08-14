@@ -491,8 +491,9 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
                             <ChoiceCard 
                               currentSelection={selectedDirection} 
-                              onSelect={(idx) => setSelectedDirection(idx)} 
+                              onSelect={handleSelect} 
                             />
+
 
                             {/* Page Controls */}
                             <div className="flex items-center justify-center gap-4 py-4">
