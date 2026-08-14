@@ -244,9 +244,9 @@ export function PromptBox({
                 }
               }
             }}
-            placeholder={isMini ? "由一个想法或故事开始..." : "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            首页非画布模式输入一段话怎么出现两个视频时长希望控制在多少秒以内？弹窗修复一下."}
+            placeholder={isMini ? "由一个想法或故事开始..." : "由一个想法或故事开始..."}
             className={`w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 ${
-              isMini ? 'py-1 cursor-pointer' : 'py-0'
+              isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[48px]'
             }`}
           />
           {isMini && (
