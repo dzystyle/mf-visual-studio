@@ -35,11 +35,11 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
   ];
 
   return (
-    <div className="mt-4 rounded-[20px] bg-[#1a1a1c] border border-white/[0.03] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-      <div className="p-7 space-y-6">
-        <h4 className="text-[17px] font-medium text-white/95">你想优先完善哪个方向？</h4>
+    <div className="mt-4 rounded-[20px] bg-[#1a1a1c] border border-white/[0.03] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)]">
+      <div className="p-8 space-y-6">
+        <h4 className="text-[17px] font-semibold text-white/95 tracking-tight">你想优先完善哪个方向？</h4>
         
-        <div className="border-t border-dashed border-white/5 pt-6 space-y-7">
+        <div className="border-t border-dashed border-white/10 pt-6 space-y-8">
           {options.map((option, idx) => {
             const isSelected = currentSelection === idx;
             return (
@@ -49,21 +49,24 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
                 onClick={() => onSelect(idx)}
               >
                 <div className={cn(
-                  "mt-1 h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-200",
+                  "mt-1 h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
                   isSelected 
-                    ? "bg-[#E1B166] text-black shadow-[0_0_12px_rgba(225,177,102,0.4)]" 
-                    : "bg-white/[0.05] text-transparent border border-white/10 group-hover:border-white/20"
+                    ? "bg-[#E1B166] text-black shadow-[0_0_15px_rgba(225,177,102,0.5)]" 
+                    : "bg-white/[0.03] text-transparent border border-white/[0.08] group-hover:border-white/20"
                 )}>
                   <Check className="h-3 w-3" strokeWidth={4} />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1.5 flex-1">
                   <div className={cn(
-                    "text-[15px] font-medium transition-colors",
+                    "text-[15px] font-semibold transition-colors tracking-tight",
                     isSelected ? "text-white/95" : "text-white/70 group-hover:text-white/90"
                   )}>
                     {option.title}
                   </div>
-                  <div className="text-[14px] text-white/40 leading-relaxed font-light">
+                  <div className={cn(
+                    "text-[14px] leading-relaxed font-normal transition-colors",
+                    isSelected ? "text-white/60" : "text-white/30 group-hover:text-white/40"
+                  )}>
                     {option.desc}
                   </div>
                 </div>
@@ -74,35 +77,40 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
 
         {/* Other Input Field */}
         <div 
-          className="flex items-center gap-4 group cursor-pointer pt-1"
+          className="flex items-center gap-4 group cursor-pointer pt-2"
           onClick={() => onSelect(4)}
         >
           <div className={cn(
-            "h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all",
+            "h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
             currentSelection === 4 
-              ? "bg-[#E1B166] text-black shadow-[0_0_12px_rgba(225,177,102,0.4)]" 
-              : "bg-white/[0.05] text-transparent border border-white/10 group-hover:border-white/20"
+              ? "bg-[#E1B166] text-black shadow-[0_0_15px_rgba(225,177,102,0.5)]" 
+              : "bg-white/[0.03] text-transparent border border-white/[0.08] group-hover:border-white/20"
           )}>
             <Check className="h-3 w-3" strokeWidth={4} />
           </div>
-          <div className="flex-1 rounded-xl bg-white/[0.02] border border-white/[0.08] px-4 py-3 group-hover:border-white/20 transition-all">
+          <div className={cn(
+            "flex-1 rounded-[12px] bg-white/[0.02] border px-4 py-3 transition-all",
+            currentSelection === 4 ? "border-white/20 bg-white/[0.04]" : "border-white/[0.08] group-hover:border-white/15"
+          )}>
             <input 
               type="text"
-              defaultValue="其它"
+              placeholder="其它"
               className="bg-transparent border-none outline-none text-[14px] font-medium text-white/90 w-full placeholder:text-white/20"
+              onClick={(e) => e.stopPropagation()}
             />
           </div>
         </div>
       </div>
 
       {/* Send Button Row */}
-      <div className="flex justify-end px-7 pb-7">
-        <button className="h-[42px] px-8 rounded-full bg-[#2a2a2c] text-[#E1B166] font-medium text-[15px] hover:bg-[#323235] transition-all shadow-lg active:scale-95">
+      <div className="flex justify-end px-8 pb-8">
+        <button className="h-[44px] px-9 rounded-full bg-[#2a2a2c] text-[#E1B166] font-semibold text-[15px] hover:bg-[#323235] hover:text-[#f0c07d] transition-all shadow-xl active:scale-[0.98]">
           发送
         </button>
       </div>
     </div>
   );
+
 }
 
 function DiffField({ label, value, index, currentIndex, isTextarea = false }: { 
