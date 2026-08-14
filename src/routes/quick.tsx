@@ -177,7 +177,7 @@ function QuickPage() {
 
         <div className="mx-auto mb-4 flex w-full max-w-7xl items-center gap-2 pt-16 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-3xl font-bold text-foreground/90">5.21</span>
+            <span className="text-3xl font-bold text-foreground/80 dark:text-foreground/90">5.21</span>
           </div>
           <div className="ml-auto flex items-center overflow-hidden rounded-full border border-border bg-background/50 backdrop-blur-sm">
             <FilterMenu label="全部时间" options={['全部', '今天', '近7天', '近30天']} isFirst />
@@ -208,11 +208,11 @@ function QuickPage() {
               onMouseEnter={() => setShowMini(false)}
             >
               <div className="flex items-center gap-3 rounded-full border border-border bg-background/60 px-4 py-2 shadow-2xl backdrop-blur-2xl transition hover:bg-background/80">
-                <Plus className="h-4 w-4 text-muted-foreground/40" />
-                <div className="flex-1 text-sm text-muted-foreground/40">使用@快速调用参考能力，支持文本、图片、音频、视频全能参考...</div>
+                <Plus className="h-4 w-4 text-muted-foreground/60 dark:text-muted-foreground/40" />
+                <div className="flex-1 text-sm text-muted-foreground/60 dark:text-muted-foreground/40">使用@快速调用参考能力，支持文本、图片、音频、视频全能参考...</div>
                 <div className="flex items-center gap-2">
-                  <ChevronDown className="h-4 w-4 text-muted-foreground/40" />
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-foreground/60">
+                  <ChevronDown className="h-4 w-4 text-muted-foreground/60 dark:text-muted-foreground/40" />
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/5 dark:bg-foreground/10 text-foreground/60">
                     <ArrowUp className="h-4 w-4" />
                   </div>
                 </div>
@@ -247,17 +247,17 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         {msg.size && <Tag>{msg.size}</Tag>}
         <Tag>{msg.ratio}</Tag>
         {msg.badge && (
-          <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-400 font-mono">
+          <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-600 dark:text-amber-400 font-mono">
              <span className="h-1 w-1 rounded-full bg-amber-400" />
             -5
           </span>
         )}
-        <span className="ml-auto text-[11px] text-muted-foreground/40">
+        <span className="ml-auto text-[11px] text-muted-foreground/60 dark:text-muted-foreground/40">
           {msg.time}
         </span>
       </div>
 
-      <div className="text-sm leading-relaxed text-foreground/60 mb-6 max-w-4xl">
+      <div className="text-sm leading-relaxed text-foreground/80 dark:text-foreground/60 mb-6 max-w-4xl">
         {msg.prompt}
       </div>
 
@@ -265,7 +265,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         {msg.status === "processing" ? (
           <>
             {[1, 2].map((i) => (
-              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/20">
+              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/10 dark:bg-muted/20">
                 <div className="relative flex h-16 w-16 items-center justify-center">
                   <Loader2 className="h-8 w-8 text-foreground/40 animate-spin" />
                   <svg className="absolute inset-0 h-full w-full -rotate-90">
@@ -301,19 +301,19 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         ) : msg.status === "failed" ? (
           <>
             {[1, 2].map((i) => (
-              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/20">
+              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/10 dark:bg-muted/20">
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/20">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 dark:bg-destructive/20">
                   <XCircle className="h-6 w-6 text-destructive" />
                 </div>
-                <div className="text-sm text-foreground/60">生成失败</div>
+                <div className="text-sm text-foreground/80 dark:text-foreground/60">生成失败</div>
                 
                 <div className="flex gap-2">
-                  <button className="flex items-center gap-1.5 rounded-full bg-muted/40 px-4 py-1.5 text-xs text-muted-foreground/60 transition hover:bg-muted/60 hover:text-foreground/80">
+                  <button className="flex items-center gap-1.5 rounded-full bg-muted/40 px-4 py-1.5 text-xs text-muted-foreground/80 dark:text-muted-foreground/60 transition hover:bg-muted/60 hover:text-foreground">
                     <RotateCcw className="h-3.5 w-3.5" />
                     重试
                   </button>
-                  <button className="flex items-center gap-1.5 rounded-full bg-muted/40 px-4 py-1.5 text-xs text-muted-foreground/60 transition hover:bg-muted/60 hover:text-foreground/80">
+                  <button className="flex items-center gap-1.5 rounded-full bg-muted/40 px-4 py-1.5 text-xs text-muted-foreground/80 dark:text-muted-foreground/60 transition hover:bg-muted/60 hover:text-foreground">
                     <Trash2 className="h-3.5 w-3.5" />
                     删除
                   </button>
@@ -323,14 +323,14 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
           </>
         ) : (
           [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-            <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border bg-muted/20">
+            <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border bg-muted/10 dark:bg-muted/20">
               <img
                 src={msg.resultImage}
                 alt={msg.prompt}
                 className="h-full w-full object-cover transition-transform duration-500 group-hover/item:scale-110"
               />
               
-              <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/40 opacity-0 transition-opacity duration-300 group-hover/item:opacity-100 backdrop-blur-[2px]">
+              <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/40 dark:bg-black/60 opacity-0 transition-opacity duration-300 group-hover/item:opacity-100 backdrop-blur-[2px]">
                 <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/20 text-foreground transition hover:bg-background/40">
                   <Download className="h-4 w-4" />
                 </button>
@@ -349,7 +349,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
               </div>
               
               <div className="absolute bottom-2 left-2 flex gap-1 opacity-0 transition-opacity group-hover/item:opacity-100">
-                <span className="text-[10px] text-foreground/40 bg-background/60 px-1.5 rounded">{i}</span>
+                <span className="text-[10px] text-foreground/40 dark:text-foreground/60 bg-background/60 px-1.5 rounded">{i}</span>
               </div>
             </div>
           ))
@@ -357,11 +357,11 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
       </div>
 
       <div className="mt-6 flex gap-3 opacity-60 transition-opacity group-hover:opacity-100">
-        <button className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-xs font-medium text-foreground transition hover:bg-muted/40">
+        <button className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-xs font-medium text-foreground/80 dark:text-foreground transition hover:bg-muted/40">
           <Edit3 className="h-3.5 w-3.5" />
           重新编辑
         </button>
-        <button className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-xs font-medium text-foreground transition hover:bg-muted/40">
+        <button className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-xs font-medium text-foreground/80 dark:text-foreground transition hover:bg-muted/40">
           <RefreshCw className="h-3.5 w-3.5" />
           重新生成
         </button>
@@ -919,7 +919,7 @@ function FilterMenu({ label, options, isFirst, isLast }: { label: string; option
               )}
             >
               {opt}
-              {selected === opt && <Check className="h-3 w-3 text-white/40" />}
+              {selected === opt && <Check className="h-3 w-3 text-primary" />}
             </button>
           ))}
         </div>
@@ -930,16 +930,16 @@ function FilterMenu({ label, options, isFirst, isLast }: { label: string; option
 
 function FilterChip({ label }: { label: string }) {
   return (
-    <button className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/60 hover:text-white transition-colors">
+    <button className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/20 px-3 py-1.5 text-xs text-muted-foreground/60 hover:text-foreground transition-colors">
       {label}
       <ChevronDown className="h-3 w-3" />
     </button>
   );
 }
 
-function Tag({ children }: { children: React.ReactNode }) {
+function Tag({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <span className="inline-flex items-center rounded-md border border-border bg-muted/20 px-2.5 py-1 text-[11px] text-muted-foreground/60">
+    <span className={cn("inline-flex items-center rounded-md border border-border bg-muted/20 px-2.5 py-1 text-[11px] text-muted-foreground/60 dark:text-muted-foreground/40", className)}>
       {children}
     </span>
   );
