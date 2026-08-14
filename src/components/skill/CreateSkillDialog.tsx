@@ -395,37 +395,6 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
     editing: `**剪辑节奏**\n\n- 宣发视频整体节奏偏快：动作/高能段落单镜不超过 3s；叙事/情绪段落可放宽至 5–8s。\n\n- 片头 3 秒优先安排视觉冲击力最强的镜头（技能特效、世界观展示或悬念画面）。\n\n- 游戏标题 / Logo 出现时机：通常在高潮节点后或视频结尾，配合 BGM 节拍落点。\n\n**转场偏好**\n\n- 动作场景：硬切为主，保持节奏紧张感。\n\n- 场景/章节切换：闪白、速度模糊（motion blur wipe）或黑场渐入/渐出。\n\n- 避免过多花哨转场效果，以免分散对游戏内容的注意力。\n\n**音画同步**\n\n- BGM 高潮节拍与视觉高潮严格对齐。\n\n- VO 旁白与对应视觉信息同步展示；信息密度高时适当延长镜头停留时间。\n\n- 结尾留 1–2s 静帧展示 Logo + 上线信息，淡出 BGM。`
   };
 
-  const [selectedDirection, setSelectedDirection] = React.useState<number | null>(0);
-
-  // We use a counter to force a re-render of the messages array when state changes
-  const [updateCounter, setUpdateCounter] = React.useState(0);
-  
-  const handleSelect = (idx: number) => {
-    setSelectedDirection(idx);
-    setUpdateCounter(prev => prev + 1);
-  };
-
-  const handleSend = () => {
-    if (!inputValue.trim()) return;
-    
-    const userMsg = inputValue;
-    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
-    setInputValue("");
-
-    // Simulate system response if it's the game skill request
-    if (userMsg.includes("游戏宣发")) {
-      setTimeout(() => {
-        setMessages(prev => [...prev, { 
-          role: 'assistant', 
-          content: 'GAME_SKILL_FLOW'
-        }]);
-      }, 600);
-      setTimeout(() => {
-        setShowSuggestions(true);
-        setCurrentSuggestionIndex(1);
-      }, 1500);
-    }
-  };
 
 
 
