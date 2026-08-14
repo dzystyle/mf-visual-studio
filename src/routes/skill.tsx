@@ -249,7 +249,7 @@ function SkillDiscoveryPage() {
   );
 }
 
-function SkillCard({ title, version, author, model, desc, image, isDefault, authorAvatar }: any) {
+function SkillCard({ title, version, author, model, desc, image, isDefault, authorAvatar, isMySkill, myLabel }: any) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -284,7 +284,10 @@ function SkillCard({ title, version, author, model, desc, image, isDefault, auth
         </div>
 
         {/* Default Toggle (Bottom Right) */}
-        <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/40 px-2 py-1 backdrop-blur-md border border-white/5">
+        <div className={cn(
+          "absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/40 px-2 py-1 backdrop-blur-md border border-white/5",
+          isMySkill && isDefault && "bg-emerald-600/60 border-emerald-500/30"
+        )}>
           <span className="text-[10px] text-white/60">{isDefault ? "取消默认" : "设为默认"}</span>
           <div className={`h-2.5 w-5 rounded-full p-0.5 transition-colors ${isDefault ? 'bg-emerald-500' : 'bg-white/20'}`}>
             <div className={`h-1.5 w-1.5 rounded-full bg-white transition-transform ${isDefault ? 'translate-x-2' : 'translate-x-0'}`} />
@@ -302,12 +305,18 @@ function SkillCard({ title, version, author, model, desc, image, isDefault, auth
         </div>
         
         <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground/80 mb-4">
-          {desc}
+          {desc || "无描述"}
         </p>
 
         <div className="mt-auto flex items-center gap-2">
-          <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">全部</div>
-          <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">剧情短片</div>
+          {isMySkill && myLabel ? (
+            <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">{myLabel}</div>
+          ) : (
+            <>
+              <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">全部</div>
+              <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">剧情短片</div>
+            </>
+          )}
         </div>
       </div>
     </div>
