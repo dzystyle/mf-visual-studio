@@ -303,7 +303,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
             {[1, 2].map((i) => (
               <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/20">
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/20">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 dark:bg-destructive/20">
                   <XCircle className="h-6 w-6 text-destructive" />
                 </div>
                 <div className="text-sm text-foreground/80 dark:text-foreground/60">生成失败</div>
