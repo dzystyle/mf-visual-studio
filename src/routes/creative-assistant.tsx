@@ -168,7 +168,12 @@ function CreativeAssistantPage() {
       const typingTimer = setTimeout(() => {
         const msgsToAdd: Message[] = [];
         if (stepIndex === 1) {
-          msgsToAdd.push(fullWorkflow[0] as Message, fullWorkflow[1] as Message);
+          // Only add choice card if one doesn't already exist in the message history
+          const hasChoiceCard = messages.some(m => m.isChoiceCard);
+          msgsToAdd.push(fullWorkflow[0] as Message);
+          if (!hasChoiceCard) {
+            msgsToAdd.push(fullWorkflow[1] as Message);
+          }
         } else if (stepIndex === 2) {
           msgsToAdd.push(fullWorkflow[2] as Message, fullWorkflow[3] as Message);
         } else if (stepIndex === 3) {
