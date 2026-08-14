@@ -357,14 +357,6 @@ export function SkillPicker({
           // Navigate to home or trigger edit mode if needed
         }}
       />
-
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
