@@ -176,82 +176,161 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                   <LayoutGrid className="h-4 w-4" />
                   <span>我的Skill</span>
                   <ChevronRight className="h-3 w-3" />
-                  <span className="text-foreground font-medium">未命名Skill</span>
+                  <span className={cn("font-medium", showSuggestions ? "text-foreground" : "text-muted-foreground")}>
+                    {showSuggestions ? "游戏宣发视频" : "未命名Skill"}
+                  </span>
                 </div>
-                <button className="flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 text-sm font-medium border border-white/10 hover:bg-white/10 transition">
-                  <Save className="h-4 w-4" />
+                <button className="flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 text-sm font-medium border border-white/10 hover:bg-white/10 transition group">
+                  <Save className="h-4 w-4 text-white/40 group-hover:text-white transition" />
                   保存
                 </button>
               </div>
 
               {/* Content */}
               <div className="flex-1 p-8 space-y-10">
-                {/* View Switcher */}
-                <div className="flex items-center gap-1 rounded-lg bg-white/5 p-1 w-fit">
-                  <button 
-                    onClick={() => setViewMode("preview")}
-                    className={cn(
-                      "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition",
-                      viewMode === "preview" ? "bg-white/10 text-foreground" : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    <Eye className="h-3.5 w-3.5" />
-                    预览
-                  </button>
-                  <button 
-                    onClick={() => setViewMode("markdown")}
-                    className={cn(
-                      "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition",
-                      viewMode === "markdown" ? "bg-white/10 text-foreground" : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    <Code2 className="h-3.5 w-3.5" />
-                    Markdown
-                  </button>
-                </div>
-
-                {/* Form Sections */}
-                {SIDEBAR_ITEMS.map((item) => (
-                  <div key={item.id} className="space-y-4">
-                    <div className="space-y-1">
-                      <h3 className="text-lg font-bold text-foreground">{item.label}</h3>
-                      <div className="flex items-start gap-2 text-xs text-muted-foreground">
-                        <InfoIcon />
-                        <p>{item.sub}</p>
-                      </div>
+                {/* Diff Controls & View Switcher */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-1 rounded-lg bg-white/5 p-1">
+                      <button 
+                        onClick={() => setViewMode("preview")}
+                        className={cn(
+                          "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition",
+                          viewMode === "preview" ? "bg-white/10 text-foreground" : "text-muted-foreground hover:text-foreground"
+                        )}
+                      >
+                        <Eye className="h-3.5 w-3.5" />
+                        预览
+                      </button>
+                      <button 
+                        onClick={() => setViewMode("markdown")}
+                        className={cn(
+                          "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition",
+                          viewMode === "markdown" ? "bg-white/10 text-foreground" : "text-muted-foreground hover:text-foreground"
+                        )}
+                      >
+                        <Code2 className="h-3.5 w-3.5" />
+                        Markdown
+                      </button>
                     </div>
 
-                    {item.id === "rules" ? (
-                      <div className="space-y-6">
-                        <div className="space-y-2">
-                          <label className="text-xs font-medium text-muted-foreground">Skill 名称</label>
-                          <input 
-                            placeholder="为你的Skill命名"
-                            className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
-                          />
+                    {showSuggestions && (
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <div className="h-2 w-4 rounded-sm bg-red-950/40 border border-red-900/20" />
+                          <span className="text-xs text-red-500/80">修改前</span>
                         </div>
-                        <div className="space-y-2 relative">
-                          <label className="text-xs font-medium text-muted-foreground">Skill调用规则</label>
-                          <textarea 
-                            placeholder="告诉 Agent 这个 Skill 应该在什么情况下被调用"
-                            className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm min-h-[100px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
-                          />
-                          <span className="absolute bottom-3 right-3 text-[10px] text-muted-foreground/40">0/200</span>
+                        <div className="flex items-center gap-2">
+                          <div className="h-2 w-4 rounded-sm bg-green-950/40 border border-green-900/20" />
+                          <span className="text-xs text-green-500/80">修改后</span>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="relative group">
-                        <textarea 
-                          placeholder={`输入${item.label}内容...`}
-                          className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-5 text-sm min-h-[200px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition placeholder:text-muted-foreground/30"
-                        />
-                        <button className="absolute bottom-4 right-4 text-muted-foreground/30 hover:text-muted-foreground transition opacity-0 group-hover:opacity-100">
-                          <LayoutGrid className="h-4 w-4" />
-                        </button>
+                        <div className="flex items-center gap-2 px-2 border-l border-white/10">
+                          <button className="p-1 text-white/20 hover:text-white/60 transition"><Undo2 className="h-4 w-4" /></button>
+                          <button className="p-1 text-white/20 hover:text-white/60 transition"><Redo2 className="h-4 w-4" /></button>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1 rounded-lg bg-white/5 px-3 py-1.5 text-xs text-white/60">
+                            <ChevronDown className="h-3 w-3 rotate-180 opacity-40" />
+                            <span>第 {currentSuggestionIndex} / 8 处</span>
+                            <ChevronDown className="h-3 w-3 opacity-40" />
+                          </div>
+                          <button className="px-3 py-1.5 rounded-lg bg-white/5 text-xs hover:bg-white/10 transition">全部撤销</button>
+                          <button className="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-500 text-xs hover:bg-green-500/20 transition border border-green-500/20">全部保留</button>
+                        </div>
                       </div>
                     )}
                   </div>
-                ))}
+                </div>
+
+                {/* Form Sections */}
+                {SIDEBAR_ITEMS.map((item, sectionIdx) => {
+                  const getSuggestion = () => {
+                    switch(item.id) {
+                      case 'rules': return { name: gameSkillSuggestions.name, rules: gameSkillSuggestions.rules };
+                      case 'planning': return gameSkillSuggestions.planning;
+                      case 'assets': return gameSkillSuggestions.assets;
+                      case 'storyboard': return gameSkillSuggestions.storyboard;
+                      case 'media': return gameSkillSuggestions.media;
+                      case 'prompts': return gameSkillSuggestions.prompts;
+                      case 'editing': return gameSkillSuggestions.editing;
+                      default: return null;
+                    }
+                  };
+
+                  const suggestion = getSuggestion();
+                  const isRules = item.id === 'rules';
+
+                  return (
+                    <div key={item.id} className="space-y-4">
+                      <div className="space-y-1">
+                        <h3 className="text-lg font-bold text-foreground">{item.label}</h3>
+                        <div className="flex items-start gap-2 text-xs text-muted-foreground">
+                          <InfoIcon />
+                          <p>{item.sub}</p>
+                        </div>
+                      </div>
+
+                      {showSuggestions && suggestion ? (
+                        <div className="space-y-6">
+                          {isRules ? (
+                            <>
+                              <DiffField 
+                                label="Skill 名称" 
+                                value="游戏宣发视频" 
+                                index={1} 
+                                currentIndex={currentSuggestionIndex}
+                              />
+                              <DiffField 
+                                label="Skill调用规则" 
+                                value={gameSkillSuggestions.rules} 
+                                index={2} 
+                                currentIndex={currentSuggestionIndex}
+                                isTextarea
+                              />
+                            </>
+                          ) : (
+                            <DiffField 
+                              value={suggestion as string} 
+                              index={sectionIdx + 2} 
+                              currentIndex={currentSuggestionIndex}
+                              isTextarea
+                            />
+                          )}
+                        </div>
+                      ) : (
+                        isRules ? (
+                          <div className="space-y-6">
+                            <div className="space-y-2">
+                              <label className="text-xs font-medium text-muted-foreground">Skill 名称</label>
+                              <input 
+                                placeholder="为你的Skill命名"
+                                className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
+                              />
+                            </div>
+                            <div className="space-y-2 relative">
+                              <label className="text-xs font-medium text-muted-foreground">Skill调用规则</label>
+                              <textarea 
+                                placeholder="告诉 Agent 这个 Skill 应该在什么情况下被调用"
+                                className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm min-h-[100px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
+                              />
+                              <span className="absolute bottom-3 right-3 text-[10px] text-muted-foreground/40">0/200</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="relative group">
+                            <textarea 
+                              placeholder={`输入${item.label}内容...`}
+                              className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-5 text-sm min-h-[200px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition placeholder:text-muted-foreground/30"
+                            />
+                            <button className="absolute bottom-4 right-4 text-muted-foreground/30 hover:text-muted-foreground transition opacity-0 group-hover:opacity-100">
+                              <LayoutGrid className="h-4 w-4" />
+                            </button>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
