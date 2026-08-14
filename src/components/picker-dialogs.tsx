@@ -341,7 +341,6 @@ export function SkillPicker({
             </div>
           ))}
         </div>
-      </div>
 
       {/* Skill Detail Preview Modal - Reusing the unified SkillDetailDialog */}
       <SkillDetailDialog 
@@ -358,6 +357,7 @@ export function SkillPicker({
         }}
       />
     </div>
+
   );
 }
 
