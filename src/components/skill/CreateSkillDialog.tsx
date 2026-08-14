@@ -146,7 +146,7 @@ function DiffField({ label, value, index, currentIndex, isTextarea = false }: {
             
             {/* Char count for rules */}
             {label === "Skill调用规则" && (
-              <span className="absolute bottom-3 right-3 text-[10px] text-green-500/40">66/200</span>
+              <span className="absolute bottom-3 right-3 text-[10px] text-green-500/40">71/200</span>
             )}
           </div>
 
@@ -154,7 +154,7 @@ function DiffField({ label, value, index, currentIndex, isTextarea = false }: {
           <div className="flex items-center justify-between px-4 py-2 bg-black/40 border-t border-white/5">
             <div className="flex items-center gap-2 text-[11px] text-white/40 font-medium">
               <ChevronDown className="h-3 w-3 rotate-180 opacity-40" />
-              <span>第 {index} / 8 处</span>
+              <span>第 1 / 5 处</span>
               <ChevronDown className="h-3 w-3 opacity-40" />
             </div>
             <div className="flex items-center gap-2">
