@@ -816,12 +816,12 @@ function Composer({
               <ChevronDown className="h-3 w-3 opacity-60" />
             </button>
           </PopoverTrigger>
-          <PopoverContent align="start" className="w-32 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+          <PopoverContent align="start" className="w-32 p-1 border-border bg-popover backdrop-blur-xl rounded-xl shadow-2xl">
             {["480p", "720p", "1080p"].map((res) => (
               <button 
                 key={res}
                 onClick={() => setResolution(res)}
-                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${resolution === res ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${resolution === res ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'}`}
               >
                 {res}
               </button>
