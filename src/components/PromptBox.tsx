@@ -205,7 +205,6 @@ export function PromptBox({
               </div>
             )}
             {attachments.map((a) => (
-            {attachments.map((a) => (
               <AttachmentChip 
                 key={a.id} 
                 a={a} 
