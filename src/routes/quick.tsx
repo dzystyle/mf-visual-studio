@@ -252,7 +252,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
             -5
           </span>
         )}
-        <span className="ml-auto text-[11px] text-muted-foreground/40">
+        <span className="ml-auto text-[11px] text-muted-foreground/60 dark:text-muted-foreground/40">
           {msg.time}
         </span>
       </div>
