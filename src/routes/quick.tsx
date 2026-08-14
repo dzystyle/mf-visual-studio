@@ -939,7 +939,7 @@ function FilterChip({ label }: { label: string }) {
 
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-white/40">
+    <span className="inline-flex items-center rounded-md border border-border bg-muted/20 px-2.5 py-1 text-[11px] text-muted-foreground/60">
       {children}
     </span>
   );
