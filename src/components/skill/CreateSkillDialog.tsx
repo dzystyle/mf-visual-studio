@@ -496,6 +496,26 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md transition-all duration-300" />
         <DialogPrimitive.Content className="fixed inset-[30px] z-50 flex overflow-hidden rounded-[2rem] border border-white/10 bg-[#0a0a0c] text-foreground shadow-2xl focus:outline-none">
+          {/* Global Action Bar (Floating Right) */}
+          <div className="absolute top-4 right-6 z-[60] flex items-center gap-3">
+            <button 
+              onClick={handleSave}
+              disabled={isSaving}
+              className={cn(
+                "flex items-center gap-3 rounded-full bg-[#E1B166] px-6 py-2.5 text-sm font-semibold text-black transition hover:bg-[#f0c07d] active:scale-95 shadow-lg disabled:opacity-50",
+                isSaving && "cursor-not-allowed"
+              )}
+            >
+              <Save className={cn("h-4 w-4", isSaving && "animate-spin")} />
+              {isSaving ? "正在保存..." : "保存这个Skill"}
+            </button>
+            <button 
+              onClick={() => onOpenChange(false)}
+              className="rounded-full bg-white/5 p-2.5 text-white/40 transition hover:bg-white/10 hover:text-white border border-white/5 backdrop-blur-md"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
           
           {/* Main Layout: Left Sidebar & Right Chat Panel */}
           <div className="flex w-full overflow-hidden">
@@ -503,33 +523,14 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
             {/* Left Scrollable Settings */}
             <div className="flex flex-1 flex-col overflow-y-auto scrollbar-hide border-r border-white/5">
               {/* Header */}
-              <div className="flex h-16 items-center justify-between border-b border-white/5 px-6 shrink-0 bg-[#0f0f12]/80 backdrop-blur-md sticky top-0 z-10">
+              <div className="flex h-16 items-center border-b border-white/5 px-6 shrink-0 bg-[#0f0f12]/80 backdrop-blur-md sticky top-0 z-10">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <LayoutGrid className="h-4 w-4" />
                   <span>我的Skill</span>
                   <ChevronRight className="h-3 w-3" />
                   <span className={cn("font-medium", (showSuggestions || editSkillData) ? "text-foreground" : "text-muted-foreground")}>
-                    {editSkillData ? editSkillData.title : (showSuggestions ? "游戏宣发视频" : "未命名Skill")}
+                    {editSkillData ? editSkillData.title : (showSuggestions ? "RPG 游戏宣发视频" : "未命名Skill")}
                   </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <button 
-                    onClick={handleSave}
-                    disabled={isSaving}
-                    className={cn(
-                      "flex items-center gap-3 rounded-full bg-[#E1B166] px-5 py-2 text-sm font-semibold text-black transition hover:bg-[#f0c07d] active:scale-95 disabled:opacity-50",
-                      isSaving && "cursor-not-allowed"
-                    )}
-                  >
-                    <Save className={cn("h-4 w-4", isSaving && "animate-spin")} />
-                    {isSaving ? "正在保存..." : "保存这个Skill"}
-                  </button>
-                  <button 
-                    onClick={() => onOpenChange(false)}
-                    className="rounded-full bg-white/5 p-2 text-white/40 transition hover:bg-white/10 hover:text-white"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
                 </div>
               </div>
 
