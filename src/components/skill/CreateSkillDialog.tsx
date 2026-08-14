@@ -170,9 +170,13 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                       { title: "加入角色声音一致性", desc: "为角色添加 key_element_audio（声音参考绑定），保证多镜头中同一角色对白音色一致" },
                       { title: "补充用户提供素材的处理流程", desc: "详细规定当用户上传官方截图、立绘或已有宣传片时，如何分析并融入生成工作流" }
                     ].map((option, idx) => {
-                      const isSelected = idx === 0; // "指定游戏类型" is selected in the reference
+                      const isSelected = selectedDirection === idx;
                       return (
-                        <div key={idx} className="flex gap-4 items-start group cursor-pointer">
+                        <div 
+                          key={idx} 
+                          className="flex gap-4 items-start group cursor-pointer"
+                          onClick={() => setSelectedDirection(idx)}
+                        >
                           <div className={cn(
                             "mt-1 h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-200",
                             isSelected 
@@ -198,9 +202,17 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                   </div>
 
                   {/* Other Input Field */}
-                  <div className="flex items-center gap-4 group cursor-pointer pt-1">
-                    <div className="h-5 w-5 rounded-full bg-white/[0.05] border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-all">
-                      <Check className="h-3 w-3 text-transparent" strokeWidth={4} />
+                  <div 
+                    className="flex items-center gap-4 group cursor-pointer pt-1"
+                    onClick={() => setSelectedDirection(4)}
+                  >
+                    <div className={cn(
+                      "h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all",
+                      selectedDirection === 4 
+                        ? "bg-[#E1B166] text-black shadow-[0_0_12px_rgba(225,177,102,0.4)]" 
+                        : "bg-white/[0.05] text-transparent border border-white/10 group-hover:border-white/20"
+                    )}>
+                      <Check className="h-3 w-3" strokeWidth={4} />
                     </div>
                     <div className="flex-1 rounded-xl bg-white/[0.02] border border-white/[0.08] px-4 py-3 group-hover:border-white/20 transition-all">
                       <input 
