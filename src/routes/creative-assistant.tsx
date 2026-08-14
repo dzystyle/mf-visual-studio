@@ -168,7 +168,7 @@ function CreativeAssistantPage() {
       const typingTimer = setTimeout(() => {
         const msgsToAdd: Message[] = [];
         if (stepIndex === 1) {
-          msgsToAdd.push(fullWorkflow[1] as Message);
+          msgsToAdd.push(fullWorkflow[0] as Message, fullWorkflow[1] as Message);
         } else if (stepIndex === 2) {
           msgsToAdd.push(fullWorkflow[2] as Message, fullWorkflow[3] as Message);
         } else if (stepIndex === 3) {
@@ -322,9 +322,9 @@ function CreativeAssistantPage() {
                   )}
 
                   {msg.isChoiceCard && (
-                    <div className="w-full">
+                    <div className={cn("w-full", messages.filter(m => m.isChoiceCard).indexOf(msg) !== messages.filter(m => m.isChoiceCard).length - 1 && "pointer-events-none opacity-50")}>
                       <AnimatePresence mode="wait">
-                        {currentStep === 1 && (
+                        {currentStep === 1 && msg.id === [...messages].reverse().find((m: Message) => m.isChoiceCard)?.id && (
                           <motion.div key="step1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                             <ChoiceCard 
                               step={1}
