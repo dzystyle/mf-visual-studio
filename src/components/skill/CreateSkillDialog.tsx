@@ -349,18 +349,33 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                       {/* Gradient overlay to simulate terminal/code-editor feel */}
                       <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
                       
-                      <div className="relative font-mono text-[13.5px] leading-[1.8] text-white/80 whitespace-pre-wrap selection:bg-[#E1B166]/20">
-                        {markdownContent}
-                      </div>
+                      {markdownContent ? (
+                        <div className="relative font-mono text-[13.5px] leading-[1.8] text-white/80 whitespace-pre-wrap selection:bg-[#E1B166]/20">
+                          {markdownContent}
+                        </div>
+                      ) : (
+                        <div className="relative h-full flex flex-col items-center justify-center text-center space-y-4 pt-40">
+                          <div className="h-16 w-16 rounded-full bg-white/[0.02] border border-white/5 flex items-center justify-center">
+                            <Code2 className="h-8 w-8 text-white/10" />
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-sm font-medium text-white/40">暂无 Markdown 数据</p>
+                            <p className="text-xs text-white/20 max-w-[280px]">预览模式下有数据后，系统会自动将数据整理为 Markdown 配置</p>
+                          </div>
+                        </div>
+                      )}
 
                       {/* Floating Indicator */}
-                      <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-                        <span className="text-[10px] font-medium text-white/40 uppercase tracking-widest">Read Only</span>
-                      </div>
+                      {markdownContent && (
+                        <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
+                          <span className="text-[10px] font-medium text-white/40 uppercase tracking-widest">Read Only</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ) : (
+
                   <>
                     {SIDEBAR_ITEMS.map((item, sectionIdx) => {
                       const getSuggestion = () => {
