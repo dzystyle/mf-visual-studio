@@ -124,6 +124,34 @@ function SkillDiscoveryPage() {
   const [sortOption, setSortOption] = useState("精选");
   const [myFilter, setMyFilter] = useState("全部");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [userCreatedSkills, setUserCreatedSkills] = useState<any[]>([]);
+
+  useState(() => {
+    const handleSkillSaved = (e: any) => {
+      const newSkill = {
+        id: e.detail.id,
+        title: e.detail.title,
+        version: "V1",
+        author: "@我",
+        model: "Seedance 2.5",
+        desc: "刚创建的游戏宣发视频 Skill",
+        image: skillScript,
+        tags: ["全部", "动漫游戏"],
+        isDefault: false,
+        authorAvatar: "U",
+        isMySkill: true,
+        myLabel: "我创建的"
+      };
+      setUserCreatedSkills(prev => [newSkill, ...prev]);
+      setActiveTab("我的");
+      setMyFilter("我创建的");
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('skill-saved', handleSkillSaved);
+      return () => window.removeEventListener('skill-saved', handleSkillSaved);
+    }
+  });
 
   const myFilters = ["全部", "我创建的", "历史使用", "草稿"];
 
@@ -243,14 +271,27 @@ function SkillDiscoveryPage() {
 
             {/* Grid for My Skills */}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {SKILLS.map((skill, idx) => (
+              {userCreatedSkills.map(skill => (
                 <SkillCard 
                   key={skill.id} 
                   {...skill} 
                   isMySkill={true}
-                  myLabel={idx === 0 ? "历史使用" : (idx === 1 || idx === 6 || idx === 7 ? "我创建的" : undefined)}
                 />
               ))}
+              {SKILLS.map((skill, idx) => {
+                if (myFilter === "我创建的" && !(idx === 1 || idx === 6 || idx === 7)) return null;
+                if (myFilter === "历史使用" && idx !== 0) return null;
+                if (myFilter === "草稿") return null;
+                
+                return (
+                  <SkillCard 
+                    key={skill.id} 
+                    {...skill} 
+                    isMySkill={true}
+                    myLabel={idx === 0 ? "历史使用" : (idx === 1 || idx === 6 || idx === 7 ? "我创建的" : undefined)}
+                  />
+                );
+              })}
             </div>
           </>
         )}

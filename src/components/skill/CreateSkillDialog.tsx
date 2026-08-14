@@ -350,6 +350,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
   const [acceptedChanges, setAcceptedChanges] = React.useState<Set<number>>(new Set());
   const [rejectedChanges, setRejectedChanges] = React.useState<Set<number>>(new Set());
   const [selectedDirection, setSelectedDirection] = React.useState<number | null>(null);
+  const [isSaving, setIsSaving] = React.useState(false);
 
   // We use a counter to force a re-render of the messages array when state changes
   const [updateCounter, setUpdateCounter] = React.useState(0);
@@ -413,6 +414,25 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
   const handleRejectAll = () => {
     setShowSuggestions(false);
+  };
+
+  const handleSave = () => {
+    setIsSaving(true);
+    // Simulate API call and state storage
+    setTimeout(() => {
+      // In a real app, we would emit an event or update a global store
+      // For this prototype, we'll just close and assume the parent "My Skills" tab will show the new item
+      setIsSaving(false);
+      onOpenChange(false);
+      
+      // Dispatch custom event to notify skill page to refresh/show toast
+      window.dispatchEvent(new CustomEvent('skill-saved', { 
+        detail: { 
+          title: "游戏宣发视频",
+          id: "game-promo-" + Date.now()
+        } 
+      }));
+    }, 1000);
   };
 
   return (
