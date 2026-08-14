@@ -20,6 +20,14 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit, onUseSkil
   if (!skill) return null;
 
   const handleUseSkill = () => {
+    // If onUseSkill is provided, we use that (e.g. from the PromptBox dropdown)
+    if (onUseSkill) {
+      onUseSkill(skill.title);
+      onOpenChange(false);
+      return;
+    }
+
+    // Otherwise use default behavior (persist to localStorage and navigate)
     // 1. Save skill to localStorage to persist across navigation
     localStorage.setItem('selected-skill', skill.title);
     
@@ -33,6 +41,7 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit, onUseSkil
     // 4. Close dialog
     onOpenChange(false);
   };
+
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
