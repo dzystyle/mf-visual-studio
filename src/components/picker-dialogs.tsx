@@ -354,10 +354,11 @@ export function SkillPicker({
         onEdit={(skill) => {
           setPreviewSkill(null);
         }}
-        onUseSkill={(skillTitle) => {
+        onUseSkill={(skillTitle: string) => {
           onSelect?.(skillTitle);
           setPreviewSkill(null);
         }}
+
       />
     </div>
   );
