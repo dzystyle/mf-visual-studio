@@ -324,7 +324,7 @@ function CreativeAssistantPage() {
                   {msg.isChoiceCard && (
                     <div className={cn("w-full", messages.filter(m => m.isChoiceCard).indexOf(msg) !== messages.filter(m => m.isChoiceCard).length - 1 && "pointer-events-none opacity-50")}>
                       <AnimatePresence mode="wait">
-                        {currentStep === 1 && (
+                        {currentStep === 1 && msg.id === messages.findLast(m => m.isChoiceCard)?.id && (
                           <motion.div key="step1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                             <ChoiceCard 
                               step={1}
