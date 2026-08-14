@@ -8,7 +8,7 @@ import tvDrama from "@/assets/tv-drama.jpg";
 import tvPalace from "@/assets/tv-palace.jpg";
 
 const TV_DATA = [
-  { id: 1, title: "The Surprise Lion", author: "Flova.ai", image: tvSpace, category: "漫剧", isLarge: true },
+  { id: 1, title: "The Surprise Lion", author: "Artrail.ai", image: tvSpace, category: "漫剧", isLarge: true },
   { id: 2, title: "端午思念", author: "Holly", image: tvDrama, category: "漫剧" },
   { id: 3, title: "跑得全网最松弛的“面条猫”", author: "Bill", image: tvPalace, category: "漫剧" },
   { id: 4, title: "大虚", author: "参生", image: tvSpace, category: "漫剧" },
