@@ -427,8 +427,8 @@ function Composer({
       const before = input.slice(0, lastAtPos);
       const after = input.slice(cursorPos);
       // Remove the @mention text entirely from input
-      newInput = `${before.trimEnd()}${after.startsWith(" ") ? after : " " + after}`.trim();
-      newCursorPos = before.trimEnd().length;
+      newInput = (before + after);
+      newCursorPos = before.length;
     } else {
       newInput = input;
       newCursorPos = cursorPos;
@@ -700,6 +700,7 @@ function Composer({
               }}
               rows={1}
               placeholder="使用@快速调用参考能力"
+              style={{ order: 9999 }}
               className="flex-1 min-w-[200px] min-h-[32px] self-center bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none py-1.5"
             />
           </div>
