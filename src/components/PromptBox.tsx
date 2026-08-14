@@ -68,16 +68,19 @@ export function PromptBox({
   const pendingKind = useRef<Attachment["kind"]>("image");
 
   useEffect(() => {
+    // Check for skill in localStorage (persisted from Skill page)
+    const storedSkill = localStorage.getItem('selected-skill');
+    if (storedSkill) {
+      setSkill(storedSkill);
+      localStorage.removeItem('selected-skill'); // Clear it so it doesn't persist on refresh
+    }
+
     const handleSelectSkill = (e: any) => {
       const skillTitle = e.detail;
       setSkill(skillTitle);
-      
-      // If we're selecting a skill, we often don't want it to just be an @ mention in text
-      // but also a primary visual chip. The visual chip is already rendered if skill state is set.
-      
-      // We focus the textarea to show the user where the input is
       textareaRef.current?.focus();
     };
+
     window.addEventListener('select-skill', handleSelectSkill);
     return () => window.removeEventListener('select-skill', handleSelectSkill);
   }, []);
