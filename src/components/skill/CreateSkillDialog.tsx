@@ -351,6 +351,25 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
   const [rejectedChanges, setRejectedChanges] = React.useState<Set<number>>(new Set());
   const [selectedDirection, setSelectedDirection] = React.useState<number | null>(null);
   const [isSaving, setIsSaving] = React.useState(false);
+  const [editSkillData, setEditSkillData] = React.useState<any>(null);
+
+  // Initializing state if editing
+  React.useEffect(() => {
+    if (open && (window as any).__skill_to_edit) {
+      const skill = (window as any).__skill_to_edit;
+      setEditSkillData(skill);
+      setMarkdownContent(GAME_SKILL_MARKDOWN); // Pre-fill with example markdown if editing
+      setShowSuggestions(true);
+      // In a real app, we'd map skill data to the form fields
+      delete (window as any).__skill_to_edit;
+    } else if (open) {
+      // Reset if creating new
+      setEditSkillData(null);
+      setMarkdownContent("");
+      setShowSuggestions(false);
+      setMessages([]);
+    }
+  }, [open]);
 
   // We use a counter to force a re-render of the messages array when state changes
   const [updateCounter, setUpdateCounter] = React.useState(0);
@@ -452,8 +471,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                   <LayoutGrid className="h-4 w-4" />
                   <span>我的Skill</span>
                   <ChevronRight className="h-3 w-3" />
-                  <span className={cn("font-medium", showSuggestions ? "text-foreground" : "text-muted-foreground")}>
-                    {showSuggestions ? "游戏宣发视频" : "未命名Skill"}
+                  <span className={cn("font-medium", (showSuggestions || editSkillData) ? "text-foreground" : "text-muted-foreground")}>
+                    {editSkillData ? editSkillData.title : (showSuggestions ? "游戏宣发视频" : "未命名Skill")}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">

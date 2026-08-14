@@ -5,6 +5,7 @@ import { TopBar } from "@/components/TopBar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CreateSkillDialog } from "@/components/skill/CreateSkillDialog";
+import { SkillDetailDialog } from "@/components/skill/SkillDetailDialog";
 import skillJojo from "@/assets/skill-jojo.png.asset.json";
 import skillDimension from "@/assets/skill-dimension.png.asset.json";
 import skillDestiny from "@/assets/skill-destiny.png.asset.json";
@@ -124,6 +125,8 @@ function SkillDiscoveryPage() {
   const [sortOption, setSortOption] = useState("精选");
   const [myFilter, setMyFilter] = useState("全部");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [selectedSkill, setSelectedSkill] = useState<any>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [userCreatedSkills, setUserCreatedSkills] = useState<any[]>([]);
 
   useState(() => {
@@ -191,6 +194,18 @@ function SkillDiscoveryPage() {
           onOpenChange={setIsCreateDialogOpen} 
         />
 
+        <SkillDetailDialog
+          open={isDetailOpen}
+          onOpenChange={setIsDetailOpen}
+          skill={selectedSkill}
+          onEdit={(skill) => {
+            setIsDetailOpen(false);
+            // We pass data to the create dialog
+            (window as any).__skill_to_edit = skill;
+            setIsCreateDialogOpen(true);
+          }}
+        />
+
         {activeTab === "精选" ? (
           <>
             {/* Filter Bar for Featured */}
@@ -239,7 +254,14 @@ function SkillDiscoveryPage() {
             {/* Grid for Featured */}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {SKILLS.map(skill => (
-                <SkillCard key={skill.id} {...skill} />
+                <SkillCard 
+                  key={skill.id} 
+                  {...skill} 
+                  onClick={() => {
+                    setSelectedSkill(skill);
+                    setIsDetailOpen(true);
+                  }}
+                />
               ))}
             </div>
           </>
@@ -276,6 +298,10 @@ function SkillDiscoveryPage() {
                   key={skill.id} 
                   {...skill} 
                   isMySkill={true}
+                  onClick={() => {
+                    setSelectedSkill(skill);
+                    setIsDetailOpen(true);
+                  }}
                 />
               ))}
               {SKILLS.map((skill, idx) => {
@@ -289,6 +315,10 @@ function SkillDiscoveryPage() {
                     {...skill} 
                     isMySkill={true}
                     myLabel={idx === 0 ? "历史使用" : (idx === 1 || idx === 6 || idx === 7 ? "我创建的" : undefined)}
+                    onClick={() => {
+                      setSelectedSkill(skill);
+                      setIsDetailOpen(true);
+                    }}
                   />
                 );
               })}
@@ -300,14 +330,15 @@ function SkillDiscoveryPage() {
   );
 }
 
-function SkillCard({ title, version, author, model, desc, image, isDefault, authorAvatar, isMySkill, myLabel }: any) {
+function SkillCard({ title, version, author, model, desc, image, isDefault, authorAvatar, isMySkill, myLabel, onClick }: any) {
   const [hovered, setHovered] = useState(false);
 
   return (
     <div 
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/5 bg-[#161618] transition-all hover:border-white/20 hover:shadow-xl hover:shadow-black/20"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/5 bg-[#161618] transition-all hover:border-white/20 hover:shadow-xl hover:shadow-black/20 cursor-pointer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={onClick}
     >
       {/* Image Area */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/20">
