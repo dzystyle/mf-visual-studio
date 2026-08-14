@@ -671,14 +671,14 @@ function Composer({
         <div className="relative z-50 flex flex-col gap-2 mb-4">
           <div className="flex flex-wrap items-center gap-2">
             {mentions.map((a: any) => (
-              <div key={a.id} className="inline-flex h-[32px] items-center gap-2 rounded-lg bg-white/10 border border-white/5 pl-1.5 pr-2 py-1 text-xs text-white/90">
-                <div className="h-5 w-5 shrink-0 rounded overflow-hidden border border-white/10">
+              <div key={a.id} className="inline-flex h-[32px] items-center gap-2 rounded-lg bg-muted/20 border border-border pl-1.5 pr-2 py-1 text-xs text-foreground/90">
+                <div className="h-5 w-5 shrink-0 rounded overflow-hidden border border-border">
                   <img src={a.url} alt="" className="w-full h-full object-cover" />
                 </div>
                 <span className="leading-none">{a.name}</span>
                 <button 
                   onClick={() => setMentions((prev: any) => prev.filter((x: any) => x.id !== a.id))}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-foreground transition-colors"
                 >
                   <Plus className="h-3 w-3 rotate-45 text-muted-foreground" />
                 </button>
