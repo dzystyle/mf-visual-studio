@@ -350,6 +350,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
   const [acceptedChanges, setAcceptedChanges] = React.useState<Set<number>>(new Set());
   const [rejectedChanges, setRejectedChanges] = React.useState<Set<number>>(new Set());
   const [selectedDirection, setSelectedDirection] = React.useState<number | null>(null);
+  const [isSaving, setIsSaving] = React.useState(false);
 
   // We use a counter to force a re-render of the messages array when state changes
   const [updateCounter, setUpdateCounter] = React.useState(0);
@@ -415,6 +416,25 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
     setShowSuggestions(false);
   };
 
+  const handleSave = () => {
+    setIsSaving(true);
+    // Simulate API call and state storage
+    setTimeout(() => {
+      // In a real app, we would emit an event or update a global store
+      // For this prototype, we'll just close and assume the parent "My Skills" tab will show the new item
+      setIsSaving(false);
+      onOpenChange(false);
+      
+      // Dispatch custom event to notify skill page to refresh/show toast
+      window.dispatchEvent(new CustomEvent('skill-saved', { 
+        detail: { 
+          title: "游戏宣发视频",
+          id: "game-promo-" + Date.now()
+        } 
+      }));
+    }, 1000);
+  };
+
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
@@ -436,10 +456,25 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                     {showSuggestions ? "游戏宣发视频" : "未命名Skill"}
                   </span>
                 </div>
-                <button className="flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 text-sm font-medium border border-white/10 hover:bg-white/10 transition group">
-                  <Save className="h-4 w-4 text-white/40 group-hover:text-white transition" />
-                  保存
-                </button>
+                <div className="flex items-center gap-3">
+                  <button 
+                    onClick={handleSave}
+                    disabled={isSaving}
+                    className={cn(
+                      "flex items-center gap-3 rounded-full bg-[#E1B166] px-5 py-2 text-sm font-semibold text-black transition hover:bg-[#f0c07d] active:scale-95 disabled:opacity-50",
+                      isSaving && "cursor-not-allowed"
+                    )}
+                  >
+                    <Save className={cn("h-4 w-4", isSaving && "animate-spin")} />
+                    {isSaving ? "正在保存..." : "保存这个Skill"}
+                  </button>
+                  <button 
+                    onClick={() => onOpenChange(false)}
+                    className="rounded-full bg-white/5 p-2 text-white/40 transition hover:bg-white/10 hover:text-white"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
 
               {/* Content */}
@@ -639,16 +674,13 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
             {/* Right Assistant Panel */}
             <div className="w-[450px] flex flex-col bg-[#161618] border-l border-white/5">
               {/* Header */}
-              <div className="flex h-16 items-center justify-between px-6 shrink-0 border-b border-white/5">
+              <div className="flex h-16 items-center px-6 shrink-0 border-b border-white/5">
                 <div className="flex items-center gap-2">
                   <div className="flex h-6 w-6 items-center justify-center rounded-md bg-white/5 text-muted-foreground">
                     <Code2 className="h-3.5 w-3.5" />
                   </div>
                   <span className="text-sm font-medium">Skill优化助手</span>
                 </div>
-                <DialogPrimitive.Close className="rounded-full p-1 text-muted-foreground hover:bg-white/5 hover:text-foreground transition">
-                  <X className="h-5 w-5" />
-                </DialogPrimitive.Close>
               </div>
 
               {/* Chat Content */}
