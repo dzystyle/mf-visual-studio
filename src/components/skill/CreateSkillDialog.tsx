@@ -26,6 +26,69 @@ function InfoIcon() {
   );
 }
 
+function DiffField({ label, value, index, currentIndex, isTextarea = false }: { 
+  label?: string; 
+  value: string; 
+  index: number; 
+  currentIndex: number;
+  isTextarea?: boolean;
+}) {
+  const isActive = index === currentIndex;
+  
+  return (
+    <div className={cn(
+      "space-y-2 relative transition-all duration-300",
+      isActive ? "z-20 scale-[1.01]" : "opacity-80"
+    )}>
+      {label && <label className="text-xs font-medium text-muted-foreground">{label}</label>}
+      <div className="relative group">
+        <div className="rounded-xl overflow-hidden border border-white/5 bg-[#141417] shadow-xl">
+          {/* Old Content Placeholder (Red) */}
+          <div className="bg-red-950/20 border-b border-red-900/10 px-4 py-3 min-h-[40px] flex items-center">
+            <div className="h-4 w-full bg-red-900/10 rounded-sm animate-pulse" />
+          </div>
+          
+          {/* New Content (Green) */}
+          <div className="bg-green-950/20 px-4 py-5 relative">
+            <div className={cn(
+              "text-sm leading-relaxed whitespace-pre-wrap text-white/90 font-light",
+              isTextarea ? "min-h-[100px]" : ""
+            )}>
+              {value}
+            </div>
+            
+            {/* Char count for rules */}
+            {label === "Skill调用规则" && (
+              <span className="absolute bottom-3 right-3 text-[10px] text-green-500/40">66/200</span>
+            )}
+          </div>
+
+          {/* Individual Action Bar */}
+          <div className="flex items-center justify-between px-4 py-2 bg-black/40 border-t border-white/5">
+            <div className="flex items-center gap-2 text-[11px] text-white/40 font-medium">
+              <ChevronDown className="h-3 w-3 rotate-180 opacity-40" />
+              <span>第 {index} / 8 处</span>
+              <ChevronDown className="h-3 w-3 opacity-40" />
+            </div>
+            <div className="flex items-center gap-2">
+              <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-md hover:bg-white/5 text-[11px] text-white/60 transition group">
+                <Undo2 className="h-3 w-3 text-white/20 group-hover:text-white transition" />
+                <span>撤销</span>
+                <span className="opacity-40 ml-0.5">⌘B</span>
+              </button>
+              <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-green-500/10 hover:bg-green-500/20 text-[11px] text-green-500 transition border border-green-500/20 group">
+                <Check className="h-3 w-3 group-hover:scale-110 transition" />
+                <span>保留</span>
+                <span className="opacity-60 ml-0.5">⌘Y</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps) {
   const [viewMode, setViewMode] = React.useState<"preview" | "markdown">("preview");
   const [messages, setMessages] = React.useState<Array<{ role: 'user' | 'assistant', content: string | React.ReactNode }>>([]);
