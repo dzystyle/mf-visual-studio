@@ -109,6 +109,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
     editing: `**剪辑节奏**\n\n- 宣发视频整体节奏偏快：动作/高能段落单镜不超过 3s；叙事/情绪段落可放宽至 5–8s。\n\n- 片头 3 秒优先安排视觉冲击力最强的镜头（技能特效、世界观展示或悬念画面）。\n\n- 游戏标题 / Logo 出现时机：通常在高潮节点后或视频结尾，配合 BGM 节拍落点。\n\n**转场偏好**\n\n- 动作场景：硬切为主，保持节奏紧张感。\n\n- 场景/章节切换：闪白、速度模糊（motion blur wipe）或黑场渐入/渐出。\n\n- 避免过多花哨转场效果，以免分散对游戏内容的注意力。\n\n**音画同步**\n\n- BGM 高潮节拍与视觉高潮严格对齐。\n\n- VO 旁白与对应视觉信息同步展示；信息密度高时适当延长镜头停留时间。\n\n- 结尾留 1–2s 静帧展示 Logo + 上线信息，淡出 BGM。`
   };
 
+  const [selectedDirection, setSelectedDirection] = React.useState<number | null>(0);
+
   const handleSend = () => {
     if (!inputValue.trim()) return;
     
@@ -168,9 +170,13 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                       { title: "加入角色声音一致性", desc: "为角色添加 key_element_audio（声音参考绑定），保证多镜头中同一角色对白音色一致" },
                       { title: "补充用户提供素材的处理流程", desc: "详细规定当用户上传官方截图、立绘或已有宣传片时，如何分析并融入生成工作流" }
                     ].map((option, idx) => {
-                      const isSelected = idx === 0; // "指定游戏类型" is selected in the reference
+                      const isSelected = selectedDirection === idx;
                       return (
-                        <div key={idx} className="flex gap-4 items-start group cursor-pointer">
+                        <div 
+                          key={idx} 
+                          className="flex gap-4 items-start group cursor-pointer"
+                          onClick={() => setSelectedDirection(idx)}
+                        >
                           <div className={cn(
                             "mt-1 h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-200",
                             isSelected 
@@ -196,9 +202,17 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                   </div>
 
                   {/* Other Input Field */}
-                  <div className="flex items-center gap-4 group cursor-pointer pt-1">
-                    <div className="h-5 w-5 rounded-full bg-white/[0.05] border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-all">
-                      <Check className="h-3 w-3 text-transparent" strokeWidth={4} />
+                  <div 
+                    className="flex items-center gap-4 group cursor-pointer pt-1"
+                    onClick={() => setSelectedDirection(4)}
+                  >
+                    <div className={cn(
+                      "h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all",
+                      selectedDirection === 4 
+                        ? "bg-[#E1B166] text-black shadow-[0_0_12px_rgba(225,177,102,0.4)]" 
+                        : "bg-white/[0.05] text-transparent border border-white/10 group-hover:border-white/20"
+                    )}>
+                      <Check className="h-3 w-3" strokeWidth={4} />
                     </div>
                     <div className="flex-1 rounded-xl bg-white/[0.02] border border-white/[0.08] px-4 py-3 group-hover:border-white/20 transition-all">
                       <input 
