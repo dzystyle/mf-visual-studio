@@ -12,8 +12,9 @@ import { useTheme } from "@/hooks/use-theme";
 import logoAsset from "@/assets/logo.png.asset.json";
 import { cn } from "@/lib/utils";
 
-export function TopBar({ title, variant = "dark" }: { title?: string; variant?: "light" | "dark" }) {
-  const isLight = variant === "light";
+export function TopBar({ title, variant }: { title?: string; variant?: "light" | "dark" }) {
+  const { theme } = useTheme();
+  const isLight = variant === "light" || theme === "light";
   
   return (
     <div className="absolute right-6 top-4 z-50 flex items-center gap-3">
