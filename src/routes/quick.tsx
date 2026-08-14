@@ -733,13 +733,13 @@ function Composer({
                       <button
                         key={item.id}
                         onClick={() => handleMentionSelect(item.name, item.url)}
-                        className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition group"
+                        className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-muted/40 transition group"
                       >
-                        <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden border border-white/5">
+                        <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden border border-border">
                           <img src={item.url} alt={item.name} className="h-full w-full object-cover" />
                         </div>
                         <div className="flex-1 text-left">
-                          <div className="text-xs font-medium text-white group-hover:text-aurora-purple transition truncate max-w-[160px]">{item.name}</div>
+                          <div className="text-xs font-medium text-foreground group-hover:text-primary transition truncate max-w-[160px]">{item.name}</div>
                           <div className="text-[10px] text-muted-foreground">
                             {item.name.match(/\.(mp4|webm|ogg|mov)$/i) ? '视频' : '图片'}
                           </div>
