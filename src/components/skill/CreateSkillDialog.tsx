@@ -111,6 +111,11 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
   const [selectedDirection, setSelectedDirection] = React.useState<number | null>(0);
 
+  // We need to keep a ref or local state for the assistant message content
+  // because the React element in setMessages uses the state from the component scope at the time of creation.
+  // Using a separate component for the Choice Card to handle its own selection state
+  // or updating the messages array when the state changes.
+
   const handleSend = () => {
     if (!inputValue.trim()) return;
     
