@@ -313,7 +313,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
                     <RotateCcw className="h-3.5 w-3.5" />
                     重试
                   </button>
-                  <button className="flex items-center gap-1.5 rounded-full bg-muted/40 px-4 py-1.5 text-xs text-muted-foreground/60 transition hover:bg-muted/60 hover:text-foreground/80">
+                  <button className="flex items-center gap-1.5 rounded-full bg-muted/40 px-4 py-1.5 text-xs text-muted-foreground/80 dark:text-muted-foreground/60 transition hover:bg-muted/60 hover:text-foreground">
                     <Trash2 className="h-3.5 w-3.5" />
                     删除
                   </button>
