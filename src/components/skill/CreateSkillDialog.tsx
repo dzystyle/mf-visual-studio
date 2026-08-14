@@ -242,63 +242,10 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
               <p className="text-[15px] text-foreground/90">你可以根据实际情况进一步细化，比如：</p>
 
-              {/* Choice Card */}
-              <div className="mt-4 rounded-[20px] bg-[#1a1a1c] border border-white/[0.03] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-                <div className="p-7 space-y-6">
-                  <h4 className="text-[17px] font-medium text-white/95">你想优先完善哪个方向？</h4>
-                  
-                  <div className="border-t border-dashed border-white/5 pt-6 space-y-7">
-                    {[
-                      { title: "指定游戏类型", desc: "告诉我是 RPG、FPS、MOBA 还是其他类型，我来针对性调整视觉风格和节奏规则" },
-                      { title: "调整视频模型", desc: "换用其他视频生成模型（如 Seedance 2.5），或指定分辨率、时长等参数" },
-                      { title: "加入角色声音一致性", desc: "为角色添加 key_element_audio（声音参考绑定），保证多镜头中同一角色对白音色一致" },
-                      { title: "补充用户提供素材的处理流程", desc: "详细规定当用户上传官方截图、立绘或已有宣传片时，如何分析并融入生成工作流" }
-                    ].map((option, idx) => {
-                      const isSelected = selectedDirection === idx;
-                      return (
-                        <div 
-                          key={idx} 
-                          className="flex gap-4 items-start group cursor-pointer"
-                          onClick={() => setSelectedDirection(idx)}
-                        >
-                          <div className={cn(
-                            "mt-1 h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-200",
-                            isSelected 
-                              ? "bg-[#E1B166] text-black shadow-[0_0_12px_rgba(225,177,102,0.4)]" 
-                              : "bg-white/[0.05] text-transparent border border-white/10 group-hover:border-white/20"
-                          )}>
-                            <Check className="h-3 w-3" strokeWidth={4} />
-                          </div>
-                          <div className="space-y-1">
-                            <div className={cn(
-                              "text-[15px] font-medium transition-colors",
-                              isSelected ? "text-white/95" : "text-white/70 group-hover:text-white/90"
-                            )}>
-                              {option.title}
-                            </div>
-                            <div className="text-[14px] text-white/40 leading-relaxed font-light">
-                              {option.desc}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Other Input Field */}
-                  <div 
-                    className="flex items-center gap-4 group cursor-pointer pt-1"
-                    onClick={() => setSelectedDirection(4)}
-                  >
-                    <div className={cn(
-                      "h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all",
-                      selectedDirection === 4 
-                        ? "bg-[#E1B166] text-black shadow-[0_0_12px_rgba(225,177,102,0.4)]" 
-                        : "bg-white/[0.05] text-transparent border border-white/10 group-hover:border-white/20"
-                    )}>
-                      <Check className="h-3 w-3" strokeWidth={4} />
-                    </div>
-                    <div className="flex-1 rounded-xl bg-white/[0.02] border border-white/[0.08] px-4 py-3 group-hover:border-white/20 transition-all">
+              <ChoiceCard 
+                currentSelection={selectedDirection} 
+                onSelect={(idx) => setSelectedDirection(idx)} 
+              />
                       <input 
                         type="text"
                         defaultValue="其它"
