@@ -176,9 +176,9 @@ function DiffField({ label, value, index, currentIndex, isTextarea = false }: {
   );
 }
 
-const GAME_SKILL_MARKDOWN = `skill_name: "游戏宣发视频"
+const GAME_SKILL_MARKDOWN = `skill_name: "RPG 游戏宣发视频"
 
-skill_description: "适用于游戏宣传推广视频的制作，包括新游预告、版本更新宣传、角色/英雄展示、活动推广等场景；以强视觉冲击、氛围感和信息传达为核心目标。"
+skill_description: "适用于角色扮演游戏（RPG）的新游预告、版本更新、角色展示与活动推广；突出世界观、角色成长、职业战斗和探索氛围，并清晰传达核心玩法与上线信息。"
 
 <planner>
 
