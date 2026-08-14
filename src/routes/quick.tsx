@@ -330,7 +330,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
                 className="h-full w-full object-cover transition-transform duration-500 group-hover/item:scale-110"
               />
               
-              <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/40 opacity-0 transition-opacity duration-300 group-hover/item:opacity-100 backdrop-blur-[2px]">
+              <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/40 dark:bg-black/60 opacity-0 transition-opacity duration-300 group-hover/item:opacity-100 backdrop-blur-[2px]">
                 <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/20 text-foreground transition hover:bg-background/40">
                   <Download className="h-4 w-4" />
                 </button>
