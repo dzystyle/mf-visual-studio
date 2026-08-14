@@ -501,95 +501,116 @@ skill_description: "适用于游戏宣传推广视频的制作，包括新游预
                   </div>
                 </div>
 
-                {/* Form Sections */}
-                {SIDEBAR_ITEMS.map((item, sectionIdx) => {
-                  const getSuggestion = () => {
-                    switch(item.id) {
-                      case 'rules': return { name: gameSkillSuggestions.name, rules: gameSkillSuggestions.rules };
-                      case 'planning': return gameSkillSuggestions.planning;
-                      case 'assets': return gameSkillSuggestions.assets;
-                      case 'storyboard': return gameSkillSuggestions.storyboard;
-                      case 'media': return gameSkillSuggestions.media;
-                      case 'prompts': return gameSkillSuggestions.prompts;
-                      case 'editing': return gameSkillSuggestions.editing;
-                      default: return null;
-                    }
-                  };
-
-                  const suggestion = getSuggestion();
-                  const isRules = item.id === 'rules';
-
-                  return (
-                    <div key={item.id} className="space-y-4">
-                      <div className="space-y-1">
-                        <h3 className="text-lg font-bold text-foreground">{item.label}</h3>
-                        <div className="flex items-start gap-2 text-xs text-muted-foreground">
-                          <InfoIcon />
-                          <p>{item.sub}</p>
-                        </div>
+                {/* Form Sections / Markdown View */}
+                {viewMode === "markdown" ? (
+                  <div className="flex-1 p-8">
+                    <div className="rounded-2xl border border-white/5 bg-[#141417] p-8 min-h-[800px] shadow-2xl relative overflow-hidden group">
+                      {/* Gradient overlay to simulate terminal/code-editor feel */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
+                      
+                      <div className="relative font-mono text-[13.5px] leading-[1.8] text-white/80 whitespace-pre-wrap selection:bg-[#E1B166]/20">
+                        {markdownContent}
                       </div>
 
-                      {showSuggestions && suggestion ? (
-                        <div className="space-y-6">
-                          {isRules ? (
-                            <>
-                              <DiffField 
-                                label="Skill 名称" 
-                                value="游戏宣发视频" 
-                                index={1} 
-                                currentIndex={currentSuggestionIndex}
-                              />
-                              <DiffField 
-                                label="Skill调用规则" 
-                                value={gameSkillSuggestions.rules} 
-                                index={2} 
-                                currentIndex={currentSuggestionIndex}
-                                isTextarea
-                              />
-                            </>
+                      {/* Floating Indicator */}
+                      <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
+                        <span className="text-[10px] font-medium text-white/40 uppercase tracking-widest">Read Only</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {SIDEBAR_ITEMS.map((item, sectionIdx) => {
+                      const getSuggestion = () => {
+                        switch(item.id) {
+                          case 'rules': return { name: gameSkillSuggestions.name, rules: gameSkillSuggestions.rules };
+                          case 'planning': return gameSkillSuggestions.planning;
+                          case 'assets': return gameSkillSuggestions.assets;
+                          case 'storyboard': return gameSkillSuggestions.storyboard;
+                          case 'media': return gameSkillSuggestions.media;
+                          case 'prompts': return gameSkillSuggestions.prompts;
+                          case 'editing': return gameSkillSuggestions.editing;
+                          default: return null;
+                        }
+                      };
+
+                      const suggestion = getSuggestion();
+                      const isRules = item.id === 'rules';
+
+                      return (
+                        <div key={item.id} className="space-y-4">
+                          <div className="space-y-1">
+                            <h3 className="text-lg font-bold text-foreground">{item.label}</h3>
+                            <div className="flex items-start gap-2 text-xs text-muted-foreground">
+                              <InfoIcon />
+                              <p>{item.sub}</p>
+                            </div>
+                          </div>
+
+                          {showSuggestions && suggestion ? (
+                            <div className="space-y-6">
+                              {isRules ? (
+                                <>
+                                  <DiffField 
+                                    label="Skill 名称" 
+                                    value="游戏宣发视频" 
+                                    index={1} 
+                                    currentIndex={currentSuggestionIndex}
+                                  />
+                                  <DiffField 
+                                    label="Skill调用规则" 
+                                    value={gameSkillSuggestions.rules} 
+                                    index={2} 
+                                    currentIndex={currentSuggestionIndex}
+                                    isTextarea
+                                  />
+                                </>
+                              ) : (
+                                <DiffField 
+                                  value={suggestion as string} 
+                                  index={sectionIdx + 2} 
+                                  currentIndex={currentSuggestionIndex}
+                                  isTextarea
+                                />
+                              )}
+                            </div>
                           ) : (
-                            <DiffField 
-                              value={suggestion as string} 
-                              index={sectionIdx + 2} 
-                              currentIndex={currentSuggestionIndex}
-                              isTextarea
-                            />
+                            isRules ? (
+                              <div className="space-y-6">
+                                <div className="space-y-2">
+                                  <label className="text-xs font-medium text-muted-foreground">Skill 名称</label>
+                                  <input 
+                                    placeholder="为你的Skill命名"
+                                    className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
+                                  />
+                                </div>
+                                <div className="space-y-2 relative">
+                                  <label className="text-xs font-medium text-muted-foreground">Skill调用规则</label>
+                                  <textarea 
+                                    placeholder="告诉 Agent 这个 Skill 应该在什么情况下被调用"
+                                    className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm min-h-[100px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
+                                  />
+                                  <span className="absolute bottom-3 right-3 text-[10px] text-muted-foreground/40">0/200</span>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="relative group">
+                                <textarea 
+                                  placeholder={`输入${item.label}内容...`}
+                                  className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-5 text-sm min-h-[200px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition placeholder:text-muted-foreground/30"
+                                />
+                                <button className="absolute bottom-4 right-4 text-muted-foreground/30 hover:text-muted-foreground transition opacity-0 group-hover:opacity-100">
+                                  <LayoutGrid className="h-4 w-4" />
+                                </button>
+                              </div>
+                            )
                           )}
                         </div>
-                      ) : (
-                        isRules ? (
-                          <div className="space-y-6">
-                            <div className="space-y-2">
-                              <label className="text-xs font-medium text-muted-foreground">Skill 名称</label>
-                              <input 
-                                placeholder="为你的Skill命名"
-                                className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
-                              />
-                            </div>
-                            <div className="space-y-2 relative">
-                              <label className="text-xs font-medium text-muted-foreground">Skill调用规则</label>
-                              <textarea 
-                                placeholder="告诉 Agent 这个 Skill 应该在什么情况下被调用"
-                                className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm min-h-[100px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
-                              />
-                              <span className="absolute bottom-3 right-3 text-[10px] text-muted-foreground/40">0/200</span>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="relative group">
-                            <textarea 
-                              placeholder={`输入${item.label}内容...`}
-                              className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-5 text-sm min-h-[200px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition placeholder:text-muted-foreground/30"
-                            />
-                            <button className="absolute bottom-4 right-4 text-muted-foreground/30 hover:text-muted-foreground transition opacity-0 group-hover:opacity-100">
-                              <LayoutGrid className="h-4 w-4" />
-                            </button>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  );
-                })}
+                      );
+                    })}
+                  </>
+                )}
               </div>
             </div>
 
