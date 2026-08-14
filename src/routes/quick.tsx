@@ -357,17 +357,17 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
       </div>
 
       <div className="mt-6 flex gap-3 opacity-60 transition-opacity group-hover:opacity-100">
-        <button className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-white transition hover:bg-white/10">
+        <button className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-xs font-medium text-foreground transition hover:bg-muted/40">
           <Edit3 className="h-3.5 w-3.5" />
           重新编辑
         </button>
-        <button className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-white transition hover:bg-white/10">
+        <button className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 px-4 py-2 text-xs font-medium text-foreground transition hover:bg-muted/40">
           <RefreshCw className="h-3.5 w-3.5" />
           重新生成
         </button>
       </div>
 
-      <div className="mt-12 w-full border-b border-white/5" />
+      <div className="mt-12 w-full border-b border-border" />
     </div>
   );
 }
