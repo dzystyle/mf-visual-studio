@@ -715,7 +715,7 @@ function Composer({
                     value={mentionFilter}
                     onChange={(e) => setMentionFilter(e.target.value)}
                     placeholder="搜索素材、角色、商品..."
-                    className="w-full bg-white/5 border-none rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:ring-1 focus:ring-white/10 focus:outline-none"
+                    className="w-full bg-muted/40 border-none rounded-lg pl-8 pr-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-border focus:outline-none"
                   />
                 </div>
               </div>
