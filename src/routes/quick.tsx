@@ -265,7 +265,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         {msg.status === "processing" ? (
           <>
             {[1, 2].map((i) => (
-              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/20">
+              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/10 dark:bg-muted/20">
                 <div className="relative flex h-16 w-16 items-center justify-center">
                   <Loader2 className="h-8 w-8 text-foreground/40 animate-spin" />
                   <svg className="absolute inset-0 h-full w-full -rotate-90">
