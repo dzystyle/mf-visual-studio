@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Plus, ChevronDown, Check } from "lucide-react";
+import { Plus, ChevronDown, Check, Info } from "lucide-react";
 import { useState } from "react";
 import { TopBar } from "@/components/TopBar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import skillJojo from "@/assets/skill-jojo.png.asset.json";
 import skillDimension from "@/assets/skill-dimension.png.asset.json";
 import skillDestiny from "@/assets/skill-destiny.png.asset.json";
@@ -120,6 +121,9 @@ function SkillDiscoveryPage() {
   const [activeTab, setActiveTab] = useState("精选");
   const [activeCategory, setActiveCategory] = useState("全部");
   const [sortOption, setSortOption] = useState("精选");
+  const [myFilter, setMyFilter] = useState("全部");
+
+  const myFilters = ["全部", "我创建的", "历史使用", "草稿"];
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors">
@@ -149,61 +153,103 @@ function SkillDiscoveryPage() {
           </button>
         </div>
 
-        {/* Filter Bar */}
-        <div className="mb-8 flex items-center justify-between overflow-x-auto pb-2 scrollbar-hide">
-          <div className="flex items-center gap-2">
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-medium transition-all ${
-                  activeCategory === cat 
-                  ? 'bg-foreground text-background' 
-                  : 'bg-white/5 text-muted-foreground border border-white/5 hover:bg-white/10'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2 pl-4">
-            <span className="text-[11px] text-muted-foreground">排序:</span>
-            <Popover>
-              <PopoverTrigger asChild>
-                <button className="flex items-center gap-1.5 text-xs font-medium text-foreground hover:opacity-80 transition">
-                  {sortOption}
-                  <ChevronDown className="h-3 w-3" />
-                </button>
-              </PopoverTrigger>
-              <PopoverContent align="end" className="w-32 p-1 bg-[#1c1c1f] border-white/10">
-                {SORT_OPTIONS.map(opt => (
+        {activeTab === "精选" ? (
+          <>
+            {/* Filter Bar for Featured */}
+            <div className="mb-8 flex items-center justify-between overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex items-center gap-2">
+                {CATEGORIES.map(cat => (
                   <button
-                    key={opt}
-                    onClick={() => setSortOption(opt)}
-                    className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-xs text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-medium transition-all ${
+                      activeCategory === cat 
+                      ? 'bg-foreground text-background' 
+                      : 'bg-white/5 text-muted-foreground border border-white/5 hover:bg-white/10'
+                    }`}
                   >
-                    {opt}
-                    {sortOption === opt && <Check className="h-3 w-3" />}
+                    {cat}
                   </button>
                 ))}
-              </PopoverContent>
-            </Popover>
-          </div>
-        </div>
+              </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {SKILLS.map(skill => (
-            <SkillCard key={skill.id} {...skill} />
-          ))}
-        </div>
+              <div className="flex items-center gap-2 pl-4">
+                <span className="text-[11px] text-muted-foreground">排序:</span>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="flex items-center gap-1.5 text-xs font-medium text-foreground hover:opacity-80 transition">
+                      {sortOption}
+                      <ChevronDown className="h-3 w-3" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent align="end" className="w-32 p-1 bg-[#1c1c1f] border-white/10">
+                    {SORT_OPTIONS.map(opt => (
+                      <button
+                        key={opt}
+                        onClick={() => setSortOption(opt)}
+                        className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-xs text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                      >
+                        {opt}
+                        {sortOption === opt && <Check className="h-3 w-3" />}
+                      </button>
+                    ))}
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+
+            {/* Grid for Featured */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {SKILLS.map(skill => (
+                <SkillCard key={skill.id} {...skill} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Filter Bar for My Skills */}
+            <div className="mb-6 flex items-center gap-3">
+              {myFilters.map(filter => (
+                <button
+                  key={filter}
+                  onClick={() => setMyFilter(filter)}
+                  className={`rounded-full px-4 py-1.5 text-xs font-medium transition-all ${
+                    myFilter === filter 
+                    ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/20' 
+                    : filter === "草稿" 
+                      ? 'bg-white/5 text-muted-foreground border border-dashed border-white/20 hover:bg-white/10'
+                      : 'bg-white/5 text-muted-foreground border border-white/5 hover:bg-white/10'
+                  }`}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+
+            <div className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground/60">
+              <span>默认调用</span>
+              <Info className="h-3.5 w-3.5" />
+            </div>
+
+            {/* Grid for My Skills */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {SKILLS.map((skill, idx) => (
+                <SkillCard 
+                  key={skill.id} 
+                  {...skill} 
+                  isMySkill={true}
+                  myLabel={idx === 0 ? "历史使用" : (idx === 1 || idx === 6 || idx === 7 ? "我创建的" : undefined)}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
 }
 
-function SkillCard({ title, version, author, model, desc, image, isDefault, authorAvatar }: any) {
+function SkillCard({ title, version, author, model, desc, image, isDefault, authorAvatar, isMySkill, myLabel }: any) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -238,7 +284,10 @@ function SkillCard({ title, version, author, model, desc, image, isDefault, auth
         </div>
 
         {/* Default Toggle (Bottom Right) */}
-        <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/40 px-2 py-1 backdrop-blur-md border border-white/5">
+        <div className={cn(
+          "absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/40 px-2 py-1 backdrop-blur-md border border-white/5",
+          isMySkill && isDefault && "bg-emerald-600/60 border-emerald-500/30"
+        )}>
           <span className="text-[10px] text-white/60">{isDefault ? "取消默认" : "设为默认"}</span>
           <div className={`h-2.5 w-5 rounded-full p-0.5 transition-colors ${isDefault ? 'bg-emerald-500' : 'bg-white/20'}`}>
             <div className={`h-1.5 w-1.5 rounded-full bg-white transition-transform ${isDefault ? 'translate-x-2' : 'translate-x-0'}`} />
@@ -256,12 +305,18 @@ function SkillCard({ title, version, author, model, desc, image, isDefault, auth
         </div>
         
         <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground/80 mb-4">
-          {desc}
+          {desc || "无描述"}
         </p>
 
         <div className="mt-auto flex items-center gap-2">
-          <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">全部</div>
-          <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">剧情短片</div>
+          {isMySkill && myLabel ? (
+            <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">{myLabel}</div>
+          ) : (
+            <>
+              <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">全部</div>
+              <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">剧情短片</div>
+            </>
+          )}
         </div>
       </div>
     </div>
