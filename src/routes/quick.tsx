@@ -257,7 +257,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         </span>
       </div>
 
-      <div className="text-sm leading-relaxed text-foreground/60 mb-6 max-w-4xl">
+      <div className="text-sm leading-relaxed text-foreground/80 dark:text-foreground/60 mb-6 max-w-4xl">
         {msg.prompt}
       </div>
 
