@@ -148,11 +148,9 @@ export function PromptBox({
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
       
-      // If there's non-whitespace text before the @, we preserve it.
-      // But the requirement specifically mentions "IMG_2883.JPG输入111然后@选择角色01"
-      // If "111" was before @, we should keep it.
-      // The current logic does this: before + after.
-      newText = (before + after).trim();
+      // We keep everything before the @ and everything after the current mention context
+      // This ensures "111 @mention" results in "111 " (with the mention as a chip outside)
+      newText = (before + after);
       newCursorPos = before.length;
     } else {
       newText = text;
@@ -160,13 +158,6 @@ export function PromptBox({
     }
 
     setText(newText);
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
-        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
-        setCursorPos(newCursorPos);
-      }
-    }, 0);
     
     setMentionOpen(false);
     
@@ -185,6 +176,15 @@ export function PromptBox({
         ]);
       }
     }
+
+    // Force focus and cursor position after state update
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
+        setCursorPos(newCursorPos);
+      }
+    }, 10);
   };
 
   return (
@@ -226,7 +226,7 @@ export function PromptBox({
             ref={textareaRef}
             rows={1}
             value={text}
-            style={{ order: 999 }}
+            style={{ order: 9999 }}
             onChange={(e) => {
               setText(e.target.value);
               setCursorPos(e.target.selectionStart);
