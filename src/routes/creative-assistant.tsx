@@ -216,14 +216,18 @@ function CreativeAssistantPage() {
       const next = Math.min(prev + 1, 4);
       if (prev === 4) {
         // When user finishes the choice card, simulate a user message
-        const userMsg: Message = {
-          id: Math.random().toString(),
-          role: "user",
-          content: "我已确认以上信息",
-          timestamp: new Date().toLocaleString(),
-        };
-        setMessages(prevMsgs => [...prevMsgs, userMsg]);
-        triggerAssistantResponse(2);
+        // First check if we already have this confirmation message to avoid duplicates
+        const alreadyConfirmed = messages.some(m => m.role === "user" && m.content === "我已确认以上信息");
+        if (!alreadyConfirmed) {
+          const userMsg: Message = {
+            id: Math.random().toString(),
+            role: "user",
+            content: "我已确认以上信息",
+            timestamp: new Date().toLocaleString(),
+          };
+          setMessages(prevMsgs => [...prevMsgs, userMsg]);
+          triggerAssistantResponse(2);
+        }
       }
       return next;
     });
