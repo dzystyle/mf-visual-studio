@@ -930,7 +930,7 @@ function FilterMenu({ label, options, isFirst, isLast }: { label: string; option
 
 function FilterChip({ label }: { label: string }) {
   return (
-    <button className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/60 hover:text-white transition-colors">
+    <button className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/20 px-3 py-1.5 text-xs text-muted-foreground/60 hover:text-foreground transition-colors">
       {label}
       <ChevronDown className="h-3 w-3" />
     </button>
