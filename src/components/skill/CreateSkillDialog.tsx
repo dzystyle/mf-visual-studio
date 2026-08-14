@@ -360,14 +360,27 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
       setEditSkillData(skill);
       setMarkdownContent(GAME_SKILL_MARKDOWN); // Pre-fill with example markdown if editing
       setShowSuggestions(true);
-      // In a real app, we'd map skill data to the form fields
+      
+      // Sync assistant chat for editing mode
+      setMessages([
+        { 
+          role: 'assistant', 
+          content: `正在编辑 Skill: ${skill.title}\n\n我已经加载了该 Skill 的所有配置数据，你可以通过对话让我帮你进行优化。` 
+        }
+      ]);
+      
       delete (window as any).__skill_to_edit;
     } else if (open) {
       // Reset if creating new
       setEditSkillData(null);
       setMarkdownContent("");
       setShowSuggestions(false);
-      setMessages([]);
+      setMessages([
+        { 
+          role: 'assistant', 
+          content: "你好！我是你的 Skill 优化助手。我可以帮你快速搭建一个专业的 Skill 框架。\n\n你可以告诉我你想要实现的创作场景，比如：\"我想生成一个游戏宣发的 skill\"。" 
+        }
+      ]);
     }
   }, [open]);
 
