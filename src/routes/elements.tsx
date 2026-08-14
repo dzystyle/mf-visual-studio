@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BrandMark, TopBar } from "@/components/TopBar";
 
 export const Route = createFileRoute("/elements")({
-  head: () => ({ meta: [{ title: "元素库 — movieflow.ai" }] }),
+  head: () => ({ meta: [{ title: "资产库 — artrail.ai" }] }),
   component: () => (
     <div className="relative min-h-screen">
       <section className="aurora-bg px-8 pb-10 pt-16">

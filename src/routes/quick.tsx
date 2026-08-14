@@ -84,7 +84,7 @@ const initialMsgs: Msg[] = [
 ];
 
 export const Route = createFileRoute("/quick")({
-  head: () => ({ meta: [{ title: "快速生成 — movieflow.ai" }] }),
+  head: () => ({ meta: [{ title: "快速生成 — artrail.ai" }] }),
   component: QuickPage,
 });
 
