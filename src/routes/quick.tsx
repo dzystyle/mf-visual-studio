@@ -794,12 +794,12 @@ function Composer({
               <ChevronDown className="h-3 w-3 opacity-60" />
             </button>
           </PopoverTrigger>
-          <PopoverContent align="start" className="w-48 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+          <PopoverContent align="start" className="w-48 p-1 border-border bg-popover backdrop-blur-xl rounded-xl shadow-2xl">
             {["Seedance 2.0", "Seedance 2.5", "Seedance 1.5"].map((m) => (
               <button 
                 key={m}
                 onClick={() => setModel(m)}
-                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${model === m ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+                className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${model === m ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'}`}
               >
                 {m}
               </button>
