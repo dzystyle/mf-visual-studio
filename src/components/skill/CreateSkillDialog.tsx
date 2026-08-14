@@ -667,13 +667,13 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                 <>
                                   <DiffField 
                                     label="Skill 名称" 
-                                    value="游戏宣发视频" 
+                                    value="RPG 游戏宣发视频" 
                                     index={1} 
                                     currentIndex={currentSuggestionIndex}
                                   />
                                   <DiffField 
                                     label="Skill调用规则" 
-                                    value={gameSkillSuggestions.rules} 
+                                    value="适用于角色扮演游戏（RPG）的新游预告、版本更新、角色展示与活动推广；突出世界观、角色成长、职业战斗和探索氛围，并清晰传达核心玩法与上线信息。" 
                                     index={2} 
                                     currentIndex={currentSuggestionIndex}
                                     isTextarea
