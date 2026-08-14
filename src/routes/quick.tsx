@@ -426,9 +426,9 @@ function Composer({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = input.slice(0, lastAtPos);
       const after = input.slice(cursorPos);
-      // Remove the @mention text entirely from input
-      newInput = `${before.trimEnd()}${after.startsWith(" ") ? after : " " + after}`.trim();
-      newCursorPos = before.trimEnd().length;
+      // Keep the @name in the input text
+      newInput = `${before}@${name} ${after.startsWith(" ") ? after.slice(1) : after}`;
+      newCursorPos = before.length + name.length + 2;
     } else {
       newInput = input;
       newCursorPos = cursorPos;
