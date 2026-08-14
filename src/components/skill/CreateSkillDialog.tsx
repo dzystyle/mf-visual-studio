@@ -674,16 +674,13 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
             {/* Right Assistant Panel */}
             <div className="w-[450px] flex flex-col bg-[#161618] border-l border-white/5">
               {/* Header */}
-              <div className="flex h-16 items-center justify-between px-6 shrink-0 border-b border-white/5">
+              <div className="flex h-16 items-center px-6 shrink-0 border-b border-white/5">
                 <div className="flex items-center gap-2">
                   <div className="flex h-6 w-6 items-center justify-center rounded-md bg-white/5 text-muted-foreground">
                     <Code2 className="h-3.5 w-3.5" />
                   </div>
                   <span className="text-sm font-medium">Skill优化助手</span>
                 </div>
-                <DialogPrimitive.Close className="rounded-full p-1 text-muted-foreground hover:bg-white/5 hover:text-foreground transition">
-                  <X className="h-5 w-5" />
-                </DialogPrimitive.Close>
               </div>
 
               {/* Chat Content */}
