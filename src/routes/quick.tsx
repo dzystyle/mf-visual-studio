@@ -211,7 +211,7 @@ function QuickPage() {
                 <Plus className="h-4 w-4 text-muted-foreground/60 dark:text-muted-foreground/40" />
                 <div className="flex-1 text-sm text-muted-foreground/60 dark:text-muted-foreground/40">使用@快速调用参考能力，支持文本、图片、音频、视频全能参考...</div>
                 <div className="flex items-center gap-2">
-                  <ChevronDown className="h-4 w-4 text-muted-foreground/40" />
+                  <ChevronDown className="h-4 w-4 text-muted-foreground/60 dark:text-muted-foreground/40" />
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground/10 text-foreground/60">
                     <ArrowUp className="h-4 w-4" />
                   </div>
