@@ -641,11 +641,11 @@ function Composer({
         {/* Row 1: Add Image button */}
         <div className="mb-4 flex items-center gap-3">
           {attachments.map((a) => (
-            <div key={a.id} className="relative group h-16 w-16 shrink-0 rounded-xl overflow-hidden border border-white/10">
+            <div key={a.id} className="relative group h-16 w-16 shrink-0 rounded-xl overflow-hidden border border-border">
               <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
               <button 
                 onClick={() => setAttachments(prev => prev.filter(x => x.id !== a.id))}
-                className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
+                className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-background/60 text-foreground opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
               >
                 <Plus className="h-3 w-3 rotate-45" />
               </button>
