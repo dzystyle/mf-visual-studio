@@ -578,7 +578,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1 rounded-lg bg-white/5 px-3 py-1.5 text-xs text-white/60 cursor-pointer hover:bg-white/10 transition group">
                             <ChevronDown onClick={handlePrevSuggestion} className="h-3 w-3 rotate-180 opacity-40 hover:opacity-100 transition" />
-                            <span>第 {currentSuggestionIndex} / 8 处</span>
+                            <span>第 {currentSuggestionIndex} / 5 处</span>
                             <ChevronDown onClick={handleNextSuggestion} className="h-3 w-3 opacity-40 hover:opacity-100 transition" />
                           </div>
                           <button 
