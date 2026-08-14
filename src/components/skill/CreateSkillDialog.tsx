@@ -456,10 +456,25 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                     {showSuggestions ? "游戏宣发视频" : "未命名Skill"}
                   </span>
                 </div>
-                <button className="flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 text-sm font-medium border border-white/10 hover:bg-white/10 transition group">
-                  <Save className="h-4 w-4 text-white/40 group-hover:text-white transition" />
-                  保存
-                </button>
+                <div className="flex items-center gap-3">
+                  <button 
+                    onClick={handleSave}
+                    disabled={isSaving}
+                    className={cn(
+                      "flex items-center gap-3 rounded-full bg-[#E1B166] px-5 py-2 text-sm font-semibold text-black transition hover:bg-[#f0c07d] active:scale-95 disabled:opacity-50",
+                      isSaving && "cursor-not-allowed"
+                    )}
+                  >
+                    <Save className={cn("h-4 w-4", isSaving && "animate-spin")} />
+                    {isSaving ? "正在保存..." : "保存这个Skill"}
+                  </button>
+                  <button 
+                    onClick={() => onOpenChange(false)}
+                    className="rounded-full bg-white/5 p-2 text-white/40 transition hover:bg-white/10 hover:text-white"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
 
               {/* Content */}
