@@ -201,43 +201,40 @@ export function PromptBox({
     }`}>
       {/* Canvas mode toggle removed from here */}
       <div className="relative">
-        {!isMini && (attachments.length > 0 || skill) && (
-          <div className="mb-3 flex flex-wrap items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-300">
-            {skill && (
-              <div className="flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1.5 text-[13px] text-white font-medium group transition-all hover:bg-white/15">
-                <Package className="h-3.5 w-3.5 text-white/60" />
-                <span>{skill}</span>
-                <button 
-                  onClick={() => setSkill(null)}
-                  className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-white/20 text-white/40 hover:text-white transition-all"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            )}
-            {attachments.map((a) => (
-              <div key={a.id} className="inline-flex h-[32px] items-center gap-2 rounded-lg bg-white/10 border border-white/20 pl-1.5 pr-2 py-1 text-xs text-white">
-                {a.url && (
-                  <div className="h-5 w-5 shrink-0 rounded overflow-hidden border border-white/10">
-                    <img src={a.url} alt="" className="w-full h-full object-cover" />
-                  </div>
-                )}
-                <span className="leading-none">{a.name}</span>
-                <button 
-                  onClick={() => remove(a.id, a.name)}
-                  className="hover:text-white/60 transition-colors"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-        
-        <div className="flex items-center gap-3">
+      <div className="relative">
+        <div className={`flex flex-wrap items-center gap-2 ${!isMini ? 'mb-2' : ''}`}>
+          {!isMini && skill && (
+            <div className="flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1.5 text-[13px] text-white font-medium group transition-all hover:bg-white/15 animate-in fade-in slide-in-from-top-1 duration-300">
+              <Package className="h-3.5 w-3.5 text-white/60" />
+              <span>{skill}</span>
+              <button 
+                onClick={() => setSkill(null)}
+                className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-white/20 text-white/40 hover:text-white transition-all"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          )}
+          {!isMini && attachments.map((a) => (
+            <div key={a.id} className="inline-flex h-[32px] items-center gap-2 rounded-lg bg-white/10 border border-white/20 pl-1.5 pr-2 py-1 text-xs text-white animate-in fade-in slide-in-from-top-1 duration-300">
+              {a.url && (
+                <div className="h-5 w-5 shrink-0 rounded overflow-hidden border border-white/10">
+                  <img src={a.url} alt="" className="w-full h-full object-cover" />
+                </div>
+              )}
+              <span className="leading-none">{a.name}</span>
+              <button 
+                onClick={() => remove(a.id, a.name)}
+                className="hover:text-white/60 transition-colors"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          ))}
+          
           <textarea
             ref={textareaRef}
-            rows={isMini ? 1 : 3}
+            rows={isMini ? 1 : 1}
             value={text}
             onChange={(e) => {
               setText(e.target.value);
@@ -261,8 +258,8 @@ export function PromptBox({
               }
             }}
             placeholder={isMini ? "由一个想法或故事开始..." : "由一个想法或故事开始..."}
-            className={`w-full resize-none bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 ${
-              isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[48px]'
+            className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 ${
+              isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
             }`}
           />
           {isMini && (
