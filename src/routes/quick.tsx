@@ -177,7 +177,7 @@ function QuickPage() {
 
         <div className="mx-auto mb-4 flex w-full max-w-7xl items-center gap-2 pt-16 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-3xl font-bold text-foreground/90">5.21</span>
+            <span className="text-3xl font-bold text-foreground/80 dark:text-foreground/90">5.21</span>
           </div>
           <div className="ml-auto flex items-center overflow-hidden rounded-full border border-border bg-background/50 backdrop-blur-sm">
             <FilterMenu label="全部时间" options={['全部', '今天', '近7天', '近30天']} isFirst />
