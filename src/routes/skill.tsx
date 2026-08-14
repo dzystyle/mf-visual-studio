@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Plus, ChevronDown, Check } from "lucide-react";
+import { Plus, ChevronDown, Check, Info } from "lucide-react";
 import { useState } from "react";
 import { TopBar } from "@/components/TopBar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import skillJojo from "@/assets/skill-jojo.png.asset.json";
 import skillDimension from "@/assets/skill-dimension.png.asset.json";
 import skillDestiny from "@/assets/skill-destiny.png.asset.json";
