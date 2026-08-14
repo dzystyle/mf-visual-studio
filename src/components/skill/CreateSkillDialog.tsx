@@ -153,6 +153,9 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
           )
         }]);
       }, 600);
+      setTimeout(() => {
+        setShowSuggestions(true);
+      }, 1000);
     }
   };
 
