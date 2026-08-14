@@ -247,7 +247,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         {msg.size && <Tag>{msg.size}</Tag>}
         <Tag>{msg.ratio}</Tag>
         {msg.badge && (
-          <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-400 font-mono">
+          <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-600 dark:text-amber-400 font-mono">
              <span className="h-1 w-1 rounded-full bg-amber-400" />
             -5
           </span>
