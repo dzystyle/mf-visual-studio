@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X, ChevronRight, Save, LayoutGrid, Eye, Code2, Plus, Mic, ArrowUp, CheckCircle2, MoreHorizontal } from "lucide-react";
+import { X, ChevronRight, Save, LayoutGrid, Eye, Code2, Plus, Mic, ArrowUp, CheckCircle2, MoreHorizontal, Send, ChevronDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CreateSkillDialogProps {
