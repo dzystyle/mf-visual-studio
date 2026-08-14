@@ -446,6 +446,7 @@ export function PromptBox({
                     </div>
                   </div>
                   
+                  
                   <div className="relative pt-2 pb-4">
                     <input 
                       type="range" 
