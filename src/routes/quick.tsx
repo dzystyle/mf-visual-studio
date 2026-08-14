@@ -309,11 +309,11 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
                 <div className="text-sm text-foreground/60">生成失败</div>
                 
                 <div className="flex gap-2">
-                  <button className="flex items-center gap-1.5 rounded-full bg-white/5 px-4 py-1.5 text-xs text-white/40 transition hover:bg-white/10 hover:text-white/60">
+                  <button className="flex items-center gap-1.5 rounded-full bg-muted/40 px-4 py-1.5 text-xs text-muted-foreground/60 transition hover:bg-muted/60 hover:text-foreground/80">
                     <RotateCcw className="h-3.5 w-3.5" />
                     重试
                   </button>
-                  <button className="flex items-center gap-1.5 rounded-full bg-white/5 px-4 py-1.5 text-xs text-white/40 transition hover:bg-white/10 hover:text-white/60">
+                  <button className="flex items-center gap-1.5 rounded-full bg-muted/40 px-4 py-1.5 text-xs text-muted-foreground/60 transition hover:bg-muted/60 hover:text-foreground/80">
                     <Trash2 className="h-3.5 w-3.5" />
                     删除
                   </button>
