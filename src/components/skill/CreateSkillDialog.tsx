@@ -351,26 +351,37 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
   const [rejectedChanges, setRejectedChanges] = React.useState<Set<number>>(new Set());
   const [selectedDirection, setSelectedDirection] = React.useState<number | null>(null);
 
+  // We use a counter to force a re-render of the messages array when state changes
+  const [updateCounter, setUpdateCounter] = React.useState(0);
+  
   const handleSelect = (idx: number) => {
     setSelectedDirection(idx);
+    setUpdateCounter(prev => prev + 1);
   };
 
   const handleSend = () => {
     if (!inputValue.trim()) return;
     
-    const userMsg = { role: 'user' as const, content: inputValue };
-    setMessages(prev => [...prev, userMsg]);
-    
-    if (inputValue.includes("游戏宣发")) {
-      setTimeout(() => {
-        setMessages(prev => [...prev, { role: 'assistant', content: 'GAME_SKILL_FLOW' }]);
-        setShowSuggestions(true);
-        setMarkdownContent(GAME_SKILL_MARKDOWN);
-      }, 600);
-    }
-    
+    const userMsg = inputValue;
+    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
     setInputValue("");
+
+    // Simulate system response if it's the game skill request
+    if (userMsg.includes("游戏宣发")) {
+      setTimeout(() => {
+        setMessages(prev => [...prev, { 
+          role: 'assistant', 
+          content: 'GAME_SKILL_FLOW'
+        }]);
+      }, 600);
+      setTimeout(() => {
+        setShowSuggestions(true);
+        setCurrentSuggestionIndex(1);
+        setMarkdownContent(GAME_SKILL_MARKDOWN);
+      }, 1500);
+    }
   };
+
 
   
   const gameSkillSuggestions = {
