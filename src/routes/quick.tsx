@@ -349,7 +349,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
               </div>
               
               <div className="absolute bottom-2 left-2 flex gap-1 opacity-0 transition-opacity group-hover/item:opacity-100">
-                <span className="text-[10px] text-foreground/40 bg-background/60 px-1.5 rounded">{i}</span>
+                <span className="text-[10px] text-foreground/40 dark:text-foreground/60 bg-background/60 px-1.5 rounded">{i}</span>
               </div>
             </div>
           ))
