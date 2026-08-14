@@ -190,6 +190,14 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
   const [selectedDirection, setSelectedDirection] = React.useState<number | null>(0);
 
+  // We use a counter to force a re-render of the messages array when state changes
+  const [updateCounter, setUpdateCounter] = React.useState(0);
+  
+  const handleSelect = (idx: number) => {
+    setSelectedDirection(idx);
+    setUpdateCounter(prev => prev + 1);
+  };
+
   const handleSend = () => {
     if (!inputValue.trim()) return;
     
@@ -211,6 +219,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
       }, 1500);
     }
   };
+
 
 
   const handleNextSuggestion = () => {
