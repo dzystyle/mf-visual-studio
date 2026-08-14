@@ -3,7 +3,6 @@ import {
   Plus,
   LayoutGrid,
   Package,
-  Smile,
   ArrowUp,
   Image as ImageIcon,
   AudioLines,
@@ -11,14 +10,12 @@ import {
   FileText,
   X,
   ChevronDown,
-  AtSign,
   Search,
   Mic,
 } from "lucide-react";
 import {
   ModelPicker,
   SkillPicker,
-  ElementsPicker,
   ElementsPickerDialog,
 } from "./picker-dialogs";
 import {
@@ -54,11 +51,9 @@ export function PromptBox({
   const [model, setModel] = useState<string | null>(null);
   const [skill, setSkill] = useState<string | null>(null);
   const [ratio, setRatio] = useState("16:9");
-  const [duration, setDuration] = useState(179);
+  const [duration, setDuration] = useState(17);
   const [canvasMode, setCanvasMode] = useState(false);
-  const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
   const [assetsOpen, setAssetsOpen] = useState(false);
-  const [videoMode, setVideoMode] = useState("图生视频");
   const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
   const [mentionFilter, setMentionFilter] = useState("");
@@ -129,9 +124,8 @@ export function PromptBox({
     setAttachments((prev) => [...prev, ...next]);
   };
 
-  const remove = (id: string, name?: string) => {
+  const removeAttachment = (id: string, name?: string) => {
     setAttachments((prev) => prev.filter((a) => a.id !== id));
-    // When removing an attachment, also remove any corresponding @mentions from the text
     if (name) {
       setText(prev => {
         const mention = `@${name}`;
@@ -150,12 +144,6 @@ export function PromptBox({
     let newText: string;
     let newCursorPos: number;
 
-    // In "Quick" mode (implied by user request to match interaction), 
-    // selecting a mention removes the @text and shows a chip.
-    // However, PromptBox currently uses the chip-only-above-input style.
-    // The user wants "@uploaded image" to work like Quick page.
-    // In QuickPage, @mention select removes @ from input and adds a chip below.
-    
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
@@ -177,7 +165,6 @@ export function PromptBox({
     
     setMentionOpen(false);
     
-    // Add to attachments if it has a URL (coming from Asset Library or already uploaded)
     if (url) {
       const exists = attachments.find(a => a.url === url);
       if (!exists) {
@@ -222,7 +209,7 @@ export function PromptBox({
               )}
               <span className="leading-none">{a.name}</span>
               <button 
-                onClick={() => remove(a.id, a.name)}
+                onClick={() => removeAttachment(a.id, a.name)}
                 className="hover:text-white/60 transition-colors"
               >
                 <X className="h-3 w-3" />
@@ -232,7 +219,7 @@ export function PromptBox({
           
           <textarea
             ref={textareaRef}
-            rows={isMini ? 1 : 1}
+            rows={1}
             value={text}
             onChange={(e) => {
               setText(e.target.value);
@@ -255,7 +242,7 @@ export function PromptBox({
                 }
               }
             }}
-            placeholder={isMini ? "由一个想法或故事开始..." : "由一个想法或故事开始..."}
+            placeholder="由一个想法或故事开始..."
             className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 ${
               isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
             }`}
@@ -325,25 +312,23 @@ export function PromptBox({
       {!isMini && (
         <div className="mt-4 flex items-center justify-between">
           <div className="flex flex-wrap items-center gap-2">
-            {!isMini && (
-              <Popover open={plusOpen} onOpenChange={setPlusOpen}>
-                <PopoverTrigger asChild>
-                  <button 
-                    type="button"
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent transition-colors relative z-10"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent side="top" align="start" className="w-40 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
-                  <AddItem icon={ImageIcon} label="本地上传" onClick={() => triggerPick("image")} />
-                  <AddItem icon={LayoutGrid} label="资产库" onClick={() => setAssetsOpen(true)} />
-                </PopoverContent>
-              </Popover>
-            )}
+            <Popover open={plusOpen} onOpenChange={setPlusOpen}>
+              <PopoverTrigger asChild>
+                <button 
+                  type="button"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent transition-colors relative z-10"
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent side="top" align="start" className="w-40 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+                <AddItem icon={ImageIcon} label="本地上传" onClick={() => triggerPick("image")} />
+                <AddItem icon={LayoutGrid} label="资产库" onClick={() => setAssetsOpen(true)} />
+              </PopoverContent>
+            </Popover>
             <input ref={fileInputRef} type="file" multiple className="hidden" onChange={onFiles} />
             
-            {!isMini && <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} onSelect={handleMentionSelect} />}
+            <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} onSelect={handleMentionSelect} />
             
 
             <Popover>
@@ -446,7 +431,6 @@ export function PromptBox({
                     </div>
                   </div>
                   
-                  
                   <div className="relative pt-2 pb-4">
                     <input 
                       type="range" 
@@ -463,9 +447,9 @@ export function PromptBox({
                     </div>
                   </div>
                 </div>
-
               </PopoverContent>
             </Popover>
+
             <div className="flex items-center gap-2 px-3 py-1 bg-card/40 border border-border rounded-full hover:bg-card transition">
               <span className="text-[11px] font-medium text-muted-foreground">画布</span>
               <button 
@@ -478,13 +462,18 @@ export function PromptBox({
               </button>
             </div>
           </div>
+
           <div className="flex items-center gap-2">
             <button type="button" className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition hover:bg-accent hover:text-foreground" onClick={() => console.log("Voice input triggered")}>
               <Mic className="h-4 w-4" />
             </button>
             <button onClick={() => {
                 const v = text.trim();
-                if (v && onSubmit) { onSubmit(v, canvasMode); setText(""); }
+                if (v && onSubmit) { 
+                  onSubmit(v, canvasMode); 
+                  setText(""); 
+                  setAttachments([]);
+                }
               }} className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
             >
               <ArrowUp className="h-4 w-4" />
@@ -505,49 +494,6 @@ function AddItem({ icon: Icon, label, onClick }: { icon: any; label: string; onC
   );
 }
 
-function RatioItem({ label, icon, active, onClick }: { label: string; icon: React.ReactNode; active?: boolean; onClick?: () => void }) {
-  return (
-    <button onClick={onClick} className="flex w-full items-center justify-between gap-3 rounded-lg px-2 py-2 text-xs text-foreground transition hover:bg-accent/60">
-      <div className="flex items-center gap-2"><span className="text-muted-foreground">{icon}</span><span>{label}</span></div>
-      {active && <div className="h-1.5 w-1.5 rounded-full bg-foreground" />}
-    </button>
-  );
-}
-
-function MentionItem({ label, img, icon, active, onClick }: { label: string; img?: string; icon?: React.ReactNode; active?: boolean; onClick?: () => void }) {
-  return (
-    <button onClick={onClick} className={`flex w-full items-center gap-3 rounded-xl px-2 py-2 text-xs text-foreground transition hover:bg-accent/60 ${active ? 'bg-accent/80' : ''}`}>
-      <div className="h-8 w-8 overflow-hidden rounded-lg border border-border bg-muted/40 relative">
-        {img ? <img src={img} alt={label} className="h-full w-full object-cover" /> : <div className="flex h-full w-full items-center justify-center">{icon}</div>}
-        {active && <div className="absolute inset-0 bg-aurora-blue/20 flex items-center justify-center"><div className="w-1.5 h-1.5 rounded-full bg-aurora-blue shadow-[0_0_8px_rgba(59,130,246,0.8)]" /></div>}
-      </div>
-      <span className={`font-medium text-[13px] ${active ? 'text-foreground' : 'text-foreground/80'}`}>{label}</span>
-    </button>
-  );
-}
-
-function AttachmentChip({ a, onRemove, onAtClick }: { a: Attachment; onRemove: () => void; onAtClick?: () => void }) {
-  const [isZoomed, setIsZoomed] = useState(false);
-  const Icon = a.kind === "image" ? ImageIcon : a.kind === "audio" ? AudioLines : a.kind === "video" ? Video : FileText;
-  return (
-    <div className="group relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 bg-card/60 shadow-lg cursor-pointer" onClick={() => a.url && setIsZoomed(true)}>
-      {a.kind === "image" && a.url ? <img src={a.url} alt={a.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" /> : <div className="flex h-full w-full flex-col items-center justify-center gap-1"><Icon className="h-5 w-5 text-muted-foreground" /><div className="px-1 text-[8px] text-muted-foreground truncate w-full text-center">{a.name}</div></div>}
-      <button onClick={(e) => { e.stopPropagation(); onRemove(); }} className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black/60 text-white/80 opacity-0 transition group-hover:opacity-100 hover:bg-black hover:text-white"><X className="h-2.5 w-2.5" /></button>
-    </div>
-  );
-}
-
-function Chip({ icon: Icon, label, badge, active, onClear }: { icon: any; label: string; badge?: string; active?: boolean; onClear?: () => void; }) {
-  return (
-    <div className={`relative flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition ${active ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'border-border bg-card/40 text-foreground hover:bg-card'}`}>
-      <Icon className={`h-3.5 w-3.5 ${active ? 'text-aurora-blue' : 'text-muted-foreground'}`} />
-      <span className="font-medium">{label}</span>
-      {badge && <span className="flex h-4 items-center rounded bg-aurora-purple/20 px-1 text-[8px] font-bold uppercase text-aurora-purple">{badge}</span>}
-      {onClear && <button onClick={(e) => { e.stopPropagation(); onClear(); }} className="ml-0.5 hover:text-aurora-blue"><X className="h-3 w-3" /></button>}
-    </div>
-  );
-}
-
 function MentionListItem({ item, onClick }: { item: any; onClick: () => void }) {
   return (
     <button onClick={onClick} className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl hover:bg-white/5 transition group text-left">
@@ -560,5 +506,16 @@ function MentionListItem({ item, onClick }: { item: any; onClick: () => void }) 
       </div>
       <div className="opacity-0 group-hover:opacity-100 transition-opacity"><ArrowUp className="h-3.5 w-3.5 text-muted-foreground" /></div>
     </button>
+  );
+}
+
+function Chip({ icon: Icon, label, badge, active, onClear }: { icon: any; label: string; badge?: string; active?: boolean; onClear?: () => void; }) {
+  return (
+    <div className={`relative flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition ${active ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'border-border bg-card/40 text-foreground hover:bg-card'}`}>
+      <Icon className={`h-3.5 w-3.5 ${active ? 'text-aurora-blue' : 'text-muted-foreground'}`} />
+      <span className="font-medium">{label}</span>
+      {badge && <span className="flex h-4 items-center rounded bg-aurora-purple/20 px-1 text-[8px] font-bold uppercase text-aurora-purple">{badge}</span>}
+      {onClear && <button onClick={(e) => { e.stopPropagation(); onClear(); }} className="ml-0.5 hover:text-aurora-blue"><X className="h-3 w-3" /></button>}
+    </div>
   );
 }
