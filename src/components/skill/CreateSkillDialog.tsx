@@ -27,12 +27,12 @@ function InfoIcon() {
 }
 
 function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) => void, currentSelection: number | null }) {
-  const options = [
-    { title: "指定游戏类型", desc: "告诉我是 RPG、FPS、MOBA 还是其他类型，我来针对性调整视觉风格和节奏规则" },
-    { title: "调整视频模型", desc: "换用其他视频生成模型（如 Seedance 2.5），或指定分辨率、时长等参数" },
-    { title: "加入角色声音一致性", desc: "为角色添加 key_element_audio（声音参考绑定），保证多镜头中同一角色对白音色一致" },
-    { title: "补充用户提供素材的处理流程", desc: "详细规定当用户上传官方截图、立绘或已有宣传片时，如何分析并融入生成工作流" }
-  ];
+    const options = [
+      { title: "指定游戏类型", desc: "告诉我是 RPG、FPS、MOBA 还是其他类型，我来针对性调整视觉风格和节奏规则" },
+      { title: "调整视频模型", desc: "换用其他视频生成模型（如 Seedance 2.5），或指定分辨率、时长等参数" },
+      { title: "加入角色声音一致性", desc: "为角色添加 key_element_audio（声音参考绑定），保证多镜头中同一角色对白音色一致" },
+      { title: "补充用户提供素材的处理流程", desc: "详细规定当用户上传官方截图、立绘或已有宣传片时，如何分析并融入生成工作流" }
+    ];
 
   return (
     <div className="mt-4 rounded-[20px] bg-[#1a1a1c] border border-white/[0.03] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)]">
@@ -352,6 +352,30 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
   const [selectedDirection, setSelectedDirection] = React.useState<number | null>(null);
   const [isSaving, setIsSaving] = React.useState(false);
   const [editSkillData, setEditSkillData] = React.useState<any>(null);
+
+  // Expose handler for child components
+  React.useEffect(() => {
+    (window as any).__handleAssistantAction = (type: string, data: any) => {
+      if (type === 'other_rpg') {
+        handleOtherRPG(data);
+      }
+    };
+    return () => {
+      delete (window as any).__handleAssistantAction;
+    };
+  }, []);
+
+  const handleOtherRPG = (text: string) => {
+    setMessages(prev => [...prev, { role: 'user', content: text }]);
+    
+    // RPG specific response
+    setTimeout(() => {
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: 'RPG_SKILL_FLOW'
+      }]);
+    }, 600);
+  };
 
   // Initializing state if editing
   React.useEffect(() => {
@@ -779,6 +803,54 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                               <button className="h-9 w-9 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white/60 transition">
                                 <ArrowUp className="h-5 w-5" />
                               </button>
+                            </div>
+                          </div>
+                        ) : msg.content === 'RPG_SKILL_FLOW' ? (
+                          <div className="space-y-6">
+                            <div className="flex items-center gap-2 text-white/40 text-xs">
+                              <Code2 className="h-3 w-3" />
+                              <span>信息搜索完成</span>
+                            </div>
+
+                            <div className="relative group">
+                              <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/5 cursor-pointer hover:bg-white/[0.06] transition-all">
+                                <div className="flex items-center gap-3">
+                                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10 text-green-500">
+                                    <CheckCircle2 className="h-5 w-5" />
+                                  </div>
+                                  <span className="text-[15px] font-medium text-white/90">Skill 已完成</span>
+                                </div>
+                                <ChevronRight className="h-4 w-4 text-white/20" />
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 text-white/40 text-xs">
+                              <Code2 className="h-3 w-3" />
+                              <span>信息搜索完成</span>
+                            </div>
+
+                            <div className="space-y-4">
+                              <p className="text-[14px] leading-relaxed text-white/90">
+                                已将 Skill 定位为 <strong className="text-white font-semibold">RPG 游戏宣发视频</strong>，补充了可执行的 RPG 特化规则：
+                              </p>
+                              
+                              <ul className="space-y-3 pl-2">
+                                {[
+                                  "强调职业、阵营、成长形态与队伍分工等角色信息。",
+                                  "将主城、野外、地城/副本、Boss 战纳入场景设计。",
+                                  "配乐优先服务于奇幻世界观、队伍集结与 Boss 登场等高潮节点。",
+                                  "图像提示词强化职业辨识度、武器/法器、阵营纹章和技能特效。"
+                                ].map((item, idx) => (
+                                  <li key={idx} className="flex gap-3 text-[14px] leading-relaxed text-white/70">
+                                    <span className="mt-2 h-1 w-1 rounded-full bg-white/30 shrink-0" />
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+
+                              <p className="text-[14px] leading-relaxed text-white/70 pt-2">
+                                目前按“奇幻 RPG”方向处理。若你的游戏更偏二次元、暗黑、科幻或回合制，也可以继续细化对应的美术与镜头规则。
+                              </p>
                             </div>
                           </div>
                         ) : msg.content}
