@@ -310,13 +310,23 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                           <button className="p-1 text-white/20 hover:text-white/60 transition"><Redo2 className="h-4 w-4" /></button>
                         </div>
                         <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-1 rounded-lg bg-white/5 px-3 py-1.5 text-xs text-white/60">
-                            <ChevronDown className="h-3 w-3 rotate-180 opacity-40" />
+                          <div className="flex items-center gap-1 rounded-lg bg-white/5 px-3 py-1.5 text-xs text-white/60 cursor-pointer hover:bg-white/10 transition group">
+                            <ChevronDown onClick={handlePrevSuggestion} className="h-3 w-3 rotate-180 opacity-40 hover:opacity-100 transition" />
                             <span>第 {currentSuggestionIndex} / 8 处</span>
-                            <ChevronDown className="h-3 w-3 opacity-40" />
+                            <ChevronDown onClick={handleNextSuggestion} className="h-3 w-3 opacity-40 hover:opacity-100 transition" />
                           </div>
-                          <button className="px-3 py-1.5 rounded-lg bg-white/5 text-xs hover:bg-white/10 transition">全部撤销</button>
-                          <button className="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-500 text-xs hover:bg-green-500/20 transition border border-green-500/20">全部保留</button>
+                          <button 
+                            onClick={handleRejectAll}
+                            className="px-3 py-1.5 rounded-lg bg-white/5 text-xs hover:bg-white/10 transition"
+                          >
+                            全部撤销
+                          </button>
+                          <button 
+                            onClick={handleAcceptAll}
+                            className="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-500 text-xs hover:bg-green-500/20 transition border border-green-500/20"
+                          >
+                            全部保留
+                          </button>
                         </div>
                       </div>
                     )}
