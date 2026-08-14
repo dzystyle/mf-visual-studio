@@ -48,7 +48,6 @@ export function PromptBox({
   const [text, setText] = useState("");
   const [plusOpen, setPlusOpen] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
-  const [selectedChips, setSelectedChips] = useState<Attachment[]>([]);
   const [model, setModel] = useState<string | null>(null);
   const [skill, setSkill] = useState<string | null>(null);
   const [ratio, setRatio] = useState("16:9");
@@ -113,8 +112,9 @@ export function PromptBox({
     if (!files.length) return;
     const kind = pendingKind.current;
     
-    // When uploading files, we keep them in a "uploaded" state
-    // They only appear in the @-mention list, not as chips immediately
+    // We clear current skill when uploading files to avoid conflict
+    setSkill(null);
+    
     const next = files.map((f) => ({
       id: `${Date.now()}-${f.name}`,
       name: f.name,
@@ -125,7 +125,7 @@ export function PromptBox({
   };
 
   const removeAttachment = (id: string, name?: string) => {
-    setSelectedChips((prev) => prev.filter((a) => a.id !== id));
+    setAttachments((prev) => prev.filter((a) => a.id !== id));
     if (name) {
       setText(prev => {
         const mention = `@${name}`;
@@ -147,13 +147,8 @@ export function PromptBox({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
-      // We keep the "@name" text in the textarea or replace it with a space-padded version?
-      // The user says "写一段文字然后@选择某个图片这个图片就在这个文字后面"
-      // If we keep the text, it's easier to see where it was inserted.
-      // But typically modern UIs replace the "@" trigger with a special token or keep it.
-      // Let's replace the "@trigger" with "@name " so it looks clean.
-      newText = `${before}@${name} ${after.startsWith(" ") ? after.slice(1) : after}`;
-      newCursorPos = before.length + name.length + 2;
+      newText = `${before.trimEnd()}${after.startsWith(" ") ? after : " " + after}`.trim();
+      newCursorPos = before.trimEnd().length;
     } else {
       newText = text;
       newCursorPos = cursorPos;
@@ -171,10 +166,10 @@ export function PromptBox({
     setMentionOpen(false);
     
     if (url) {
-      const exists = selectedChips.find(a => a.url === url);
+      const exists = attachments.find(a => a.url === url);
       if (!exists) {
         const id = `${Date.now()}-${name}`;
-        setSelectedChips(prev => [
+        setAttachments(prev => [
           ...prev,
           {
             id,
@@ -205,7 +200,7 @@ export function PromptBox({
               </button>
             </div>
           )}
-          {!isMini && selectedChips.map((a) => (
+          {!isMini && attachments.map((a) => (
             <div key={a.id} className="inline-flex h-[32px] items-center gap-2 rounded-lg bg-white/10 border border-white/20 pl-1.5 pr-2 py-1 text-xs text-white animate-in fade-in slide-in-from-top-1 duration-300">
               {a.url && (
                 <div className="h-5 w-5 shrink-0 rounded overflow-hidden border border-white/10">
@@ -243,7 +238,7 @@ export function PromptBox({
                 if (v && onSubmit) {
                   onSubmit(v, canvasMode);
                   setText("");
-                  setSelectedChips([]);
+                  setAttachments([]);
                 }
               }
             }}

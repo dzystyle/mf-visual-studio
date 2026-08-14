@@ -426,9 +426,9 @@ function Composer({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = input.slice(0, lastAtPos);
       const after = input.slice(cursorPos);
-      // Keep the @name in the input text
-      newInput = `${before}@${name} ${after.startsWith(" ") ? after.slice(1) : after}`;
-      newCursorPos = before.length + name.length + 2;
+      // Remove the @mention text entirely from input
+      newInput = `${before.trimEnd()}${after.startsWith(" ") ? after : " " + after}`.trim();
+      newCursorPos = before.trimEnd().length;
     } else {
       newInput = input;
       newCursorPos = cursorPos;
@@ -595,8 +595,6 @@ function Composer({
 
     if (validFiles.length > 0) {
       setAttachments((prev) => [...prev, ...validFiles]);
-      // Files are uploaded but NOT added to mentions immediately.
-      // They appear in the @-mention list for selection.
     }
   }, [setAttachments]);
   const tabs = [
