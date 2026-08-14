@@ -129,8 +129,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-all duration-300" />
-        <DialogPrimitive.Content className="fixed inset-[40px] z-50 flex overflow-hidden rounded-3xl border border-white/10 bg-[#0f0f12] text-foreground shadow-2xl focus:outline-none">
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md transition-all duration-300" />
+        <DialogPrimitive.Content className="fixed inset-[30px] z-50 flex overflow-hidden rounded-[2rem] border border-white/10 bg-[#0a0a0c] text-foreground shadow-2xl focus:outline-none">
           
           {/* Main Layout: Left Sidebar & Right Chat Panel */}
           <div className="flex w-full overflow-hidden">
