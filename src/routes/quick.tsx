@@ -919,7 +919,7 @@ function FilterMenu({ label, options, isFirst, isLast }: { label: string; option
               )}
             >
               {opt}
-              {selected === opt && <Check className="h-3 w-3 text-white/40" />}
+              {selected === opt && <Check className="h-3 w-3 text-primary" />}
             </button>
           ))}
         </div>
