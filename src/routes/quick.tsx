@@ -700,8 +700,7 @@ function Composer({
               }}
               rows={1}
               placeholder="使用@快速调用参考能力"
-              style={{ order: 9999 }}
-              className="flex-1 min-w-[200px] min-h-[32px] self-center bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none py-1.5"
+              className="flex-1 min-w-[200px] min-h-[32px] self-center bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none py-1.5 order-last"
             />
           </div>
           
