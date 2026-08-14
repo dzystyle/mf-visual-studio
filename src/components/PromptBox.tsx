@@ -199,8 +199,6 @@ export function PromptBox({
     <div className={`glass shadow-2xl relative z-20 transition-all duration-500 ease-out-expo ${
       isMini ? 'rounded-full p-2 pl-6' : 'rounded-2xl p-5'
     }`}>
-      {/* Canvas mode toggle removed from here */}
-      <div className="relative">
       <div className="relative">
         <div className={`flex flex-wrap items-center gap-2 ${!isMini ? 'mb-2' : ''}`}>
           {!isMini && skill && (
