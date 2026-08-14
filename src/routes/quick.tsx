@@ -611,9 +611,9 @@ function Composer({
   const [duration, setDuration] = useState("4s");
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card/70 backdrop-blur-xl">
+    <div className="overflow-hidden rounded-2xl border border-border bg-background/60 p-0 shadow-2xl backdrop-blur-2xl">
       {/* Tabs */}
-      <div className="grid grid-cols-4 border-b border-border/60">
+      <div className="grid grid-cols-4 border-b border-border">
         {tabs.map((t) => {
           const Icon = t.icon;
           const active = t.id === tab;
