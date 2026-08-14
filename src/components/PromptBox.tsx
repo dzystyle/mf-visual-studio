@@ -113,6 +113,10 @@ export function PromptBox({
     const files = Array.from(e.target.files ?? []);
     if (!files.length) return;
     const kind = pendingKind.current;
+    
+    // We clear current skill when uploading files to avoid conflict
+    setSkill(null);
+    
     const next = files.map((f) => ({
       id: `${Date.now()}-${f.name}`,
       name: f.name,
