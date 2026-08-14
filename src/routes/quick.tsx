@@ -427,8 +427,8 @@ function Composer({
       const before = input.slice(0, lastAtPos);
       const after = input.slice(cursorPos);
       // Remove the @mention text entirely from input
-      newInput = `${before.trimEnd()}${after.startsWith(" ") ? after : " " + after}`.trim();
-      newCursorPos = before.trimEnd().length;
+      newInput = (before + after);
+      newCursorPos = before.length;
     } else {
       newInput = input;
       newCursorPos = cursorPos;
