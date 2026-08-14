@@ -265,9 +265,9 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
         {msg.status === "processing" ? (
           <>
             {[1, 2].map((i) => (
-              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-white/5 flex flex-col items-center justify-center gap-4 bg-white/[0.02]">
+              <div key={i} className="group/item relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-4 bg-muted/20">
                 <div className="relative flex h-16 w-16 items-center justify-center">
-                  <Loader2 className="h-8 w-8 text-white/40 animate-spin" />
+                  <Loader2 className="h-8 w-8 text-foreground/40 animate-spin" />
                   <svg className="absolute inset-0 h-full w-full -rotate-90">
                     <circle
                       cx="32"
@@ -276,7 +276,7 @@ function MessageBlock({ msg, onHdClick }: { msg: Msg; onHdClick?: () => void }) 
                       stroke="currentColor"
                       strokeWidth="2"
                       fill="transparent"
-                      className="text-white/5"
+                      className="text-foreground/5"
                     />
                     <circle
                       cx="32"
