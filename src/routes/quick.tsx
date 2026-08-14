@@ -904,7 +904,7 @@ function FilterMenu({ label, options, isFirst, isLast }: { label: string; option
           {open ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[120px] border-white/10 bg-[#1A1A1A]/95 p-1 shadow-2xl backdrop-blur-xl" align={isLast ? "end" : "start"}>
+      <PopoverContent className="w-[120px] border-border bg-popover p-1 shadow-2xl backdrop-blur-xl" align={isLast ? "end" : "start"}>
         <div className="flex flex-col gap-0.5">
           {options.map((opt) => (
             <button
@@ -914,8 +914,8 @@ function FilterMenu({ label, options, isFirst, isLast }: { label: string; option
                 setOpen(false);
               }}
               className={cn(
-                "flex items-center justify-between rounded-md px-3 py-2 text-[13px] transition-colors hover:bg-white/5",
-                selected === opt ? "bg-white/10 text-white" : "text-white/60 hover:text-white"
+                "flex items-center justify-between rounded-md px-3 py-2 text-[13px] transition-colors hover:bg-muted/40",
+                selected === opt ? "bg-muted text-foreground" : "text-muted-foreground/60 hover:text-foreground"
               )}
             >
               {opt}
