@@ -435,20 +435,20 @@ function Composer({
     }
 
     setInput(newInput);
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
-        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
-        setCursorPos(newCursorPos);
-      }
-    }, 0);
-    
     setMentionOpen(false);
     
     // Add to mentions list for visual chip display below input
     if (!mentions.find((a: any) => a.url === url)) {
       setMentions((prev: any) => [...prev, { id: `${Date.now()}-${name}`, name, url }]);
     }
+
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
+        setCursorPos(newCursorPos);
+      }
+    }, 50);
   };
 
   const onFiles = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {

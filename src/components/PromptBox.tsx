@@ -149,7 +149,6 @@ export function PromptBox({
       const after = text.slice(cursorPos);
       
       // We keep everything before the @ and everything after the current mention context
-      // This ensures "111 @mention" results in "111 " (with the mention as a chip outside)
       newText = (before + after);
       newCursorPos = before.length;
     } else {
@@ -158,7 +157,6 @@ export function PromptBox({
     }
 
     setText(newText);
-    
     setMentionOpen(false);
     
     if (url) {
@@ -177,14 +175,15 @@ export function PromptBox({
       }
     }
 
-    // Force focus and cursor position after state update
+    // Force focus and restore cursor position after state update
+    // We use a slightly longer delay to ensure the DOM has updated the Flex layout
     setTimeout(() => {
       if (textareaRef.current) {
         textareaRef.current.focus();
         textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
         setCursorPos(newCursorPos);
       }
-    }, 10);
+    }, 50);
   };
 
   return (
@@ -226,7 +225,6 @@ export function PromptBox({
             ref={textareaRef}
             rows={1}
             value={text}
-            style={{ order: 9999 }}
             onChange={(e) => {
               setText(e.target.value);
               setCursorPos(e.target.selectionStart);
@@ -249,7 +247,7 @@ export function PromptBox({
               }
             }}
             placeholder="由一个想法或故事开始..."
-            className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 ${
+            className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 order-last ${
               isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
             }`}
           />
