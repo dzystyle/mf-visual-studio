@@ -218,8 +218,26 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
       }, 600);
       setTimeout(() => {
         setShowSuggestions(true);
-      }, 1000);
+        setCurrentSuggestionIndex(1);
+      }, 1500);
     }
+  };
+
+  const handleNextSuggestion = () => {
+    setCurrentSuggestionIndex(prev => (prev < 8 ? prev + 1 : 1));
+  };
+
+  const handlePrevSuggestion = () => {
+    setCurrentSuggestionIndex(prev => (prev > 1 ? prev - 1 : 8));
+  };
+
+  const handleAcceptAll = () => {
+    setShowSuggestions(false);
+    // In a real app, we would update the actual form values here
+  };
+
+  const handleRejectAll = () => {
+    setShowSuggestions(false);
   };
 
   return (
