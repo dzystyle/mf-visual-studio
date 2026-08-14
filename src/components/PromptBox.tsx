@@ -150,8 +150,8 @@ export function PromptBox({
       
       // We want to insert the chip into the attachments list,
       // and remove the @mention from the text.
-      // The attachments list is rendered before the textarea in the flex container,
-      // which is why they appear "before" the text.
+      // The attachments list is rendered after the textarea in the flex container with order-last,
+      // so it will appear at the end of the line or wrap below.
       
       newText = `${before}${after.startsWith(" ") ? after : " " + after}`.trim();
       newCursorPos = before.length;
