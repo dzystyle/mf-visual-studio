@@ -595,6 +595,8 @@ function Composer({
 
     if (validFiles.length > 0) {
       setAttachments((prev) => [...prev, ...validFiles]);
+      // Files are uploaded but NOT added to mentions immediately.
+      // They appear in the @-mention list for selection.
     }
   }, [setAttachments]);
   const tabs = [
