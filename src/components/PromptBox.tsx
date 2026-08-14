@@ -226,6 +226,7 @@ export function PromptBox({
             ref={textareaRef}
             rows={1}
             value={text}
+            style={{ order: 999 }}
             onChange={(e) => {
               setText(e.target.value);
               setCursorPos(e.target.selectionStart);
