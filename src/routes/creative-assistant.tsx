@@ -90,7 +90,12 @@ function CreativeAssistantPage() {
         timestamp: new Date().toLocaleString(),
       };
       setMessages([firstMsg]);
-      triggerAssistantResponse(1);
+      
+      // Delay response to ensure state consistency and avoid double triggers
+      const timer = setTimeout(() => {
+        triggerAssistantResponse(1);
+      }, 100);
+      return () => clearTimeout(timer);
     }
   }, [initialPrompt]);
 
