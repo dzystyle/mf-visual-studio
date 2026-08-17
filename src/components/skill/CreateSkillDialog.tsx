@@ -825,7 +825,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-2 text-white/40 text-xs">
+                            <div className="flex items-center gap-2 text-[var(--color-muted-foreground)]/40 text-xs">
                               <Code2 className="h-3 w-3" />
                               <span>信息搜索完成</span>
                             </div>
