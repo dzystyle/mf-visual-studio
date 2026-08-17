@@ -35,11 +35,11 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
     ];
 
   return (
-    <div className="mt-4 rounded-[20px] bg-[#1a1a1c] border border-white/[0.03] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)]">
+    <div className="mt-4 rounded-[20px] bg-[var(--color-card)] border border-[var(--color-border)] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)]">
       <div className="p-8 space-y-6">
-        <h4 className="text-[17px] font-semibold text-white/95 tracking-tight">你想优先完善哪个方向？</h4>
+        <h4 className="text-[17px] font-semibold text-[var(--color-foreground)] tracking-tight">你想优先完善哪个方向？</h4>
         
-        <div className="border-t border-dashed border-white/10 pt-6 space-y-8">
+        <div className="border-t border-dashed border-[var(--color-border)] pt-6 space-y-8">
           {options.map((option, idx) => {
             const isSelected = currentSelection === idx;
             return (
@@ -52,20 +52,20 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
                   "mt-1 h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
                   isSelected 
                     ? "bg-[#E1B166] text-black shadow-[0_0_15px_rgba(225,177,102,0.5)]" 
-                    : "bg-white/[0.03] text-transparent border border-white/[0.08] group-hover:border-white/20"
+                    : "bg-[var(--color-secondary)] text-transparent border border-[var(--color-border)] group-hover:border-[var(--color-muted-foreground)]"
                 )}>
                   <Check className="h-3 w-3" strokeWidth={4} />
                 </div>
                 <div className="space-y-1.5 flex-1">
                   <div className={cn(
                     "text-[15px] font-semibold transition-colors tracking-tight",
-                    isSelected ? "text-white/95" : "text-white/70 group-hover:text-white/90"
+                    isSelected ? "text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)]"
                   )}>
                     {option.title}
                   </div>
                   <div className={cn(
                     "text-[14px] leading-relaxed font-normal transition-colors",
-                    isSelected ? "text-white/60" : "text-white/30 group-hover:text-white/40"
+                    isSelected ? "text-[var(--color-muted-foreground)]" : "text-[var(--color-muted-foreground)]/40 group-hover:text-[var(--color-muted-foreground)]/60"
                   )}>
                     {option.desc}
                   </div>
@@ -129,7 +129,7 @@ function DiffField({ label, value, index, currentIndex, isTextarea = false }: {
     )}>
       {label && <label className="text-xs font-medium text-muted-foreground">{label}</label>}
       <div className="relative group">
-        <div className="rounded-xl overflow-hidden border border-white/5 bg-[#141417] shadow-xl">
+        <div className="rounded-xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-card)] shadow-xl">
           {/* Old Content Placeholder (Red) */}
           <div className="bg-red-950/20 border-b border-red-900/10 px-4 py-3 min-h-[40px] flex items-center">
             <div className="h-4 w-full bg-red-900/10 rounded-sm animate-pulse" />
@@ -138,7 +138,7 @@ function DiffField({ label, value, index, currentIndex, isTextarea = false }: {
           {/* New Content (Green) */}
           <div className="bg-green-950/20 px-4 py-5 relative">
             <div className={cn(
-              "text-sm leading-relaxed whitespace-pre-wrap text-white/90 font-light",
+              "text-sm leading-relaxed whitespace-pre-wrap text-[var(--color-foreground)]/90 font-light",
               isTextarea ? "min-h-[100px]" : ""
             )}>
               {value}
@@ -151,15 +151,15 @@ function DiffField({ label, value, index, currentIndex, isTextarea = false }: {
           </div>
 
           {/* Individual Action Bar */}
-          <div className="flex items-center justify-between px-4 py-2 bg-black/40 border-t border-white/5">
-            <div className="flex items-center gap-2 text-[11px] text-white/40 font-medium">
+          <div className="flex items-center justify-between px-4 py-2 bg-[var(--color-background)]/40 border-t border-[var(--color-border)]">
+            <div className="flex items-center gap-2 text-[11px] text-[var(--color-foreground)]/40 font-medium">
               <ChevronDown className="h-3 w-3 rotate-180 opacity-40" />
               <span>第 1 / 5 处</span>
               <ChevronDown className="h-3 w-3 opacity-40" />
             </div>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-md hover:bg-white/5 text-[11px] text-white/60 transition group">
-                <Undo2 className="h-3 w-3 text-white/20 group-hover:text-white transition" />
+              <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-md hover:bg-[var(--color-secondary)] text-[11px] text-[var(--color-foreground)]/60 transition group">
+                <Undo2 className="h-3 w-3 text-[var(--color-foreground)]/20 group-hover:text-[var(--color-foreground)] transition" />
                 <span>撤销</span>
                 <span className="opacity-40 ml-0.5">⌘B</span>
               </button>
