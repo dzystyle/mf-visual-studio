@@ -68,7 +68,7 @@ function CreativeAssistantPage() {
   const [showResources, setShowResources] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [inputValue, setInputValue] = useState(initialPrompt || "");
-  const [showScriptDetail, setShowScriptDetail] = useState(false);
+  const [activeResource, setActiveResource] = useState<{ type: 'script' | 'image' | 'video'; data?: any } | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const triggeredStepsRef = useRef<Set<number>>(new Set());
@@ -447,7 +447,10 @@ function CreativeAssistantPage() {
                       <div className="text-[15px] mt-2 mb-2">故事脚本已写好。这份脚本请你确认：埼玉蓄力开场、一拳冲击波过渡、英雄阵容快剪展示、埼玉一拳秒杀收尾 + 品牌口号 + 下载引导，5个镜头共15秒。画面节奏和卖点顺序对齐后，我再进入素材检查和视频方案环节。如果要改，直接告诉我，改完再发你看。</div>
                       <StatusLine icon="check" text="发送产物" />
                       <div 
-                        onClick={() => setShowScriptDetail(true)}
+                        onClick={() => {
+                          setShowResources(true);
+                          setActiveResource({ type: 'script' });
+                        }}
                         className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 flex items-center justify-between shadow-sm max-w-sm hover:border-[var(--color-muted-foreground)] cursor-pointer transition-all"
                       >
                         <div className="flex items-center gap-3">
@@ -652,49 +655,116 @@ function CreativeAssistantPage() {
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-8 space-y-10 scrollbar-hide">
-                {/* Documents */}
-                <section>
-                  <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
-                    <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-5">
-                    <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
-                    <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
-                    <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
-                    <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
-                    <ResourceCard title="story-script.md" type="MD" date="1小时前" onClick={() => setShowScriptDetail(true)} />
-                  </div>
-                </section>
+              <div className="flex-1 overflow-hidden flex flex-col relative">
+                <div className={cn(
+                  "absolute inset-0 z-10 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out scrollbar-hide overflow-y-auto p-8 space-y-10",
+                  activeResource ? "pointer-events-none opacity-0 translate-x-[-20px]" : "opacity-100 translate-x-0"
+                )}>
+                  {/* Documents */}
+                  <section>
+                    <div className="flex items-center justify-between mb-5">
+                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
+                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-5">
+                      <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
+                      <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
+                      <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
+                      <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
+                      <ResourceCard 
+                        title="story-script.md" 
+                        type="MD" 
+                        date="1小时前" 
+                        onClick={() => setActiveResource({ type: 'script' })} 
+                      />
+                    </div>
+                  </section>
 
-                {/* Images */}
-                <section>
-                  <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
-                    <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-5">
-                    <ImageResourceCard title="user_upload_image_1.webp" type="WEBP" date="1小时前" img={charSam} />
-                    <ImageResourceCard title="genos-reference.png" type="PNG" date="1小时前" img={charBoss} />
-                  </div>
-                </section>
+                  {/* Images */}
+                  <section>
+                    <div className="flex items-center justify-between mb-5">
+                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
+                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-5">
+                      <ImageResourceCard 
+                        title="user_upload_image_1.webp" 
+                        type="WEBP" 
+                        date="1小时前" 
+                        img={charSam} 
+                        onClick={() => setActiveResource({ type: 'image', data: { url: charSam, name: 'user_upload_image_1.webp' } })}
+                      />
+                      <ImageResourceCard 
+                        title="genos-reference.png" 
+                        type="PNG" 
+                        date="1小时前" 
+                        img={charBoss} 
+                        onClick={() => setActiveResource({ type: 'image', data: { url: charBoss, name: 'genos-reference.png' } })}
+                      />
+                    </div>
+                  </section>
 
-                {/* Videos */}
-                <section>
-                  <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
-                    <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
+                  {/* Videos */}
+                  <section>
+                    <div className="flex items-center justify-between mb-5">
+                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
+                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-5">
+                      <ImageResourceCard 
+                        title="intro-animation.mp4" 
+                        type="MP4" 
+                        date="刚刚" 
+                        img={skillReenact} 
+                        onClick={() => setActiveResource({ type: 'video', data: { url: videoFileUrl, name: 'intro-animation.mp4' } })}
+                      />
+                    </div>
+                  </section>
+                </div>
+
+                {/* Resource Detail View (Integrated into Panel) */}
+                <div className={cn(
+                  "absolute inset-0 z-20 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out",
+                  activeResource ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
+                )}>
+                  <div className="p-4 border-b border-[var(--color-border)] flex items-center justify-between">
+                    <button 
+                      onClick={() => setActiveResource(null)}
+                      className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] flex items-center gap-1 text-[13px] font-medium"
+                    >
+                      <ChevronRight className="h-4 w-4 rotate-180" />
+                      返回
+                    </button>
+                    <span className="text-sm font-bold text-[var(--color-foreground)] truncate max-w-[200px]">
+                      {activeResource?.type === 'script' ? 'story-script.md' : activeResource?.data?.name}
+                    </span>
+                    <button className="p-1.5 rounded-lg bg-[var(--color-secondary)] border border-[var(--color-border)] text-[var(--color-foreground)]">
+                      <Download className="h-4 w-4" />
+                    </button>
                   </div>
-                  <div className="grid grid-cols-2 gap-5">
-                    <ImageResourceCard title="intro-animation.mp4" type="MP4" date="刚刚" img={skillReenact} />
+                  
+                  <div className="flex-1 overflow-y-auto p-4 scrollbar-hide">
+                    {activeResource?.type === 'script' && <StoryboardContent />}
+                    {activeResource?.type === 'image' && (
+                      <div className="flex flex-col items-center justify-center h-full gap-4">
+                        <img src={activeResource.data.url} alt="Preview" className="max-w-full max-h-[70%] object-contain rounded-xl shadow-lg border border-[var(--color-border)]" />
+                      </div>
+                    )}
+                    {activeResource?.type === 'video' && (
+                      <div className="flex flex-col items-center justify-center h-full gap-4">
+                        <video src={activeResource.data.url} controls className="max-w-full max-h-[70%] rounded-xl shadow-lg border border-[var(--color-border)]" />
+                      </div>
+                    )}
                   </div>
-                </section>
+                </div>
               </div>
               
               {/* Collapse handle */}
               <button 
-                onClick={() => setShowResources(false)}
+                onClick={() => {
+                  setShowResources(false);
+                  setActiveResource(null);
+                }}
                 className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 h-16 w-8 bg-[var(--color-card)] border border-[var(--color-border)] rounded-full flex items-center justify-center text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] shadow-lg transition-all hover:scale-110 active:scale-95 z-[110]"
               >
                 <ChevronRight className="h-5 w-5 rotate-180" />
@@ -702,9 +772,6 @@ function CreativeAssistantPage() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Script Detail Dialog */}
-        <ScriptDetailDialog open={showScriptDetail} onOpenChange={setShowScriptDetail} />
       </div>
       
       {/* Footer Question Mark */}
@@ -718,113 +785,7 @@ function CreativeAssistantPage() {
 }
 
 function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
-  return (
-    <div className={cn(
-      "absolute inset-0 z-[120] bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out origin-right",
-      open ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
-    )}>
-      {/* Header */}
-      <div className="flex items-center justify-between px-8 py-6 border-b border-[var(--color-border)]">
-        <div className="flex items-center gap-4">
-          <button onClick={() => onOpenChange(false)} className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] flex items-center gap-1 text-[13px] transition-colors font-medium">
-            <ChevronRight className="h-4 w-4 rotate-180" />
-            返回
-          </button>
-          <div className="w-px h-4 bg-[var(--color-border)]" />
-          <h2 className="text-lg font-bold text-[var(--color-foreground)]">story-script.md</h2>
-        </div>
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-secondary)] text-[var(--color-foreground)] font-bold text-[14px] hover:bg-[var(--color-accent)] transition-all border border-[var(--color-border)]">
-            <Download className="h-4 w-4" />
-            下载
-          </button>
-        </div>
-      </div>
-
-      <div className="flex-1 overflow-hidden flex flex-col">
-        {/* Table Header Section */}
-        <div className="px-8 py-6">
-          <h1 className="text-2xl font-bold mb-6 text-[var(--color-foreground)]">《一拳超人：最强之男》游戏宣发 - 故事脚本</h1>
-          
-          <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 text-[12px] font-bold text-[var(--color-muted-foreground)] border-b border-[var(--color-border)] pb-4 uppercase tracking-wider">
-            <div>镜号</div>
-            <div>时长</div>
-            <div>画面描述</div>
-            <div>景别</div>
-            <div>光影氛围</div>
-            <div>对话·旁白</div>
-            <div>音效</div>
-            <div>运镜</div>
-          </div>
-        </div>
-
-        {/* Table Body */}
-        <div className="flex-1 overflow-y-auto px-8 py-2 scrollbar-hide">
-          <div className="space-y-0">
-            {/* Row 1 */}
-            <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 py-6 border-b border-[var(--color-border)] text-[13px] leading-relaxed group hover:bg-[var(--color-secondary)]/50 transition-colors">
-              <div className="font-bold text-[15px] text-[var(--color-foreground)]">1</div>
-              <div className="text-[var(--color-foreground)]">2.5s</div>
-              <div className="text-[var(--color-foreground)]">纯黑背景中，<span className="text-orange-500 font-bold">埼玉</span>特写登场，光头冷峻面容，身穿棕黄色紧身战衣，灰白色披风微微飘动，右拳前伸，红色拳套表面泛起微光蓄力。参考@图1</div>
-              <div className="text-[var(--color-muted-foreground)]">近景特写</div>
-              <div className="text-[var(--color-muted-foreground)]">黑底单点聚光打在埼玉面部与拳套上，高对比度明暗，赛璐璐动画质感</div>
-              <div className="text-[var(--color-muted-foreground)]">—</div>
-              <div className="text-[var(--color-muted-foreground)]">低频嗡鸣蓄力声，逐渐升压</div>
-              <div className="text-[var(--color-muted-foreground)]">缓慢推镜，从埼玉面部推至拳套特写</div>
-            </div>
-
-            {/* Row 2 */}
-            <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 py-6 border-b border-[var(--color-border)] text-[13px] leading-relaxed group hover:bg-[var(--color-secondary)]/50 transition-colors">
-              <div className="font-bold text-[15px] text-[var(--color-foreground)]">2</div>
-              <div className="text-[var(--color-foreground)]">0.7s</div>
-              <div className="text-[var(--color-foreground)]"><span className="text-red-500 font-bold">红色拳套</span>爆发也剧烈冲击波，白光撕裂整个黑底画面，碎片飞溅，画面被冲击波冲破后切入战斗世界</div>
-              <div className="text-[var(--color-muted-foreground)]">全景</div>
-              <div className="text-[var(--color-muted-foreground)]">爆裂白光闪屏，冲击波粒子飞溅</div>
-              <div className="text-[var(--color-muted-foreground)]">—</div>
-              <div className="text-[var(--color-muted-foreground)]">巨响轰鸣，玻璃碎裂般的高频碎裂声</div>
-              <div className="text-[var(--color-muted-foreground)]">快速拉镜，冲击波方向向外推出</div>
-            </div>
-
-            {/* Row 3 */}
-            <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 py-6 border-b border-[var(--color-border)] text-[13px] leading-relaxed group hover:bg-[var(--color-secondary)]/50 transition-colors">
-              <div className="font-bold text-[15px] text-[var(--color-foreground)]">3</div>
-              <div className="text-[var(--color-foreground)]">3s</div>
-              <div className="text-[var(--color-foreground)]"><span className="text-orange-500 font-bold">杰诺斯</span>登场，全身机械改造人，金色机械臂喷射橙红火焰，冲向怪人发射焚烧炮，背景是废墟城市天际线。随后画面快速切换：<span className="text-green-500 font-bold">战栗的龙卷</span>绿色念力屏障、<span className="text-blue-500 font-bold">原子武士</span>刀光斩击、<span className="text-gray-500 font-bold">银色獠牙</span>格斗连击，多个英雄技能特效闪现</div>
-              <div className="text-[var(--color-muted-foreground)]">中景/全景交替</div>
-              <div className="text-[var(--color-muted-foreground)]">战场硝烟弥漫，技能特效橙红、翠绿、银白交替闪烁，高饱和度燃战色调</div>
-              <div className="text-[var(--color-muted-foreground)]">[旁白]英雄全员集结！</div>
-              <div className="text-[var(--color-muted-foreground)]">杰诺斯火焰喷射声、刀剑交锋声、技能爆发轰鸣、快节奏电子鼓点</div>
-              <div className="text-[var(--color-muted-foreground)]">快速剪辑切换，每0.5-0.7s一个镜头，节奏感强</div>
-            </div>
-
-            {/* Row 4 */}
-            <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 py-6 border-b border-[var(--color-border)] text-[13px] leading-relaxed group hover:bg-[var(--color-secondary)]/50 transition-colors">
-              <div className="font-bold text-[15px] text-[var(--color-foreground)]">4</div>
-              <div className="text-[var(--color-foreground)]">3.8s</div>
-              <div className="text-[var(--color-foreground)]"><span className="text-orange-500 font-bold">埼玉</span>再度现身，从画面中央突进，<span className="text-red-500 font-bold">红色拳套</span>一拳轰出，拳风形成巨大气流环，前方怪人被冲击波瞬间粉碎，地面龟裂。画面定格在埼玉出拳后的侧脸，披风飞扬。随后画面中心浮现金色品牌字「<span className="text-yellow-600 font-bold">英雄参上 一拳K.O.</span>」，下方出现游戏Logo「一拳超人：最强之男」</div>
-              <div className="text-[var(--color-muted-foreground)]">近景→中景</div>
-              <div className="text-[var(--color-muted-foreground)]">金色光效从拳套蔓延全身，冲击波形成气流余光环，最终定格为金色品牌光芒</div>
-              <div className="text-[var(--color-muted-foreground)]">[旁白]英雄参上，一拳K.O.！《一拳超人：最强之男》，现在下载体验！</div>
-              <div className="text-[var(--color-muted-foreground)]">重击轰鸣、气浪呼啸、品牌音效收尾、电子鼓点渐弱</div>
-              <div className="text-[var(--color-muted-foreground)]">慢动作推进出拳瞬间，随后后远定格在品牌画面</div>
-            </div>
-
-            {/* Row 5 */}
-            <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 py-6 text-[13px] leading-relaxed group hover:bg-[var(--color-secondary)]/50 transition-colors">
-              <div className="font-bold text-[15px] text-[var(--color-foreground)]">5</div>
-              <div className="text-[var(--color-foreground)]">5s</div>
-              <div className="text-[var(--color-foreground)]">品牌定帧画面：<span className="font-bold text-[var(--color-foreground)]">一拳超人：最强之男</span>游戏Logo居中，背景为埼玉背影剪影 + 英雄协会标志光纹，底部显示「<span className="text-yellow-600 font-bold">正版授权 现已上线</span>」，画面底部出现下载按钮提示</div>
-              <div className="text-[var(--color-muted-foreground)]">全景</div>
-              <div className="text-[var(--color-muted-foreground)]">金色品牌光，干净深色底，Logo金属质感反光</div>
-              <div className="text-[var(--color-muted-foreground)]">[旁白]正版授权，掌趣科技发行，立刻下载！</div>
-              <div className="text-[var(--color-muted-foreground)]">品牌收尾音效，轻量电子尾音</div>
-              <div className="text-[var(--color-muted-foreground)]">固定机位，Logo微光呼吸效果</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return null;
 }
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -1018,9 +979,12 @@ function ResourceCard({ title, type, date, onClick }: { title: string; type: str
   );
 }
 
-function ImageResourceCard({ title, type, date, img }: { title: string; type: string; date: string; img: string }) {
+function ImageResourceCard({ title, type, date, img, onClick }: { title: string; type: string; date: string; img: string; onClick?: () => void }) {
   return (
-    <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[var(--color-muted-foreground)] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer">
+    <div 
+      onClick={onClick}
+      className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[var(--color-muted-foreground)] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer"
+    >
       <div className="h-28 w-full rounded-2xl overflow-hidden relative border border-[var(--color-border)]">
         <img src={img} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
         <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-[var(--color-card)]/90 backdrop-blur-md text-[10px] font-bold text-[var(--color-foreground)] uppercase tracking-wider shadow-sm">{type}</div>
@@ -1030,6 +994,80 @@ function ImageResourceCard({ title, type, date, img }: { title: string; type: st
         <div className="text-[12px] text-[var(--color-muted-foreground)] flex items-center gap-2 font-medium">
           <span>{date}</span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function StoryboardContent() {
+  return (
+    <div className="space-y-6">
+      <h1 className="text-xl font-bold text-[var(--color-foreground)] px-2">《一拳超人：最强之男》游戏宣发 - 故事脚本</h1>
+      
+      <div className="space-y-6">
+        {[
+          {
+            num: 1,
+            time: "2.5s",
+            desc: "纯黑背景中，埼玉特写登场，光头冷峻面容，身穿棕黄色紧身战衣，灰白色披风微微飘动，右拳前伸，红色拳套表面泛起微光蓄力。",
+            view: "近景特写",
+            atmos: "黑底单点聚光，高对比度，赛璐璐质感",
+            audio: "逐渐升压蓄力声",
+            camera: "推至拳套"
+          },
+          {
+            num: 2,
+            time: "0.7s",
+            desc: "红色拳套爆发冲击波，白光撕裂画面，碎片飞溅。",
+            view: "全景",
+            atmos: "爆裂白光闪屏",
+            audio: "巨响轰鸣",
+            camera: "快速拉镜"
+          },
+          {
+            num: 3,
+            time: "3s",
+            desc: "杰诺斯登场，火焰喷射，快剪多个英雄技能特效。",
+            view: "中/全景",
+            atmos: "高饱和燃战色调",
+            audio: "英雄集结旁白+音效",
+            camera: "快速剪辑"
+          },
+          {
+            num: 4,
+            time: "3.8s",
+            desc: "埼玉一拳粉碎怪人，定格侧脸。浮现品牌口号。",
+            view: "近景→中景",
+            atmos: "金色品牌光芒",
+            audio: "一拳K.O.旁白+重击",
+            camera: "慢动作→定格"
+          },
+          {
+            num: 5,
+            time: "5s",
+            desc: "品牌定帧：Logo居中，背景埼玉背影，下载提示。",
+            view: "全景",
+            atmos: "金属质感反光",
+            audio: "品牌收尾音效",
+            camera: "固定机位"
+          }
+        ].map((row) => (
+          <div key={row.num} className="p-4 rounded-2xl bg-[var(--color-secondary)]/50 border border-[var(--color-border)] space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="h-6 w-6 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-xs font-bold">{row.num}</span>
+              <span className="text-xs font-bold text-[var(--color-muted-foreground)]">{row.time}</span>
+            </div>
+            <div className="text-[13px] text-[var(--color-foreground)] leading-relaxed">
+              <span className="font-bold mr-2">画面:</span> {row.desc}
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-[11px]">
+              <div className="text-[var(--color-muted-foreground)]"><span className="font-bold">景别:</span> {row.view}</div>
+              <div className="text-[var(--color-muted-foreground)]"><span className="font-bold">氛围:</span> {row.atmos}</div>
+              <div className="text-[var(--color-muted-foreground)]"><span className="font-bold">音频:</span> {row.audio}</div>
+              <div className="text-[var(--color-muted-foreground)]"><span className="font-bold">运镜:</span> {row.camera}</div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
