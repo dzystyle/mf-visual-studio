@@ -677,69 +677,80 @@ function CreativeAssistantPage() {
 
               <div className="flex-1 overflow-hidden flex flex-col relative">
                 <div className={cn(
-                  "absolute inset-0 z-10 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out scrollbar-hide overflow-y-auto p-8 space-y-10",
+                  "absolute inset-0 z-10 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out scrollbar-hide overflow-y-auto p-8",
                   activeResource ? "pointer-events-none opacity-0 translate-x-[-20px]" : "opacity-100 translate-x-0"
                 )}>
-                  {/* Documents */}
-                  <section>
-                    <div className="flex items-center justify-between mb-5">
-                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
-                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-5">
-                      <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
-                      <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
-                      <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
-                      <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
-                      <ResourceCard 
-                        title="story-script.md" 
-                        type="MD" 
-                        date="1小时前" 
-                        onClick={() => setActiveResource({ type: 'script' })} 
-                      />
-                    </div>
-                  </section>
+                  {resourceMode === 'grid' ? (
+                    <div className="space-y-10">
+                      {/* Documents */}
+                      <section>
+                        <div className="flex items-center justify-between mb-5">
+                          <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
+                          <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-5">
+                          <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
+                          <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
+                          <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
+                          <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
+                          <ResourceCard 
+                            title="story-script.md" 
+                            type="MD" 
+                            date="1小时前" 
+                            onClick={() => setActiveResource({ type: 'script' })} 
+                          />
+                        </div>
+                      </section>
 
-                  {/* Images */}
-                  <section>
-                    <div className="flex items-center justify-between mb-5">
-                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
-                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-5">
-                      <ImageResourceCard 
-                        title="user_upload_image_1.webp" 
-                        type="WEBP" 
-                        date="1小时前" 
-                        img={charSam} 
-                        onClick={() => setActiveResource({ type: 'image', data: { url: charSam, name: 'user_upload_image_1.webp' } })}
-                      />
-                      <ImageResourceCard 
-                        title="genos-reference.png" 
-                        type="PNG" 
-                        date="1小时前" 
-                        img={charBoss} 
-                        onClick={() => setActiveResource({ type: 'image', data: { url: charBoss, name: 'genos-reference.png' } })}
-                      />
-                    </div>
-                  </section>
+                      {/* Images */}
+                      <section>
+                        <div className="flex items-center justify-between mb-5">
+                          <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
+                          <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-5">
+                          <ImageResourceCard 
+                            title="user_upload_image_1.webp" 
+                            type="WEBP" 
+                            date="1小时前" 
+                            img={charSam} 
+                            onClick={() => setActiveResource({ type: 'image', data: { url: charSam, name: 'user_upload_image_1.webp' } })}
+                          />
+                          <ImageResourceCard 
+                            title="genos-reference.png" 
+                            type="PNG" 
+                            date="1小时前" 
+                            img={charBoss} 
+                            onClick={() => setActiveResource({ type: 'image', data: { url: charBoss, name: 'genos-reference.png' } })}
+                          />
+                        </div>
+                      </section>
 
-                  {/* Videos */}
-                  <section>
-                    <div className="flex items-center justify-between mb-5">
-                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
-                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
+                      {/* Videos */}
+                      <section>
+                        <div className="flex items-center justify-between mb-5">
+                          <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
+                          <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-5">
+                          <ImageResourceCard 
+                            title="intro-animation.mp4" 
+                            type="MP4" 
+                            date="刚刚" 
+                            img={skillReenact} 
+                            onClick={() => setActiveResource({ type: 'video', data: { url: videoFileUrl, name: 'intro-animation.mp4' } })}
+                          />
+                        </div>
+                      </section>
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
-                      <ImageResourceCard 
-                        title="intro-animation.mp4" 
-                        type="MP4" 
-                        date="刚刚" 
-                        img={skillReenact} 
-                        onClick={() => setActiveResource({ type: 'video', data: { url: videoFileUrl, name: 'intro-animation.mp4' } })}
-                      />
-                    </div>
-                  </section>
+                  ) : (
+                    <FolderView 
+                      charSam={charSam} 
+                      charBoss={charBoss} 
+                      videoFileUrl={videoFileUrl}
+                      setActiveResource={setActiveResource} 
+                    />
+                  )}
                 </div>
 
                 {/* Resource Detail View (Integrated into Panel) */}
