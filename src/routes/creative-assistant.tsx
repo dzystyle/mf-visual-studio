@@ -309,8 +309,25 @@ function CreativeAssistantPage() {
           "flex flex-1 flex-col transition-all duration-500 ease-in-out relative",
           showResources ? "mr-[600px]" : "mr-0"
         )}>
-          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide">
+          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide relative">
             <div className="mx-auto max-w-4xl space-y-10">
+              {/* Global Share Button - Only visible at the top of the first message */}
+              {messages.length > 0 && (
+                <div className="flex justify-end mb-4">
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      setShowShareToast(true);
+                      setTimeout(() => setShowShareToast(false), 2000);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm group/share"
+                  >
+                    <Share2 className="h-4 w-4" />
+                    <span className="text-sm font-medium">分享会话流</span>
+                  </button>
+                </div>
+              )}
+
               {messages.length === 0 && (
                 <div className="h-[60vh] flex flex-col items-center justify-center text-center opacity-60">
                   <div className="w-20 h-20 rounded-3xl bg-[var(--color-secondary)] flex items-center justify-center mb-6 border border-[var(--color-border)] shadow-sm">
