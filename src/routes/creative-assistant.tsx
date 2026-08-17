@@ -144,31 +144,32 @@ function CreativeAssistantPage() {
     const timer = setTimeout(() => {
       setIsTyping(true);
       const typingTimer = setTimeout(() => {
-        let msgsToAdd: Message[] = [];
-        
-        if (stepIndex === 1) {
-          // Check for duplicates
-          const alreadyHasFirstResponse = messages.some(m => m.id === "2");
-          const alreadyHasChoiceCard = messages.some(m => m.isChoiceCard && m.id === "3");
+        setMessages(prev => {
+          let msgsToAdd: Message[] = [];
           
-          if (!alreadyHasFirstResponse) msgsToAdd.push(fullWorkflow[0] as Message);
-          if (!alreadyHasChoiceCard) msgsToAdd.push(fullWorkflow[1] as Message);
-        } else if (stepIndex === 2) {
-          // Check if this response or the detailed assistant card already exists to avoid duplication
-          const alreadyHasResponse = messages.some(m => m.id === "5" || m.isDetailedAssistant || m.isDetailedAssistant2 || m.isVideoOutput);
-          if (!alreadyHasResponse) msgsToAdd.push(fullWorkflow[2] as Message);
-        } else if (stepIndex === 3) {
-          const alreadyHasDetailed = messages.some(m => m.id === "9" || m.isDetailedAssistant);
-          if (!alreadyHasDetailed) msgsToAdd.push(fullWorkflow[3] as Message);
-        } else if (stepIndex === 4) {
-          const alreadyHasDetailed2 = messages.some(m => m.id === "11" || m.isDetailedAssistant2);
-          if (!alreadyHasDetailed2) msgsToAdd.push(fullWorkflow[4] as Message);
-        } else if (stepIndex === 5) {
-          const alreadyHasVideo = messages.some(m => m.id === "13" || m.isVideoOutput);
-          if (!alreadyHasVideo) msgsToAdd.push(fullWorkflow[5] as Message);
-        }
-        
-        setMessages(prev => [...prev, ...msgsToAdd]);
+          if (stepIndex === 1) {
+            const alreadyHasFirstResponse = prev.some(m => m.id === "2");
+            const alreadyHasChoiceCard = prev.some(m => m.isChoiceCard && m.id === "3");
+            
+            if (!alreadyHasFirstResponse) msgsToAdd.push(fullWorkflow[0] as Message);
+            if (!alreadyHasChoiceCard) msgsToAdd.push(fullWorkflow[1] as Message);
+          } else if (stepIndex === 2) {
+            const alreadyHasResponse = prev.some(m => m.id === "5" || m.isDetailedAssistant || m.isDetailedAssistant2 || m.isVideoOutput);
+            if (!alreadyHasResponse) msgsToAdd.push(fullWorkflow[2] as Message);
+          } else if (stepIndex === 3) {
+            const alreadyHasDetailed = prev.some(m => m.id === "9" || m.isDetailedAssistant);
+            if (!alreadyHasDetailed) msgsToAdd.push(fullWorkflow[3] as Message);
+          } else if (stepIndex === 4) {
+            const alreadyHasDetailed2 = prev.some(m => m.id === "11" || m.isDetailedAssistant2);
+            if (!alreadyHasDetailed2) msgsToAdd.push(fullWorkflow[4] as Message);
+          } else if (stepIndex === 5) {
+            const alreadyHasVideo = prev.some(m => m.id === "13" || m.isVideoOutput);
+            if (!alreadyHasVideo) msgsToAdd.push(fullWorkflow[5] as Message);
+          }
+          
+          if (msgsToAdd.length === 0) return prev;
+          return [...prev, ...msgsToAdd];
+        });
         setIsTyping(false);
         setIsProcessing(false);
       }, 1000);
