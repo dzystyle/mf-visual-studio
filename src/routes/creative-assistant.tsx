@@ -66,6 +66,7 @@ function CreativeAssistantPage() {
   const [inputValue, setInputValue] = useState(initialPrompt || "");
   const [isTyping, setIsTyping] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const triggeredStepsRef = useRef<Set<number>>(new Set());
   
   const [stepStates, setStepStates] = useState({
     1: [true, false, false], // Duration options
