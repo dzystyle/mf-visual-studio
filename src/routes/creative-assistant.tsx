@@ -370,19 +370,6 @@ function CreativeAssistantPage() {
 
                   {msg.isChoiceCard && (
                     <div className={cn("w-full relative group", messages.filter(m => m.isChoiceCard).indexOf(msg) !== messages.filter(m => m.isChoiceCard).length - 1 && "hidden")}>
-                      <div className="absolute top-[-10px] right-[-48px] opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                        <button 
-                          onClick={() => {
-                            navigator.clipboard.writeText(window.location.href);
-                            setShowShareToast(true);
-                            setTimeout(() => setShowShareToast(false), 2000);
-                          }}
-                          className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm"
-                          title="分享会话"
-                        >
-                          <Share2 className="h-4 w-4" />
-                        </button>
-                      </div>
                       <AnimatePresence mode="wait">
                         {currentStep === 1 && msg.id === messages.filter((m: Message) => m.isChoiceCard).pop()?.id && (
                           <motion.div key="step1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
