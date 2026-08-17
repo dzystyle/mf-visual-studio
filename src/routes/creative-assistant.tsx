@@ -402,7 +402,7 @@ function CreativeAssistantPage() {
                   {msg.isDetailedAssistant && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
                       <div className="text-[15px] mb-4">
-                        {"'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            输入框需要支持上传图片以你资深产品经理的角度深度思考一下。"}
+                        {"收到，15秒以内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。"}
                       </div>
                       <div className="text-[15px] mb-4">埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。</div>
                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
