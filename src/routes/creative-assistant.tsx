@@ -664,7 +664,7 @@ function CreativeAssistantPage() {
                     <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
                     <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
                     <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
-                    <ResourceCard title="story-script.md" type="MD" date="1小时前" />
+                    <ResourceCard title="story-script.md" type="MD" date="1小时前" onClick={() => setShowScriptDetail(true)} />
                   </div>
                 </section>
 
