@@ -849,7 +849,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                 ))}
                               </ul>
 
-                              <p className="text-[14px] leading-relaxed text-white/70 pt-2">
+                              <p className="text-[14px] leading-relaxed text-[var(--color-foreground)]/70 pt-2">
                                 目前按“奇幻 RPG”方向处理。若你的游戏更偏二次元、暗黑、科幻或回合制，也可以继续细化对应的美术与镜头规则。
                               </p>
                             </div>
