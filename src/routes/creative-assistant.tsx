@@ -101,6 +101,9 @@ function CreativeAssistantPage() {
   }, [initialPrompt]);
 
   const triggerAssistantResponse = (stepIndex: number) => {
+    if (triggeredStepsRef.current.has(stepIndex)) return;
+    triggeredStepsRef.current.add(stepIndex);
+    
     setIsProcessing(true);
     const fullWorkflow = [
       {
