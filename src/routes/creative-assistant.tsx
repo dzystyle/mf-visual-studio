@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { 
   MessageSquare, 
@@ -12,7 +12,10 @@ import {
   Image as ImageIcon,
   Video,
   X,
-  Search
+  Search,
+  Download,
+  Share2,
+  Trash2
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
