@@ -69,6 +69,7 @@ type Message = {
 function CreativeAssistantPage() {
   const { prompt: initialPrompt } = Route.useSearch();
   const [showResources, setShowResources] = useState(false);
+  const [resourceMode, setResourceMode] = useState<'grid' | 'folder'>('folder');
   const [currentStep, setCurrentStep] = useState(1);
   const [inputValue, setInputValue] = useState(initialPrompt || "");
   const [activeResource, setActiveResource] = useState<{ type: 'script' | 'image' | 'video'; data?: any } | null>(null);
