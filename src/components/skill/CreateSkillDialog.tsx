@@ -814,7 +814,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                             </div>
 
                             <div className="relative group">
-                              <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/5 cursor-pointer hover:bg-white/[0.06] transition-all">
+                              <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--color-secondary)] border border-[var(--color-border)] cursor-pointer hover:bg-[var(--color-accent)] transition-all shadow-sm">
                                 <div className="flex items-center gap-3">
                                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10 text-green-500">
                                     <CheckCircle2 className="h-5 w-5" />
