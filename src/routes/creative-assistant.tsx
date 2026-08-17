@@ -279,13 +279,41 @@ function CreativeAssistantPage() {
   return (
     <div className="flex h-screen flex-col bg-[var(--color-background)] text-[var(--color-foreground)] overflow-hidden font-sans">
       <div className="absolute top-0 left-0 right-0 z-50 p-6 flex items-center justify-between pointer-events-none">
-        <div className="pointer-events-auto">
+        <div className="pointer-events-auto flex items-center gap-4">
           <BrandMark />
+          <div className="h-6 w-px bg-[var(--color-border)] opacity-50" />
+          <button 
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              setShowShareToast(true);
+              setTimeout(() => setShowShareToast(false), 2000);
+            }}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-secondary)] border border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all group"
+          >
+            <Share2 className="h-3.5 w-3.5 text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)] transition-colors" />
+            <span className="text-[12px] font-bold">分享会话流</span>
+          </button>
         </div>
         <div className="pointer-events-auto">
           <TopBar />
         </div>
       </div>
+
+      <AnimatePresence>
+        {showShareToast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: -20, x: "-50%" }}
+            className="fixed top-24 left-1/2 z-[100] px-6 py-3 rounded-2xl bg-white text-black shadow-2xl flex items-center gap-3 border border-black/5"
+          >
+            <div className="w-5 h-5 rounded-full bg-[#34C759] flex items-center justify-center">
+              <ChevronRightIcon className="h-3 w-3 text-white rotate-[-90deg] translate-y-[0.5px]" />
+            </div>
+            <span className="text-[14px] font-bold tracking-tight">分享链接已复制到剪贴板，快去分享吧！</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="flex flex-1 overflow-hidden pt-20">
         {/* Main Chat Area */}
