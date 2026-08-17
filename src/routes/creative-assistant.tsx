@@ -15,6 +15,7 @@ import {
   Search
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
+import { PromptBox } from "@/components/PromptBox";
 import { cn } from "@/lib/utils";
 import { 
   Popover, 
@@ -234,24 +235,25 @@ function CreativeAssistantPage() {
 
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim() || isProcessing) return;
+  const handleSendMessage = (textOverride?: string) => {
+    const textToSend = typeof textOverride === 'string' ? textOverride : inputValue;
+    if (!textToSend.trim() || isProcessing) return;
     
     const userMsg: Message = {
       id: Math.random().toString(),
       role: "user",
-      content: inputValue,
+      content: textToSend,
       timestamp: new Date().toLocaleString(),
     };
     
     // Check for specific keywords to trigger next stages
     let nextStage = 0;
-    if (inputValue.includes("图片") || inputValue.includes("素材")) {
+    if (textToSend.includes("图片") || textToSend.includes("素材")) {
       userMsg.attachments = [{ name: "saitama.webp", type: "IMAGE", url: charSam }];
       nextStage = 3;
-    } else if (inputValue.includes("生成") || inputValue.includes("宣发")) {
+    } else if (textToSend.includes("生成") || textToSend.includes("宣发")) {
       nextStage = 4;
-    } else if (inputValue.includes("继续")) {
+    } else if (textToSend.includes("继续")) {
       nextStage = 5;
     } else if (messages.length === 0) {
       nextStage = 1;
@@ -586,70 +588,12 @@ function CreativeAssistantPage() {
           {/* Bottom Input Area */}
           <div className="px-6 pb-10">
             <div className="mx-auto max-w-5xl">
-              <div className="bg-[var(--color-card)] rounded-[2.5rem] border border-[var(--color-border)] p-4 shadow-[0_8px_40px_rgba(0,0,0,0.04)] transition-all focus-within:shadow-[0_8px_40px_rgba(0,0,0,0.08)]">
-                <div className="flex flex-wrap gap-2 px-4 mb-2">
-                   {/* Prompt chips could go here */}
-                </div>
-                <textarea 
-                  rows={1}
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
-                  placeholder="与综合助手对话，支持多种能力..."
-                  className="w-full bg-transparent text-[16px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none resize-none px-4 py-2 font-medium"
-                />
-                <div className="mt-4 flex items-center justify-between px-2">
-                  <div className="flex items-center gap-2.5">
-                    <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-secondary)] text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-colors border border-transparent active:scale-95">
-                      <Plus className="h-5 w-5" />
-                    </button>
-                    <div className="h-5 w-px bg-[#E5E5E7] mx-1" />
-                    
-                    <button className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-2 text-[13px] font-semibold text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all">
-                      <div className="w-4 h-3 border-2 border-current rounded-[2px]" />
-                      16:9 (横屏)
-                      <ChevronDown className="h-4 w-4 opacity-50" />
-                    </button>
-
-                    <button className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-2 text-[13px] font-semibold text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all">
-                      <LayoutGrid className="h-4 w-4" />
-                      技能
-                      <ChevronDown className="h-4 w-4 opacity-50" />
-                    </button>
-
-                    <button className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-2 text-[13px] font-bold text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all uppercase tracking-tight">
-                      720P
-                    </button>
-
-                    <button className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-2 text-[13px] font-bold text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all uppercase tracking-tight">
-                      2K
-                      <ChevronDown className="h-4 w-4 opacity-50" />
-                    </button>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <button className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors p-2 rounded-full hover:bg-[var(--color-secondary)]">
-                      <Mic className="h-5 w-5" />
-                    </button>
-                    <button 
-                      onClick={handleSendMessage}
-                      disabled={isProcessing}
-                      className={cn(
-                        "flex h-10 w-10 items-center justify-center rounded-full shadow-lg transition-all active:scale-90",
-                        isProcessing 
-                          ? "bg-[var(--color-muted-foreground)] cursor-not-allowed" 
-                          : "bg-[var(--color-foreground)] text-[var(--color-background)] hover:opacity-90"
-                      )}
-                    >
-                      <ArrowUp className={cn("h-5 w-5", isProcessing && "animate-pulse")} />
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <PromptBox 
+                onSubmit={(text) => {
+                  setInputValue(text);
+                  handleSendMessage(text);
+                }}
+              />
               <div className="mt-5 text-center text-[11px] text-[var(--color-muted-foreground)] font-medium">
                 AI 可能会犯错，内容仅供参考，请核查重要信息。
               </div>
