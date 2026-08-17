@@ -625,9 +625,9 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
                       {/* Floating Indicator */}
                       {markdownContent && (
-                        <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-secondary)] border border-[var(--color-border)] opacity-0 group-hover:opacity-100 transition-opacity">
                           <div className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-                          <span className="text-[10px] font-medium text-white/40 uppercase tracking-widest">Read Only</span>
+                          <span className="text-[10px] font-medium text-[var(--color-muted-foreground)]/40 uppercase tracking-widest">Read Only</span>
                         </div>
                       )}
                     </div>
