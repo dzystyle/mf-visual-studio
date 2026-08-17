@@ -719,110 +719,111 @@ function CreativeAssistantPage() {
 
 function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1200px] h-[90vh] border-white/10 bg-[#0A0A0A]/95 p-0 text-white backdrop-blur-xl overflow-hidden rounded-[24px] shadow-2xl [&>button]:text-white/40">
-        <div className="flex h-full flex-col">
-          {/* Header */}
-          <div className="flex items-center justify-between px-8 py-6 border-b border-white/5 bg-white/[0.02]">
-            <div className="flex items-center gap-4">
-              <button onClick={() => onOpenChange(false)} className="text-white/40 hover:text-white flex items-center gap-1 text-[13px] transition-colors">
-                <ChevronRight className="h-4 w-4 rotate-180" />
-                返回
-              </button>
-              <div className="w-px h-4 bg-white/10" />
-              <h2 className="text-lg font-bold">story-script.md</h2>
-            </div>
-            <div className="flex items-center gap-3">
-              <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 text-white font-bold text-[14px] hover:bg-white/10 transition-all border border-white/5">
-                <Download className="h-4 w-4" />
-                下载
-              </button>
-            </div>
+    <div className={cn(
+      "absolute inset-0 z-[120] bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out origin-right",
+      open ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
+    )}>
+      {/* Header */}
+      <div className="flex items-center justify-between px-8 py-6 border-b border-[var(--color-border)]">
+        <div className="flex items-center gap-4">
+          <button onClick={() => onOpenChange(false)} className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] flex items-center gap-1 text-[13px] transition-colors font-medium">
+            <ChevronRight className="h-4 w-4 rotate-180" />
+            返回
+          </button>
+          <div className="w-px h-4 bg-[var(--color-border)]" />
+          <h2 className="text-lg font-bold text-[var(--color-foreground)]">story-script.md</h2>
+        </div>
+        <div className="flex items-center gap-3">
+          <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-secondary)] text-[var(--color-foreground)] font-bold text-[14px] hover:bg-[var(--color-accent)] transition-all border border-[var(--color-border)]">
+            <Download className="h-4 w-4" />
+            下载
+          </button>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-hidden flex flex-col">
+        {/* Table Header Section */}
+        <div className="px-8 py-6">
+          <h1 className="text-2xl font-bold mb-6 text-[var(--color-foreground)]">《一拳超人：最强之男》游戏宣发 - 故事脚本</h1>
+          
+          <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 text-[12px] font-bold text-[var(--color-muted-foreground)] border-b border-[var(--color-border)] pb-4 uppercase tracking-wider">
+            <div>镜号</div>
+            <div>时长</div>
+            <div>画面描述</div>
+            <div>景别</div>
+            <div>光影氛围</div>
+            <div>对话·旁白</div>
+            <div>音效</div>
+            <div>运镜</div>
           </div>
+        </div>
 
-          {/* Table Header Section */}
-          <div className="px-8 py-6 bg-white/[0.01]">
-            <h1 className="text-2xl font-bold mb-6">《一拳超人：最强之男》游戏宣发 - 故事脚本</h1>
-            
-            <div className="grid grid-cols-[80px_80px_1fr_80px_120px_100px_100px_120px] gap-4 text-[13px] font-bold text-white/40 border-b border-white/5 pb-4">
-              <div>镜号</div>
-              <div>时长</div>
-              <div>画面描述</div>
-              <div>景别</div>
-              <div>光影氛围</div>
-              <div>对话·旁白</div>
-              <div>音效</div>
-              <div>运镜</div>
+        {/* Table Body */}
+        <div className="flex-1 overflow-y-auto px-8 py-2 scrollbar-hide">
+          <div className="space-y-0">
+            {/* Row 1 */}
+            <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 py-6 border-b border-[var(--color-border)] text-[13px] leading-relaxed group hover:bg-[var(--color-secondary)]/50 transition-colors">
+              <div className="font-bold text-[15px] text-[var(--color-foreground)]">1</div>
+              <div className="text-[var(--color-foreground)]">2.5s</div>
+              <div className="text-[var(--color-foreground)]">纯黑背景中，<span className="text-orange-500 font-bold">埼玉</span>特写登场，光头冷峻面容，身穿棕黄色紧身战衣，灰白色披风微微飘动，右拳前伸，红色拳套表面泛起微光蓄力。参考@图1</div>
+              <div className="text-[var(--color-muted-foreground)]">近景特写</div>
+              <div className="text-[var(--color-muted-foreground)]">黑底单点聚光打在埼玉面部与拳套上，高对比度明暗，赛璐璐动画质感</div>
+              <div className="text-[var(--color-muted-foreground)]">—</div>
+              <div className="text-[var(--color-muted-foreground)]">低频嗡鸣蓄力声，逐渐升压</div>
+              <div className="text-[var(--color-muted-foreground)]">缓慢推镜，从埼玉面部推至拳套特写</div>
             </div>
-          </div>
 
-          {/* Table Body */}
-          <div className="flex-1 overflow-y-auto px-8 py-2 scrollbar-hide">
-            <div className="space-y-0">
-              {/* Row 1 */}
-              <div className="grid grid-cols-[80px_80px_1fr_80px_120px_100px_100px_120px] gap-4 py-8 border-b border-white/5 text-[14px] leading-relaxed group hover:bg-white/[0.02] transition-colors rounded-xl px-2 -mx-2">
-                <div className="font-bold text-lg">1</div>
-                <div>2.5s</div>
-                <div>纯黑背景中，<span className="text-orange-400 font-bold">埼玉</span>特写登场，光头冷峻面容，身穿棕黄色紧身战衣，灰白色披风微微飘动，右拳前伸，红色拳套表面泛起微光蓄力。参考@图1</div>
-                <div className="text-white/60">近景特写</div>
-                <div className="text-white/60">黑底单点聚光打在埼玉面部与拳套上，高对比度明暗，赛璐璐动画质感</div>
-                <div className="text-white/60">—</div>
-                <div className="text-white/60">低频嗡鸣蓄力声，逐渐升压</div>
-                <div className="text-white/60">缓慢推镜，从埼玉面部推至拳套特写</div>
-              </div>
+            {/* Row 2 */}
+            <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 py-6 border-b border-[var(--color-border)] text-[13px] leading-relaxed group hover:bg-[var(--color-secondary)]/50 transition-colors">
+              <div className="font-bold text-[15px] text-[var(--color-foreground)]">2</div>
+              <div className="text-[var(--color-foreground)]">0.7s</div>
+              <div className="text-[var(--color-foreground)]"><span className="text-red-500 font-bold">红色拳套</span>爆发也剧烈冲击波，白光撕裂整个黑底画面，碎片飞溅，画面被冲击波冲破后切入战斗世界</div>
+              <div className="text-[var(--color-muted-foreground)]">全景</div>
+              <div className="text-[var(--color-muted-foreground)]">爆裂白光闪屏，冲击波粒子飞溅</div>
+              <div className="text-[var(--color-muted-foreground)]">—</div>
+              <div className="text-[var(--color-muted-foreground)]">巨响轰鸣，玻璃碎裂般的高频碎裂声</div>
+              <div className="text-[var(--color-muted-foreground)]">快速拉镜，冲击波方向向外推出</div>
+            </div>
 
-              {/* Row 2 */}
-              <div className="grid grid-cols-[80px_80px_1fr_80px_120px_100px_100px_120px] gap-4 py-8 border-b border-white/5 text-[14px] leading-relaxed group hover:bg-white/[0.02] transition-colors rounded-xl px-2 -mx-2">
-                <div className="font-bold text-lg">2</div>
-                <div>0.7s</div>
-                <div><span className="text-red-500 font-bold">红色拳套</span>爆发也剧烈冲击波，白光撕裂整个黑底画面，碎片飞溅，画面被冲击波冲破后切入战斗世界</div>
-                <div className="text-white/60">全景</div>
-                <div className="text-white/60">爆裂白光闪屏，冲击波粒子飞溅</div>
-                <div className="text-white/60">—</div>
-                <div className="text-white/60">巨响轰鸣，玻璃碎裂般的高频碎裂声</div>
-                <div className="text-white/60">快速拉镜，冲击波方向向外推出</div>
-              </div>
+            {/* Row 3 */}
+            <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 py-6 border-b border-[var(--color-border)] text-[13px] leading-relaxed group hover:bg-[var(--color-secondary)]/50 transition-colors">
+              <div className="font-bold text-[15px] text-[var(--color-foreground)]">3</div>
+              <div className="text-[var(--color-foreground)]">3s</div>
+              <div className="text-[var(--color-foreground)]"><span className="text-orange-500 font-bold">杰诺斯</span>登场，全身机械改造人，金色机械臂喷射橙红火焰，冲向怪人发射焚烧炮，背景是废墟城市天际线。随后画面快速切换：<span className="text-green-500 font-bold">战栗的龙卷</span>绿色念力屏障、<span className="text-blue-500 font-bold">原子武士</span>刀光斩击、<span className="text-gray-500 font-bold">银色獠牙</span>格斗连击，多个英雄技能特效闪现</div>
+              <div className="text-[var(--color-muted-foreground)]">中景/全景交替</div>
+              <div className="text-[var(--color-muted-foreground)]">战场硝烟弥漫，技能特效橙红、翠绿、银白交替闪烁，高饱和度燃战色调</div>
+              <div className="text-[var(--color-muted-foreground)]">[旁白]英雄全员集结！</div>
+              <div className="text-[var(--color-muted-foreground)]">杰诺斯火焰喷射声、刀剑交锋声、技能爆发轰鸣、快节奏电子鼓点</div>
+              <div className="text-[var(--color-muted-foreground)]">快速剪辑切换，每0.5-0.7s一个镜头，节奏感强</div>
+            </div>
 
-              {/* Row 3 */}
-              <div className="grid grid-cols-[80px_80px_1fr_80px_120px_100px_100px_120px] gap-4 py-8 border-b border-white/5 text-[14px] leading-relaxed group hover:bg-white/[0.02] transition-colors rounded-xl px-2 -mx-2">
-                <div className="font-bold text-lg">3</div>
-                <div>3s</div>
-                <div><span className="text-orange-400 font-bold">杰诺斯</span>登场，全身机械改造人，金色机械臂喷射橙红火焰，冲向怪人发射焚烧炮，背景是废墟城市天际线。随后画面快速切换：<span className="text-green-400 font-bold">战栗的龙卷</span>绿色念力屏障、<span className="text-blue-400 font-bold">原子武士</span>刀光斩击、<span className="text-gray-400 font-bold">银色獠牙</span>格斗连击，多个英雄技能特效闪现</div>
-                <div className="text-white/60">中景/全景交替</div>
-                <div className="text-white/60">战场硝烟弥漫，技能特效橙红、翠绿、银白交替闪烁，高饱和度燃战色调</div>
-                <div className="text-white/60">[旁白]英雄全员集结！</div>
-                <div className="text-white/60">杰诺斯火焰喷射声、刀剑交锋声、技能爆发轰鸣、快节奏电子鼓点</div>
-                <div className="text-white/60">快速剪辑切换，每0.5-0.7s一个镜头，节奏感强</div>
-              </div>
+            {/* Row 4 */}
+            <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 py-6 border-b border-[var(--color-border)] text-[13px] leading-relaxed group hover:bg-[var(--color-secondary)]/50 transition-colors">
+              <div className="font-bold text-[15px] text-[var(--color-foreground)]">4</div>
+              <div className="text-[var(--color-foreground)]">3.8s</div>
+              <div className="text-[var(--color-foreground)]"><span className="text-orange-500 font-bold">埼玉</span>再度现身，从画面中央突进，<span className="text-red-500 font-bold">红色拳套</span>一拳轰出，拳风形成巨大气流环，前方怪人被冲击波瞬间粉碎，地面龟裂。画面定格在埼玉出拳后的侧脸，披风飞扬。随后画面中心浮现金色品牌字「<span className="text-yellow-600 font-bold">英雄参上 一拳K.O.</span>」，下方出现游戏Logo「一拳超人：最强之男」</div>
+              <div className="text-[var(--color-muted-foreground)]">近景→中景</div>
+              <div className="text-[var(--color-muted-foreground)]">金色光效从拳套蔓延全身，冲击波形成气流余光环，最终定格为金色品牌光芒</div>
+              <div className="text-[var(--color-muted-foreground)]">[旁白]英雄参上，一拳K.O.！《一拳超人：最强之男》，现在下载体验！</div>
+              <div className="text-[var(--color-muted-foreground)]">重击轰鸣、气浪呼啸、品牌音效收尾、电子鼓点渐弱</div>
+              <div className="text-[var(--color-muted-foreground)]">慢动作推进出拳瞬间，随后后远定格在品牌画面</div>
+            </div>
 
-              {/* Row 4 */}
-              <div className="grid grid-cols-[80px_80px_1fr_80px_120px_100px_100px_120px] gap-4 py-8 border-b border-white/5 text-[14px] leading-relaxed group hover:bg-white/[0.02] transition-colors rounded-xl px-2 -mx-2">
-                <div className="font-bold text-lg">4</div>
-                <div>3.8s</div>
-                <div><span className="text-orange-400 font-bold">埼玉</span>再度现身，从画面中央突进，<span className="text-red-500 font-bold">红色拳套</span>一拳轰出，拳风形成巨大气流环，前方怪人被冲击波瞬间粉碎，地面龟裂。画面定格在埼玉出拳后的侧脸，披风飞扬。随后画面中心浮现金色品牌字「<span className="text-yellow-400 font-bold">英雄参上 一拳K.O.</span>」，下方出现游戏Logo「一拳超人：最强之男」</div>
-                <div className="text-white/60">近景→中景</div>
-                <div className="text-white/60">金色光效从拳套蔓延全身，冲击波形成气流余光环，最终定格为金色品牌光芒</div>
-                <div className="text-white/60">[旁白]英雄参上，一拳K.O.！《一拳超人：最强之男》，现在下载体验！</div>
-                <div className="text-white/60">重击轰鸣、气浪呼啸、品牌音效收尾、电子鼓点渐弱</div>
-                <div className="text-white/60">慢动作推进出拳瞬间，随后后远定格在品牌画面</div>
-              </div>
-
-              {/* Row 5 */}
-              <div className="grid grid-cols-[80px_80px_1fr_80px_120px_100px_100px_120px] gap-4 py-8 text-[14px] leading-relaxed group hover:bg-white/[0.02] transition-colors rounded-xl px-2 -mx-2">
-                <div className="font-bold text-lg">5</div>
-                <div>5s</div>
-                <div>品牌定帧画面：<span className="font-bold">一拳超人：最强之男</span>游戏Logo居中，背景为埼玉背影剪影 + 英雄协会标志光纹，底部显示「<span className="text-yellow-500 font-bold">正版授权 现已上线</span>」，画面底部出现下载按钮提示</div>
-                <div className="text-white/60">全景</div>
-                <div className="text-white/60">金色品牌光，干净深色底，Logo金属质感反光</div>
-                <div className="text-white/60">[旁白]正版授权，掌趣科技发行，立刻下载！</div>
-                <div className="text-white/60">品牌收尾音效，轻量电子尾音</div>
-                <div className="text-white/60">固定机位，Logo微光呼吸效果</div>
-              </div>
+            {/* Row 5 */}
+            <div className="grid grid-cols-[60px_60px_1fr_80px_120px_100px_100px_120px] gap-4 py-6 text-[13px] leading-relaxed group hover:bg-[var(--color-secondary)]/50 transition-colors">
+              <div className="font-bold text-[15px] text-[var(--color-foreground)]">5</div>
+              <div className="text-[var(--color-foreground)]">5s</div>
+              <div className="text-[var(--color-foreground)]">品牌定帧画面：<span className="font-bold text-[var(--color-foreground)]">一拳超人：最强之男</span>游戏Logo居中，背景为埼玉背影剪影 + 英雄协会标志光纹，底部显示「<span className="text-yellow-600 font-bold">正版授权 现已上线</span>」，画面底部出现下载按钮提示</div>
+              <div className="text-[var(--color-muted-foreground)]">全景</div>
+              <div className="text-[var(--color-muted-foreground)]">金色品牌光，干净深色底，Logo金属质感反光</div>
+              <div className="text-[var(--color-muted-foreground)]">[旁白]正版授权，掌趣科技发行，立刻下载！</div>
+              <div className="text-[var(--color-muted-foreground)]">品牌收尾音效，轻量电子尾音</div>
+              <div className="text-[var(--color-muted-foreground)]">固定机位，Logo微光呼吸效果</div>
             </div>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }
 
