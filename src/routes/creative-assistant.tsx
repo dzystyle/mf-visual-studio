@@ -499,6 +499,42 @@ function CreativeAssistantPage() {
                   
                   {msg.role === 'assistant' && msg.id === '13' && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
+                      <StatusLine icon="check" text="任务规划" />
+                      <div className="text-[15px] mt-2 mb-4">方案已确认，开始生成视频。</div>
+                      
+                      <div className="w-full bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
+                        <StatusLine icon="check" text="生成视频" subText="时长：15秒以内，比例：16:9。任务：生成品牌TVC。 标题：《英雄参上 一拳K.O.》 风格…" />
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4 mt-2">
+                          视频生成因参考图涉及第三方IP内容未通过平台审核。这是审核硬限制，无法通过修改提示词规避。
+                        </div>
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4">
+                          有两个可行的方向：
+                        </div>
+                        <ul className="space-y-2 text-[14px] text-[var(--color-muted-foreground)] mb-4 list-none">
+                          <li>• 不使用角色参考图，改为纯文字提示词生成，由视频模型自由演绎一拳超人风格的热血战斗场景</li>
+                          <li>• 你提供自有版权的素材（如官方授权的游戏画面截图），再重新生成</li>
+                        </ul>
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed">
+                          你想怎么处理？
+                        </div>
+                      </div>
+
+                      <StatusLine icon="check" text="任务规划" subText="参考图未通过平台审核（涉及第三方IP），你希望怎么处理？" />
+                      
+                      <div className="text-[15px] mb-4">好的，我改为纯文字提示词方式生成，不使用角色参考图。</div>
+
+                      <div className="w-full bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
+                        <StatusLine icon="check" text="生成视频" subText="时长：15秒以内，比例：16:9。任务：生成品牌TVC。 标题：《英雄参上 一拳K.O.》 风格…" />
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4 mt-2">
+                          视频生成再次未通过平台审核，这次是文字提示词涉及版权限制。
+                        </div>
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed">
+                          问题在于提示词中直接使用了「一拳超人」等受版权保护的名称。我需要把所有IP相关名称改为通用描述后再试一次：把「一拳超人」改为「最强英雄」，去掉所有直接引用IP名称的内容。你同意我这样调整后重新生成吗？
+                        </div>
+                      </div>
+
+                      <div className="text-[15px] mb-4">我把角色改成完全原创的热血游戏角色：光头英雄改为黑发短发剑客主角，机械改造人改为火焰法师，脱离原有IP形象特征，保留热血燃战的宣发调性。</div>
+
                       <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl mb-2 group">
                         <video 
                           src={videoFileUrl} 
@@ -521,13 +557,13 @@ function CreativeAssistantPage() {
                       <StatusLine icon="check" text="读取文件" subText="查看生成的视频效果" />
                       <StatusLine icon="check" text="任务规划" />
                       
-                      <div className="text-[15px] mb-4">视频已生成完成，15秒热血燃战风格的游戏宣发成片。赤焰拳客在废墟战场中双拳燃烧火焰，结尾定格在「英雄参上 一拳K.O.」品牌口号和游戏Logo。</div>
+                      <div className="text-[15px] mb-4">视频已生成完成，15秒热血燃战风格的游戏宣发成片。赤焰拳客在废墟战场中双拳燃烧火焰，结尾定格在「英雄参上 一拳K.O.」品牌口号 and 游戏Logo。</div>
                       
                       <div className="text-[15px] mb-4">由于IP形象审核限制，角色已从埼玉/杰诺斯替换为原创的赤焰拳客形象，保留了热血战斗的宣发调性。成片已交付，你可以审阅后告诉我是否需要调整。</div>
                       
                       <StatusLine icon="check" text="发送产物" />
                       
-                      <div className="text-[15px] mb-2">成片已交付。由于平台审核限制，原IP角色形象（埼玉/杰诺斯）无法直接生成，已替换为原创的赤焰拳客角色，保留了热血燃战的游戏宣发风格。如果你有官方授权的角色素材，可以上传后重新生成更贴近原作的画面。需要调整什么直接说。</div>
+                      <div className="text-[15px] mb-2 font-medium">成片已交付。由于平台审核限制，原IP角色形象（埼玉/杰诺斯）无法直接生成，已替换为原创的赤焰拳客角色，保留了热血燃战的游戏宣发风格。如果你有官方授权的角色素材，可以上传后重新生成更贴近原作的画面。需要调整什么直接说。</div>
                     </div>
                   )}
 
