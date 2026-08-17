@@ -863,7 +863,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                 {/* Scroll Down Hint */}
                 {messages.length > 0 && (
                   <div className="flex justify-center pt-4">
-                    <div className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center text-muted-foreground">
+                    <div className="h-8 w-8 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-muted-foreground)] shadow-sm">
                       <ArrowUp className="h-4 w-4 rotate-180" />
                     </div>
                   </div>
