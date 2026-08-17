@@ -779,8 +779,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                 <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">分镜设计：</strong>强调前 3 秒视觉钩子、长镜头内部节拍、史诗感摄影语言</span>
                               </li>
                               <li className="flex gap-4">
-                                <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                                <span className="text-foreground/70"><strong className="text-white font-medium">生成策略：</strong>以 Seedance 2.0 为主力视频模型，角色一致性靠元素参考图保障</span>
+                                <span className="text-[var(--color-muted-foreground)] mt-2 h-1.5 w-1.5 rounded-full bg-[var(--color-foreground)]/20 shrink-0" />
+                                <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">生成策略：</strong>以 Seedance 2.0 为主力视频模型，角色一致性靠元素参考图保障</span>
                               </li>
                               <li className="flex gap-4">
                                 <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
