@@ -401,33 +401,34 @@ function CreativeAssistantPage() {
 
                   {msg.isDetailedAssistant && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
+                      <div className="text-[15px] mb-4">埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。</div>
                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
-                      <div className="ml-8 mt-1 mb-4 flex items-center gap-3 p-3 rounded-2xl bg-[var(--color-secondary)] border border-[var(--color-border)] w-fit">
-                        <div className="h-10 w-10 rounded-lg overflow-hidden shrink-0 border border-[var(--color-border)]">
-                          <img src={charSam} className="w-full h-full object-cover" />
-                        </div>
-                        <div className="text-[14px] font-bold text-[var(--color-foreground)]">saitama.webp</div>
-                      </div>
-                      <div className="text-[15px] mb-4">素材确认完毕，埼玉的战斗姿态非常适合做宣发开场。接下来加载营销视频制作流程。</div>
+                      <div className="text-[15px] mt-2 mb-4">素材确认完毕，埼玉的战斗姿态非常适合做宣发开场。接下来加载营销视频制作流程。</div>
+                      
                       <StatusLine icon="check" text="技能学习" subText="营销视频大师" />
-                      <StatusLine icon="loading" text="正在加载技能: 营销视频大师" />
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-2">先读取输入规范文件，确认产物格式和项目状态定义。</div>
                       <StatusLine icon="check" text="读取文件" subText="读取输入与项目状态参考文件" />
+                      
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-2">现在读取营销基础与路由文件，确定方向创意路由。</div>
                       <StatusLine icon="check" text="读取文件" subText="读取营销基础与路由参考文件" />
+                      
                       <div className="text-[15px] mt-2 mb-2">这是一个游戏宣发视频，核心说服力来自品牌含义和情感关联，路由到品牌片方向。现在读取品牌片方向创意文件。</div>
                       <StatusLine icon="check" text="读取文件" subText="读取品牌片方向创意文件" />
+                      
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-2">现在创建项目目录并编写内部营销脑图和故事脚本。先搜索一下掌趣一拳超人游戏的相关信息，确保脚本内容准确。</div>
                       <StatusLine icon="check" text="联网搜索" subText="完成 2 次搜索" />
                       <StatusLine icon="check" text="执行命令" subText="创建项目目录" />
+                      
                       <div className="text-[15px] mt-2 mb-2">搜索结果很全面。掌趣科技的《一拳超人：最强之男》是一款策略卡牌手游，核心卖点包括正版授权、还原动画剧情、原版声优、策略阵容搭配、埼玉一拳秒杀等。现在编写内部营销脑图和故事脚本。</div>
                       <StatusLine icon="check" text="写入文件" subText="编写内部营销脑图story-brief.md" />
+                      
                       <div className="text-[15px] mt-2 mb-2">现在编写故事脚本，这是需要你确认的第一个产物。</div>
                       <StatusLine icon="check" text="写入文件" subText="编写故事脚本story-script.md" />
-                      <div className="text-[15px] mt-2 mb-2">故事脚本已写好。这份脚本请你确认：埼玉蓄力开场、一拳冲击波过渡、英雄阵容快剪展示、埼玉一拳秒杀收尾 + brand slogan + 下载引导，5个镜头共15秒。画面节奏和卖点顺序对齐后，我再进入素材检查和视频方案环节。如果要改，直接告诉我，改完再发你看。</div>
+                      
+                      <div className="text-[15px] mt-2 mb-2">故事脚本已写好。这份脚本请你确认：埼玉蓄力开场、一拳冲击波过渡、英雄阵容快剪展示、埼玉一拳秒杀收尾 + 品牌口号 + 下载引导，5个镜头共15秒。画面节奏和卖点顺序对齐后，我再进入素材检查和视频方案环节。如果要改，直接告诉我，改完再发你看。</div>
                       <StatusLine icon="check" text="发送产物" />
                       <div className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 flex items-center justify-between shadow-sm max-w-sm hover:border-[var(--color-muted-foreground)] cursor-pointer transition-all">
                         <div className="flex items-center gap-3">
@@ -436,7 +437,7 @@ function CreativeAssistantPage() {
                           </div>
                           <div>
                             <div className="text-[14px] font-bold">story-script.md</div>
-                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-...</div>
+                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-onepunch-game-promo/story-script.md</div>
                           </div>
                         </div>
                         <div className="flex items-center gap-1 text-[12px] text-[var(--color-muted-foreground)]">
