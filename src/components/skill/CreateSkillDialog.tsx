@@ -798,10 +798,10 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
                             {/* Page Controls */}
                             <div className="flex items-center justify-center gap-4 py-4">
-                              <button className="h-9 w-9 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white/60 transition">
+                              <button className="h-9 w-9 rounded-full bg-[var(--color-secondary)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-muted-foreground)]/40 hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)] transition shadow-sm">
                                 <ArrowUp className="h-5 w-5 rotate-180" />
                               </button>
-                              <button className="h-9 w-9 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white/60 transition">
+                              <button className="h-9 w-9 rounded-full bg-[var(--color-secondary)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-muted-foreground)]/40 hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)] transition shadow-sm">
                                 <ArrowUp className="h-5 w-5" />
                               </button>
                             </div>
