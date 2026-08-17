@@ -608,7 +608,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                       <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-foreground)]/[0.02] to-transparent pointer-events-none" />
                       
                       {markdownContent ? (
-                        <div className="relative font-mono text-[13.5px] leading-[1.8] text-white/80 whitespace-pre-wrap selection:bg-[#E1B166]/20">
+                        <div className="relative font-mono text-[13.5px] leading-[1.8] text-[var(--color-foreground)]/80 whitespace-pre-wrap selection:bg-[#E1B166]/20">
                           {markdownContent}
                         </div>
                       ) : (
