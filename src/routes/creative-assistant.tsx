@@ -303,13 +303,13 @@ function CreativeAssistantPage() {
         )}
       </AnimatePresence>
 
-      <div className="flex flex-1 overflow-hidden pt-20">
+      <div className="flex flex-1 overflow-hidden pt-20 relative z-0">
         {/* Main Chat Area */}
         <div className={cn(
           "flex flex-1 flex-col transition-all duration-500 ease-in-out relative",
           showResources ? "mr-[600px]" : "mr-0"
         )}>
-          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide relative">
+          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide relative z-0">
             <div className="mx-auto max-w-4xl space-y-10">
               {/* Global Share Button - Only visible at the top of the first message */}
               {messages.length > 0 && (
