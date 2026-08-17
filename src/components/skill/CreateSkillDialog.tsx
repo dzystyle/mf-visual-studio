@@ -761,8 +761,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                               游戏宣发视频是个很棒的方向！我先帮你搭起一个基础框架，你可以在此基础上继续细化。
                             </p>
                             
-                            <p className="text-[14px] leading-relaxed text-white/90">
-                              已为你搭起一套完整的<strong className="text-white font-medium">游戏宣发视频</strong> Skill 框架，覆盖了从策划到剪辑的全流程。以下是各部分的核心设计思路：
+                            <p className="text-[14px] leading-relaxed text-[var(--color-foreground)]/90">
+                              已为你搭起一套完整的<strong className="text-[var(--color-foreground)] font-medium">游戏宣发视频</strong> Skill 框架，覆盖了从策划到剪辑的全流程。以下是各部分的核心设计思路：
                             </p>
                             
                             <ul className="space-y-4 text-[14px]">
