@@ -328,6 +328,20 @@ function CreativeAssistantPage() {
                     msg.role === "user" ? "items-end" : "items-start"
                   )}
                 >
+                  {msg.role === "assistant" && !msg.isChoiceCard && (
+                    <div className="absolute top-0 right-0 p-2">
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText(window.location.href);
+                          setShowShareToast(true);
+                          setTimeout(() => setShowShareToast(false), 2000);
+                        }}
+                        className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm"
+                      >
+                        <Share2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  )}
                   {msg.attachments && msg.attachments.length > 0 && (
                     <div className="flex flex-wrap gap-3 mb-1">
                       {msg.attachments.map((file, i) => (
