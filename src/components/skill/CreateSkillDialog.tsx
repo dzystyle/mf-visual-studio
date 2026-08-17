@@ -35,11 +35,11 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
     ];
 
   return (
-    <div className="mt-4 rounded-[20px] bg-[#1a1a1c] border border-white/[0.03] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)]">
+    <div className="mt-4 rounded-[20px] bg-[var(--color-card)] border border-[var(--color-border)] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)]">
       <div className="p-8 space-y-6">
-        <h4 className="text-[17px] font-semibold text-white/95 tracking-tight">你想优先完善哪个方向？</h4>
+        <h4 className="text-[17px] font-semibold text-[var(--color-foreground)] tracking-tight">你想优先完善哪个方向？</h4>
         
-        <div className="border-t border-dashed border-white/10 pt-6 space-y-8">
+        <div className="border-t border-dashed border-[var(--color-border)] pt-6 space-y-8">
           {options.map((option, idx) => {
             const isSelected = currentSelection === idx;
             return (
@@ -52,20 +52,20 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
                   "mt-1 h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
                   isSelected 
                     ? "bg-[#E1B166] text-black shadow-[0_0_15px_rgba(225,177,102,0.5)]" 
-                    : "bg-white/[0.03] text-transparent border border-white/[0.08] group-hover:border-white/20"
+                    : "bg-[var(--color-secondary)] text-transparent border border-[var(--color-border)] group-hover:border-[var(--color-muted-foreground)]"
                 )}>
                   <Check className="h-3 w-3" strokeWidth={4} />
                 </div>
                 <div className="space-y-1.5 flex-1">
                   <div className={cn(
                     "text-[15px] font-semibold transition-colors tracking-tight",
-                    isSelected ? "text-white/95" : "text-white/70 group-hover:text-white/90"
+                    isSelected ? "text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)]"
                   )}>
                     {option.title}
                   </div>
                   <div className={cn(
                     "text-[14px] leading-relaxed font-normal transition-colors",
-                    isSelected ? "text-white/60" : "text-white/30 group-hover:text-white/40"
+                    isSelected ? "text-[var(--color-muted-foreground)]" : "text-[var(--color-muted-foreground)]/40 group-hover:text-[var(--color-muted-foreground)]/60"
                   )}>
                     {option.desc}
                   </div>
@@ -84,7 +84,7 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
             "h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
             currentSelection === 4 
               ? "bg-[#E1B166] text-black shadow-[0_0_15px_rgba(225,177,102,0.5)]" 
-              : "bg-white/[0.03] text-transparent border border-white/[0.08] group-hover:border-white/20"
+              : "bg-[var(--color-secondary)] text-transparent border border-[var(--color-border)] group-hover:border-[var(--color-muted-foreground)]"
           )}>
             <Check className="h-3 w-3" strokeWidth={4} />
           </div>
@@ -104,7 +104,7 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
 
       {/* Send Button Row */}
       <div className="flex justify-end px-8 pb-8">
-        <button className="h-[44px] px-9 rounded-full bg-[#2a2a2c] text-[#E1B166] font-semibold text-[15px] hover:bg-[#323235] hover:text-[#f0c07d] transition-all shadow-xl active:scale-[0.98]">
+        <button className="h-[44px] px-9 rounded-full bg-[var(--color-secondary)] text-[#E1B166] font-semibold text-[15px] hover:bg-[var(--color-accent)] hover:text-[#f0c07d] transition-all shadow-xl active:scale-[0.98]">
           发送
         </button>
       </div>
@@ -129,7 +129,7 @@ function DiffField({ label, value, index, currentIndex, isTextarea = false }: {
     )}>
       {label && <label className="text-xs font-medium text-muted-foreground">{label}</label>}
       <div className="relative group">
-        <div className="rounded-xl overflow-hidden border border-white/5 bg-[#141417] shadow-xl">
+        <div className="rounded-xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-card)] shadow-xl">
           {/* Old Content Placeholder (Red) */}
           <div className="bg-red-950/20 border-b border-red-900/10 px-4 py-3 min-h-[40px] flex items-center">
             <div className="h-4 w-full bg-red-900/10 rounded-sm animate-pulse" />
@@ -138,7 +138,7 @@ function DiffField({ label, value, index, currentIndex, isTextarea = false }: {
           {/* New Content (Green) */}
           <div className="bg-green-950/20 px-4 py-5 relative">
             <div className={cn(
-              "text-sm leading-relaxed whitespace-pre-wrap text-white/90 font-light",
+              "text-sm leading-relaxed whitespace-pre-wrap text-[var(--color-foreground)]/90 font-light",
               isTextarea ? "min-h-[100px]" : ""
             )}>
               {value}
@@ -151,15 +151,15 @@ function DiffField({ label, value, index, currentIndex, isTextarea = false }: {
           </div>
 
           {/* Individual Action Bar */}
-          <div className="flex items-center justify-between px-4 py-2 bg-black/40 border-t border-white/5">
-            <div className="flex items-center gap-2 text-[11px] text-white/40 font-medium">
+          <div className="flex items-center justify-between px-4 py-2 bg-[var(--color-background)]/40 border-t border-[var(--color-border)]">
+            <div className="flex items-center gap-2 text-[11px] text-[var(--color-foreground)]/40 font-medium">
               <ChevronDown className="h-3 w-3 rotate-180 opacity-40" />
               <span>第 1 / 5 处</span>
               <ChevronDown className="h-3 w-3 opacity-40" />
             </div>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-md hover:bg-white/5 text-[11px] text-white/60 transition group">
-                <Undo2 className="h-3 w-3 text-white/20 group-hover:text-white transition" />
+              <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-md hover:bg-[var(--color-secondary)] text-[11px] text-[var(--color-foreground)]/60 transition group">
+                <Undo2 className="h-3 w-3 text-[var(--color-foreground)]/20 group-hover:text-[var(--color-foreground)] transition" />
                 <span>撤销</span>
                 <span className="opacity-40 ml-0.5">⌘B</span>
               </button>
@@ -700,19 +700,19 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                   />
                                 </div>
                                 <div className="space-y-2 relative">
-                                  <label className="text-xs font-medium text-muted-foreground">Skill调用规则</label>
+                                  <label className="text-xs font-medium text-[var(--color-muted-foreground)]">Skill调用规则</label>
                                   <textarea 
                                     placeholder="告诉 Agent 这个 Skill 应该在什么情况下被调用"
-                                    className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm min-h-[100px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
+                                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-3 text-sm min-h-[100px] resize-none focus:border-[var(--color-foreground)]/10 focus:outline-none focus:ring-1 focus:ring-[var(--color-foreground)]/10 transition"
                                   />
-                                  <span className="absolute bottom-3 right-3 text-[10px] text-muted-foreground/40">0/200</span>
+                                  <span className="absolute bottom-3 right-3 text-[10px] text-[var(--color-muted-foreground)]/40">0/200</span>
                                 </div>
                               </div>
                             ) : (
                               <div className="relative group">
                                 <textarea 
                                   placeholder={`输入${item.label}内容...`}
-                                  className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-5 text-sm min-h-[200px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition placeholder:text-muted-foreground/30"
+                                  className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-5 text-sm min-h-[200px] resize-none focus:border-[var(--color-foreground)]/10 focus:outline-none focus:ring-1 focus:ring-[var(--color-foreground)]/10 transition placeholder:text-[var(--color-muted-foreground)]/30"
                                 />
                                 <button className="absolute bottom-4 right-4 text-muted-foreground/30 hover:text-muted-foreground transition opacity-0 group-hover:opacity-100">
                                   <LayoutGrid className="h-4 w-4" />
@@ -729,11 +729,11 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
             </div>
 
             {/* Right Assistant Panel */}
-            <div className="w-[450px] flex flex-col bg-[#161618] border-l border-white/5">
+            <div className="w-[450px] flex flex-col bg-[var(--color-card)] border-l border-[var(--color-border)]">
               {/* Header */}
-              <div className="flex h-16 items-center px-6 shrink-0 border-b border-white/5">
+              <div className="flex h-16 items-center px-6 shrink-0 border-b border-[var(--color-border)]">
                 <div className="flex items-center gap-2">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-white/5 text-muted-foreground">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[var(--color-secondary)] text-[var(--color-muted-foreground)]">
                     <Code2 className="h-3.5 w-3.5" />
                   </div>
                   <span className="text-sm font-medium">Skill优化助手</span>
@@ -872,7 +872,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
               {/* Input Area */}
               <div className="p-6">
-                <div className="relative rounded-2xl border border-white/5 bg-white/5 p-4 focus-within:border-white/10 transition">
+                <div className="relative rounded-2xl border border-[var(--color-border)] bg-[var(--color-secondary)] p-4 focus-within:border-[var(--color-foreground)]/10 transition">
                   <textarea 
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
@@ -887,10 +887,10 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                   />
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center gap-2">
-                      <button className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-muted-foreground hover:bg-white/5 transition">
+                      <button className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] transition">
                         <Plus className="h-4 w-4" />
                       </button>
-                      <button className="flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1 text-[11px] text-muted-foreground hover:bg-white/5 transition">
+                      <button className="flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 text-[11px] text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] transition">
                         <LayoutGrid className="h-3 w-3" />
                         模型
                         <span className="rounded bg-emerald-500 px-1 text-[8px] text-white font-bold leading-tight uppercase">New</span>
@@ -905,7 +905,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                         disabled={!inputValue.trim()}
                         className={cn(
                           "flex h-8 w-8 items-center justify-center rounded-full transition",
-                          inputValue.trim() ? "bg-white text-black hover:bg-white/90" : "bg-white/10 text-muted-foreground cursor-not-allowed"
+                          inputValue.trim() ? "bg-[var(--color-foreground)] text-[var(--color-background)] hover:bg-[var(--color-foreground)]/90" : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)] cursor-not-allowed"
                         )}
                       >
                         <ArrowUp className="h-4 w-4" />
