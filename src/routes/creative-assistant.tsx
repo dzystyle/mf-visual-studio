@@ -642,8 +642,24 @@ function CreativeAssistantPage() {
                 <div className="flex items-center gap-6">
                   <h2 className="text-xl font-bold text-[var(--color-foreground)]">资源</h2>
                   <div className="flex items-center bg-[var(--color-secondary)] rounded-lg p-1 border border-[var(--color-border)]">
-                    <button className="p-1.5 bg-[var(--color-card)] rounded-md shadow-sm text-[var(--color-foreground)]"><LayoutGrid className="h-4 w-4" /></button>
-                    <button className="p-1.5 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"><ChevronDown className="h-4 w-4 rotate-180" /></button>
+                    <button 
+                      onClick={() => setResourceMode('grid')}
+                      className={cn(
+                        "p-1.5 rounded-md transition-all shadow-sm",
+                        resourceMode === 'grid' ? "bg-[var(--color-card)] text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+                      )}
+                    >
+                      <LayoutGrid className="h-4 w-4" />
+                    </button>
+                    <button 
+                      onClick={() => setResourceMode('folder')}
+                      className={cn(
+                        "p-1.5 rounded-md transition-all shadow-sm",
+                        resourceMode === 'folder' ? "bg-[var(--color-card)] text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+                      )}
+                    >
+                      <Folder className="h-4 w-4" />
+                    </button>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
