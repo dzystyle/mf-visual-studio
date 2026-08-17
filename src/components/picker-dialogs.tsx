@@ -513,9 +513,20 @@ export function ElementsPicker({
       {/* Toolbar / Filters */}
       <div className="flex items-center gap-3 px-6 py-4 flex-wrap border-b border-white/5">
         {/* Creation Source Dropdown */}
-        <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-          创作资产 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-        </button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+              创作资产 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+            <div className="space-y-1">
+              {['全部来源', '画布创作', '工作流创作', 'AI生成'].map((item) => (
+                <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
 
         {/* Media Type Filters */}
         <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
