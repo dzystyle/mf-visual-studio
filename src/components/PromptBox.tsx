@@ -327,6 +327,10 @@ export function PromptBox({
               </PopoverTrigger>
               <PopoverContent side="top" align="start" className="w-40 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
                 <AddItem icon={ImageIcon} label="本地上传" onClick={() => triggerPick("image")} />
+                <AddItem icon={AudioLines} label="音频上传" onClick={() => triggerPick("audio")} />
+                <AddItem icon={Video} label="视频上传" onClick={() => triggerPick("video")} />
+                <AddItem icon={FileText} label="文档上传" onClick={() => triggerPick("text")} />
+                <div className="my-1 h-px bg-white/5" />
                 <AddItem icon={LayoutGrid} label="资产库" onClick={() => setAssetsOpen(true)} />
               </PopoverContent>
             </Popover>

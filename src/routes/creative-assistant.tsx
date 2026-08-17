@@ -401,6 +401,9 @@ function CreativeAssistantPage() {
 
                   {msg.isDetailedAssistant && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
+                      <div className="text-[15px] mb-4">
+                        {"'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            输入框需要支持上传图片以你资深产品经理的角度深度思考一下。"}
+                      </div>
                       <div className="text-[15px] mb-4">埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。</div>
                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
                       <div className="text-[15px] mt-2 mb-4">素材确认完毕，埼玉的战斗姿态非常适合做宣发开场。接下来加载营销视频制作流程。</div>
