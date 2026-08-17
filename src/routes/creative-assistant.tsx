@@ -227,23 +227,28 @@ function CreativeAssistantPage() {
 
   const nextStep = () => {
     setCurrentStep(prev => {
-      const next = Math.min(prev + 1, 4);
       if (prev === 4) {
         // When user finishes the choice card, simulate a user message
-        // First check if we already have this confirmation message to avoid duplicates
-        const alreadyConfirmed = messages.some(m => m.role === "user" && m.content === "我已确认以上信息");
-        if (!alreadyConfirmed) {
+        // Use functional state update to ensure we're checking the latest messages
+        setMessages(prevMsgs => {
+          const alreadyConfirmed = prevMsgs.some(m => m.role === "user" && m.content === "我已确认以上信息");
+          if (alreadyConfirmed) return prevMsgs;
+          
           const userMsg: Message = {
-            id: Math.random().toString(),
+            id: `confirm-${Date.now()}`,
             role: "user",
             content: "我已确认以上信息",
             timestamp: new Date().toLocaleString(),
           };
-          setMessages(prevMsgs => [...prevMsgs, userMsg]);
-          triggerAssistantResponse(2);
-        }
+          
+          // Trigger assistant response on the next tick
+          setTimeout(() => triggerAssistantResponse(2), 0);
+          
+          return [...prevMsgs, userMsg];
+        });
+        return prev;
       }
-      return next;
+      return prev + 1;
     });
   };
 
