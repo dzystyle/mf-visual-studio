@@ -309,8 +309,25 @@ function CreativeAssistantPage() {
           "flex flex-1 flex-col transition-all duration-500 ease-in-out relative",
           showResources ? "mr-[600px]" : "mr-0"
         )}>
-          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide">
+          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide relative">
             <div className="mx-auto max-w-4xl space-y-10">
+              {/* Global Share Button - Only visible at the top of the first message */}
+              {messages.length > 0 && (
+                <div className="flex justify-end mb-4">
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      setShowShareToast(true);
+                      setTimeout(() => setShowShareToast(false), 2000);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm group/share"
+                  >
+                    <Share2 className="h-4 w-4" />
+                    <span className="text-sm font-medium">分享会话流</span>
+                  </button>
+                </div>
+              )}
+
               {messages.length === 0 && (
                 <div className="h-[60vh] flex flex-col items-center justify-center text-center opacity-60">
                   <div className="w-20 h-20 rounded-3xl bg-[var(--color-secondary)] flex items-center justify-center mb-6 border border-[var(--color-border)] shadow-sm">
@@ -328,21 +345,6 @@ function CreativeAssistantPage() {
                     msg.role === "user" ? "items-end" : "items-start"
                   )}
                 >
-                  {msg.role === "assistant" && !msg.isChoiceCard && !msg.isDetailedAssistant && !msg.isDetailedAssistant2 && !msg.isVideoOutput && (
-                    <div className="absolute top-0 right-[-48px] opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button 
-                        onClick={() => {
-                          navigator.clipboard.writeText(window.location.href);
-                          setShowShareToast(true);
-                          setTimeout(() => setShowShareToast(false), 2000);
-                        }}
-                        className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm"
-                        title="分享会话"
-                      >
-                        <Share2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  )}
                   {msg.attachments && msg.attachments.length > 0 && (
                     <div className="flex flex-wrap gap-3 mb-1">
                       {msg.attachments.map((file, i) => (
@@ -368,19 +370,6 @@ function CreativeAssistantPage() {
 
                   {msg.isChoiceCard && (
                     <div className={cn("w-full relative group", messages.filter(m => m.isChoiceCard).indexOf(msg) !== messages.filter(m => m.isChoiceCard).length - 1 && "hidden")}>
-                      <div className="absolute top-[-10px] right-[-48px] opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                        <button 
-                          onClick={() => {
-                            navigator.clipboard.writeText(window.location.href);
-                            setShowShareToast(true);
-                            setTimeout(() => setShowShareToast(false), 2000);
-                          }}
-                          className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm"
-                          title="分享会话"
-                        >
-                          <Share2 className="h-4 w-4" />
-                        </button>
-                      </div>
                       <AnimatePresence mode="wait">
                         {currentStep === 1 && msg.id === messages.filter((m: Message) => m.isChoiceCard).pop()?.id && (
                           <motion.div key="step1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
@@ -466,19 +455,6 @@ function CreativeAssistantPage() {
 
                   {msg.isDetailedAssistant && (
                     <div className="flex flex-col gap-2 w-full max-w-xl relative group">
-                      <div className="absolute top-0 right-[-48px] opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button 
-                          onClick={() => {
-                            navigator.clipboard.writeText(window.location.href);
-                            setShowShareToast(true);
-                            setTimeout(() => setShowShareToast(false), 2000);
-                          }}
-                          className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm"
-                          title="分享会话"
-                        >
-                          <Share2 className="h-4 w-4" />
-                        </button>
-                      </div>
                       <div className="text-[15px] mb-4">埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。</div>
                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
                       <div className="text-[15px] mt-2 mb-4">素材确认完毕，埼玉的战斗姿态非常适合做宣发开场。接下来加载营销视频制作流程。</div>
@@ -533,19 +509,6 @@ function CreativeAssistantPage() {
 
                   {msg.isDetailedAssistant2 && (
                     <div className="flex flex-col gap-2 w-full max-w-xl relative group">
-                      <div className="absolute top-0 right-[-48px] opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button 
-                          onClick={() => {
-                            navigator.clipboard.writeText(window.location.href);
-                            setShowShareToast(true);
-                            setTimeout(() => setShowShareToast(false), 2000);
-                          }}
-                          className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm"
-                          title="分享会话"
-                        >
-                          <Share2 className="h-4 w-4" />
-                        </button>
-                      </div>
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-4">故事脚本已确认通过。现在进入素材完整性检查。</div>
                       <div className="text-[15px] mb-2 font-medium">脚本中引用的实体有：</div>
@@ -596,19 +559,6 @@ function CreativeAssistantPage() {
                   
                   {msg.role === 'assistant' && msg.id === '13' && (
                     <div className="flex flex-col gap-2 w-full max-w-xl relative group">
-                      <div className="absolute top-0 right-[-48px] opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button 
-                          onClick={() => {
-                            navigator.clipboard.writeText(window.location.href);
-                            setShowShareToast(true);
-                            setTimeout(() => setShowShareToast(false), 2000);
-                          }}
-                          className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm"
-                          title="分享会话"
-                        >
-                          <Share2 className="h-4 w-4" />
-                        </button>
-                      </div>
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-4">方案已确认，开始生成视频。</div>
                       
