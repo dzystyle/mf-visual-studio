@@ -106,97 +106,67 @@ function CreativeAssistantPage() {
         id: "2",
         role: "assistant",
         content: "掌趣一拳超人游戏宣发，埼玉一拳秒杀的震撼感很适合做营销短视频的开场钩子。我先确认几个关键信息，帮你把方向定准。",
-        timestamp: new Date().toLocaleString(),
-        statusLines: [{ icon: "check", text: "读取文件", subText: "查看用户上传的一拳超人素材" }]
+        timestamp: "2026/8/13 14:34:26",
       },
       {
         id: "3",
         role: "assistant",
         isChoiceCard: true,
-        timestamp: new Date().toLocaleString(),
+        timestamp: "2026/8/13 14:34:26",
       },
       {
         id: "5",
         role: "assistant",
-        content: "收到，15秒内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。",
-        timestamp: new Date().toLocaleString(),
-        statusLines: [
-          { icon: "check", text: "技能学习", subText: "营销视频大师" },
-          { icon: "loading", text: "正在加载技能: 营销视频大师" },
-          { icon: "check", text: "任务规划" }
-        ]
-      },
-      {
-        id: "6",
-        role: "assistant",
-        content: "好的，我已经准备好处理素材并开始制作营销视频了。我们会先读取文件并规划任务，确保脚本准确还原一拳超人的热血燃战风格。",
-        timestamp: new Date().toLocaleString(),
-      },
-      {
-        id: "8",
-        role: "assistant",
-        content: "埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。",
-        timestamp: new Date().toLocaleString(),
+        content: "收到，15秒以内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。",
+        timestamp: "2026/8/13 14:37:15",
       },
       {
         id: "9",
         role: "assistant",
-        timestamp: new Date().toLocaleString(),
+        timestamp: "2026/8/13 14:38:55",
         isDetailedAssistant: true,
       },
       {
         id: "11",
         role: "assistant",
-        timestamp: new Date().toLocaleString(),
+        timestamp: "2026/8/13 14:43:06",
         isDetailedAssistant2: true,
       },
       {
         id: "13",
         role: "assistant",
-        timestamp: new Date().toLocaleString(),
+        timestamp: "2026/8/13 15:31:25",
         isVideoOutput: true,
       },
     ];
 
-    const nextAssistantMsg = fullWorkflow.find(m => {
-      if (stepIndex === 1) return m.id === "2" || m.id === "3";
-      if (stepIndex === 2) return m.id === "5" || m.id === "6";
-      if (stepIndex === 3) return m.id === "8" || m.id === "9";
-      if (stepIndex === 4) return m.id === "11";
-      if (stepIndex === 5) return m.id === "13";
-      return false;
-    });
-
-    // In this simulation, we'll just add the relevant response based on step
+    // Simulate different response sequences based on interaction point
     const timer = setTimeout(() => {
       setIsTyping(true);
       const typingTimer = setTimeout(() => {
-        const msgsToAdd: Message[] = [];
+        let msgsToAdd: Message[] = [];
+        
         if (stepIndex === 1) {
-          // Check if we already have these messages to avoid duplicates
+          // Check for duplicates
           const alreadyHasFirstResponse = messages.some(m => m.id === "2");
-          const alreadyHasChoiceCard = messages.some(m => m.isChoiceCard);
+          const alreadyHasChoiceCard = messages.some(m => m.isChoiceCard && m.id === "3");
           
-          if (!alreadyHasFirstResponse) {
-            msgsToAdd.push(fullWorkflow[0] as Message);
-          }
-          if (!alreadyHasChoiceCard) {
-            msgsToAdd.push(fullWorkflow[1] as Message);
-          }
+          if (!alreadyHasFirstResponse) msgsToAdd.push(fullWorkflow[0] as Message);
+          if (!alreadyHasChoiceCard) msgsToAdd.push(fullWorkflow[1] as Message);
         } else if (stepIndex === 2) {
-          msgsToAdd.push(fullWorkflow[2] as Message, fullWorkflow[3] as Message);
+          msgsToAdd.push(fullWorkflow[2] as Message);
         } else if (stepIndex === 3) {
-          msgsToAdd.push(fullWorkflow[4] as Message, fullWorkflow[5] as Message);
+          msgsToAdd.push(fullWorkflow[3] as Message);
         } else if (stepIndex === 4) {
-          msgsToAdd.push(fullWorkflow[6] as Message);
+          msgsToAdd.push(fullWorkflow[4] as Message);
         } else if (stepIndex === 5) {
-          msgsToAdd.push(fullWorkflow[7] as Message);
+          msgsToAdd.push(fullWorkflow[5] as Message);
         }
         
         setMessages(prev => [...prev, ...msgsToAdd]);
         setIsTyping(false);
         setIsProcessing(false);
-      }, 1500);
+      }, 1000);
       return () => clearTimeout(typingTimer);
     }, 500);
   };
@@ -431,33 +401,34 @@ function CreativeAssistantPage() {
 
                   {msg.isDetailedAssistant && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
+                      <div className="text-[15px] mb-4">埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。</div>
                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
-                      <div className="ml-8 mt-1 mb-4 flex items-center gap-3 p-3 rounded-2xl bg-[var(--color-secondary)] border border-[var(--color-border)] w-fit">
-                        <div className="h-10 w-10 rounded-lg overflow-hidden shrink-0 border border-[var(--color-border)]">
-                          <img src={charSam} className="w-full h-full object-cover" />
-                        </div>
-                        <div className="text-[14px] font-bold text-[var(--color-foreground)]">saitama.webp</div>
-                      </div>
-                      <div className="text-[15px] mb-4">素材确认完毕，埼玉的战斗姿态非常适合做宣发开场。接下来加载营销视频制作流程。</div>
+                      <div className="text-[15px] mt-2 mb-4">素材确认完毕，埼玉的战斗姿态非常适合做宣发开场。接下来加载营销视频制作流程。</div>
+                      
                       <StatusLine icon="check" text="技能学习" subText="营销视频大师" />
-                      <StatusLine icon="loading" text="正在加载技能: 营销视频大师" />
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-2">先读取输入规范文件，确认产物格式和项目状态定义。</div>
                       <StatusLine icon="check" text="读取文件" subText="读取输入与项目状态参考文件" />
+                      
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-2">现在读取营销基础与路由文件，确定方向创意路由。</div>
                       <StatusLine icon="check" text="读取文件" subText="读取营销基础与路由参考文件" />
+                      
                       <div className="text-[15px] mt-2 mb-2">这是一个游戏宣发视频，核心说服力来自品牌含义和情感关联，路由到品牌片方向。现在读取品牌片方向创意文件。</div>
                       <StatusLine icon="check" text="读取文件" subText="读取品牌片方向创意文件" />
+                      
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-2">现在创建项目目录并编写内部营销脑图和故事脚本。先搜索一下掌趣一拳超人游戏的相关信息，确保脚本内容准确。</div>
                       <StatusLine icon="check" text="联网搜索" subText="完成 2 次搜索" />
                       <StatusLine icon="check" text="执行命令" subText="创建项目目录" />
+                      
                       <div className="text-[15px] mt-2 mb-2">搜索结果很全面。掌趣科技的《一拳超人：最强之男》是一款策略卡牌手游，核心卖点包括正版授权、还原动画剧情、原版声优、策略阵容搭配、埼玉一拳秒杀等。现在编写内部营销脑图和故事脚本。</div>
                       <StatusLine icon="check" text="写入文件" subText="编写内部营销脑图story-brief.md" />
+                      
                       <div className="text-[15px] mt-2 mb-2">现在编写故事脚本，这是需要你确认的第一个产物。</div>
                       <StatusLine icon="check" text="写入文件" subText="编写故事脚本story-script.md" />
-                      <div className="text-[15px] mt-2 mb-2">故事脚本已写好。这份脚本请你确认：埼玉蓄力开场、一拳冲击波过渡、英雄阵容快剪展示、埼玉一拳秒杀收尾 + brand slogan + 下载引导，5个镜头共15秒。画面节奏和卖点顺序对齐后，我再进入素材检查和视频方案环节。如果要改，直接告诉我，改完再发你看。</div>
+                      
+                      <div className="text-[15px] mt-2 mb-2">故事脚本已写好。这份脚本请你确认：埼玉蓄力开场、一拳冲击波过渡、英雄阵容快剪展示、埼玉一拳秒杀收尾 + 品牌口号 + 下载引导，5个镜头共15秒。画面节奏和卖点顺序对齐后，我再进入素材检查和视频方案环节。如果要改，直接告诉我，改完再发你看。</div>
                       <StatusLine icon="check" text="发送产物" />
                       <div className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 flex items-center justify-between shadow-sm max-w-sm hover:border-[var(--color-muted-foreground)] cursor-pointer transition-all">
                         <div className="flex items-center gap-3">
@@ -466,7 +437,7 @@ function CreativeAssistantPage() {
                           </div>
                           <div>
                             <div className="text-[14px] font-bold">story-script.md</div>
-                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-...</div>
+                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-onepunch-game-promo/story-script.md</div>
                           </div>
                         </div>
                         <div className="flex items-center gap-1 text-[12px] text-[var(--color-muted-foreground)]">
@@ -481,47 +452,33 @@ function CreativeAssistantPage() {
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-4">故事脚本已确认通过。现在进入素材完整性检查。</div>
                       <div className="text-[15px] mb-2 font-medium">脚本中引用的实体有：</div>
-                      <ol className="list-decimal ml-5 space-y-2 text-[15px] mb-4">
-                        <li><span className="font-bold">埼玉</span> - 已有用户上传立绘 (./upload/user_upload_image_1.webp)，可用</li>
-                        <li><span className="font-bold">杰诺斯</span> - 脚本中出现，但没有参考素材，需要生成</li>
-                        <li><span className="font-bold">战栗的龙卷、原子武士、银色獠牙</span> - 快剪镜头中短暂出现，可由视频模型根据描述生成，不需要单独素材图</li>
-                        <li><span className="font-bold">游戏Logo/品牌定帧</span> - 文字元素，由视频模型渲染</li>
-                      </ol>
+                      <ul className="space-y-2 text-[15px] mb-4 list-none">
+                        <li>• <span className="font-bold">埼玉</span> - 已有用户上传立绘（./upload/user_upload_image_1.webp），可用</li>
+                        <li>• <span className="font-bold">杰诺斯</span> - 脚本中出现，但没有参考素材，需要生成</li>
+                        <li>• <span className="font-bold">战栗的龙卷、原子武士、银色獠牙</span> - 快剪镜头中短暂出现，可由视频模型根据描述生成，不需要单独素材图</li>
+                        <li>• <span className="font-bold">游戏Logo/品牌定帧</span> - 文字元素，由视频模型渲染</li>
+                      </ul>
                       <div className="text-[15px] mb-4">埼玉的素材已齐备。杰诺斯在脚本中有3秒重要展示镜头，需要生成一张角色参考图来稳定形象一致性。我来生成这张素材。</div>
                       
                       <div className="w-full bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
-                        <div className="flex items-center justify-between mb-3">
-                          <StatusLine icon="check" text="生成图像" subText="日系少年热血动漫风格，赛璐珞平涂动画质感。杰诺斯（魔鬼改造人），年轻男性，金色短发，锐利的眼神，..." />
-                        </div>
-                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4">
-                          日系少年热血动漫风格，赛璐珞平涂动画质感。杰诺斯（魔鬼改造人），年轻男性，金色短发，锐利的眼神，面容冷峻英俊。身穿深色金属质感战斗服，右臂为复杂的金色机械臂改造，手掌处有喷射口结构。身体为机械改造人，胸口的金属核心发出微弱蓝光。站立战斗姿态，背景为纯黑色，高对比明暗光影，线条清晰利落，色彩饱和度高。角色占据画面中心。
-                        </div>
-                        <div className="flex items-center gap-6 text-[13px] text-[var(--color-muted-foreground)]">
-                          <span>比例 3:4</span>
-                          <div className="flex items-center gap-2">
-                            <span>输出</span>
-                            <div className="h-8 w-8 rounded-full overflow-hidden border border-[var(--color-border)]">
-                              <img src={charBoss} className="w-full h-full object-cover" />
-                            </div>
-                          </div>
+                        <StatusLine icon="check" text="生成图像" subText="日系少年热血动漫风格，赛璐璐平涂动画质感。杰诺斯（魔鬼改造人），年轻男性，金色短发，锐利的眼神，…" />
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4 mt-2">
+                          杰诺斯参考图已生成。我先确认一下效果是否符合预期。
                         </div>
                       </div>
 
-                      <div className="mt-4 mb-4">
-                        <div className="w-48 h-64 rounded-2xl overflow-hidden border-2 border-[var(--color-border)] shadow-lg">
-                          <img src={charBoss} className="w-full h-full object-cover" />
-                        </div>
-                      </div>
-
-                      <div className="text-[15px] mb-4">杰诺斯参考图已生成。我先确认一下效果是否符合预期。</div>
                       <StatusLine icon="check" text="读取文件" subText="查看杰诺斯参考图生成效果" />
-                      <div className="text-[15px] mt-2 mb-4">杰诺斯参考图效果不错，金色机械臂、冷峻面容、赛璐珞动画风格都与埼玉素材风格统一。素材已齐备：埼玉有用户上传立绘，杰诺斯有生成的参考图。</div>
+                      <div className="text-[15px] mt-2 mb-4">杰诺斯参考图效果不错，金色机械臂、冷峻面容、赛璐璐动画风格都与埼玉素材风格统一。素材已齐备：埼玉有用户上传立绘，杰诺斯有生成的参考图。</div>
+                      
                       <StatusLine icon="check" text="任务规划" />
-                      <div className="text-[15px] mt-2 mb-4">现在读取协作与质量文件和Seedance编译指导文件，编译最终生成方案。</div>
+                      <div className="text-[15px] mt-2 mb-4">现在读取协作与质量文件 and Seedance编译指导文件，编译最终生成方案。</div>
                       <StatusLine icon="check" text="资料探索" subText="读取 2 个文件" />
+                      
                       <div className="text-[15px] mt-2 mb-4">当前单个请求最大生成时长是15秒，整片15秒可以在一次请求中完成。现在编译最终生成方案。</div>
                       <StatusLine icon="check" text="写入文件" subText="编译最终生成方案final-generation-info.md" />
-                      <div className="text-[15px] mt-2 mb-4">这是可直接生成视频的完整方案，请你最终确认：15秒一次生成，埼玉蓄力开场、冲击波过渡、英雄阵容快剪、一拳秒杀收尾加品牌口号、品牌定帧下载引导。参考素材为埼玉立绘 (@图1) 和杰诺斯参考图 (@图2)。确认后我会按此方案生成视频并交付成片。如果要改，直接告诉我。</div>
+                      
+                      <div className="text-[15px] mt-2 mb-4">这是可直接生成视频的完整方案，请你最终确认：15秒一次生成，埼玉蓄力开场、冲击波过渡、英雄阵容快剪、一拳秒杀收尾加品牌口号、品牌定帧下载引导。参考素材为埼玉立绘（@图1） and 杰诺斯参考图（@图2）。确认后我会按此方案生成视频并交付成片。如果要改，直接告诉我。</div>
+                      
                       <StatusLine icon="check" text="发送产物" />
                       <div className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 flex items-center justify-between shadow-sm max-w-sm hover:border-[var(--color-muted-foreground)] cursor-pointer transition-all">
                         <div className="flex items-center gap-3">
@@ -530,7 +487,7 @@ function CreativeAssistantPage() {
                           </div>
                           <div>
                             <div className="text-[14px] font-bold">final-generation-info.md</div>
-                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-...</div>
+                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-onepunch-game-promo/final-generation-info.md</div>
                           </div>
                         </div>
                         <div className="flex items-center gap-1 text-[12px] text-[var(--color-muted-foreground)]">
@@ -542,6 +499,42 @@ function CreativeAssistantPage() {
                   
                   {msg.role === 'assistant' && msg.id === '13' && (
                     <div className="flex flex-col gap-2 w-full max-w-xl">
+                      <StatusLine icon="check" text="任务规划" />
+                      <div className="text-[15px] mt-2 mb-4">方案已确认，开始生成视频。</div>
+                      
+                      <div className="w-full bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
+                        <StatusLine icon="check" text="生成视频" subText="时长：15秒以内，比例：16:9。任务：生成品牌TVC。 标题：《英雄参上 一拳K.O.》 风格…" />
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4 mt-2">
+                          视频生成因参考图涉及第三方IP内容未通过平台审核。这是审核硬限制，无法通过修改提示词规避。
+                        </div>
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4">
+                          有两个可行的方向：
+                        </div>
+                        <ul className="space-y-2 text-[14px] text-[var(--color-muted-foreground)] mb-4 list-none">
+                          <li>• 不使用角色参考图，改为纯文字提示词生成，由视频模型自由演绎一拳超人风格的热血战斗场景</li>
+                          <li>• 你提供自有版权的素材（如官方授权的游戏画面截图），再重新生成</li>
+                        </ul>
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed">
+                          你想怎么处理？
+                        </div>
+                      </div>
+
+                      <StatusLine icon="check" text="任务规划" subText="参考图未通过平台审核（涉及第三方IP），你希望怎么处理？" />
+                      
+                      <div className="text-[15px] mb-4">好的，我改为纯文字提示词方式生成，不使用角色参考图。</div>
+
+                      <div className="w-full bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
+                        <StatusLine icon="check" text="生成视频" subText="时长：15秒以内，比例：16:9。任务：生成品牌TVC。 标题：《英雄参上 一拳K.O.》 风格…" />
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4 mt-2">
+                          视频生成再次未通过平台审核，这次是文字提示词涉及版权限制。
+                        </div>
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed">
+                          问题在于提示词中直接使用了「一拳超人」等受版权保护的名称。我需要把所有IP相关名称改为通用描述后再试一次：把「一拳超人」改为「最强英雄」，去掉所有直接引用IP名称的内容。你同意我这样调整后重新生成吗？
+                        </div>
+                      </div>
+
+                      <div className="text-[15px] mb-4">我把角色改成完全原创的热血游戏角色：光头英雄改为黑发短发剑客主角，机械改造人改为火焰法师，脱离原有IP形象特征，保留热血燃战的宣发调性。</div>
+
                       <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl mb-2 group">
                         <video 
                           src={videoFileUrl} 
@@ -564,13 +557,13 @@ function CreativeAssistantPage() {
                       <StatusLine icon="check" text="读取文件" subText="查看生成的视频效果" />
                       <StatusLine icon="check" text="任务规划" />
                       
-                      <div className="text-[15px] mb-4">视频已生成完成，15秒热血燃战风格的游戏宣发成片。赤焰拳客在废墟战场中双拳燃烧火焰，结尾定格在「英雄参上 一拳K.O.」品牌口号和游戏Logo。</div>
+                      <div className="text-[15px] mb-4">视频已生成完成，15秒热血燃战风格的游戏宣发成片。赤焰拳客在废墟战场中双拳燃烧火焰，结尾定格在「英雄参上 一拳K.O.」品牌口号 and 游戏Logo。</div>
                       
                       <div className="text-[15px] mb-4">由于IP形象审核限制，角色已从埼玉/杰诺斯替换为原创的赤焰拳客形象，保留了热血战斗的宣发调性。成片已交付，你可以审阅后告诉我是否需要调整。</div>
                       
                       <StatusLine icon="check" text="发送产物" />
                       
-                      <div className="text-[15px] mb-2">成片已交付。由于平台审核限制，原IP角色形象（埼玉/杰诺斯）无法直接生成，已替换为原创的赤焰拳客角色，保留了热血燃战的游戏宣发风格。如果你有官方授权的角色素材，可以上传后重新生成更贴近原作的画面。需要调整什么直接说。</div>
+                      <div className="text-[15px] mb-2 font-medium">成片已交付。由于平台审核限制，原IP角色形象（埼玉/杰诺斯）无法直接生成，已替换为原创的赤焰拳客角色，保留了热血燃战的游戏宣发风格。如果你有官方授权的角色素材，可以上传后重新生成更贴近原作的画面。需要调整什么直接说。</div>
                     </div>
                   )}
 
