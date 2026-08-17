@@ -497,16 +497,46 @@ export function ElementsPicker({
 
   return (
     <div className="w-[1000px] h-[720px] bg-[#0A0A0A] text-white overflow-hidden flex flex-col relative">
-      {/* Top Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-bold">所有资产</span>
-          <span className="text-sm text-white/40">(8)</span>
+      {/* Sidebar and Main Content Wrapper */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Left Sidebar */}
+        <div className="w-[180px] border-r border-white/5 flex flex-col pt-6">
+          <div className="px-6 mb-8">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold">所有资产</span>
+              <span className="text-sm text-white/40">(8)</span>
+            </div>
+          </div>
+          
+          <nav className="flex-1 space-y-1 px-3">
+            {assetTabs.map((t) => (
+              <button
+                key={t.key}
+                onClick={() => setTab(t.key)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  tab === t.key 
+                    ? "bg-white/10 text-white shadow-lg" 
+                    : "text-white/40 hover:text-white/60 hover:bg-white/5"
+                }`}
+              >
+                {t.key === 'works' && <LayoutGrid className="h-4 w-4" />}
+                {t.key === 'history' && <Calendar className="h-4 w-4" />}
+                {t.key === 'char' && <Sparkles className="h-4 w-4" />}
+                {t.key === 'product' && <ImageIcon className="h-4 w-4" />}
+                {t.label}
+              </button>
+            ))}
+          </nav>
         </div>
-        <button 
-          onClick={() => (window as any).closeElementsPicker?.()}
-          className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-white/5 transition"
-        >
+
+        {/* Right Main Content */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Top Header */}
+          <div className="flex items-center justify-end px-6 py-4 border-b border-white/5 h-[72px]">
+            <button 
+              onClick={() => (window as any).closeElementsPicker?.()}
+              className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-white/5 transition"
+            >
           <X className="h-4 w-4 text-white/40" />
         </button>
       </div>
