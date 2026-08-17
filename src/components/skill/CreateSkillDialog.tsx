@@ -831,8 +831,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                             </div>
 
                             <div className="space-y-4">
-                              <p className="text-[14px] leading-relaxed text-white/90">
-                                已将 Skill 定位为 <strong className="text-white font-semibold">RPG 游戏宣发视频</strong>，补充了可执行的 RPG 特化规则：
+                              <p className="text-[14px] leading-relaxed text-[var(--color-foreground)]/90">
+                                已将 Skill 定位为 <strong className="text-[var(--color-foreground)] font-semibold">RPG 游戏宣发视频</strong>，补充了可执行的 RPG 特化规则：
                               </p>
                               
                               <ul className="space-y-3 pl-2">
