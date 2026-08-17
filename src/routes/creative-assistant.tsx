@@ -15,7 +15,10 @@ import {
   Search,
   Download,
   Share2,
-  Trash2
+  Trash2,
+  Folder,
+  File,
+  ChevronRight as ChevronRightIcon
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
@@ -66,6 +69,7 @@ type Message = {
 function CreativeAssistantPage() {
   const { prompt: initialPrompt } = Route.useSearch();
   const [showResources, setShowResources] = useState(false);
+  const [resourceMode, setResourceMode] = useState<'grid' | 'folder'>('folder');
   const [currentStep, setCurrentStep] = useState(1);
   const [inputValue, setInputValue] = useState(initialPrompt || "");
   const [activeResource, setActiveResource] = useState<{ type: 'script' | 'image' | 'video'; data?: any } | null>(null);
@@ -638,8 +642,24 @@ function CreativeAssistantPage() {
                 <div className="flex items-center gap-6">
                   <h2 className="text-xl font-bold text-[var(--color-foreground)]">资源</h2>
                   <div className="flex items-center bg-[var(--color-secondary)] rounded-lg p-1 border border-[var(--color-border)]">
-                    <button className="p-1.5 bg-[var(--color-card)] rounded-md shadow-sm text-[var(--color-foreground)]"><LayoutGrid className="h-4 w-4" /></button>
-                    <button className="p-1.5 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"><ChevronDown className="h-4 w-4 rotate-180" /></button>
+                    <button 
+                      onClick={() => setResourceMode('grid')}
+                      className={cn(
+                        "p-1.5 rounded-md transition-all shadow-sm",
+                        resourceMode === 'grid' ? "bg-[var(--color-card)] text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+                      )}
+                    >
+                      <LayoutGrid className="h-4 w-4" />
+                    </button>
+                    <button 
+                      onClick={() => setResourceMode('folder')}
+                      className={cn(
+                        "p-1.5 rounded-md transition-all shadow-sm",
+                        resourceMode === 'folder' ? "bg-[var(--color-card)] text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+                      )}
+                    >
+                      <Folder className="h-4 w-4" />
+                    </button>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -657,69 +677,80 @@ function CreativeAssistantPage() {
 
               <div className="flex-1 overflow-hidden flex flex-col relative">
                 <div className={cn(
-                  "absolute inset-0 z-10 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out scrollbar-hide overflow-y-auto p-8 space-y-10",
+                  "absolute inset-0 z-10 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out scrollbar-hide overflow-y-auto p-8",
                   activeResource ? "pointer-events-none opacity-0 translate-x-[-20px]" : "opacity-100 translate-x-0"
                 )}>
-                  {/* Documents */}
-                  <section>
-                    <div className="flex items-center justify-between mb-5">
-                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
-                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-5">
-                      <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
-                      <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
-                      <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
-                      <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
-                      <ResourceCard 
-                        title="story-script.md" 
-                        type="MD" 
-                        date="1小时前" 
-                        onClick={() => setActiveResource({ type: 'script' })} 
-                      />
-                    </div>
-                  </section>
+                  {resourceMode === 'grid' ? (
+                    <div className="space-y-10">
+                      {/* Documents */}
+                      <section>
+                        <div className="flex items-center justify-between mb-5">
+                          <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
+                          <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-5">
+                          <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
+                          <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
+                          <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
+                          <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
+                          <ResourceCard 
+                            title="story-script.md" 
+                            type="MD" 
+                            date="1小时前" 
+                            onClick={() => setActiveResource({ type: 'script' })} 
+                          />
+                        </div>
+                      </section>
 
-                  {/* Images */}
-                  <section>
-                    <div className="flex items-center justify-between mb-5">
-                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
-                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-5">
-                      <ImageResourceCard 
-                        title="user_upload_image_1.webp" 
-                        type="WEBP" 
-                        date="1小时前" 
-                        img={charSam} 
-                        onClick={() => setActiveResource({ type: 'image', data: { url: charSam, name: 'user_upload_image_1.webp' } })}
-                      />
-                      <ImageResourceCard 
-                        title="genos-reference.png" 
-                        type="PNG" 
-                        date="1小时前" 
-                        img={charBoss} 
-                        onClick={() => setActiveResource({ type: 'image', data: { url: charBoss, name: 'genos-reference.png' } })}
-                      />
-                    </div>
-                  </section>
+                      {/* Images */}
+                      <section>
+                        <div className="flex items-center justify-between mb-5">
+                          <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
+                          <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-5">
+                          <ImageResourceCard 
+                            title="user_upload_image_1.webp" 
+                            type="WEBP" 
+                            date="1小时前" 
+                            img={charSam} 
+                            onClick={() => setActiveResource({ type: 'image', data: { url: charSam, name: 'user_upload_image_1.webp' } })}
+                          />
+                          <ImageResourceCard 
+                            title="genos-reference.png" 
+                            type="PNG" 
+                            date="1小时前" 
+                            img={charBoss} 
+                            onClick={() => setActiveResource({ type: 'image', data: { url: charBoss, name: 'genos-reference.png' } })}
+                          />
+                        </div>
+                      </section>
 
-                  {/* Videos */}
-                  <section>
-                    <div className="flex items-center justify-between mb-5">
-                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
-                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
+                      {/* Videos */}
+                      <section>
+                        <div className="flex items-center justify-between mb-5">
+                          <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
+                          <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-5">
+                          <ImageResourceCard 
+                            title="intro-animation.mp4" 
+                            type="MP4" 
+                            date="刚刚" 
+                            img={skillReenact} 
+                            onClick={() => setActiveResource({ type: 'video', data: { url: videoFileUrl, name: 'intro-animation.mp4' } })}
+                          />
+                        </div>
+                      </section>
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
-                      <ImageResourceCard 
-                        title="intro-animation.mp4" 
-                        type="MP4" 
-                        date="刚刚" 
-                        img={skillReenact} 
-                        onClick={() => setActiveResource({ type: 'video', data: { url: videoFileUrl, name: 'intro-animation.mp4' } })}
-                      />
-                    </div>
-                  </section>
+                  ) : (
+                    <FolderView 
+                      charSam={charSam} 
+                      charBoss={charBoss} 
+                      videoFileUrl={videoFileUrl}
+                      setActiveResource={setActiveResource} 
+                    />
+                  )}
                 </div>
 
                 {/* Resource Detail View (Integrated into Panel) */}
@@ -995,6 +1026,194 @@ function ImageResourceCard({ title, type, date, img, onClick }: { title: string;
           <span>{date}</span>
         </div>
       </div>
+    </div>
+  );
+}
+
+function FolderItem({ 
+  name, 
+  type, 
+  date, 
+  isFolder = false, 
+  isOpen = false, 
+  level = 0,
+  icon,
+  onClick,
+  onToggle
+}: { 
+  name: string; 
+  type?: string; 
+  date?: string; 
+  isFolder?: boolean; 
+  isOpen?: boolean; 
+  level?: number;
+  icon?: React.ReactNode;
+  onClick?: () => void;
+  onToggle?: () => void;
+}) {
+  return (
+    <div 
+      className="group flex flex-col"
+    >
+      <div 
+        onClick={isFolder ? onToggle : onClick}
+        className={cn(
+          "flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-[var(--color-secondary)] cursor-pointer transition-colors w-full",
+          !isFolder && "hover:text-[var(--color-primary)]"
+        )}
+        style={{ paddingLeft: `${level * 24 + 12}px` }}
+      >
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="shrink-0 text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)] transition-colors">
+            {isFolder ? (
+              <div className="flex items-center gap-1">
+                <ChevronRightIcon className={cn("h-4 w-4 transition-transform", isOpen ? "rotate-90" : "")} />
+                <Folder className={cn("h-5 w-5", isOpen ? "fill-[var(--color-primary)]/20 text-[var(--color-primary)]" : "")} />
+              </div>
+            ) : (
+              <div className="flex items-center gap-1 pl-5">
+                {icon ? icon : <File className="h-5 w-5" />}
+              </div>
+            )}
+          </div>
+          <span className={cn(
+            "text-[14px] font-medium truncate",
+            isFolder ? "text-[var(--color-foreground)]" : "text-[var(--color-foreground)]/80"
+          )}>
+            {name}
+          </span>
+        </div>
+        {date && (
+          <span className="text-[12px] text-[var(--color-muted-foreground)] shrink-0 ml-4">
+            {date}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function FolderView({ charSam, charBoss, videoFileUrl, setActiveResource }: any) {
+  const [openFolders, setOpenFolders] = useState<string[]>(['workspace', 'tasks', 'upload', 'video-projects', '20260813-1400-onepunch-game-promo']);
+
+  const toggleFolder = (folder: string) => {
+    setOpenFolders(prev => 
+      prev.includes(folder) 
+        ? prev.filter(f => f !== folder) 
+        : [...prev, folder]
+    );
+  };
+
+  const isOpen = (folder: string) => openFolders.includes(folder);
+
+  return (
+    <div className="flex flex-col space-y-1">
+      {/* workspace */}
+      <FolderItem 
+        name="workspace" 
+        isFolder 
+        isOpen={isOpen('workspace')} 
+        onToggle={() => toggleFolder('workspace')} 
+      />
+      
+      {isOpen('workspace') && (
+        <>
+          {/* tasks */}
+          <FolderItem 
+            name="tasks" 
+            isFolder 
+            isOpen={isOpen('tasks')} 
+            level={1} 
+            onToggle={() => toggleFolder('tasks')} 
+          />
+          {isOpen('tasks') && (
+            <>
+              <FolderItem 
+                name="video-projects_20260813-1400-onepunch-game-promo_genos-reference.json" 
+                level={2} 
+                date="3天前" 
+              />
+              <FolderItem 
+                name="video-projects_20260813-1400-onepunch-game-promo_onepunch-promo.json" 
+                level={2} 
+                date="3天前" 
+              />
+            </>
+          )}
+
+          {/* upload */}
+          <FolderItem 
+            name="upload" 
+            isFolder 
+            isOpen={isOpen('upload')} 
+            level={1} 
+            onToggle={() => toggleFolder('upload')} 
+          />
+          {isOpen('upload') && (
+            <FolderItem 
+              name="user_upload_image_1.webp" 
+              level={2} 
+              date="3天前" 
+              icon={<div className="h-5 w-5 rounded overflow-hidden"><img src={charSam} className="w-full h-full object-cover" /></div>}
+              onClick={() => setActiveResource({ type: 'image', data: { url: charSam, name: 'user_upload_image_1.webp' } })}
+            />
+          )}
+
+          {/* video-projects */}
+          <FolderItem 
+            name="video-projects" 
+            isFolder 
+            isOpen={isOpen('video-projects')} 
+            level={1} 
+            onToggle={() => toggleFolder('video-projects')} 
+          />
+          {isOpen('video-projects') && (
+            <>
+              <FolderItem 
+                name="20260813-1400-onepunch-game-promo" 
+                isFolder 
+                isOpen={isOpen('20260813-1400-onepunch-game-promo')} 
+                level={2} 
+                onToggle={() => toggleFolder('20260813-1400-onepunch-game-promo')} 
+              />
+              {isOpen('20260813-1400-onepunch-game-promo') && (
+                <>
+                  <FolderItem 
+                    name="final-generation-info.md" 
+                    level={3} 
+                    date="3天前" 
+                  />
+                  <FolderItem 
+                    name="genos-reference.png" 
+                    level={3} 
+                    date="3天前" 
+                    icon={<div className="h-5 w-5 rounded overflow-hidden"><img src={charBoss} className="w-full h-full object-cover" /></div>}
+                    onClick={() => setActiveResource({ type: 'image', data: { url: charBoss, name: 'genos-reference.png' } })}
+                  />
+                  <FolderItem 
+                    name="onepunch-promo.mp4" 
+                    level={3} 
+                    date="3天前" 
+                    icon={<div className="h-5 w-5 rounded overflow-hidden relative"><img src={charBoss} className="w-full h-full object-cover opacity-50" /><div className="absolute inset-0 flex items-center justify-center"><Video className="h-3 w-3" /></div></div>}
+                    onClick={() => setActiveResource({ type: 'video', data: { url: videoFileUrl, name: 'onepunch-promo.mp4' } })}
+                  />
+                  <FolderItem 
+                    name="story-brief.md" 
+                    level={3} 
+                    date="3天前" 
+                  />
+                  <FolderItem 
+                    name="story-script.md" 
+                    level={3} 
+                    date="3天前" 
+                    onClick={() => setActiveResource({ type: 'script' })} 
+                  />
+                </>
+              )}
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }
