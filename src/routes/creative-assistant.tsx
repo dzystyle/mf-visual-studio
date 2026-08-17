@@ -702,6 +702,9 @@ function CreativeAssistantPage() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Script Detail Dialog */}
+        <ScriptDetailDialog open={showScriptDetail} onOpenChange={setShowScriptDetail} />
       </div>
       
       {/* Footer Question Mark */}
