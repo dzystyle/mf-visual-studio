@@ -84,7 +84,7 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
             "h-5 w-5 rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
             currentSelection === 4 
               ? "bg-[#E1B166] text-black shadow-[0_0_15px_rgba(225,177,102,0.5)]" 
-              : "bg-white/[0.03] text-transparent border border-white/[0.08] group-hover:border-white/20"
+              : "bg-[var(--color-secondary)] text-transparent border border-[var(--color-border)] group-hover:border-[var(--color-muted-foreground)]"
           )}>
             <Check className="h-3 w-3" strokeWidth={4} />
           </div>
