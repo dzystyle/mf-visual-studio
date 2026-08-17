@@ -639,11 +639,31 @@ export function ElementsPicker({
           </div>
 
           <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
-            <button className="p-1.5 rounded bg-white/10"><Sparkles className="h-3.5 w-3.5" /></button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="p-1.5 rounded bg-white/10"><Sparkles className="h-3.5 w-3.5" /></button>
+              </PopoverTrigger>
+              <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+                <div className="space-y-1">
+                  {['AI 优化排序', '按关联度排序'].map((item) => (
+                    <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
             <button className="p-1.5 rounded hover:bg-white/10"><Check className="h-3.5 w-3.5 text-white/40" /></button>
           </div>
 
-          <button className="flex items-center gap-1.5 px-4 py-1.5 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition">
+          <button 
+            onClick={() => {
+              if (selectedIds.length === assetItems.length) {
+                setSelectedIds([]);
+              } else {
+                setSelectedIds(assetItems.map(i => i.id));
+              }
+            }}
+            className="flex items-center gap-1.5 px-4 py-1.5 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition"
+          >
             <Check className="h-3.5 w-3.5" />
             批量操作
           </button>
