@@ -18,17 +18,10 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
   if (!skill) return null;
 
   const handleUseSkill = () => {
-    // 1. Save skill to localStorage to persist across navigation
     localStorage.setItem('selected-skill', skill.title);
-    
-    // 2. Dispatch event for immediate use if on the same page
     const event = new CustomEvent('select-skill', { detail: skill.title });
     window.dispatchEvent(event);
-    
-    // 3. Navigate to home page
     navigate({ to: "/" });
-    
-    // 4. Close dialog
     onOpenChange(false);
   };
 
@@ -36,18 +29,16 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-md transition-all duration-300" />
-        <DialogPrimitive.Content className="fixed left-1/2 top-1/2 z-[60] w-full max-w-[800px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#0a0a0c] text-foreground shadow-2xl focus:outline-none focus-visible:ring-0">
+        <DialogPrimitive.Content className="fixed left-1/2 top-1/2 z-[60] w-full max-w-[800px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2.5rem] border border-border bg-background text-foreground shadow-2xl focus:outline-none focus-visible:ring-0">
           
-          {/* Header Image Area */}
           <div className="relative aspect-[16/9] w-full overflow-hidden">
             <img 
               src={skill.image} 
               alt={skill.title} 
               className="h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
             
-            {/* Close Button */}
             <button 
               onClick={() => onOpenChange(false)}
               className="absolute right-6 top-6 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white/60 backdrop-blur-md transition hover:bg-black/60 hover:text-white"
@@ -55,57 +46,54 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
               <X className="h-4 w-4" />
             </button>
 
-            {/* Title & Author Overlay */}
             <div className="absolute bottom-6 left-8 right-8">
-              <h2 className="text-3xl font-bold tracking-tight text-white mb-2">{skill.title}</h2>
-              <p className="text-sm text-white/60">@{skill.author?.replace('@', '') || 'Artrail'}</p>
+              <h2 className="text-3xl font-bold tracking-tight text-foreground mb-2">{skill.title}</h2>
+              <p className="text-sm text-muted-foreground">@{skill.author?.replace('@', '') || 'Artrail'}</p>
             </div>
           </div>
 
-          {/* Navigation Tabs */}
-          <div className="px-8 pt-4 border-b border-white/5">
+          <div className="px-8 pt-4 border-b border-border">
             <div className="flex gap-8">
               <button 
                 onClick={() => setActiveTab("intro")}
                 className={cn(
                   "pb-4 text-sm font-medium transition-colors relative",
-                  activeTab === "intro" ? "text-white" : "text-white/40 hover:text-white/60"
+                  activeTab === "intro" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 简介
                 {activeTab === "intro" && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full" />
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
                 )}
               </button>
               <button 
                 onClick={() => setActiveTab("content")}
                 className={cn(
                   "pb-4 text-sm font-medium transition-colors relative",
-                  activeTab === "content" ? "text-white" : "text-white/40 hover:text-white/60"
+                  activeTab === "content" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 内容
                 {activeTab === "content" && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full" />
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
                 )}
               </button>
             </div>
           </div>
 
-          {/* Content Area */}
           <div className="px-8 pb-8 pt-6 min-h-[320px]">
             {activeTab === "intro" ? (
               <div className="space-y-6">
-                <p className="text-[15px] leading-relaxed text-white/70 whitespace-pre-wrap">
+                <p className="text-[15px] leading-relaxed text-muted-foreground whitespace-pre-wrap">
                   {skill.desc || "专为具有完整故事线的视频而设计。通过深度分析剧本结构，自动规划镜头语言与视觉节奏。"}
                 </p>
                 
                 <div className="flex flex-wrap gap-2">
-                   <div className="flex items-center gap-1 rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-white/40">
+                   <div className="flex items-center gap-1 rounded-lg bg-secondary border border-border px-3 py-1.5 text-xs text-muted-foreground">
                      {skill.model || "Seedance 2.5"}
                    </div>
                    {skill.tags?.map((tag: string) => (
-                     <div key={tag} className="flex items-center gap-1 rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-white/40">
+                     <div key={tag} className="flex items-center gap-1 rounded-lg bg-secondary border border-border px-3 py-1.5 text-xs text-muted-foreground">
                        {tag}
                      </div>
                    ))}
@@ -113,11 +101,11 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
 
                 <div className="space-y-4 pt-4">
                   <div className="flex items-center gap-2">
-                    <div className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-white/40">历史使用</div>
+                    <div className="px-2 py-0.5 rounded bg-secondary text-[10px] text-muted-foreground">历史使用</div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <div className="text-[11px] text-white/20">
-                      最近一次更新时间 <span className="text-white/30">2026-08-14 17:29</span>
+                    <div className="text-[11px] text-muted-foreground/50">
+                      最近一次更新时间 <span className="text-muted-foreground">2026-08-14 17:29</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="text-[11px] text-emerald-500 font-medium">取消默认</span>
@@ -130,48 +118,46 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+                <div className="rounded-2xl border border-border bg-card p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-bold text-white/90">流程规划:</span>
+                    <span className="text-sm font-bold text-foreground">流程规划:</span>
                     <div className="flex items-center gap-1">
-                       <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40 hover:bg-white/10 transition cursor-pointer">
+                       <div className="h-8 w-8 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:bg-accent transition cursor-pointer">
                          <Eye className="h-4 w-4" />
                        </div>
-                       <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40 hover:bg-white/10 transition cursor-pointer">
+                       <div className="h-8 w-8 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:bg-accent transition cursor-pointer">
                          <Code2 className="h-4 w-4" />
                        </div>
                     </div>
                   </div>
-                  <p className="text-sm leading-relaxed text-white/60">
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     基于视频主题自动生成多组分镜脚本，涵盖特写、中景、远景等专业镜头语言。
                   </p>
                 </div>
-                {/* Add more sections for content if needed */}
               </div>
             )}
 
-            <div className="h-[1px] w-full bg-white/5 my-8" />
+            <div className="h-[1px] w-full bg-border my-8" />
 
-            {/* Action Buttons */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <button 
                   onClick={() => console.log("Delete skill")}
-                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/5 text-red-500/60 transition hover:bg-red-500/10 hover:text-red-500"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-destructive/20 bg-destructive/5 text-destructive/60 transition hover:bg-destructive/10 hover:text-destructive"
                   title="删除"
                 >
                   <Trash2 className="h-5 w-5" />
                 </button>
                 <button 
                   onClick={() => onEdit?.(skill)}
-                  className="flex items-center gap-2 h-11 rounded-xl border border-white/10 bg-white/5 px-6 text-sm font-medium text-white/80 transition hover:bg-white/10"
+                  className="flex items-center gap-2 h-11 rounded-xl border border-border bg-secondary px-6 text-sm font-medium text-foreground transition hover:bg-accent"
                 >
                   <Edit2 className="h-4 w-4" />
                   创建副本
                 </button>
                 <button 
                   onClick={() => console.log("Share skill")}
-                  className="flex items-center gap-2 h-11 rounded-xl border border-white/10 bg-white/5 px-6 text-sm font-medium text-white/80 transition hover:bg-white/10"
+                  className="flex items-center gap-2 h-11 rounded-xl border border-border bg-secondary px-6 text-sm font-medium text-foreground transition hover:bg-accent"
                 >
                   <Share2 className="h-4 w-4" />
                   分享
@@ -180,9 +166,9 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
               
               <button 
                 onClick={handleUseSkill}
-                className="flex items-center gap-2 rounded-full bg-[#E1B166] px-10 py-3 text-[15px] font-bold text-black transition hover:bg-[#f0c07d] active:scale-95 shadow-xl shadow-[#E1B166]/10"
+                className="flex items-center gap-2 rounded-full bg-primary px-10 py-3 text-[15px] font-bold text-primary-foreground transition hover:opacity-90 active:scale-95 shadow-xl shadow-primary/10"
               >
-                <PlayCircle className="h-5 w-5 fill-black" />
+                <PlayCircle className="h-5 w-5 fill-primary-foreground" />
                 去使用 Skill
               </button>
             </div>
