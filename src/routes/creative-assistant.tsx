@@ -324,7 +324,7 @@ function CreativeAssistantPage() {
                 <div 
                   key={msg.id} 
                   className={cn(
-                    "flex flex-col gap-3",
+                    "flex flex-col gap-3 relative group",
                     msg.role === "user" ? "items-end" : "items-start"
                   )}
                 >
