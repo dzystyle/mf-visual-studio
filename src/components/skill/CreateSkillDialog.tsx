@@ -872,7 +872,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
               {/* Input Area */}
               <div className="p-6">
-                <div className="relative rounded-2xl border border-[var(--color-border)] bg-[var(--color-secondary)] p-4 focus-within:border-[var(--color-foreground)]/10 transition">>
+                <div className="relative rounded-2xl border border-[var(--color-border)] bg-[var(--color-secondary)] p-4 focus-within:border-[var(--color-foreground)]/10 transition">
                   <textarea 
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
@@ -887,10 +887,10 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                   />
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center gap-2">
-                      <button className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] transition">>
+                      <button className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] transition">
                         <Plus className="h-4 w-4" />
                       </button>
-                      <button className="flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 text-[11px] text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] transition">>
+                      <button className="flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 text-[11px] text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] transition">
                         <LayoutGrid className="h-3 w-3" />
                         模型
                         <span className="rounded bg-emerald-500 px-1 text-[8px] text-white font-bold leading-tight uppercase">New</span>
