@@ -1030,6 +1030,194 @@ function ImageResourceCard({ title, type, date, img, onClick }: { title: string;
   );
 }
 
+function FolderItem({ 
+  name, 
+  type, 
+  date, 
+  isFolder = false, 
+  isOpen = false, 
+  level = 0,
+  icon,
+  onClick,
+  onToggle
+}: { 
+  name: string; 
+  type?: string; 
+  date?: string; 
+  isFolder?: boolean; 
+  isOpen?: boolean; 
+  level?: number;
+  icon?: React.ReactNode;
+  onClick?: () => void;
+  onToggle?: () => void;
+}) {
+  return (
+    <div 
+      className="group flex flex-col"
+    >
+      <div 
+        onClick={isFolder ? onToggle : onClick}
+        className={cn(
+          "flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-[var(--color-secondary)] cursor-pointer transition-colors w-full",
+          !isFolder && "hover:text-[var(--color-primary)]"
+        )}
+        style={{ paddingLeft: `${level * 24 + 12}px` }}
+      >
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="shrink-0 text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)] transition-colors">
+            {isFolder ? (
+              <div className="flex items-center gap-1">
+                <ChevronRightIcon className={cn("h-4 w-4 transition-transform", isOpen ? "rotate-90" : "")} />
+                <Folder className={cn("h-5 w-5", isOpen ? "fill-[var(--color-primary)]/20 text-[var(--color-primary)]" : "")} />
+              </div>
+            ) : (
+              <div className="flex items-center gap-1 pl-5">
+                {icon ? icon : <File className="h-5 w-5" />}
+              </div>
+            )}
+          </div>
+          <span className={cn(
+            "text-[14px] font-medium truncate",
+            isFolder ? "text-[var(--color-foreground)]" : "text-[var(--color-foreground)]/80"
+          )}>
+            {name}
+          </span>
+        </div>
+        {date && (
+          <span className="text-[12px] text-[var(--color-muted-foreground)] shrink-0 ml-4">
+            {date}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function FolderView({ charSam, charBoss, videoFileUrl, setActiveResource }: any) {
+  const [openFolders, setOpenFolders] = useState<string[]>(['workspace', 'tasks', 'upload', 'video-projects', '20260813-1400-onepunch-game-promo']);
+
+  const toggleFolder = (folder: string) => {
+    setOpenFolders(prev => 
+      prev.includes(folder) 
+        ? prev.filter(f => f !== folder) 
+        : [...prev, folder]
+    );
+  };
+
+  const isOpen = (folder: string) => openFolders.includes(folder);
+
+  return (
+    <div className="flex flex-col space-y-1">
+      {/* workspace */}
+      <FolderItem 
+        name="workspace" 
+        isFolder 
+        isOpen={isOpen('workspace')} 
+        onToggle={() => toggleFolder('workspace')} 
+      />
+      
+      {isOpen('workspace') && (
+        <>
+          {/* tasks */}
+          <FolderItem 
+            name="tasks" 
+            isFolder 
+            isOpen={isOpen('tasks')} 
+            level={1} 
+            onToggle={() => toggleFolder('tasks')} 
+          />
+          {isOpen('tasks') && (
+            <>
+              <FolderItem 
+                name="video-projects_20260813-1400-onepunch-game-promo_genos-reference.json" 
+                level={2} 
+                date="3天前" 
+              />
+              <FolderItem 
+                name="video-projects_20260813-1400-onepunch-game-promo_onepunch-promo.json" 
+                level={2} 
+                date="3天前" 
+              />
+            </>
+          )}
+
+          {/* upload */}
+          <FolderItem 
+            name="upload" 
+            isFolder 
+            isOpen={isOpen('upload')} 
+            level={1} 
+            onToggle={() => toggleFolder('upload')} 
+          />
+          {isOpen('upload') && (
+            <FolderItem 
+              name="user_upload_image_1.webp" 
+              level={2} 
+              date="3天前" 
+              icon={<div className="h-5 w-5 rounded overflow-hidden"><img src={charSam} className="w-full h-full object-cover" /></div>}
+              onClick={() => setActiveResource({ type: 'image', data: { url: charSam, name: 'user_upload_image_1.webp' } })}
+            />
+          )}
+
+          {/* video-projects */}
+          <FolderItem 
+            name="video-projects" 
+            isFolder 
+            isOpen={isOpen('video-projects')} 
+            level={1} 
+            onToggle={() => toggleFolder('video-projects')} 
+          />
+          {isOpen('video-projects') && (
+            <>
+              <FolderItem 
+                name="20260813-1400-onepunch-game-promo" 
+                isFolder 
+                isOpen={isOpen('20260813-1400-onepunch-game-promo')} 
+                level={2} 
+                onToggle={() => toggleFolder('20260813-1400-onepunch-game-promo')} 
+              />
+              {isOpen('20260813-1400-onepunch-game-promo') && (
+                <>
+                  <FolderItem 
+                    name="final-generation-info.md" 
+                    level={3} 
+                    date="3天前" 
+                  />
+                  <FolderItem 
+                    name="genos-reference.png" 
+                    level={3} 
+                    date="3天前" 
+                    icon={<div className="h-5 w-5 rounded overflow-hidden"><img src={charBoss} className="w-full h-full object-cover" /></div>}
+                    onClick={() => setActiveResource({ type: 'image', data: { url: charBoss, name: 'genos-reference.png' } })}
+                  />
+                  <FolderItem 
+                    name="onepunch-promo.mp4" 
+                    level={3} 
+                    date="3天前" 
+                    icon={<div className="h-5 w-5 rounded overflow-hidden relative"><img src={charBoss} className="w-full h-full object-cover opacity-50" /><div className="absolute inset-0 flex items-center justify-center"><Video className="h-3 w-3" /></div></div>}
+                    onClick={() => setActiveResource({ type: 'video', data: { url: videoFileUrl, name: 'onepunch-promo.mp4' } })}
+                  />
+                  <FolderItem 
+                    name="story-brief.md" 
+                    level={3} 
+                    date="3天前" 
+                  />
+                  <FolderItem 
+                    name="story-script.md" 
+                    level={3} 
+                    date="3天前" 
+                    onClick={() => setActiveResource({ type: 'script' })} 
+                  />
+                </>
+              )}
+            </>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 function StoryboardContent() {
   return (
     <div className="space-y-6">
