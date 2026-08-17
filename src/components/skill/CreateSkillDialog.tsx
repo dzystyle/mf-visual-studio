@@ -771,8 +771,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                 <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">规划阶段：</strong>先锁定宣发目标 and 规格，再逐步推进，每个关键节点暂停确认</span>
                               </li>
                               <li className="flex gap-4">
-                                <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                                <span className="text-foreground/70"><strong className="text-white font-medium">素材分析：</strong>支持导入原画、截图、品牌规范文档，自动提炼视觉风格作为后续生成的约束</span>
+                                <span className="text-[var(--color-muted-foreground)] mt-2 h-1.5 w-1.5 rounded-full bg-[var(--color-foreground)]/20 shrink-0" />
+                                <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">素材分析：</strong>支持导入原画、截图、品牌规范文档，自动提炼视觉风格作为后续生成的约束</span>
                               </li>
                               <li className="flex gap-4">
                                 <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
