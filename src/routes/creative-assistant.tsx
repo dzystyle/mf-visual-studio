@@ -519,7 +519,20 @@ function CreativeAssistantPage() {
                   )}
 
                   {msg.isDetailedAssistant2 && (
-                    <div className="flex flex-col gap-2 w-full max-w-xl">
+                    <div className="flex flex-col gap-2 w-full max-w-xl relative group">
+                      <div className="absolute top-0 right-[-48px] opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button 
+                          onClick={() => {
+                            navigator.clipboard.writeText(window.location.href);
+                            setShowShareToast(true);
+                            setTimeout(() => setShowShareToast(false), 2000);
+                          }}
+                          className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm"
+                          title="分享会话"
+                        >
+                          <Share2 className="h-4 w-4" />
+                        </button>
+                      </div>
                       <StatusLine icon="check" text="任务规划" />
                       <div className="text-[15px] mt-2 mb-4">故事脚本已确认通过。现在进入素材完整性检查。</div>
                       <div className="text-[15px] mb-2 font-medium">脚本中引用的实体有：</div>
