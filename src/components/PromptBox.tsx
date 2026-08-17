@@ -40,10 +40,12 @@ const ACCEPT_MAP: Record<Attachment["kind"], string> = {
 
 export function PromptBox({ 
   onSubmit, 
-  isMini = false 
+  isMini = false,
+  showCanvasToggle = true
 }: { 
   onSubmit?: (text: string, canvasMode: boolean) => void;
   isMini?: boolean;
+  showCanvasToggle?: boolean;
 } = {}) {
   const [text, setText] = useState("");
   const [plusOpen, setPlusOpen] = useState(false);
