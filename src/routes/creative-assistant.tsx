@@ -785,6 +785,12 @@ function CreativeAssistantPage() {
 }
 
 function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+  // Original large dialog kept for fallback or specific logic if needed, 
+  // but now the main interaction is integrated into the resource panel.
+  return null;
+}
+
+function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
   return (
     <div className={cn(
       "absolute inset-0 z-[120] bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out origin-right",
