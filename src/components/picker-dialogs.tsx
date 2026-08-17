@@ -739,6 +739,7 @@ export function ElementsPicker({
           })}
         </div>
       </div>
+    </div>
 
       {/* Footer Actions */}
       {selectedIds.length > 0 && (
