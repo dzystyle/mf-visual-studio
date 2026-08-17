@@ -235,8 +235,9 @@ function CreativeAssistantPage() {
 
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim() || isProcessing) return;
+  const handleSendMessage = (textOverride?: string) => {
+    const textToSend = textOverride || inputValue;
+    if (!textToSend.trim() || isProcessing) return;
     
     const userMsg: Message = {
       id: Math.random().toString(),
