@@ -154,8 +154,8 @@ function CreativeAssistantPage() {
           if (!alreadyHasFirstResponse) msgsToAdd.push(fullWorkflow[0] as Message);
           if (!alreadyHasChoiceCard) msgsToAdd.push(fullWorkflow[1] as Message);
         } else if (stepIndex === 2) {
-          // Check if this response is already added
-          const alreadyHasResponse = messages.some(m => m.id === "5");
+          // Check if this response or the detailed assistant card already exists to avoid duplication
+          const alreadyHasResponse = messages.some(m => m.id === "5" || m.isDetailedAssistant || m.isDetailedAssistant2 || m.isVideoOutput);
           if (!alreadyHasResponse) msgsToAdd.push(fullWorkflow[2] as Message);
         } else if (stepIndex === 3) {
           msgsToAdd.push(fullWorkflow[3] as Message);
