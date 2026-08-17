@@ -521,9 +521,9 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
           <div className="flex w-full overflow-hidden">
             
             {/* Left Scrollable Settings */}
-            <div className="flex flex-1 flex-col overflow-y-auto scrollbar-hide border-r border-white/5">
+            <div className="flex flex-1 flex-col overflow-y-auto scrollbar-hide border-r border-[var(--color-border)]">
               {/* Header */}
-              <div className="flex h-16 items-center border-b border-white/5 px-6 shrink-0 bg-[#0f0f12]/80 backdrop-blur-md sticky top-0 z-10">
+              <div className="flex h-16 items-center border-b border-[var(--color-border)] px-6 shrink-0 bg-[var(--color-background)]/80 backdrop-blur-md sticky top-0 z-10">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <LayoutGrid className="h-4 w-4" />
                   <span>我的Skill</span>
