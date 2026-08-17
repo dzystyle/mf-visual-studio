@@ -413,7 +413,7 @@ export function PromptBox({
                       key={item.label}
                       onClick={() => setRatio(item.label)}
                       className={`flex w-full items-center gap-2 px-2 py-1.5 rounded-md text-xs transition-colors ${
-                        ratio === item.label ? "bg-white/10 text-white" : "text-white/60 hover:text-white hover:bg-white/5"
+                        ratio === item.label ? "bg-foreground/10 text-foreground" : "text-foreground/60 hover:text-foreground hover:bg-foreground/5"
                       }`}
                     >
                       <span className="w-4 flex justify-center">{item.icon}</span>
