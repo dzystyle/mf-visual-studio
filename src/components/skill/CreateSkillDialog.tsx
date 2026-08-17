@@ -696,7 +696,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                   <label className="text-xs font-medium text-muted-foreground">Skill 名称</label>
                                   <input 
                                     placeholder="为你的Skill命名"
-                                    className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
+                                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-3 text-sm focus:border-[var(--color-foreground)]/10 focus:outline-none focus:ring-1 focus:ring-[var(--color-foreground)]/10 transition placeholder:text-[var(--color-muted-foreground)]/30"
                                   />
                                 </div>
                                 <div className="space-y-2 relative">
