@@ -236,24 +236,24 @@ function CreativeAssistantPage() {
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
   const handleSendMessage = (textOverride?: string) => {
-    const textToSend = textOverride || inputValue;
+    const textToSend = typeof textOverride === 'string' ? textOverride : inputValue;
     if (!textToSend.trim() || isProcessing) return;
     
     const userMsg: Message = {
       id: Math.random().toString(),
       role: "user",
-      content: inputValue,
+      content: textToSend,
       timestamp: new Date().toLocaleString(),
     };
     
     // Check for specific keywords to trigger next stages
     let nextStage = 0;
-    if (inputValue.includes("图片") || inputValue.includes("素材")) {
+    if (textToSend.includes("图片") || textToSend.includes("素材")) {
       userMsg.attachments = [{ name: "saitama.webp", type: "IMAGE", url: charSam }];
       nextStage = 3;
-    } else if (inputValue.includes("生成") || inputValue.includes("宣发")) {
+    } else if (textToSend.includes("生成") || textToSend.includes("宣发")) {
       nextStage = 4;
-    } else if (inputValue.includes("继续")) {
+    } else if (textToSend.includes("继续")) {
       nextStage = 5;
     } else if (messages.length === 0) {
       nextStage = 1;
