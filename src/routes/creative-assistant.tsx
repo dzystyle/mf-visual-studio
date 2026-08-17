@@ -106,97 +106,67 @@ function CreativeAssistantPage() {
         id: "2",
         role: "assistant",
         content: "掌趣一拳超人游戏宣发，埼玉一拳秒杀的震撼感很适合做营销短视频的开场钩子。我先确认几个关键信息，帮你把方向定准。",
-        timestamp: new Date().toLocaleString(),
-        statusLines: [{ icon: "check", text: "读取文件", subText: "查看用户上传的一拳超人素材" }]
+        timestamp: "2026/8/13 14:34:26",
       },
       {
         id: "3",
         role: "assistant",
         isChoiceCard: true,
-        timestamp: new Date().toLocaleString(),
+        timestamp: "2026/8/13 14:34:26",
       },
       {
         id: "5",
         role: "assistant",
-        content: "收到，15秒内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。",
-        timestamp: new Date().toLocaleString(),
-        statusLines: [
-          { icon: "check", text: "技能学习", subText: "营销视频大师" },
-          { icon: "loading", text: "正在加载技能: 营销视频大师" },
-          { icon: "check", text: "任务规划" }
-        ]
-      },
-      {
-        id: "6",
-        role: "assistant",
-        content: "好的，我已经准备好处理素材并开始制作营销视频了。我们会先读取文件并规划任务，确保脚本准确还原一拳超人的热血燃战风格。",
-        timestamp: new Date().toLocaleString(),
-      },
-      {
-        id: "8",
-        role: "assistant",
-        content: "埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。",
-        timestamp: new Date().toLocaleString(),
+        content: "收到，15秒以内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。",
+        timestamp: "2026/8/13 14:37:15",
       },
       {
         id: "9",
         role: "assistant",
-        timestamp: new Date().toLocaleString(),
+        timestamp: "2026/8/13 14:38:55",
         isDetailedAssistant: true,
       },
       {
         id: "11",
         role: "assistant",
-        timestamp: new Date().toLocaleString(),
+        timestamp: "2026/8/13 14:43:06",
         isDetailedAssistant2: true,
       },
       {
         id: "13",
         role: "assistant",
-        timestamp: new Date().toLocaleString(),
+        timestamp: "2026/8/13 15:31:25",
         isVideoOutput: true,
       },
     ];
 
-    const nextAssistantMsg = fullWorkflow.find(m => {
-      if (stepIndex === 1) return m.id === "2" || m.id === "3";
-      if (stepIndex === 2) return m.id === "5" || m.id === "6";
-      if (stepIndex === 3) return m.id === "8" || m.id === "9";
-      if (stepIndex === 4) return m.id === "11";
-      if (stepIndex === 5) return m.id === "13";
-      return false;
-    });
-
-    // In this simulation, we'll just add the relevant response based on step
+    // Simulate different response sequences based on interaction point
     const timer = setTimeout(() => {
       setIsTyping(true);
       const typingTimer = setTimeout(() => {
-        const msgsToAdd: Message[] = [];
+        let msgsToAdd: Message[] = [];
+        
         if (stepIndex === 1) {
-          // Check if we already have these messages to avoid duplicates
+          // Check for duplicates
           const alreadyHasFirstResponse = messages.some(m => m.id === "2");
-          const alreadyHasChoiceCard = messages.some(m => m.isChoiceCard);
+          const alreadyHasChoiceCard = messages.some(m => m.isChoiceCard && m.id === "3");
           
-          if (!alreadyHasFirstResponse) {
-            msgsToAdd.push(fullWorkflow[0] as Message);
-          }
-          if (!alreadyHasChoiceCard) {
-            msgsToAdd.push(fullWorkflow[1] as Message);
-          }
+          if (!alreadyHasFirstResponse) msgsToAdd.push(fullWorkflow[0] as Message);
+          if (!alreadyHasChoiceCard) msgsToAdd.push(fullWorkflow[1] as Message);
         } else if (stepIndex === 2) {
-          msgsToAdd.push(fullWorkflow[2] as Message, fullWorkflow[3] as Message);
+          msgsToAdd.push(fullWorkflow[2] as Message);
         } else if (stepIndex === 3) {
-          msgsToAdd.push(fullWorkflow[4] as Message, fullWorkflow[5] as Message);
+          msgsToAdd.push(fullWorkflow[3] as Message);
         } else if (stepIndex === 4) {
-          msgsToAdd.push(fullWorkflow[6] as Message);
+          msgsToAdd.push(fullWorkflow[4] as Message);
         } else if (stepIndex === 5) {
-          msgsToAdd.push(fullWorkflow[7] as Message);
+          msgsToAdd.push(fullWorkflow[5] as Message);
         }
         
         setMessages(prev => [...prev, ...msgsToAdd]);
         setIsTyping(false);
         setIsProcessing(false);
-      }, 1500);
+      }, 1000);
       return () => clearTimeout(typingTimer);
     }, 500);
   };
