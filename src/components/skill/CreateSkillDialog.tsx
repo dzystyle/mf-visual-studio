@@ -572,19 +572,19 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                           <div className="h-2 w-4 rounded-sm bg-green-950/40 border border-green-900/20" />
                           <span className="text-xs text-green-500/80">修改后</span>
                         </div>
-                        <div className="flex items-center gap-2 px-2 border-l border-white/10">
-                          <button className="p-1 text-white/20 hover:text-white/60 transition"><Undo2 className="h-4 w-4" /></button>
-                          <button className="p-1 text-white/20 hover:text-white/60 transition"><Redo2 className="h-4 w-4" /></button>
+                        <div className="flex items-center gap-2 px-2 border-l border-[var(--color-border)]">
+                          <button className="p-1 text-[var(--color-muted-foreground)]/40 hover:text-[var(--color-foreground)] transition"><Undo2 className="h-4 w-4" /></button>
+                          <button className="p-1 text-[var(--color-muted-foreground)]/40 hover:text-[var(--color-foreground)] transition"><Redo2 className="h-4 w-4" /></button>
                         </div>
                         <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-1 rounded-lg bg-white/5 px-3 py-1.5 text-xs text-white/60 cursor-pointer hover:bg-white/10 transition group">
+                          <div className="flex items-center gap-1 rounded-lg bg-[var(--color-secondary)] px-3 py-1.5 text-xs text-[var(--color-muted-foreground)] cursor-pointer hover:bg-[var(--color-accent)] transition group">
                             <ChevronDown onClick={handlePrevSuggestion} className="h-3 w-3 rotate-180 opacity-40 hover:opacity-100 transition" />
                             <span>第 {currentSuggestionIndex} / 5 处</span>
                             <ChevronDown onClick={handleNextSuggestion} className="h-3 w-3 opacity-40 hover:opacity-100 transition" />
                           </div>
                           <button 
                             onClick={handleRejectAll}
-                            className="px-3 py-1.5 rounded-lg bg-white/5 text-xs hover:bg-white/10 transition"
+                            className="px-3 py-1.5 rounded-lg bg-[var(--color-secondary)] text-xs hover:bg-[var(--color-accent)] transition"
                           >
                             全部撤销
                           </button>
