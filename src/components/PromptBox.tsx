@@ -327,7 +327,7 @@ export function PromptBox({
                   <Plus className="h-4 w-4" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent side="top" align="start" className="w-40 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+              <PopoverContent side="top" align="start" className="w-40 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl z-[100]">
                 <AddItem icon={ImageIcon} label="本地上传" onClick={() => triggerPick("image")} />
                 <AddItem icon={AudioLines} label="音频上传" onClick={() => triggerPick("audio")} />
                 <AddItem icon={Video} label="视频上传" onClick={() => triggerPick("video")} />
@@ -347,7 +347,7 @@ export function PromptBox({
                   <Chip icon={LayoutGrid} label={model ? `模型：${model}` : "选择模型"} badge={model === "Seedance 2" ? "新" : undefined} active={!!model} onClear={model ? () => setModel(null) : undefined} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-[580px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+              <PopoverContent align="start" className="w-[580px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100]">
                 <ModelPicker value={model} onSelect={setModel} />
               </PopoverContent>
             </Popover>
@@ -358,7 +358,7 @@ export function PromptBox({
                   <Chip icon={Package} label={skill ? `Skill：${skill}` : "Skill"} active={!!skill} onClear={skill ? () => setSkill(null) : undefined} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-[480px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+              <PopoverContent align="start" className="w-[480px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100]">
                 <SkillPicker onSelect={(title) => { setSkill(title); textareaRef.current?.focus(); }} />
               </PopoverContent>
             </Popover>
@@ -375,7 +375,7 @@ export function PromptBox({
                   <ChevronDown className="h-3 w-3 text-muted-foreground" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-32 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+              <PopoverContent align="start" className="w-32 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl z-[100]">
                 {["480p", "720p"].map((res) => (
                   <button 
                     key={res}
@@ -399,7 +399,7 @@ export function PromptBox({
                   <ChevronDown className="h-3 w-3 text-muted-foreground" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-24 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl">
+              <PopoverContent align="start" className="w-24 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl z-[100]">
                 <div className="flex flex-col gap-0.5">
                   {[
                     { label: "21:9", icon: <div className="w-4 h-2 border border-current rounded-[1px]" /> },
