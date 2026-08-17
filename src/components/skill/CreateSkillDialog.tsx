@@ -842,8 +842,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                   "配乐优先服务于奇幻世界观、队伍集结与 Boss 登场等高潮节点。",
                                   "图像提示词强化职业辨识度、武器/法器、阵营纹章和技能特效。"
                                 ].map((item, idx) => (
-                                  <li key={idx} className="flex gap-3 text-[14px] leading-relaxed text-white/70">
-                                    <span className="mt-2 h-1 w-1 rounded-full bg-white/30 shrink-0" />
+                                  <li key={idx} className="flex gap-3 text-[14px] leading-relaxed text-[var(--color-foreground)]/70">
+                                    <span className="mt-2 h-1 w-1 rounded-full bg-[var(--color-foreground)]/30 shrink-0" />
                                     <span>{item}</span>
                                   </li>
                                 ))}
