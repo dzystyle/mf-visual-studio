@@ -905,7 +905,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                         disabled={!inputValue.trim()}
                         className={cn(
                           "flex h-8 w-8 items-center justify-center rounded-full transition",
-                          inputValue.trim() ? "bg-white text-black hover:bg-white/90" : "bg-white/10 text-muted-foreground cursor-not-allowed"
+                          inputValue.trim() ? "bg-[var(--color-foreground)] text-[var(--color-background)] hover:bg-[var(--color-foreground)]/90" : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)] cursor-not-allowed"
                         )}
                       >
                         <ArrowUp className="h-4 w-4" />
