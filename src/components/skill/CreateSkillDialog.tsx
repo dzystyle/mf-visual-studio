@@ -752,8 +752,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                       <div className={cn(
                         "max-w-[90%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
                         msg.role === 'user' 
-                          ? "bg-white/10 text-foreground border border-white/5" 
-                          : "text-foreground w-full"
+                          ? "bg-[var(--color-secondary)] text-[var(--color-foreground)] border border-[var(--color-border)] shadow-sm" 
+                          : "text-[var(--color-foreground)] w-full"
                       )}>
                         {msg.content === 'GAME_SKILL_FLOW' ? (
                           <div className="space-y-6">
