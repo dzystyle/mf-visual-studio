@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X, Code, Calendar } from "lucide-react";
+import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X, Code, Calendar, LayoutGrid } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import skillScript from "@/assets/skill-script.jpg";
 import skillStory from "@/assets/skill-story.jpg";
 import skillReenact from "@/assets/skill-reenact.jpg";
@@ -496,13 +497,46 @@ export function ElementsPicker({
 
   return (
     <div className="w-[1000px] h-[720px] bg-[#0A0A0A] text-white overflow-hidden flex flex-col relative">
-      {/* Top Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-bold">所有资产</span>
-          <span className="text-sm text-white/40">(8)</span>
+      {/* Sidebar and Main Content Wrapper */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Left Sidebar */}
+        <div className="w-[180px] border-r border-white/5 flex flex-col pt-6">
+          <div className="px-6 mb-8">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold">所有资产</span>
+              <span className="text-sm text-white/40">(8)</span>
+            </div>
+          </div>
+          
+          <nav className="flex-1 space-y-1 px-3">
+            {assetTabs.map((t) => (
+              <button
+                key={t.key}
+                onClick={() => setTab(t.key)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  tab === t.key 
+                    ? "bg-white/10 text-white shadow-lg" 
+                    : "text-white/40 hover:text-white/60 hover:bg-white/5"
+                }`}
+              >
+                {t.key === 'works' && <LayoutGrid className="h-4 w-4" />}
+                {t.key === 'history' && <Calendar className="h-4 w-4" />}
+                {t.key === 'char' && <Sparkles className="h-4 w-4" />}
+                {t.key === 'product' && <ImageIcon className="h-4 w-4" />}
+                {t.label}
+              </button>
+            ))}
+          </nav>
         </div>
-        <button className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-white/5 transition">
+
+        {/* Right Main Content */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Top Header */}
+          <div className="flex items-center justify-end px-6 py-4 border-b border-white/5 h-[72px]">
+            <button 
+              onClick={() => (window as any).closeElementsPicker?.()}
+              className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-white/5 transition"
+            >
           <X className="h-4 w-4 text-white/40" />
         </button>
       </div>
@@ -510,9 +544,20 @@ export function ElementsPicker({
       {/* Toolbar / Filters */}
       <div className="flex items-center gap-3 px-6 py-4 flex-wrap border-b border-white/5">
         {/* Creation Source Dropdown */}
-        <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-          创作资产 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-        </button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+              创作资产 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+            <div className="space-y-1">
+              {['全部来源', '画布创作', '工作流创作', 'AI生成'].map((item) => (
+                <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
 
         {/* Media Type Filters */}
         <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
@@ -534,28 +579,85 @@ export function ElementsPicker({
         </div>
 
         {/* Date Filter */}
-        <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-          时间范围 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-        </button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+              时间范围 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-48 bg-[#1A1A1A] border-white/10 p-1 text-white">
+            <div className="space-y-1">
+              {['全部时间', '今天', '最近7天', '最近30天', '自定义范围'].map((item) => (
+                <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
 
         {/* Sort Order */}
-        <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-          倒序 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-        </button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+              倒序 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-32 bg-[#1A1A1A] border-white/10 p-1 text-white">
+            <div className="space-y-1">
+              {['正序', '倒序'].map((item) => (
+                <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
 
         <div className="flex-1" />
 
         {/* Right Side Filters */}
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-            全部项目 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-          </button>
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-            全部人员 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-          </button>
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-            全部画布 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-          </button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+                全部项目 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+              <div className="space-y-1">
+                {['全部项目', '一拳超人宣发', '游戏预告', '节日活动'].map((item) => (
+                  <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+                全部人员 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+              <div className="space-y-1">
+                {['全部人员', '我自己', '设计师-阿强', '项目经理-老李'].map((item) => (
+                  <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+                全部画布 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+              <div className="space-y-1">
+                {['全部画布', '主画布-01', '备选画布-02', '草稿-03'].map((item) => (
+                  <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
           
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/40" />
@@ -567,11 +669,31 @@ export function ElementsPicker({
           </div>
 
           <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
-            <button className="p-1.5 rounded bg-white/10"><Sparkles className="h-3.5 w-3.5" /></button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="p-1.5 rounded bg-white/10"><Sparkles className="h-3.5 w-3.5" /></button>
+              </PopoverTrigger>
+              <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+                <div className="space-y-1">
+                  {['AI 优化排序', '按关联度排序'].map((item) => (
+                    <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
             <button className="p-1.5 rounded hover:bg-white/10"><Check className="h-3.5 w-3.5 text-white/40" /></button>
           </div>
 
-          <button className="flex items-center gap-1.5 px-4 py-1.5 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition">
+          <button 
+            onClick={() => {
+              if (selectedIds.length === assetItems.length) {
+                setSelectedIds([]);
+              } else {
+                setSelectedIds(assetItems.map(i => i.id));
+              }
+            }}
+            className="flex items-center gap-1.5 px-4 py-1.5 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition"
+          >
             <Check className="h-3.5 w-3.5" />
             批量操作
           </button>
@@ -617,6 +739,8 @@ export function ElementsPicker({
           })}
         </div>
       </div>
+    </div>
+  </div>
 
       {/* Footer Actions */}
       {selectedIds.length > 0 && (
@@ -656,11 +780,17 @@ export function ElementsPickerDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1000px] border-white/10 bg-[#0A0A0A] p-0 text-white overflow-hidden rounded-[24px] shadow-2xl">
-        <ElementsPicker onSelect={(name, kind, url) => { 
-          onSelect?.(name, kind, url); 
-          onOpenChange(false); 
-        }} />
+      <DialogContent className="max-w-[1000px] border-white/10 bg-[#0A0A0A] p-0 text-white overflow-hidden rounded-[24px] shadow-2xl [&>button]:hidden">
+        <div ref={(el) => {
+          if (el) {
+            (window as any).closeElementsPicker = () => onOpenChange(false);
+          }
+        }}>
+          <ElementsPicker onSelect={(name, kind, url) => { 
+            onSelect?.(name, kind, url); 
+            onOpenChange(false); 
+          }} />
+        </div>
       </DialogContent>
     </Dialog>
   );
