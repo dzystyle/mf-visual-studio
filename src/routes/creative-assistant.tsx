@@ -589,6 +589,7 @@ function CreativeAssistantPage() {
           <div className="px-6 pb-10">
             <div className="mx-auto max-w-5xl">
               <PromptBox 
+                showCanvasToggle={false}
                 onSubmit={(text) => {
                   setInputValue(text);
                   handleSendMessage(text);
