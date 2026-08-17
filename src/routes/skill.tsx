@@ -168,13 +168,13 @@ function SkillDiscoveryPage() {
           <div className="flex items-center gap-6">
             <button 
               onClick={() => setActiveTab("精选")}
-              className={`text-xl font-bold transition-colors ${activeTab === '精选' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+              className={`text-xl font-bold transition-colors ${activeTab === '精选' ? 'text-[var(--color-foreground)]' : 'text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]'}`}
             >
               精选
             </button>
             <button 
               onClick={() => setActiveTab("我的")}
-              className={`text-xl font-bold transition-colors ${activeTab === '我的' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+              className={`text-xl font-bold transition-colors ${activeTab === '我的' ? 'text-[var(--color-foreground)]' : 'text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]'}`}
             >
               我的
             </button>
@@ -217,8 +217,8 @@ function SkillDiscoveryPage() {
                     onClick={() => setActiveCategory(cat)}
                     className={`whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-medium transition-all ${
                       activeCategory === cat 
-                      ? 'bg-foreground text-background' 
-                      : 'bg-white/5 text-muted-foreground border border-white/5 hover:bg-white/10'
+                      ? 'bg-[var(--color-foreground)] text-[var(--color-background)]' 
+                      : 'bg-[var(--color-secondary)] text-[var(--color-muted-foreground)] border border-[var(--color-border)] hover:bg-[var(--color-accent)]'
                     }`}
                   >
                     {cat}
@@ -227,7 +227,7 @@ function SkillDiscoveryPage() {
               </div>
 
               <div className="flex items-center gap-2 pl-4">
-                <span className="text-[11px] text-muted-foreground">排序:</span>
+                <span className="text-[11px] text-[var(--color-muted-foreground)]">排序:</span>
                 <Popover>
                   <PopoverTrigger asChild>
                     <button className="flex items-center gap-1.5 text-xs font-medium text-[var(--color-foreground)] hover:opacity-80 transition">
@@ -277,8 +277,8 @@ function SkillDiscoveryPage() {
                     myFilter === filter 
                     ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/20' 
                     : filter === "草稿" 
-                      ? 'bg-white/5 text-muted-foreground border border-dashed border-white/20 hover:bg-white/10'
-                      : 'bg-white/5 text-muted-foreground border border-white/5 hover:bg-white/10'
+                      ? 'bg-[var(--color-secondary)] text-[var(--color-muted-foreground)] border border-dashed border-[var(--color-border)] hover:bg-[var(--color-accent)]'
+                      : 'bg-[var(--color-secondary)] text-[var(--color-muted-foreground)] border border-[var(--color-border)] hover:bg-[var(--color-accent)]'
                   }`}
                 >
                   {filter}
@@ -286,7 +286,7 @@ function SkillDiscoveryPage() {
               ))}
             </div>
 
-            <div className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground/60">
+            <div className="mb-6 flex items-center gap-1.5 text-sm text-[var(--color-muted-foreground)]/60">
               <span>默认调用</span>
               <Info className="h-3.5 w-3.5" />
             </div>
@@ -386,7 +386,7 @@ function SkillCard({ title, version, author, model, desc, image, isDefault, auth
           </span>
         </div>
         
-        <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground/80 mb-4">
+        <p className="line-clamp-2 text-xs leading-relaxed text-[var(--color-muted-foreground)]/80 mb-4">
           {desc || "无描述"}
         </p>
 
@@ -395,8 +395,8 @@ function SkillCard({ title, version, author, model, desc, image, isDefault, auth
             <div className="rounded bg-[var(--color-secondary)] px-2 py-1 text-[10px] text-[var(--color-muted-foreground)]">{myLabel}</div>
           ) : (
             <>
-              <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">全部</div>
-              <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">剧情短片</div>
+              <div className="rounded bg-[var(--color-secondary)] px-2 py-1 text-[10px] text-[var(--color-muted-foreground)]">全部</div>
+              <div className="rounded bg-[var(--color-secondary)] px-2 py-1 text-[10px] text-[var(--color-muted-foreground)]">剧情短片</div>
             </>
           )}
         </div>
