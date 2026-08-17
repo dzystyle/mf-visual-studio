@@ -882,9 +882,12 @@ function ChoiceItem({
   );
 }
 
-function ResourceCard({ title, type, date }: { title: string; type: string; date: string }) {
+function ResourceCard({ title, type, date, onClick }: { title: string; type: string; date: string; onClick?: () => void }) {
   return (
-    <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[var(--color-muted-foreground)] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer">
+    <div 
+      onClick={onClick}
+      className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[var(--color-muted-foreground)] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer"
+    >
       <div className="h-28 w-full bg-[var(--color-secondary)] rounded-2xl flex items-center justify-center border border-[var(--color-border)]">
         <div className="text-[12px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.2em]">{type}</div>
       </div>
