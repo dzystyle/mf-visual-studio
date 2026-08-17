@@ -15,6 +15,7 @@ import {
   Search
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
+import { PromptBox } from "@/components/PromptBox";
 import { cn } from "@/lib/utils";
 import { 
   Popover, 
