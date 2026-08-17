@@ -502,7 +502,10 @@ export function ElementsPicker({
           <span className="text-lg font-bold">所有资产</span>
           <span className="text-sm text-white/40">(8)</span>
         </div>
-        <button className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-white/5 transition">
+        <button 
+          onClick={() => (window as any).closeElementsPicker?.()}
+          className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-white/5 transition"
+        >
           <X className="h-4 w-4 text-white/40" />
         </button>
       </div>
