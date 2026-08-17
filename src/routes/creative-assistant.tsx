@@ -655,49 +655,116 @@ function CreativeAssistantPage() {
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-8 space-y-10 scrollbar-hide">
-                {/* Documents */}
-                <section>
-                  <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
-                    <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-5">
-                    <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
-                    <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
-                    <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
-                    <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
-                    <ResourceCard title="story-script.md" type="MD" date="1小时前" onClick={() => setShowScriptDetail(true)} />
-                  </div>
-                </section>
+              <div className="flex-1 overflow-hidden flex flex-col relative">
+                <div className={cn(
+                  "absolute inset-0 z-10 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out scrollbar-hide overflow-y-auto p-8 space-y-10",
+                  activeResource ? "pointer-events-none opacity-0 translate-x-[-20px]" : "opacity-100 translate-x-0"
+                )}>
+                  {/* Documents */}
+                  <section>
+                    <div className="flex items-center justify-between mb-5">
+                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
+                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-5">
+                      <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
+                      <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
+                      <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
+                      <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
+                      <ResourceCard 
+                        title="story-script.md" 
+                        type="MD" 
+                        date="1小时前" 
+                        onClick={() => setActiveResource({ type: 'script' })} 
+                      />
+                    </div>
+                  </section>
 
-                {/* Images */}
-                <section>
-                  <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
-                    <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-5">
-                    <ImageResourceCard title="user_upload_image_1.webp" type="WEBP" date="1小时前" img={charSam} />
-                    <ImageResourceCard title="genos-reference.png" type="PNG" date="1小时前" img={charBoss} />
-                  </div>
-                </section>
+                  {/* Images */}
+                  <section>
+                    <div className="flex items-center justify-between mb-5">
+                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
+                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-5">
+                      <ImageResourceCard 
+                        title="user_upload_image_1.webp" 
+                        type="WEBP" 
+                        date="1小时前" 
+                        img={charSam} 
+                        onClick={() => setActiveResource({ type: 'image', data: { url: charSam, name: 'user_upload_image_1.webp' } })}
+                      />
+                      <ImageResourceCard 
+                        title="genos-reference.png" 
+                        type="PNG" 
+                        date="1小时前" 
+                        img={charBoss} 
+                        onClick={() => setActiveResource({ type: 'image', data: { url: charBoss, name: 'genos-reference.png' } })}
+                      />
+                    </div>
+                  </section>
 
-                {/* Videos */}
-                <section>
-                  <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
-                    <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
+                  {/* Videos */}
+                  <section>
+                    <div className="flex items-center justify-between mb-5">
+                      <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
+                      <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-5">
+                      <ImageResourceCard 
+                        title="intro-animation.mp4" 
+                        type="MP4" 
+                        date="刚刚" 
+                        img={skillReenact} 
+                        onClick={() => setActiveResource({ type: 'video', data: { url: videoFileUrl, name: 'intro-animation.mp4' } })}
+                      />
+                    </div>
+                  </section>
+                </div>
+
+                {/* Resource Detail View (Integrated into Panel) */}
+                <div className={cn(
+                  "absolute inset-0 z-20 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out",
+                  activeResource ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
+                )}>
+                  <div className="p-4 border-b border-[var(--color-border)] flex items-center justify-between">
+                    <button 
+                      onClick={() => setActiveResource(null)}
+                      className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] flex items-center gap-1 text-[13px] font-medium"
+                    >
+                      <ChevronRight className="h-4 w-4 rotate-180" />
+                      返回
+                    </button>
+                    <span className="text-sm font-bold text-[var(--color-foreground)] truncate max-w-[200px]">
+                      {activeResource?.type === 'script' ? 'story-script.md' : activeResource?.data?.name}
+                    </span>
+                    <button className="p-1.5 rounded-lg bg-[var(--color-secondary)] border border-[var(--color-border)] text-[var(--color-foreground)]">
+                      <Download className="h-4 w-4" />
+                    </button>
                   </div>
-                  <div className="grid grid-cols-2 gap-5">
-                    <ImageResourceCard title="intro-animation.mp4" type="MP4" date="刚刚" img={skillReenact} />
+                  
+                  <div className="flex-1 overflow-y-auto p-4 scrollbar-hide">
+                    {activeResource?.type === 'script' && <StoryboardContent />}
+                    {activeResource?.type === 'image' && (
+                      <div className="flex flex-col items-center justify-center h-full gap-4">
+                        <img src={activeResource.data.url} alt="Preview" className="max-w-full max-h-[70%] object-contain rounded-xl shadow-lg border border-[var(--color-border)]" />
+                      </div>
+                    )}
+                    {activeResource?.type === 'video' && (
+                      <div className="flex flex-col items-center justify-center h-full gap-4">
+                        <video src={activeResource.data.url} controls className="max-w-full max-h-[70%] rounded-xl shadow-lg border border-[var(--color-border)]" />
+                      </div>
+                    )}
                   </div>
-                </section>
+                </div>
               </div>
               
               {/* Collapse handle */}
               <button 
-                onClick={() => setShowResources(false)}
+                onClick={() => {
+                  setShowResources(false);
+                  setActiveResource(null);
+                }}
                 className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 h-16 w-8 bg-[var(--color-card)] border border-[var(--color-border)] rounded-full flex items-center justify-center text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] shadow-lg transition-all hover:scale-110 active:scale-95 z-[110]"
               >
                 <ChevronRight className="h-5 w-5 rotate-180" />
@@ -705,9 +772,6 @@ function CreativeAssistantPage() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Script Detail Dialog */}
-        <ScriptDetailDialog open={showScriptDetail} onOpenChange={setShowScriptDetail} />
       </div>
       
       {/* Footer Question Mark */}
