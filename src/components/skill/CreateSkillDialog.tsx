@@ -104,7 +104,7 @@ function ChoiceCard({ onSelect, currentSelection }: { onSelect: (idx: number) =>
 
       {/* Send Button Row */}
       <div className="flex justify-end px-8 pb-8">
-        <button className="h-[44px] px-9 rounded-full bg-[#2a2a2c] text-[#E1B166] font-semibold text-[15px] hover:bg-[#323235] hover:text-[#f0c07d] transition-all shadow-xl active:scale-[0.98]">
+        <button className="h-[44px] px-9 rounded-full bg-[var(--color-secondary)] text-[#E1B166] font-semibold text-[15px] hover:bg-[var(--color-accent)] hover:text-[#f0c07d] transition-all shadow-xl active:scale-[0.98]">
           发送
         </button>
       </div>
