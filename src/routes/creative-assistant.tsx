@@ -15,7 +15,10 @@ import {
   Search,
   Download,
   Share2,
-  Trash2
+  Trash2,
+  Folder,
+  File,
+  ChevronRight as ChevronRightIcon
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
