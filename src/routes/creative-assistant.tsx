@@ -452,7 +452,20 @@ function CreativeAssistantPage() {
                   )}
 
                   {msg.isDetailedAssistant && (
-                    <div className="flex flex-col gap-2 w-full max-w-xl">
+                    <div className="flex flex-col gap-2 w-full max-w-xl relative group">
+                      <div className="absolute top-0 right-[-48px] opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button 
+                          onClick={() => {
+                            navigator.clipboard.writeText(window.location.href);
+                            setShowShareToast(true);
+                            setTimeout(() => setShowShareToast(false), 2000);
+                          }}
+                          className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all shadow-sm"
+                          title="分享会话"
+                        >
+                          <Share2 className="h-4 w-4" />
+                        </button>
+                      </div>
                       <div className="text-[15px] mb-4">埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。</div>
                       <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
                       <div className="text-[15px] mt-2 mb-4">素材确认完毕，埼玉的战斗姿态非常适合做宣发开场。接下来加载营销视频制作流程。</div>
