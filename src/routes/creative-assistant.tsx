@@ -769,7 +769,31 @@ function CreativeAssistantPage() {
                     <span className="text-sm font-bold text-[var(--color-foreground)] truncate max-w-[200px]">
                       {activeResource?.type === 'script' ? 'story-script.md' : activeResource?.data?.name}
                     </span>
-                    <button className="p-1.5 rounded-lg bg-[var(--color-secondary)] border border-[var(--color-border)] text-[var(--color-foreground)]">
+                    <button 
+                      onClick={() => {
+                        if (!activeResource) return;
+                        const url = activeResource.type === 'script' ? '#' : activeResource.data?.url;
+                        const filename = activeResource.type === 'script' ? 'story-script.md' : activeResource.data?.name;
+                        
+                        if (url && url !== '#') {
+                          const link = document.createElement('a');
+                          link.href = url;
+                          link.download = filename || 'download';
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                        } else {
+                          // Handle script/markdown download
+                          const content = "Shot ID | Duration | Description\n1 | 2.5s | Saitama close-up\n..."; // Mock content
+                          const blob = new Blob([content], { type: 'text/markdown' });
+                          const link = document.createElement('a');
+                          link.href = URL.createObjectURL(blob);
+                          link.download = filename;
+                          link.click();
+                        }
+                      }}
+                      className="p-1.5 rounded-lg bg-[var(--color-secondary)] border border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-colors"
+                    >
                       <Download className="h-4 w-4" />
                     </button>
                   </div>
