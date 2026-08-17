@@ -159,7 +159,7 @@ function SkillDiscoveryPage() {
   const myFilters = ["全部", "我创建的", "历史使用", "草稿"];
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors">
+    <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] transition-colors">
       <TopBar />
       
       <main className="mx-auto max-w-[1600px] px-6 pt-20 pb-10">
@@ -182,7 +182,7 @@ function SkillDiscoveryPage() {
           
           <button 
             onClick={() => setIsCreateDialogOpen(true)}
-            className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium transition hover:bg-white/10"
+            className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-2 text-sm font-medium transition hover:bg-[var(--color-accent)]"
           >
             <Plus className="h-4 w-4" />
             新建Skill
@@ -230,17 +230,17 @@ function SkillDiscoveryPage() {
                 <span className="text-[11px] text-muted-foreground">排序:</span>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <button className="flex items-center gap-1.5 text-xs font-medium text-foreground hover:opacity-80 transition">
+                    <button className="flex items-center gap-1.5 text-xs font-medium text-[var(--color-foreground)] hover:opacity-80 transition">
                       {sortOption}
                       <ChevronDown className="h-3 w-3" />
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent align="end" className="w-32 p-1 bg-[#1c1c1f] border-white/10">
+                  <PopoverContent align="end" className="w-32 p-1 bg-[var(--color-popover)] border-[var(--color-border)]">
                     {SORT_OPTIONS.map(opt => (
                       <button
                         key={opt}
                         onClick={() => setSortOption(opt)}
-                        className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-xs text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                        className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-xs text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"
                       >
                         {opt}
                         {sortOption === opt && <Check className="h-3 w-3" />}
@@ -335,7 +335,7 @@ function SkillCard({ title, version, author, model, desc, image, isDefault, auth
 
   return (
     <div 
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/5 bg-[#161618] transition-all hover:border-white/20 hover:shadow-xl hover:shadow-black/20 cursor-pointer"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] transition-all hover:border-[var(--color-foreground)]/20 hover:shadow-xl hover:shadow-black/20 cursor-pointer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={onClick}
@@ -380,8 +380,8 @@ function SkillCard({ title, version, author, model, desc, image, isDefault, auth
       {/* Content Area */}
       <div className="flex flex-1 flex-col p-4">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="truncate text-[15px] font-bold text-foreground pr-2">{title}</h3>
-          <span className="rounded bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+          <h3 className="truncate text-[15px] font-bold text-[var(--color-foreground)] pr-2">{title}</h3>
+          <span className="rounded bg-[var(--color-secondary)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--color-muted-foreground)] uppercase tracking-wider">
             {version}
           </span>
         </div>
@@ -392,7 +392,7 @@ function SkillCard({ title, version, author, model, desc, image, isDefault, auth
 
         <div className="mt-auto flex items-center gap-2">
           {isMySkill && myLabel ? (
-            <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">{myLabel}</div>
+            <div className="rounded bg-[var(--color-secondary)] px-2 py-1 text-[10px] text-[var(--color-muted-foreground)]">{myLabel}</div>
           ) : (
             <>
               <div className="rounded bg-white/5 px-2 py-1 text-[10px] text-muted-foreground">全部</div>
