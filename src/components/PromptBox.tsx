@@ -270,17 +270,17 @@ export function PromptBox({
         </div>
 
         {!isMini && mentionOpen && (
-          <div className="absolute top-[calc(100%+8px)] left-0 w-72 bg-[#1A1A1A]/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
-            <div className="p-3 border-b border-white/5">
+          <div className="absolute top-[calc(100%+8px)] left-0 w-80 bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="p-3.5 border-b border-border/50">
               <div className="relative">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
                 <input 
                   autoFocus
                   type="text" 
                   value={mentionFilter}
                   onChange={(e) => setMentionFilter(e.target.value)}
                   placeholder="搜索素材、角色、商品..."
-                  className="w-full bg-white/5 border-none rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-muted-foreground focus:ring-1 focus:ring-white/10 focus:outline-none"
+                  className="w-full bg-accent/50 border-none rounded-xl pl-9 pr-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all"
                 />
               </div>
             </div>
@@ -327,12 +327,12 @@ export function PromptBox({
                   <Plus className="h-4 w-4" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent side="top" align="start" className="w-40 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl z-[100]">
+              <PopoverContent side="top" align="start" className="w-44 p-1.5 border-border bg-popover/90 backdrop-blur-xl rounded-2xl shadow-2xl z-[100] animate-in fade-in zoom-in-95 duration-200">
                 <AddItem icon={ImageIcon} label="本地上传" onClick={() => triggerPick("image")} />
                 <AddItem icon={AudioLines} label="音频上传" onClick={() => triggerPick("audio")} />
                 <AddItem icon={Video} label="视频上传" onClick={() => triggerPick("video")} />
                 <AddItem icon={FileText} label="文档上传" onClick={() => triggerPick("text")} />
-                <div className="my-1 h-px bg-white/5" />
+                <div className="my-1.5 h-px bg-border/40 mx-2" />
                 <AddItem icon={LayoutGrid} label="资产库" onClick={() => setAssetsOpen(true)} />
               </PopoverContent>
             </Popover>
@@ -347,7 +347,7 @@ export function PromptBox({
                   <Chip icon={LayoutGrid} label={model ? `模型：${model}` : "选择模型"} badge={model === "Seedance 2" ? "新" : undefined} active={!!model} onClear={model ? () => setModel(null) : undefined} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-[580px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100]">
+              <PopoverContent align="start" className="w-[580px] p-0 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
                 <ModelPicker value={model} onSelect={setModel} />
               </PopoverContent>
             </Popover>
@@ -358,7 +358,7 @@ export function PromptBox({
                   <Chip icon={Package} label={skill ? `Skill：${skill}` : "Skill"} active={!!skill} onClear={skill ? () => setSkill(null) : undefined} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-[480px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100]">
+              <PopoverContent align="start" className="w-[480px] p-0 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
                 <SkillPicker onSelect={(title) => { setSkill(title); textareaRef.current?.focus(); }} />
               </PopoverContent>
             </Popover>
@@ -375,12 +375,12 @@ export function PromptBox({
                   <ChevronDown className="h-3 w-3 text-muted-foreground" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-32 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl z-[100]">
+              <PopoverContent align="start" className="w-32 p-1.5 border-border bg-popover/90 backdrop-blur-xl rounded-2xl shadow-2xl z-[100] animate-in fade-in zoom-in-95 duration-200">
                 {["480p", "720p"].map((res) => (
                   <button 
                     key={res}
                     onClick={() => setResolution(res)}
-                    className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-lg transition-colors ${resolution === res ? 'bg-white/10 text-white' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
+                    className={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-xl transition-all ${resolution === res ? 'bg-primary/10 text-primary' : 'text-foreground/60 hover:text-foreground hover:bg-accent'}`}
                   >
                     <span>{res}</span>
                     <span className="flex h-3.5 items-center rounded bg-aurora-purple/20 px-1 text-[7px] font-bold uppercase text-aurora-purple">尊享</span>
