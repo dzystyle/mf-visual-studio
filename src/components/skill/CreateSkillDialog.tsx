@@ -783,8 +783,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                 <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">生成策略：</strong>以 Seedance 2.0 为主力视频模型，角色一致性靠元素参考图保障</span>
                               </li>
                               <li className="flex gap-4">
-                                <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                                <span className="text-foreground/70"><strong className="text-white font-medium">剪辑组装：</strong>动作段硬切、场景切换闪白/黑场，BGM 高潮对齐视觉高潮</span>
+                                <span className="text-[var(--color-muted-foreground)] mt-2 h-1.5 w-1.5 rounded-full bg-[var(--color-foreground)]/20 shrink-0" />
+                                <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">剪辑组装：</strong>动作段硬切、场景切换闪白/黑场，BGM 高潮对齐视觉高潮</span>
                               </li>
                             </ul>
 
