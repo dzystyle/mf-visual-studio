@@ -603,9 +603,9 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                 {/* Form Sections / Markdown View */}
                 {viewMode === "markdown" ? (
                   <div className="flex-1 p-8">
-                    <div className="rounded-2xl border border-white/5 bg-[#141417] p-8 min-h-[800px] shadow-2xl relative overflow-hidden group">
+                    <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-secondary)]/50 p-8 min-h-[800px] shadow-2xl relative overflow-hidden group">
                       {/* Gradient overlay to simulate terminal/code-editor feel */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-foreground)]/[0.02] to-transparent pointer-events-none" />
                       
                       {markdownContent ? (
                         <div className="relative font-mono text-[13.5px] leading-[1.8] text-white/80 whitespace-pre-wrap selection:bg-[#E1B166]/20">
