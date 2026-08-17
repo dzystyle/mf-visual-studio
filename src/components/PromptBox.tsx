@@ -40,10 +40,12 @@ const ACCEPT_MAP: Record<Attachment["kind"], string> = {
 
 export function PromptBox({ 
   onSubmit, 
-  isMini = false 
+  isMini = false,
+  showCanvasToggle = true
 }: { 
   onSubmit?: (text: string, canvasMode: boolean) => void;
   isMini?: boolean;
+  showCanvasToggle?: boolean;
 } = {}) {
   const [text, setText] = useState("");
   const [plusOpen, setPlusOpen] = useState(false);
@@ -458,17 +460,19 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
 
-            <div className="flex items-center gap-2 px-3 py-1 bg-card/40 border border-border rounded-full hover:bg-card transition">
-              <span className="text-[11px] font-medium text-muted-foreground">画布</span>
-              <button 
-                onClick={() => setCanvasMode(!canvasMode)}
-                className={`relative inline-flex h-4 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-aurora-blue' : 'bg-white/10'}`}
-              >
-                <span
-                  className={`pointer-events-none block h-2.5 w-2.5 rounded-full shadow-lg ring-0 transition-transform ${canvasMode ? 'translate-x-4.5 bg-white' : 'translate-x-1 bg-white/60'}`}
-                />
-              </button>
-            </div>
+            {showCanvasToggle && (
+              <div className="flex items-center gap-2 px-3 py-1 bg-card/40 border border-border rounded-full hover:bg-card transition">
+                <span className="text-[11px] font-medium text-muted-foreground">画布</span>
+                <button 
+                  onClick={() => setCanvasMode(!canvasMode)}
+                  className={`relative inline-flex h-4 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-aurora-blue' : 'bg-white/10'}`}
+                >
+                  <span
+                    className={`pointer-events-none block h-2.5 w-2.5 rounded-full shadow-lg ring-0 transition-transform ${canvasMode ? 'translate-x-4.5 bg-white' : 'translate-x-1 bg-white/60'}`}
+                  />
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
