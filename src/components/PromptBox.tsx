@@ -327,12 +327,12 @@ export function PromptBox({
                   <Plus className="h-4 w-4" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent side="top" align="start" className="w-40 p-1.5 border-[var(--color-border)] bg-[var(--color-popover)]/95 backdrop-blur-xl rounded-2xl shadow-2xl z-[100]">
+              <PopoverContent side="top" align="start" className="w-40 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl z-[100]">
                 <AddItem icon={ImageIcon} label="本地上传" onClick={() => triggerPick("image")} />
                 <AddItem icon={AudioLines} label="音频上传" onClick={() => triggerPick("audio")} />
                 <AddItem icon={Video} label="视频上传" onClick={() => triggerPick("video")} />
                 <AddItem icon={FileText} label="文档上传" onClick={() => triggerPick("text")} />
-                <div className="my-1 h-px bg-foreground/5" />
+                <div className="my-1 h-px bg-white/5" />
                 <AddItem icon={LayoutGrid} label="资产库" onClick={() => setAssetsOpen(true)} />
               </PopoverContent>
             </Popover>
@@ -347,7 +347,7 @@ export function PromptBox({
                   <Chip icon={LayoutGrid} label={model ? `模型：${model}` : "选择模型"} badge={model === "Seedance 2" ? "新" : undefined} active={!!model} onClear={model ? () => setModel(null) : undefined} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-[580px] p-0 border-[var(--color-border)] bg-[var(--color-popover)]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100]">
+              <PopoverContent align="start" className="w-[580px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100]">
                 <ModelPicker value={model} onSelect={setModel} />
               </PopoverContent>
             </Popover>
@@ -358,7 +358,7 @@ export function PromptBox({
                   <Chip icon={Package} label={skill ? `Skill：${skill}` : "Skill"} active={!!skill} onClear={skill ? () => setSkill(null) : undefined} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-[480px] p-0 border-[var(--color-border)] bg-[var(--color-popover)]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100]">
+              <PopoverContent align="start" className="w-[480px] p-0 border-white/10 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100]">
                 <SkillPicker onSelect={(title) => { setSkill(title); textareaRef.current?.focus(); }} />
               </PopoverContent>
             </Popover>
@@ -375,12 +375,12 @@ export function PromptBox({
                   <ChevronDown className="h-3 w-3 text-muted-foreground" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-32 p-1 border-[var(--color-border)] bg-[var(--color-popover)]/95 backdrop-blur-xl rounded-2xl shadow-2xl z-[100]">
+              <PopoverContent align="start" className="w-32 p-1 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl z-[100]">
                 {["480p", "720p"].map((res) => (
                   <button 
                     key={res}
                     onClick={() => setResolution(res)}
-                    className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-lg transition-colors ${resolution === res ? 'bg-foreground/10 text-foreground' : 'text-foreground/60 hover:text-foreground hover:bg-foreground/5'}`}
+                    className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-lg transition-colors ${resolution === res ? 'bg-white/10 text-white' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
                   >
                     <span>{res}</span>
                     <span className="flex h-3.5 items-center rounded bg-aurora-purple/20 px-1 text-[7px] font-bold uppercase text-aurora-purple">尊享</span>
@@ -399,7 +399,7 @@ export function PromptBox({
                   <ChevronDown className="h-3 w-3 text-muted-foreground" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-24 p-1.5 border-[var(--color-border)] bg-[var(--color-popover)]/95 backdrop-blur-xl rounded-2xl shadow-2xl z-[100]">
+              <PopoverContent align="start" className="w-24 p-1.5 border-white/10 bg-[#1A1A1A]/95 backdrop-blur-xl rounded-xl shadow-2xl z-[100]">
                 <div className="flex flex-col gap-0.5">
                   {[
                     { label: "21:9", icon: <div className="w-4 h-2 border border-current rounded-[1px]" /> },
@@ -413,7 +413,7 @@ export function PromptBox({
                       key={item.label}
                       onClick={() => setRatio(item.label)}
                       className={`flex w-full items-center gap-2 px-2 py-1.5 rounded-md text-xs transition-colors ${
-                        ratio === item.label ? "bg-foreground/10 text-foreground" : "text-foreground/60 hover:text-foreground hover:bg-foreground/5"
+                        ratio === item.label ? "bg-white/10 text-white" : "text-white/60 hover:text-white hover:bg-white/5"
                       }`}
                     >
                       <span className="w-4 flex justify-center">{item.icon}</span>
