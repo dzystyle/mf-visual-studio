@@ -819,7 +819,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10 text-green-500">
                                     <CheckCircle2 className="h-5 w-5" />
                                   </div>
-                                  <span className="text-[15px] font-medium text-white/90">Skill 已完成</span>
+                                  <span className="text-[15px] font-medium text-[var(--color-foreground)]/90">Skill 已完成</span>
                                 </div>
                                 <ChevronRight className="h-4 w-4 text-white/20" />
                               </div>
