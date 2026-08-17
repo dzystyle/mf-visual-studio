@@ -494,8 +494,8 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md transition-all duration-300" />
-        <DialogPrimitive.Content className="fixed inset-[30px] z-50 flex overflow-hidden rounded-[2rem] border border-white/10 bg-[#0a0a0c] text-foreground shadow-2xl focus:outline-none">
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-all duration-300" />
+        <DialogPrimitive.Content className="fixed inset-[30px] z-50 flex overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-background)] text-[var(--color-foreground)] shadow-2xl focus:outline-none">
           {/* Global Action Bar (Floating Right) */}
           <div className="absolute top-4 right-6 z-[60] flex items-center gap-3">
             <button 
@@ -511,7 +511,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
             </button>
             <button 
               onClick={() => onOpenChange(false)}
-              className="rounded-full bg-white/5 p-2.5 text-white/40 transition hover:bg-white/10 hover:text-white border border-white/5 backdrop-blur-md"
+              className="rounded-full bg-[var(--color-secondary)] p-2.5 text-[var(--color-muted-foreground)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)] border border-[var(--color-border)] backdrop-blur-md"
             >
               <X className="h-5 w-5" />
             </button>
@@ -521,9 +521,9 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
           <div className="flex w-full overflow-hidden">
             
             {/* Left Scrollable Settings */}
-            <div className="flex flex-1 flex-col overflow-y-auto scrollbar-hide border-r border-white/5">
+            <div className="flex flex-1 flex-col overflow-y-auto scrollbar-hide border-r border-[var(--color-border)]">
               {/* Header */}
-              <div className="flex h-16 items-center border-b border-white/5 px-6 shrink-0 bg-[#0f0f12]/80 backdrop-blur-md sticky top-0 z-10">
+              <div className="flex h-16 items-center border-b border-[var(--color-border)] px-6 shrink-0 bg-[var(--color-background)]/80 backdrop-blur-md sticky top-0 z-10">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <LayoutGrid className="h-4 w-4" />
                   <span>我的Skill</span>
@@ -539,12 +539,12 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                 {/* Diff Controls & View Switcher */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-1 rounded-lg bg-white/5 p-1">
+                    <div className="flex items-center gap-1 rounded-lg bg-[var(--color-secondary)] p-1">
                       <button 
                         onClick={() => setViewMode("preview")}
                         className={cn(
                           "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition",
-                          viewMode === "preview" ? "bg-white/10 text-foreground" : "text-muted-foreground hover:text-foreground"
+                          viewMode === "preview" ? "bg-[var(--color-background)] text-[var(--color-foreground)] shadow-sm" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
                         )}
                       >
                         <Eye className="h-3.5 w-3.5" />
@@ -554,7 +554,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                         onClick={() => setViewMode("markdown")}
                         className={cn(
                           "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition",
-                          viewMode === "markdown" ? "bg-white/10 text-foreground" : "text-muted-foreground hover:text-foreground"
+                          viewMode === "markdown" ? "bg-[var(--color-background)] text-[var(--color-foreground)] shadow-sm" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
                         )}
                       >
                         <Code2 className="h-3.5 w-3.5" />
@@ -572,19 +572,19 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                           <div className="h-2 w-4 rounded-sm bg-green-950/40 border border-green-900/20" />
                           <span className="text-xs text-green-500/80">修改后</span>
                         </div>
-                        <div className="flex items-center gap-2 px-2 border-l border-white/10">
-                          <button className="p-1 text-white/20 hover:text-white/60 transition"><Undo2 className="h-4 w-4" /></button>
-                          <button className="p-1 text-white/20 hover:text-white/60 transition"><Redo2 className="h-4 w-4" /></button>
+                        <div className="flex items-center gap-2 px-2 border-l border-[var(--color-border)]">
+                          <button className="p-1 text-[var(--color-muted-foreground)]/40 hover:text-[var(--color-foreground)] transition"><Undo2 className="h-4 w-4" /></button>
+                          <button className="p-1 text-[var(--color-muted-foreground)]/40 hover:text-[var(--color-foreground)] transition"><Redo2 className="h-4 w-4" /></button>
                         </div>
                         <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-1 rounded-lg bg-white/5 px-3 py-1.5 text-xs text-white/60 cursor-pointer hover:bg-white/10 transition group">
+                          <div className="flex items-center gap-1 rounded-lg bg-[var(--color-secondary)] px-3 py-1.5 text-xs text-[var(--color-muted-foreground)] cursor-pointer hover:bg-[var(--color-accent)] transition group">
                             <ChevronDown onClick={handlePrevSuggestion} className="h-3 w-3 rotate-180 opacity-40 hover:opacity-100 transition" />
                             <span>第 {currentSuggestionIndex} / 5 处</span>
                             <ChevronDown onClick={handleNextSuggestion} className="h-3 w-3 opacity-40 hover:opacity-100 transition" />
                           </div>
                           <button 
                             onClick={handleRejectAll}
-                            className="px-3 py-1.5 rounded-lg bg-white/5 text-xs hover:bg-white/10 transition"
+                            className="px-3 py-1.5 rounded-lg bg-[var(--color-secondary)] text-xs hover:bg-[var(--color-accent)] transition"
                           >
                             全部撤销
                           </button>
@@ -603,31 +603,31 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                 {/* Form Sections / Markdown View */}
                 {viewMode === "markdown" ? (
                   <div className="flex-1 p-8">
-                    <div className="rounded-2xl border border-white/5 bg-[#141417] p-8 min-h-[800px] shadow-2xl relative overflow-hidden group">
+                    <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-secondary)]/50 p-8 min-h-[800px] shadow-2xl relative overflow-hidden group">
                       {/* Gradient overlay to simulate terminal/code-editor feel */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-foreground)]/[0.02] to-transparent pointer-events-none" />
                       
                       {markdownContent ? (
-                        <div className="relative font-mono text-[13.5px] leading-[1.8] text-white/80 whitespace-pre-wrap selection:bg-[#E1B166]/20">
+                        <div className="relative font-mono text-[13.5px] leading-[1.8] text-[var(--color-foreground)]/80 whitespace-pre-wrap selection:bg-[#E1B166]/20">
                           {markdownContent}
                         </div>
                       ) : (
                         <div className="relative h-full flex flex-col items-center justify-center text-center space-y-4 pt-40">
-                          <div className="h-16 w-16 rounded-full bg-white/[0.02] border border-white/5 flex items-center justify-center">
-                            <Code2 className="h-8 w-8 text-white/10" />
+                          <div className="h-16 w-16 rounded-full bg-[var(--color-foreground)]/[0.02] border border-[var(--color-border)] flex items-center justify-center">
+                            <Code2 className="h-8 w-8 text-[var(--color-muted-foreground)]/20" />
                           </div>
                           <div className="space-y-1">
-                            <p className="text-sm font-medium text-white/40">暂无 Markdown 数据</p>
-                            <p className="text-xs text-white/20 max-w-[280px]">预览模式下有数据后，系统会自动将数据整理为 Markdown 配置</p>
+                            <p className="text-sm font-medium text-[var(--color-muted-foreground)]/40">暂无 Markdown 数据</p>
+                            <p className="text-xs text-[var(--color-muted-foreground)]/20 max-w-[280px]">预览模式下有数据后，系统会自动将数据整理为 Markdown 配置</p>
                           </div>
                         </div>
                       )}
 
                       {/* Floating Indicator */}
                       {markdownContent && (
-                        <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-secondary)] border border-[var(--color-border)] opacity-0 group-hover:opacity-100 transition-opacity">
                           <div className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-                          <span className="text-[10px] font-medium text-white/40 uppercase tracking-widest">Read Only</span>
+                          <span className="text-[10px] font-medium text-[var(--color-muted-foreground)]/40 uppercase tracking-widest">Read Only</span>
                         </div>
                       )}
                     </div>
@@ -696,7 +696,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                   <label className="text-xs font-medium text-muted-foreground">Skill 名称</label>
                                   <input 
                                     placeholder="为你的Skill命名"
-                                    className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
+                                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-3 text-sm focus:border-[var(--color-foreground)]/10 focus:outline-none focus:ring-1 focus:ring-[var(--color-foreground)]/10 transition placeholder:text-[var(--color-muted-foreground)]/30"
                                   />
                                 </div>
                                 <div className="space-y-2 relative">
@@ -752,39 +752,39 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                       <div className={cn(
                         "max-w-[90%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
                         msg.role === 'user' 
-                          ? "bg-white/10 text-foreground border border-white/5" 
-                          : "text-foreground w-full"
+                          ? "bg-[var(--color-secondary)] text-[var(--color-foreground)] border border-[var(--color-border)] shadow-sm" 
+                          : "text-[var(--color-foreground)] w-full"
                       )}>
                         {msg.content === 'GAME_SKILL_FLOW' ? (
                           <div className="space-y-6">
-                            <p className="text-[14px] leading-relaxed text-white/90">
+                            <p className="text-[14px] leading-relaxed text-[var(--color-foreground)]/90">
                               游戏宣发视频是个很棒的方向！我先帮你搭起一个基础框架，你可以在此基础上继续细化。
                             </p>
                             
-                            <p className="text-[14px] leading-relaxed text-white/90">
-                              已为你搭起一套完整的<strong className="text-white font-medium">游戏宣发视频</strong> Skill 框架，覆盖了从策划到剪辑的全流程。以下是各部分的核心设计思路：
+                            <p className="text-[14px] leading-relaxed text-[var(--color-foreground)]/90">
+                              已为你搭起一套完整的<strong className="text-[var(--color-foreground)] font-medium">游戏宣发视频</strong> Skill 框架，覆盖了从策划到剪辑的全流程。以下是各部分的核心设计思路：
                             </p>
                             
                             <ul className="space-y-4 text-[14px]">
                               <li className="flex gap-4">
-                                <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                                <span className="text-foreground/70"><strong className="text-white font-medium">规划阶段：</strong>先锁定宣发目标 and 规格，再逐步推进，每个关键节点暂停确认</span>
+                                <span className="text-[var(--color-muted-foreground)] mt-2 h-1.5 w-1.5 rounded-full bg-[var(--color-foreground)]/20 shrink-0" />
+                                <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">规划阶段：</strong>先锁定宣发目标 and 规格，再逐步推进，每个关键节点暂停确认</span>
                               </li>
                               <li className="flex gap-4">
-                                <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                                <span className="text-foreground/70"><strong className="text-white font-medium">素材分析：</strong>支持导入原画、截图、品牌规范文档，自动提炼视觉风格作为后续生成的约束</span>
+                                <span className="text-[var(--color-muted-foreground)] mt-2 h-1.5 w-1.5 rounded-full bg-[var(--color-foreground)]/20 shrink-0" />
+                                <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">素材分析：</strong>支持导入原画、截图、品牌规范文档，自动提炼视觉风格作为后续生成的约束</span>
                               </li>
                               <li className="flex gap-4">
-                                <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                                <span className="text-foreground/70"><strong className="text-white font-medium">分镜设计：</strong>强调前 3 秒视觉钩子、长镜头内部节拍、史诗感摄影语言</span>
+                                <span className="text-[var(--color-muted-foreground)] mt-2 h-1.5 w-1.5 rounded-full bg-[var(--color-foreground)]/20 shrink-0" />
+                                <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">分镜设计：</strong>强调前 3 秒视觉钩子、长镜头内部节拍、史诗感摄影语言</span>
                               </li>
                               <li className="flex gap-4">
-                                <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                                <span className="text-foreground/70"><strong className="text-white font-medium">生成策略：</strong>以 Seedance 2.0 为主力视频模型，角色一致性靠元素参考图保障</span>
+                                <span className="text-[var(--color-muted-foreground)] mt-2 h-1.5 w-1.5 rounded-full bg-[var(--color-foreground)]/20 shrink-0" />
+                                <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">生成策略：</strong>以 Seedance 2.0 为主力视频模型，角色一致性靠元素参考图保障</span>
                               </li>
                               <li className="flex gap-4">
-                                <span className="text-muted-foreground mt-2 h-1.5 w-1.5 rounded-full bg-white/20 shrink-0" />
-                                <span className="text-foreground/70"><strong className="text-white font-medium">剪辑组装：</strong>动作段硬切、场景切换闪白/黑场，BGM 高潮对齐视觉高潮</span>
+                                <span className="text-[var(--color-muted-foreground)] mt-2 h-1.5 w-1.5 rounded-full bg-[var(--color-foreground)]/20 shrink-0" />
+                                <span className="text-[var(--color-foreground)]/70"><strong className="text-[var(--color-foreground)] font-medium">剪辑组装：</strong>动作段硬切、场景切换闪白/黑场，BGM 高潮对齐视觉高潮</span>
                               </li>
                             </ul>
 
@@ -798,41 +798,41 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
                             {/* Page Controls */}
                             <div className="flex items-center justify-center gap-4 py-4">
-                              <button className="h-9 w-9 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white/60 transition">
+                              <button className="h-9 w-9 rounded-full bg-[var(--color-secondary)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-muted-foreground)]/40 hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)] transition shadow-sm">
                                 <ArrowUp className="h-5 w-5 rotate-180" />
                               </button>
-                              <button className="h-9 w-9 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white/60 transition">
+                              <button className="h-9 w-9 rounded-full bg-[var(--color-secondary)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-muted-foreground)]/40 hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)] transition shadow-sm">
                                 <ArrowUp className="h-5 w-5" />
                               </button>
                             </div>
                           </div>
                         ) : msg.content === 'RPG_SKILL_FLOW' ? (
                           <div className="space-y-6">
-                            <div className="flex items-center gap-2 text-white/40 text-xs">
+                            <div className="flex items-center gap-2 text-[var(--color-muted-foreground)]/40 text-xs">
                               <Code2 className="h-3 w-3" />
                               <span>信息搜索完成</span>
                             </div>
 
                             <div className="relative group">
-                              <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/5 cursor-pointer hover:bg-white/[0.06] transition-all">
+                              <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--color-secondary)] border border-[var(--color-border)] cursor-pointer hover:bg-[var(--color-accent)] transition-all shadow-sm">
                                 <div className="flex items-center gap-3">
                                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10 text-green-500">
                                     <CheckCircle2 className="h-5 w-5" />
                                   </div>
-                                  <span className="text-[15px] font-medium text-white/90">Skill 已完成</span>
+                                  <span className="text-[15px] font-medium text-[var(--color-foreground)]/90">Skill 已完成</span>
                                 </div>
-                                <ChevronRight className="h-4 w-4 text-white/20" />
+                                <ChevronRight className="h-4 w-4 text-[var(--color-muted-foreground)]/20" />
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-2 text-white/40 text-xs">
+                            <div className="flex items-center gap-2 text-[var(--color-muted-foreground)]/40 text-xs">
                               <Code2 className="h-3 w-3" />
                               <span>信息搜索完成</span>
                             </div>
 
                             <div className="space-y-4">
-                              <p className="text-[14px] leading-relaxed text-white/90">
-                                已将 Skill 定位为 <strong className="text-white font-semibold">RPG 游戏宣发视频</strong>，补充了可执行的 RPG 特化规则：
+                              <p className="text-[14px] leading-relaxed text-[var(--color-foreground)]/90">
+                                已将 Skill 定位为 <strong className="text-[var(--color-foreground)] font-semibold">RPG 游戏宣发视频</strong>，补充了可执行的 RPG 特化规则：
                               </p>
                               
                               <ul className="space-y-3 pl-2">
@@ -842,14 +842,14 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                   "配乐优先服务于奇幻世界观、队伍集结与 Boss 登场等高潮节点。",
                                   "图像提示词强化职业辨识度、武器/法器、阵营纹章和技能特效。"
                                 ].map((item, idx) => (
-                                  <li key={idx} className="flex gap-3 text-[14px] leading-relaxed text-white/70">
-                                    <span className="mt-2 h-1 w-1 rounded-full bg-white/30 shrink-0" />
+                                  <li key={idx} className="flex gap-3 text-[14px] leading-relaxed text-[var(--color-foreground)]/70">
+                                    <span className="mt-2 h-1 w-1 rounded-full bg-[var(--color-foreground)]/30 shrink-0" />
                                     <span>{item}</span>
                                   </li>
                                 ))}
                               </ul>
 
-                              <p className="text-[14px] leading-relaxed text-white/70 pt-2">
+                              <p className="text-[14px] leading-relaxed text-[var(--color-foreground)]/70 pt-2">
                                 目前按“奇幻 RPG”方向处理。若你的游戏更偏二次元、暗黑、科幻或回合制，也可以继续细化对应的美术与镜头规则。
                               </p>
                             </div>
@@ -863,7 +863,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                 {/* Scroll Down Hint */}
                 {messages.length > 0 && (
                   <div className="flex justify-center pt-4">
-                    <div className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center text-muted-foreground">
+                    <div className="h-8 w-8 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-muted-foreground)] shadow-sm">
                       <ArrowUp className="h-4 w-4 rotate-180" />
                     </div>
                   </div>
@@ -897,15 +897,15 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                       </button>
                     </div>
                     <div className="flex items-center gap-2">
-                      <button className="flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition">
+                      <button className="flex h-8 w-8 items-center justify-center text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition">
                         <Mic className="h-4 w-4" />
                       </button>
                       <button 
                         onClick={handleSend}
                         disabled={!inputValue.trim()}
                         className={cn(
-                          "flex h-8 w-8 items-center justify-center rounded-full transition",
-                          inputValue.trim() ? "bg-[var(--color-foreground)] text-[var(--color-background)] hover:bg-[var(--color-foreground)]/90" : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)] cursor-not-allowed"
+                          "flex h-8 w-8 items-center justify-center rounded-full transition shadow-sm",
+                          inputValue.trim() ? "bg-[var(--color-foreground)] text-[var(--color-background)] hover:opacity-90 active:scale-95" : "bg-[var(--color-muted)] text-[var(--color-muted-foreground)]/30 cursor-not-allowed"
                         )}
                       >
                         <ArrowUp className="h-4 w-4" />
