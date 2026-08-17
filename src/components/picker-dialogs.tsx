@@ -549,28 +549,85 @@ export function ElementsPicker({
         </div>
 
         {/* Date Filter */}
-        <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-          时间范围 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-        </button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+              时间范围 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-48 bg-[#1A1A1A] border-white/10 p-1 text-white">
+            <div className="space-y-1">
+              {['全部时间', '今天', '最近7天', '最近30天', '自定义范围'].map((item) => (
+                <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
 
         {/* Sort Order */}
-        <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-          倒序 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-        </button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+              倒序 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-32 bg-[#1A1A1A] border-white/10 p-1 text-white">
+            <div className="space-y-1">
+              {['正序', '倒序'].map((item) => (
+                <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
 
         <div className="flex-1" />
 
         {/* Right Side Filters */}
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-            全部项目 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-          </button>
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-            全部人员 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-          </button>
-          <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-            全部画布 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-          </button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+                全部项目 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+              <div className="space-y-1">
+                {['全部项目', '一拳超人宣发', '游戏预告', '节日活动'].map((item) => (
+                  <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+                全部人员 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+              <div className="space-y-1">
+                {['全部人员', '我自己', '设计师-阿强', '项目经理-老李'].map((item) => (
+                  <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
+                全部画布 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+              <div className="space-y-1">
+                {['全部画布', '主画布-01', '备选画布-02', '草稿-03'].map((item) => (
+                  <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
           
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/40" />
