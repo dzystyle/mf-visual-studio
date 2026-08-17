@@ -897,15 +897,15 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                       </button>
                     </div>
                     <div className="flex items-center gap-2">
-                      <button className="flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition">
+                      <button className="flex h-8 w-8 items-center justify-center text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition">
                         <Mic className="h-4 w-4" />
                       </button>
                       <button 
                         onClick={handleSend}
                         disabled={!inputValue.trim()}
                         className={cn(
-                          "flex h-8 w-8 items-center justify-center rounded-full transition",
-                          inputValue.trim() ? "bg-[var(--color-foreground)] text-[var(--color-background)] hover:bg-[var(--color-foreground)]/90" : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)] cursor-not-allowed"
+                          "flex h-8 w-8 items-center justify-center rounded-full transition shadow-sm",
+                          inputValue.trim() ? "bg-[var(--color-foreground)] text-[var(--color-background)] hover:opacity-90 active:scale-95" : "bg-[var(--color-muted)] text-[var(--color-muted-foreground)]/30 cursor-not-allowed"
                         )}
                       >
                         <ArrowUp className="h-4 w-4" />
