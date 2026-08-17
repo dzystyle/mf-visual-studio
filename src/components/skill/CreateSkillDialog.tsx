@@ -700,19 +700,19 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                                   />
                                 </div>
                                 <div className="space-y-2 relative">
-                                  <label className="text-xs font-medium text-muted-foreground">Skill调用规则</label>
+                                  <label className="text-xs font-medium text-[var(--color-muted-foreground)]">Skill调用规则</label>
                                   <textarea 
                                     placeholder="告诉 Agent 这个 Skill 应该在什么情况下被调用"
-                                    className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-3 text-sm min-h-[100px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition"
+                                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-3 text-sm min-h-[100px] resize-none focus:border-[var(--color-foreground)]/10 focus:outline-none focus:ring-1 focus:ring-[var(--color-foreground)]/10 transition"
                                   />
-                                  <span className="absolute bottom-3 right-3 text-[10px] text-muted-foreground/40">0/200</span>
+                                  <span className="absolute bottom-3 right-3 text-[10px] text-[var(--color-muted-foreground)]/40">0/200</span>
                                 </div>
                               </div>
                             ) : (
                               <div className="relative group">
                                 <textarea 
                                   placeholder={`输入${item.label}内容...`}
-                                  className="w-full rounded-xl border border-white/5 bg-white/5 px-4 py-5 text-sm min-h-[200px] resize-none focus:border-white/10 focus:outline-none focus:ring-1 focus:ring-white/10 transition placeholder:text-muted-foreground/30"
+                                  className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-secondary)] px-4 py-5 text-sm min-h-[200px] resize-none focus:border-[var(--color-foreground)]/10 focus:outline-none focus:ring-1 focus:ring-[var(--color-foreground)]/10 transition placeholder:text-[var(--color-muted-foreground)]/30"
                                 />
                                 <button className="absolute bottom-4 right-4 text-muted-foreground/30 hover:text-muted-foreground transition opacity-0 group-hover:opacity-100">
                                   <LayoutGrid className="h-4 w-4" />
@@ -729,11 +729,11 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
             </div>
 
             {/* Right Assistant Panel */}
-            <div className="w-[450px] flex flex-col bg-[#161618] border-l border-white/5">
+            <div className="w-[450px] flex flex-col bg-[var(--color-card)] border-l border-[var(--color-border)]">
               {/* Header */}
-              <div className="flex h-16 items-center px-6 shrink-0 border-b border-white/5">
+              <div className="flex h-16 items-center px-6 shrink-0 border-b border-[var(--color-border)]">
                 <div className="flex items-center gap-2">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-white/5 text-muted-foreground">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[var(--color-secondary)] text-[var(--color-muted-foreground)]">
                     <Code2 className="h-3.5 w-3.5" />
                   </div>
                   <span className="text-sm font-medium">Skill优化助手</span>
@@ -872,7 +872,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
               {/* Input Area */}
               <div className="p-6">
-                <div className="relative rounded-2xl border border-white/5 bg-white/5 p-4 focus-within:border-white/10 transition">
+                <div className="relative rounded-2xl border border-[var(--color-border)] bg-[var(--color-secondary)] p-4 focus-within:border-[var(--color-foreground)]/10 transition">>
                   <textarea 
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
@@ -887,10 +887,10 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                   />
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center gap-2">
-                      <button className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-muted-foreground hover:bg-white/5 transition">
+                      <button className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] transition">>
                         <Plus className="h-4 w-4" />
                       </button>
-                      <button className="flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1 text-[11px] text-muted-foreground hover:bg-white/5 transition">
+                      <button className="flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 text-[11px] text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] transition">>
                         <LayoutGrid className="h-3 w-3" />
                         模型
                         <span className="rounded bg-emerald-500 px-1 text-[8px] text-white font-bold leading-tight uppercase">New</span>
