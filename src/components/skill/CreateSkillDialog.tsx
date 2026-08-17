@@ -539,12 +539,12 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                 {/* Diff Controls & View Switcher */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-1 rounded-lg bg-white/5 p-1">
+                    <div className="flex items-center gap-1 rounded-lg bg-[var(--color-secondary)] p-1">
                       <button 
                         onClick={() => setViewMode("preview")}
                         className={cn(
                           "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition",
-                          viewMode === "preview" ? "bg-white/10 text-foreground" : "text-muted-foreground hover:text-foreground"
+                          viewMode === "preview" ? "bg-[var(--color-background)] text-[var(--color-foreground)] shadow-sm" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
                         )}
                       >
                         <Eye className="h-3.5 w-3.5" />
@@ -554,7 +554,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
                         onClick={() => setViewMode("markdown")}
                         className={cn(
                           "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition",
-                          viewMode === "markdown" ? "bg-white/10 text-foreground" : "text-muted-foreground hover:text-foreground"
+                          viewMode === "markdown" ? "bg-[var(--color-background)] text-[var(--color-foreground)] shadow-sm" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
                         )}
                       >
                         <Code2 className="h-3.5 w-3.5" />
