@@ -511,7 +511,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
             </button>
             <button 
               onClick={() => onOpenChange(false)}
-              className="rounded-full bg-white/5 p-2.5 text-white/40 transition hover:bg-white/10 hover:text-white border border-white/5 backdrop-blur-md"
+              className="rounded-full bg-[var(--color-secondary)] p-2.5 text-[var(--color-muted-foreground)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)] border border-[var(--color-border)] backdrop-blur-md"
             >
               <X className="h-5 w-5" />
             </button>
