@@ -279,9 +279,10 @@ function CreativeAssistantPage() {
   return (
     <div className="flex h-screen flex-col bg-[var(--color-background)] text-[var(--color-foreground)] overflow-hidden font-sans">
       <div className="absolute top-0 left-0 right-0 z-50 p-6 flex items-center justify-between pointer-events-none">
-        <div className="pointer-events-auto flex items-center gap-4">
+        <div className="pointer-events-auto">
           <BrandMark />
-          <div className="h-6 w-px bg-[var(--color-border)] opacity-50" />
+        </div>
+        <div className="pointer-events-auto flex items-center gap-4">
           <button 
             onClick={() => {
               navigator.clipboard.writeText(window.location.href);
@@ -293,8 +294,7 @@ function CreativeAssistantPage() {
             <Share2 className="h-3.5 w-3.5 text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)] transition-colors" />
             <span className="text-[12px] font-bold">分享会话流</span>
           </button>
-        </div>
-        <div className="pointer-events-auto">
+          <div className="h-6 w-px bg-[var(--color-border)] opacity-50" />
           <TopBar />
         </div>
       </div>
