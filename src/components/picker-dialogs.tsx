@@ -659,11 +659,17 @@ export function ElementsPickerDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1000px] border-white/10 bg-[#0A0A0A] p-0 text-white overflow-hidden rounded-[24px] shadow-2xl">
-        <ElementsPicker onSelect={(name, kind, url) => { 
-          onSelect?.(name, kind, url); 
-          onOpenChange(false); 
-        }} />
+      <DialogContent className="max-w-[1000px] border-white/10 bg-[#0A0A0A] p-0 text-white overflow-hidden rounded-[24px] shadow-2xl [&>button]:hidden">
+        <div ref={(el) => {
+          if (el) {
+            (window as any).closeElementsPicker = () => onOpenChange(false);
+          }
+        }}>
+          <ElementsPicker onSelect={(name, kind, url) => { 
+            onSelect?.(name, kind, url); 
+            onOpenChange(false); 
+          }} />
+        </div>
       </DialogContent>
     </Dialog>
   );
