@@ -1085,9 +1085,12 @@ function ResourceCard({ title, type, date, onClick }: { title: string; type: str
   );
 }
 
-function ImageResourceCard({ title, type, date, img }: { title: string; type: string; date: string; img: string }) {
+function ImageResourceCard({ title, type, date, img, onClick }: { title: string; type: string; date: string; img: string; onClick?: () => void }) {
   return (
-    <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[var(--color-muted-foreground)] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer">
+    <div 
+      onClick={onClick}
+      className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[var(--color-muted-foreground)] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer"
+    >
       <div className="h-28 w-full rounded-2xl overflow-hidden relative border border-[var(--color-border)]">
         <img src={img} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
         <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-[var(--color-card)]/90 backdrop-blur-md text-[10px] font-bold text-[var(--color-foreground)] uppercase tracking-wider shadow-sm">{type}</div>
@@ -1097,6 +1100,80 @@ function ImageResourceCard({ title, type, date, img }: { title: string; type: st
         <div className="text-[12px] text-[var(--color-muted-foreground)] flex items-center gap-2 font-medium">
           <span>{date}</span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function StoryboardContent() {
+  return (
+    <div className="space-y-6">
+      <h1 className="text-xl font-bold text-[var(--color-foreground)] px-2">《一拳超人：最强之男》游戏宣发 - 故事脚本</h1>
+      
+      <div className="space-y-6">
+        {[
+          {
+            num: 1,
+            time: "2.5s",
+            desc: "纯黑背景中，埼玉特写登场，光头冷峻面容，身穿棕黄色紧身战衣，灰白色披风微微飘动，右拳前伸，红色拳套表面泛起微光蓄力。",
+            view: "近景特写",
+            atmos: "黑底单点聚光，高对比度，赛璐璐质感",
+            audio: "逐渐升压蓄力声",
+            camera: "推至拳套"
+          },
+          {
+            num: 2,
+            time: "0.7s",
+            desc: "红色拳套爆发冲击波，白光撕裂画面，碎片飞溅。",
+            view: "全景",
+            atmos: "爆裂白光闪屏",
+            audio: "巨响轰鸣",
+            camera: "快速拉镜"
+          },
+          {
+            num: 3,
+            time: "3s",
+            desc: "杰诺斯登场，火焰喷射，快剪多个英雄技能特效。",
+            view: "中/全景",
+            atmos: "高饱和燃战色调",
+            audio: "英雄集结旁白+音效",
+            camera: "快速剪辑"
+          },
+          {
+            num: 4,
+            time: "3.8s",
+            desc: "埼玉一拳粉碎怪人，定格侧脸。浮现品牌口号。",
+            view: "近景→中景",
+            atmos: "金色品牌光芒",
+            audio: "一拳K.O.旁白+重击",
+            camera: "慢动作→定格"
+          },
+          {
+            num: 5,
+            time: "5s",
+            desc: "品牌定帧：Logo居中，背景埼玉背影，下载提示。",
+            view: "全景",
+            atmos: "金属质感反光",
+            audio: "品牌收尾音效",
+            camera: "固定机位"
+          }
+        ].map((row) => (
+          <div key={row.num} className="p-4 rounded-2xl bg-[var(--color-secondary)]/50 border border-[var(--color-border)] space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="h-6 w-6 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-xs font-bold">{row.num}</span>
+              <span className="text-xs font-bold text-[var(--color-muted-foreground)]">{row.time}</span>
+            </div>
+            <div className="text-[13px] text-[var(--color-foreground)] leading-relaxed">
+              <span className="font-bold mr-2">画面:</span> {row.desc}
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-[11px]">
+              <div className="text-[var(--color-muted-foreground)]"><span className="font-bold">景别:</span> {row.view}</div>
+              <div className="text-[var(--color-muted-foreground)]"><span className="font-bold">氛围:</span> {row.atmos}</div>
+              <div className="text-[var(--color-muted-foreground)]"><span className="font-bold">音频:</span> {row.audio}</div>
+              <div className="text-[var(--color-muted-foreground)]"><span className="font-bold">运镜:</span> {row.camera}</div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
