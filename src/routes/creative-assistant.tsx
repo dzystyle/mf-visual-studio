@@ -74,6 +74,7 @@ function CreativeAssistantPage() {
   const [inputValue, setInputValue] = useState(initialPrompt || "");
   const [activeResource, setActiveResource] = useState<{ type: 'script' | 'image' | 'video'; data?: any } | null>(null);
   const [isTyping, setIsTyping] = useState(false);
+  const [showShareToast, setShowShareToast] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const triggeredStepsRef = useRef<Set<number>>(new Set());
   
