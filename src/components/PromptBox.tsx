@@ -376,7 +376,7 @@ export function PromptBox({
                           }
                         }
                       }}
-                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            首页输入框还是一样输入的内容自动跑到了图片的前面修复一下。" : ""}
+                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            修复首页输入框在图片@插入后输入内容仍会跑到图片前面的光标定位与渲染时序问题。" : ""}
                       className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
                         isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
                       }`}
