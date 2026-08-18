@@ -567,7 +567,7 @@ export function PromptBox({
                           </div>
 
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
-                            <span className="text-white/60">图片:</span>
+                            <span className="text-white/60">图片{prefs.isAutoMode && "(自动模式)"}:</span>
                             <span>
                               {prefs.imageModel} · {prefs.imageRatio}比例 · 4K
                               {prefs.imgFormat !== 'jpeg' && ` · ${prefs.imgFormat.toUpperCase()}`}
