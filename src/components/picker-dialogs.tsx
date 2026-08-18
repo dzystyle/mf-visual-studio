@@ -1292,7 +1292,7 @@ export function CreativePreferencePicker() {
                         key={num}
                         onClick={() => setVideoCount(num)}
                         className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${
-                          videoCount === num ? 'bg-black text-white shadow-sm' : 'text-[#666] hover:text-black'
+                          videoCount === num ? 'bg-black dark:bg-white/10 text-white shadow-sm' : 'text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white'
                         }`}
                       >
                         {num}
