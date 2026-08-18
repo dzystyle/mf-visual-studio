@@ -373,7 +373,7 @@ export function PromptBox({
                           }
                         }
                       }}
-                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            输入框现在@后选择图片不会在输入框显示了修复一下" : ""}
+                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            输入框的小图标现在书需要鼠标点击一下才显示预览需要改成鼠标移动输入框的小图标就显示预览." : ""}
                       className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
                         isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
                       }`}
