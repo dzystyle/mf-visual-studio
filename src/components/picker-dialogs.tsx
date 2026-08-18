@@ -1260,7 +1260,7 @@ export function CreativePreferencePicker() {
                       }}
                     />
                   </div>
-                  <div className="flex justify-between mt-3 text-[10px] font-bold text-[#BBB] px-0.5">
+                  <div className="flex justify-between mt-3 text-[10px] font-bold text-[#BBB] dark:text-white/20 px-0.5">
                     <span>4秒</span>
                     <span>180秒</span>
                   </div>
