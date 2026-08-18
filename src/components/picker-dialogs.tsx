@@ -1398,7 +1398,7 @@ export function CreativePreferencePicker() {
                             type="text" 
                             value={groupCount}
                             readOnly
-                            className="w-5 bg-transparent text-[11px] font-bold text-center outline-none py-1"
+                            className="w-5 bg-transparent text-[11px] font-bold text-center outline-none py-1 dark:text-white"
                           />
                           <div className="flex flex-col border-l border-[#F0F0F0] ml-1">
                             <button 
