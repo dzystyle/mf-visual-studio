@@ -554,7 +554,7 @@ export function PromptBox({
                 <div className="relative group/pref">
                   {!prefOpen && (
                     <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 opacity-0 group-hover/pref:opacity-100 transition-all duration-300 pointer-events-none z-[120]">
-                      <div className="bg-[#1A1A1A] text-white rounded-[20px] px-5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.24)] whitespace-nowrap border border-white/10 backdrop-blur-md">
+                      <div className="bg-[#1A1A1A] text-white rounded-[20px] px-5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.24)] whitespace-nowrap border border-white/10 backdrop-blur-md dark:bg-[#0A0A0A]/95">
                         <div className="flex flex-col gap-0.5">
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                             <span className="text-white/60">视频{prefs.isAutoMode && "(自动模式)"}:</span>

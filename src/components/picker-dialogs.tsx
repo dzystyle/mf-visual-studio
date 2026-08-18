@@ -1227,11 +1227,11 @@ export function CreativePreferencePicker() {
                     }}
                   >
                     <div 
-                      className="absolute h-1 bg-black rounded-full" 
+                      className="absolute h-1 bg-black dark:bg-white/40 rounded-full" 
                       style={{ width: `${((duration - 4) / (180 - 4)) * 100}%` }}
                     />
                     <div 
-                      className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-black rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition-transform z-10"
+                      className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white dark:bg-[#333] border-2 border-black dark:border-white/20 rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition-transform z-10"
                       style={{ 
                         left: `${((duration - 4) / (180 - 4)) * 100}%`,
                       }}
