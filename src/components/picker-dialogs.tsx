@@ -280,8 +280,8 @@ export function SkillPicker({
               onClick={() => setTab(c.key)}
               className={`whitespace-nowrap rounded-lg px-4 py-1.5 text-xs font-bold transition-all ${
                 tab === c.key
-                  ? "bg-[#F5F5F5] text-black shadow-sm"
-                  : "text-[#999] hover:text-[#666]"
+                  ? "bg-[#F5F5F5] dark:bg-white/10 text-black dark:text-white shadow-sm"
+                  : "text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60"
               }`}
             >
               {c.label}
