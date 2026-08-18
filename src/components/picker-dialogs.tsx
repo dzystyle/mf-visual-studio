@@ -998,20 +998,20 @@ export function CreativePreferencePicker() {
   const currentRatios = activeMode === "video" ? videoRatios : imageRatios;
 
   return (
-    <div className="flex flex-col rounded-[28px] bg-white dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
+    <div className="flex flex-col rounded-[28px] bg-white text-[#1A1A1A] shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50">
       {/* Tabs Header */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-[#F0F0F0] dark:border-white/5">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-[#F0F0F0]">
         <div className="flex items-center gap-6">
-          <div className="flex bg-[#F5F5F5] dark:bg-white/5 p-1 rounded-xl">
+          <div className="flex bg-[#F5F5F5] p-1 rounded-xl">
             <button 
               onClick={() => setActiveMode("video")}
-              className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'video' ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#666] dark:text-white/40'}`}
+              className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'video' ? 'bg-white shadow-sm text-black' : 'text-[#666]'}`}
             >
               视频偏好
             </button>
             <button 
               onClick={() => setActiveMode("image")}
-              className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'image' ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#666] dark:text-white/40'}`}
+              className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'image' ? 'bg-white shadow-sm text-black' : 'text-[#666]'}`}
             >
               图片偏好<span className="ml-0.5 opacity-40 font-normal">*</span>
             </button>
@@ -1022,9 +1022,9 @@ export function CreativePreferencePicker() {
               {isAutoMode ? '自动模式，算法由系统选择' : '手动模式，算法由用户选择'}
             </span>
             <div className="flex items-center gap-1.5 ml-1">
-              <span className="text-[10px] font-bold text-[#999] dark:text-white/30">自动控制</span>
+              <span className="text-[10px] font-bold text-[#999]">自动控制</span>
               <div 
-                className={`w-8 h-4.5 rounded-full relative transition-colors cursor-pointer ${isAutoMode ? 'bg-[#3B82F6]' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
+                className={`w-8 h-4.5 rounded-full relative transition-colors cursor-pointer ${isAutoMode ? 'bg-[#3B82F6]' : 'bg-[#E5E5E5]'}`}
                 onClick={() => setIsAutoMode(!isAutoMode)}
               >
                 <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full shadow-sm transition-all ${isAutoMode ? 'right-0.5' : 'left-0.5'}`} />
@@ -1038,7 +1038,7 @@ export function CreativePreferencePicker() {
           <div className="flex items-center gap-1 text-[#9333EA] font-bold">
             <Sparkles className="w-3.5 h-3.5 fill-current" />
             <span className="text-xs">{activeMode === 'video' ? '12/秒' : '12/张'}</span>
-            <span className="text-[#999] dark:text-white/20 font-normal text-[10px] ml-0.5 line-through">{activeMode === 'video' ? '14/秒' : '14/张'}</span>
+            <span className="text-[#999] font-normal text-[10px] ml-0.5 line-through">{activeMode === 'video' ? '14/秒' : '14/张'}</span>
           </div>
         </div>
       </div>
@@ -1047,7 +1047,7 @@ export function CreativePreferencePicker() {
         {/* Left Side: Model Selection - Reference image layout */}
 
         <div className="flex-1 max-w-[340px]">
-          <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30 mb-4">模型选择</h4>
+          <h4 className="text-[12px] font-bold text-[#999] mb-4">模型选择</h4>
           <div className="space-y-4 max-h-[380px] overflow-y-auto pr-2 scrollbar-hide">
             {(activeMode === "video" ? videoModels : imageModels).map((m) => {
               const isActive = activeMode === "video" ? videoModel === m.name : imageModel === m.name;
@@ -1060,14 +1060,14 @@ export function CreativePreferencePicker() {
                   <div className="flex items-start gap-3">
                     <div className="mt-1.5 w-4 h-4 flex items-center justify-center shrink-0">
                       {isActive ? (
-                        <Check className="w-4 h-4 text-black dark:text-white stroke-[3px]" />
+                        <Check className="w-4 h-4 text-black stroke-[3px]" />
                       ) : (
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/10 group-hover:bg-[#CCC] dark:group-hover:bg-white/20" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] group-hover:bg-[#CCC]" />
                       )}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className={`text-[13px] font-bold transition-colors ${isActive ? 'text-black dark:text-white' : 'text-[#333] dark:text-white/70 group-hover:text-black dark:group-hover:text-white'}`}>
+                        <span className={`text-[13px] font-bold transition-colors ${isActive ? 'text-black' : 'text-[#333] group-hover:text-black'}`}>
                           {m.name}
                         </span>
                         {(m as any).extraBadge && (
@@ -1084,7 +1084,7 @@ export function CreativePreferencePicker() {
                         )}
                       </div>
                       {m.desc && (
-                        <p className="text-[10px] leading-relaxed text-[#999] dark:text-white/30 mt-0.5 pr-2">
+                        <p className="text-[10px] leading-relaxed text-[#999] mt-0.5 pr-2">
                           {m.desc}
                         </p>
                       )}
@@ -1097,18 +1097,18 @@ export function CreativePreferencePicker() {
         </div>
 
         {/* Vertical Divider */}
-        <div className="w-px bg-[#F0F0F0] dark:bg-white/5" />
+        <div className="w-px bg-[#F0F0F0]" />
 
         {/* Right Side: Parameters */}
         <div className="flex-1 space-y-8">
           <section>
             <div className="flex items-center gap-1 mb-4">
-              <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">画面比例</h4>
-              <div className="w-3 h-3 rounded-full border border-[#CCC] dark:border-white/20 flex items-center justify-center text-[8px] text-[#999] dark:text-white/20 cursor-help">?</div>
+              <h4 className="text-[12px] font-bold text-[#999]">画面比例</h4>
+              <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
             </div>
             <div className="relative group/slider w-full max-w-[320px]">
               <button 
-                className="absolute -left-2 top-1/2 -translate-y-1/2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white dark:bg-[#1A1A1A] border border-[#F0F0F0] dark:border-white/5 text-[#999] dark:text-white/40 hover:text-black dark:hover:text-white transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
+                className="absolute -left-2 top-1/2 -translate-y-1/2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
                 onClick={() => {
                   const container = document.getElementById('ratio-container');
                   if (container) container.scrollBy({ left: -80, behavior: 'smooth' });
@@ -1127,8 +1127,8 @@ export function CreativePreferencePicker() {
                     onClick={() => setRatio(r.label)}
                     className={`flex flex-col items-center justify-center w-14 h-14 rounded-xl border shrink-0 transition-all snap-start ${
                       ratio === r.label 
-                        ? 'bg-white dark:bg-white/10 border-black dark:border-white text-black dark:text-white shadow-md shadow-black/5' 
-                        : 'bg-[#F8F8F8] dark:bg-white/5 border-transparent text-[#666] dark:text-white/40 hover:bg-[#F0F0F0] dark:hover:bg-white/10'
+                        ? 'bg-white border-black text-black shadow-md shadow-black/5' 
+                        : 'bg-[#F8F8F8] border-transparent text-[#666] hover:bg-[#F0F0F0]'
                     }`}
                   >
                     <div className="scale-90">{r.icon}</div>
@@ -1138,7 +1138,7 @@ export function CreativePreferencePicker() {
               </div>
 
               <button 
-                className="absolute -right-2 top-1/2 -translate-y-1/2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white dark:bg-[#1A1A1A] border border-[#F0F0F0] dark:border-white/5 text-[#999] dark:text-white/40 hover:text-black dark:hover:text-white transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
+                className="absolute -right-2 top-1/2 -translate-y-1/2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
                 onClick={() => {
                   const container = document.getElementById('ratio-container');
                   if (container) container.scrollBy({ left: 80, behavior: 'smooth' });
@@ -1150,14 +1150,14 @@ export function CreativePreferencePicker() {
           </section>
 
           <section className="mb-4">
-            <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30 mb-2">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
-            <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-full w-fit">
+            <h4 className="text-[12px] font-bold text-[#999] mb-2">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
+            <div className="flex gap-1.5 p-1 bg-[#F5F5F5] rounded-full w-fit">
               {(activeMode === 'video' ? ["4K", "2K", "1080P", "720P"] : ["1K", "2K", "4K"]).map((res) => (
                 <button
                   key={res}
                   onClick={() => setResolution(res)}
                   className={`px-5 py-1 rounded-full text-[10px] font-bold transition-all ${
-                    resolution === res ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60'
+                    resolution === res ? 'bg-white shadow-sm text-black' : 'text-[#999] hover:text-[#666]'
                   }`}
                 >
                   {res}
@@ -1170,20 +1170,20 @@ export function CreativePreferencePicker() {
             <div className="space-y-4">
               <section>
                 <div className="flex items-center gap-1 mb-2">
-                  <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">时长</h4>
-                  <div className="w-3 h-3 rounded-full border border-[#CCC] dark:border-white/20 flex items-center justify-center text-[8px] text-[#999] dark:text-white/20 cursor-help">?</div>
+                  <h4 className="text-[12px] font-bold text-[#999]">时长</h4>
+                  <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
                 </div>
                 <div className="flex items-center gap-3">
                   <button 
                     onClick={() => setDurationMode("smart")}
                     className={`px-5 py-2 rounded-xl text-[12px] font-bold transition-all ${
                       durationMode === "smart" 
-                        ? "bg-white dark:bg-white/10 border-black dark:border-white text-black dark:text-white shadow-md border" 
-                        : "bg-[#F5F5F5] dark:bg-white/5 text-[#666] dark:text-white/40 border-transparent border hover:bg-[#F0F0F0] dark:hover:bg-white/10"
+                        ? "bg-white border-black text-black shadow-md border" 
+                        : "bg-[#F5F5F5] text-[#666] border-transparent border hover:bg-[#F0F0F0]"
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      {durationMode === "smart" && <div className="w-1 h-1 rounded-full bg-black dark:bg-white" />}
+                      {durationMode === "smart" && <div className="w-1 h-1 rounded-full bg-black" />}
                       智能时长
                     </div>
                   </button>
@@ -1191,11 +1191,11 @@ export function CreativePreferencePicker() {
                     onClick={() => setDurationMode("custom")}
                     className={`flex items-center gap-2 rounded-xl px-5 py-2 min-w-[100px] transition-all ${
                       durationMode === "custom"
-                        ? "bg-white dark:bg-white/10 border-black dark:border-white text-black dark:text-white shadow-md border"
-                        : "bg-[#F5F5F5] dark:bg-white/5 text-[#666] dark:text-white/40 border-transparent border hover:bg-[#F0F0F0] dark:hover:bg-white/10"
+                        ? "bg-white border-black text-black shadow-md border"
+                        : "bg-[#F5F5F5] text-[#666] border-transparent border hover:bg-[#F0F0F0]"
                     }`}
                   >
-                    {durationMode === "custom" && <div className="w-1 h-1 rounded-full bg-black dark:bg-white" />}
+                    {durationMode === "custom" && <div className="w-1 h-1 rounded-full bg-black" />}
                     <span className="text-[12px] font-bold">自定义时长</span>
                     {durationMode === "custom" && (
                       <div className="flex items-center ml-1">
@@ -1206,7 +1206,7 @@ export function CreativePreferencePicker() {
                             const val = parseInt(e.target.value);
                             if (!isNaN(val)) setDuration(Math.min(Math.max(val, 4), 180));
                           }}
-                          className="bg-transparent text-[12px] font-bold text-black dark:text-white w-7 outline-none text-center"
+                          className="bg-transparent text-[12px] font-bold text-black w-7 outline-none text-center"
                         />
                         <span className="text-[12px] font-medium text-[#999]">秒</span>
                       </div>
@@ -1216,7 +1216,7 @@ export function CreativePreferencePicker() {
                 
                 <div className={`mt-6 relative px-1 transition-opacity duration-200 ${durationMode === 'custom' ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
                   <div 
-                    className="h-1 bg-[#F0F0F0] dark:bg-white/10 rounded-full w-full relative cursor-pointer"
+                    className="h-1 bg-[#F0F0F0] rounded-full w-full relative cursor-pointer"
                     onClick={(e) => {
                       if (durationMode !== 'custom') return;
                       const rect = e.currentTarget.getBoundingClientRect();
@@ -1227,11 +1227,11 @@ export function CreativePreferencePicker() {
                     }}
                   >
                     <div 
-                      className="absolute h-1 bg-black dark:bg-white rounded-full" 
+                      className="absolute h-1 bg-black rounded-full" 
                       style={{ width: `${((duration - 4) / (180 - 4)) * 100}%` }}
                     />
                     <div 
-                      className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white dark:bg-[#1A1A1A] border-2 border-black dark:border-white rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition-transform z-10"
+                      className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-black rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition-transform z-10"
                       style={{ 
                         left: `${((duration - 4) / (180 - 4)) * 100}%`,
                       }}
@@ -1260,7 +1260,7 @@ export function CreativePreferencePicker() {
                       }}
                     />
                   </div>
-                  <div className="flex justify-between mt-3 text-[10px] font-bold text-[#BBB] dark:text-white/20 px-0.5">
+                  <div className="flex justify-between mt-3 text-[10px] font-bold text-[#BBB] px-0.5">
                     <span>4秒</span>
                     <span>180秒</span>
                   </div>
@@ -1271,10 +1271,10 @@ export function CreativePreferencePicker() {
                 <section className="flex-1">
                   <div className="flex items-center gap-1 mb-2 whitespace-nowrap">
                     <Music className="w-3.5 h-3.5 text-[#999]" />
-                    <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">音频</h4>
+                    <h4 className="text-[12px] font-bold text-[#999]">音频</h4>
                   </div>
                   <div 
-                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
                     onClick={() => setVideoAudio(!videoAudio)}
                   >
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoAudio ? 'right-1' : 'left-1'}`} />
@@ -1284,15 +1284,15 @@ export function CreativePreferencePicker() {
                 <section className="flex-[2]">
                   <div className="flex items-center gap-1 mb-2">
                     <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
-                    <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">数量</h4>
+                    <h4 className="text-[12px] font-bold text-[#999]">数量</h4>
                   </div>
-                  <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-xl w-fit">
+                  <div className="flex gap-1.5 p-1 bg-[#F5F5F5] rounded-xl w-fit">
                     {[1, 2, 3, 4].map((num) => (
                       <button
                         key={num}
                         onClick={() => setVideoCount(num)}
                         className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${
-                          videoCount === num ? 'bg-black dark:bg-white/10 text-white shadow-sm' : 'text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white'
+                          videoCount === num ? 'bg-black text-white shadow-sm' : 'text-[#666] hover:text-black'
                         }`}
                       >
                         {num}
@@ -1306,10 +1306,10 @@ export function CreativePreferencePicker() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-[#999]" />
-                    <span className="text-[12px] font-bold text-[#999] dark:text-white/30">水印</span>
+                    <span className="text-[12px] font-bold text-[#999]">水印</span>
                   </div>
                   <div 
-                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoWatermark ? 'bg-primary' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoWatermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
                     onClick={() => setVideoWatermark(!videoWatermark)}
                   >
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoWatermark ? 'right-1' : 'left-1'}`} />
@@ -1328,15 +1328,15 @@ export function CreativePreferencePicker() {
               <section>
                 <div className="flex items-center gap-1 mb-2">
                   <FileText className="w-3.5 h-3.5 text-[#999]" />
-                  <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">格式</h4>
+                  <h4 className="text-[12px] font-bold text-[#999]">格式</h4>
                 </div>
-                <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-xl w-fit">
+                <div className="flex gap-1.5 p-1 bg-[#F5F5F5] rounded-xl w-fit">
                   {["jpeg", "png"].map((fmt) => (
                     <button
                       key={fmt}
                       onClick={() => setImgFormat(fmt)}
                       className={`px-8 py-2 rounded-lg text-xs font-bold transition-all ${
-                        imgFormat === fmt ? 'bg-primary text-white shadow-md' : 'text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white'
+                        imgFormat === fmt ? 'bg-primary text-white shadow-md' : 'text-[#666] hover:text-black'
                       }`}
                     >
                       {fmt}
@@ -1350,10 +1350,10 @@ export function CreativePreferencePicker() {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1">
                     <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
-                    <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">组图</h4>
+                    <h4 className="text-[12px] font-bold text-[#999]">组图</h4>
                   </div>
                   <div 
-                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${groupEnabled ? 'bg-primary' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${groupEnabled ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
                     onClick={() => setGroupEnabled(!groupEnabled)}
                   >
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${groupEnabled ? 'right-1' : 'left-1'}`} />
@@ -1362,11 +1362,11 @@ export function CreativePreferencePicker() {
 
                 {groupEnabled && (
                   <div className="flex items-center gap-3 animate-in fade-in slide-in-from-top-1 duration-200">
-                    <div className="flex gap-1 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-xl">
+                    <div className="flex gap-1 p-1 bg-[#F5F5F5] rounded-xl">
                       <button
                         onClick={() => setGroupType("link")}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                          groupType === "link" ? 'bg-primary text-white shadow-sm' : 'text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white'
+                          groupType === "link" ? 'bg-primary text-white shadow-sm' : 'text-[#666] hover:text-black'
                         }`}
                       >
                         关联
@@ -1374,7 +1374,7 @@ export function CreativePreferencePicker() {
                       <button
                         onClick={() => setGroupType("parallel")}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                          groupType === "parallel" ? 'bg-primary text-white shadow-sm' : 'text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white'
+                          groupType === "parallel" ? 'bg-primary text-white shadow-sm' : 'text-[#666] hover:text-black'
                         }`}
                       >
                         并行
@@ -1384,32 +1384,32 @@ export function CreativePreferencePicker() {
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
                         <div 
-                          className={`flex items-center gap-1.5 px-2 py-1 border rounded-lg transition-all ${groupAuto && groupType === 'link' ? 'bg-primary/5 border-primary/30' : 'border-[#E5E5E5] dark:border-white/10'}`}
+                          className={`flex items-center gap-1.5 px-2 py-1 border rounded-lg transition-all ${groupAuto && groupType === 'link' ? 'bg-primary/5 border-primary/30' : 'border-[#E5E5E5]'}`}
                           onClick={() => groupType === 'link' && setGroupAuto(!groupAuto)}
                         >
-                          <div className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center transition-all ${groupAuto && groupType === 'link' ? 'bg-primary border-primary' : 'bg-white dark:bg-transparent border-[#DDD] dark:border-white/20'}`}>
+                          <div className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center transition-all ${groupAuto && groupType === 'link' ? 'bg-primary border-primary' : 'bg-white border-[#DDD]'}`}>
                             {groupAuto && groupType === 'link' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
                           </div>
-                          <span className={`text-[11px] font-bold ${groupType === 'link' ? 'text-black dark:text-white' : 'text-[#BBB] dark:text-white/20'}`}>Auto</span>
+                          <span className={`text-[11px] font-bold ${groupType === 'link' ? 'text-black' : 'text-[#BBB]'}`}>Auto</span>
                         </div>
 
-                        <div className={`flex items-center px-1.5 py-0.5 border border-[#E5E5E5] dark:border-white/10 rounded-lg bg-white dark:bg-white/5 overflow-hidden transition-opacity ${groupAuto && groupType === 'link' ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
+                        <div className={`flex items-center px-1.5 py-0.5 border border-[#E5E5E5] rounded-lg bg-white overflow-hidden transition-opacity ${groupAuto && groupType === 'link' ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
                           <input 
                             type="text" 
                             value={groupCount}
                             readOnly
-                            className="w-5 bg-transparent text-[11px] font-bold text-center outline-none py-1 dark:text-white"
+                            className="w-5 bg-transparent text-[11px] font-bold text-center outline-none py-1"
                           />
-                          <div className="flex flex-col border-l border-[#F0F0F0] dark:border-white/5 ml-1">
+                          <div className="flex flex-col border-l border-[#F0F0F0] ml-1">
                             <button 
                               onClick={() => setGroupCount(prev => Math.min(prev + 1, 9))}
-                              className="px-1 hover:bg-[#F5F5F5] dark:hover:bg-white/5 transition-colors"
+                              className="px-1 hover:bg-[#F5F5F5] transition-colors"
                             >
                               <ChevronRight className="w-2.5 h-2.5 rotate-[-90deg] text-[#999]" />
                             </button>
                             <button 
                               onClick={() => setGroupCount(prev => Math.max(prev - 1, 1))}
-                              className="px-1 border-t border-[#F0F0F0] dark:border-white/5 hover:bg-[#F5F5F5] dark:hover:bg-white/5 transition-colors"
+                              className="px-1 border-t border-[#F0F0F0] hover:bg-[#F5F5F5] transition-colors"
                             >
                               <ChevronRight className="w-2.5 h-2.5 rotate-90 text-[#999]" />
                             </button>
@@ -1427,10 +1427,10 @@ export function CreativePreferencePicker() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-[#999]" />
-                    <span className="text-[12px] font-bold text-[#999] dark:text-white/30">水印</span>
+                    <span className="text-[12px] font-bold text-[#999]">水印</span>
                   </div>
                   <div 
-                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${watermark ? 'bg-primary' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${watermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
                     onClick={() => setWatermark(!watermark)}
                   >
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${watermark ? 'right-1' : 'left-1'}`} />

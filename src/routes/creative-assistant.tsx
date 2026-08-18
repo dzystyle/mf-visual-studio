@@ -5,10 +5,9 @@ import {
   ChevronRight, 
   LayoutGrid, 
   Plus, 
-   ArrowUp, 
-   Mic, 
-   AudioLines,
-   ChevronDown,
+  ArrowUp, 
+  Mic, 
+  ChevronDown,
   FileText,
   Image as ImageIcon,
   Video,
@@ -600,6 +599,7 @@ function CreativeAssistantPage() {
                         <video 
                           src={videoFileUrl} 
                           className="w-full h-full object-cover" 
+                          controls
                           autoPlay
                           muted
                           loop
@@ -608,47 +608,7 @@ function CreativeAssistantPage() {
                         <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-1 pointer-events-none">
                           <span className="opacity-70">AI 生成</span>
                         </div>
-                        
-                        {/* Video hover toolbar based on references */}
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none" />
-                        
-                        {/* Center Hover Indicator */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                          <div className="px-4 py-2 rounded-full bg-black/80 text-white text-[13px] font-bold border border-white/10 backdrop-blur-md shadow-2xl">
-                            标注视频帧
-                          </div>
-                        </div>
-
-                        {/* Bottom Floating Toolbar */}
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center p-0.5 rounded-[14px] bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 translate-y-2 group-hover:translate-y-0 shadow-2xl z-20 overflow-hidden">
-                          <VideoToolButton icon={<ChevronRightIcon className="h-4 w-4 rotate-[-90deg] translate-y-[0.5px]" />} label="标注视频帧" active />
-                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
-                          <VideoToolButton icon={<div className="flex flex-col gap-[1px]"><div className="w-3 h-[1px] bg-current" /><div className="w-3 h-[1px] bg-current" /></div>} label="去剪映编辑" />
-                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
-                          <VideoToolButton icon={<div className="relative"><ChevronRightIcon className="h-3 w-3 rotate-180" /><div className="absolute inset-0 flex items-center justify-center translate-x-[2px]"><div className="w-1.5 h-1.5 rounded-full border border-current" /></div></div>} label="重新生成" />
-                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
-                          <VideoToolButton 
-                            icon={<div className="relative"><ImageIcon className="h-3 w-3" /><Plus className="absolute -top-1 -right-1 h-2 w-2" /></div>} 
-                            label="引用到输入框" 
-                            onClick={(e: React.MouseEvent) => {
-                              e.stopPropagation();
-                              const event = new CustomEvent('quote-video', { 
-                                detail: { name: 'onepunch-promo.mp4', url: videoFileUrl, type: 'video' } 
-                              });
-                              window.dispatchEvent(event);
-                            }}
-                          />
-                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
-                          <VideoToolButton icon={<div className="px-1 border border-current rounded-[2px] text-[8px] font-bold">HD</div>} label="提升画质" />
-                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
-                          <VideoToolButton icon={<div className="relative"><div className="w-3 h-3 border border-current rounded-[1px]" /><div className="absolute top-0 right-0 w-1.5 h-1.5 border-t border-r border-current" /></div>} label="字幕擦除" />
-                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
-                          <VideoToolButton icon={<Download className="h-3.5 w-3.5" />} label="下载" />
-                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
-                          <VideoToolButton icon={<AudioLines className="h-3.5 w-3.5" />} label="取消静音" />
-                        </div>
-
-                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white pointer-events-none group-hover:hidden">
+                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white pointer-events-none">
                           0:15
                         </div>
                       </div>
@@ -918,7 +878,6 @@ function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChang
 }
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-
 
 function StatusLine({ icon, text, subText }: { icon: 'check' | 'loading'; text: string; subText?: string }) {
   return (
@@ -1386,38 +1345,6 @@ function StoryboardContent() {
             </div>
           </div>
         ))}
-      </div>
-    </div>
-  );
-}
-
-function VideoToolButton({ 
-  icon, 
-  label, 
-  active = false,
-  onClick
-}: { 
-  icon: React.ReactNode; 
-  label: string; 
-  active?: boolean;
-  onClick?: (e: React.MouseEvent) => void;
-}) {
-  return (
-    <div className="group/tooltip relative">
-      <button 
-        onClick={onClick}
-        className={cn(
-          "w-9 h-9 flex items-center justify-center transition-all rounded-[10px]",
-          active 
-            ? "bg-white text-black shadow-lg" 
-            : "text-white/80 hover:bg-white/10 hover:text-white"
-        )}
-      >
-        {icon}
-      </button>
-      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-1.5 bg-black text-white text-[12px] font-bold rounded-full w-fit whitespace-nowrap shadow-2xl opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-[100]">
-        {label}
-        <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-black" />
       </div>
     </div>
   );

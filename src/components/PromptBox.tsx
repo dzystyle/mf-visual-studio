@@ -142,26 +142,9 @@ export function PromptBox({
       textareaRef.current?.focus();
     };
 
-    const handleQuoteVideo = (e: any) => {
-      const { name, url, type } = e.detail;
-      const id = `${Date.now()}-${name}`;
-      
-      setAttachments(prev => {
-        if (prev.find(a => a.name === name)) return prev;
-        return [...prev, { id, name, kind: type, url }];
-      });
-      
-      // Auto-mention it at the current position
-      handleMentionSelect(name, type, url);
-    };
-
     window.addEventListener('select-skill', handleSelectSkill);
-    window.addEventListener('quote-video', handleQuoteVideo);
-    return () => {
-      window.removeEventListener('select-skill', handleSelectSkill);
-      window.removeEventListener('quote-video', handleQuoteVideo);
-    };
-  }, [text, cursorPos, attachments]);
+    return () => window.removeEventListener('select-skill', handleSelectSkill);
+  }, []);
 
   useEffect(() => {
     const textBeforeCursor = text.slice(0, cursorPos);
@@ -291,9 +274,7 @@ export function PromptBox({
         <div className="flex flex-wrap gap-3 mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
           {attachments.map((a) => (
             <div key={a.id} className="group relative w-20 h-20 rounded-xl overflow-hidden border border-border bg-accent/20">
-              {a.kind === 'video' && a.url ? (
-                <video src={a.url} className="w-full h-full object-cover" muted />
-              ) : a.url ? (
+              {a.url ? (
                 <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-muted-foreground/40">
@@ -369,11 +350,7 @@ export function PromptBox({
                     <Popover open={hoveredMentionId === mentionKey}>
                       <PopoverTrigger asChild>
                         <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-default transition-transform hover:scale-110 shadow-sm relative group">
-                          {att.kind === 'video' ? (
-                            <video src={att.url} className="w-full h-full object-cover" autoPlay muted loop />
-                          ) : (
-                            <img src={att.url} alt="" className="w-full h-full object-cover" />
-                          )}
+                          <img src={att.url} alt="" className="w-full h-full object-cover" />
                         </div>
                       </PopoverTrigger>
                       <PopoverContent 
@@ -384,11 +361,7 @@ export function PromptBox({
                       >
                         <div className="space-y-2">
                           <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
-                            {att.kind === 'video' ? (
-                              <video src={att.url} className="w-full h-full object-cover" autoPlay muted loop />
-                            ) : (
-                              <img src={att.url} alt="" className="w-full h-full object-cover" />
-                            )}
+                            <img src={att.url} alt="" className="w-full h-full object-cover" />
                           </div>
                           <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
                             {att.name}
@@ -636,11 +609,11 @@ export function PromptBox({
 
 
             {showCanvasToggle && (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-card/40 border border-border dark:bg-white/5 dark:border-white/10 rounded-full hover:bg-card dark:hover:bg-white/10 transition group">
-                <span className="text-[11px] font-bold text-muted-foreground dark:text-white/40 group-hover:text-foreground dark:group-hover:text-white/70">画布</span>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-card/40 border border-border rounded-full hover:bg-card transition group">
+                <span className="text-[11px] font-bold text-muted-foreground group-hover:text-foreground">画布</span>
                 <button 
                   onClick={() => setCanvasMode(!canvasMode)}
-                  className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
+                  className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
                 >
                   <span
                     className={`pointer-events-none block h-3.5 w-3.5 rounded-full shadow-md ring-0 transition-transform ${canvasMode ? 'translate-x-4 bg-white' : 'translate-x-0.5 bg-white'}`}
@@ -706,11 +679,11 @@ function MentionListItem({ item, onClick }: { item: any; onClick: () => void }) 
 
 function Chip({ icon: Icon, label, badge, active, onClear }: { icon: any; label: string; badge?: string; active?: boolean; onClear?: () => void; }) {
   return (
-    <div className={`relative flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition ${active ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'border-border bg-card/40 dark:bg-white/5 dark:border-white/10 text-foreground hover:bg-card dark:hover:bg-white/10'}`}>
-      <Icon className={`h-3.5 w-3.5 ${active ? 'text-aurora-blue' : 'text-muted-foreground dark:text-white/40'}`} />
-      <span className="font-medium dark:text-white/70">{label}</span>
+    <div className={`relative flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition ${active ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'border-border bg-card/40 text-foreground hover:bg-card'}`}>
+      <Icon className={`h-3.5 w-3.5 ${active ? 'text-aurora-blue' : 'text-muted-foreground'}`} />
+      <span className="font-medium">{label}</span>
       {badge && <span className="flex h-4 items-center rounded bg-aurora-purple/20 px-1 text-[8px] font-bold uppercase text-aurora-purple">{badge}</span>}
-      {onClear && <button onClick={(e) => { e.stopPropagation(); onClear(); }} className="ml-0.5 hover:text-aurora-blue dark:text-white/40 dark:hover:text-white"><X className="h-3 w-3" /></button>}
+      {onClear && <button onClick={(e) => { e.stopPropagation(); onClear(); }} className="ml-0.5 hover:text-aurora-blue"><X className="h-3 w-3" /></button>}
     </div>
   );
 }
