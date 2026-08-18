@@ -1149,8 +1149,8 @@ export function CreativePreferencePicker() {
             </div>
           </section>
 
-          <section>
-            <h4 className="text-[12px] font-bold text-[#999] mb-4">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
+          <section className="mb-4">
+            <h4 className="text-[12px] font-bold text-[#999] mb-2">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
             <div className="flex gap-1.5 p-1 bg-[#F5F5F5] rounded-full w-fit">
               {(activeMode === 'video' ? ["4K", "2K", "1080P", "720P"] : ["1K", "2K", "4K"]).map((res) => (
                 <button
@@ -1167,9 +1167,9 @@ export function CreativePreferencePicker() {
           </section>
 
           {activeMode === "video" && (
-            <div className="space-y-8">
+            <div className="space-y-4">
               <section>
-                <div className="flex items-center gap-1 mb-4">
+                <div className="flex items-center gap-1 mb-2">
                   <h4 className="text-[12px] font-bold text-[#999]">时长</h4>
                   <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
                 </div>
@@ -1267,9 +1267,9 @@ export function CreativePreferencePicker() {
                 </div>
               </section>
 
-              <div className="flex items-start gap-8">
+              <div className="flex items-start gap-8 mt-2">
                 <section className="flex-1">
-                  <div className="flex items-center gap-1 mb-4 whitespace-nowrap">
+                  <div className="flex items-center gap-1 mb-2 whitespace-nowrap">
                     <Music className="w-3.5 h-3.5 text-[#999]" />
                     <h4 className="text-[12px] font-bold text-[#999]">音频</h4>
                   </div>
@@ -1282,7 +1282,7 @@ export function CreativePreferencePicker() {
                 </section>
 
                 <section className="flex-[2]">
-                  <div className="flex items-center gap-1 mb-4">
+                  <div className="flex items-center gap-1 mb-2">
                     <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
                     <h4 className="text-[12px] font-bold text-[#999]">数量</h4>
                   </div>
@@ -1323,10 +1323,10 @@ export function CreativePreferencePicker() {
 
 
           {activeMode === "image" && (
-            <div className="space-y-8">
+            <div className="space-y-4">
               {/* Format Selection */}
               <section>
-                <div className="flex items-center gap-1 mb-4">
+                <div className="flex items-center gap-1 mb-2">
                   <FileText className="w-3.5 h-3.5 text-[#999]" />
                   <h4 className="text-[12px] font-bold text-[#999]">格式</h4>
                 </div>
@@ -1347,7 +1347,7 @@ export function CreativePreferencePicker() {
 
               {/* Group Image Settings */}
               <section>
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1">
                     <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
                     <h4 className="text-[12px] font-bold text-[#999]">组图</h4>
