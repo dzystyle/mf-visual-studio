@@ -322,27 +322,26 @@ export function PromptBox({
                       rows={1}
                       value={remainingText}
                       onChange={(e) => {
-                        const newRemainingText = e.target.value;
-                        const newTotalText = text.slice(0, currentLastPos) + newRemainingText + text.slice(currentLastPos + remainingText.length);
-                        const newCursorPos = currentLastPos + (e.target.selectionStart || 0);
+                        const val = e.target.value;
+                        const selection = e.target.selectionStart || 0;
                         
-                        if (newTotalText.length < text.length) {
-                          const diff = text.length - newTotalText.length;
-                          setSelectedMentions(prev => prev.map(m => {
-                            if (m.position > currentLastPos) {
-                              return { ...m, position: Math.max(currentLastPos, m.position - diff) };
-                            }
-                            return m;
-                          }));
-                        } else if (newTotalText.length > text.length) {
+                        // Reconstruct total text
+                        const newTotalText = text.slice(0, currentLastPos) + val;
+                        const newCursorPos = currentLastPos + selection;
+
+                        if (newTotalText.length !== text.length) {
                           const diff = newTotalText.length - text.length;
                           setSelectedMentions(prev => prev.map(m => {
-                            if (m.position >= currentLastPos) {
+                            if (m.position > currentLastPos) {
                               return { ...m, position: m.position + diff };
                             }
                             return m;
                           }));
                         }
+
+                        setText(newTotalText);
+                        setCursorPos(newCursorPos);
+                      }}
 
                         setText(newTotalText);
                         setCursorPos(newCursorPos);
