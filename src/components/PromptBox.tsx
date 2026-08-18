@@ -152,9 +152,10 @@ export function PromptBox({
     
     if (lastAtPos !== -1) {
       const afterAt = textBeforeCursor.slice(lastAtPos + 1);
-      if (!afterAt.includes(" ")) {
+      // Only trigger if there's no space after '@' or the space is just being typed
+      if (!afterAt.includes(" ") || afterAt.split(" ").length <= 1) {
         setMentionOpen(true);
-        setMentionFilter(afterAt);
+        setMentionFilter(afterAt.toLowerCase());
       } else {
         setMentionOpen(false);
       }
@@ -459,7 +460,7 @@ export function PromptBox({
         </div>
 
         {!isMini && mentionOpen && (
-          <div className="absolute top-[calc(100%+8px)] left-0 w-80 bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="absolute bottom-[calc(100%+8px)] left-0 w-80 bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[200] animate-in fade-in slide-in-from-bottom-2 duration-200">
             <div className="p-3.5 border-b border-border/50">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
@@ -482,12 +483,12 @@ export function PromptBox({
                 { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
               ].filter((item, index, self) => 
                 item.name.toLowerCase().includes(mentionFilter.toLowerCase()) && 
-                self.findIndex(t => t.url === item.url) === index
+                self.findIndex(t => t.name === item.name) === index
               ).map((item, idx) => (
                 <MentionListItem 
                   key={idx}
                   item={item}
-                  onClick={() => handleMentionSelect(item.name, item.kind, item.url)}
+                  onClick={() => handleMentionSelect(item.name, item.kind as any, item.url)}
                 />
               ))}
             </div>
@@ -676,7 +677,11 @@ function MentionListItem({ item, onClick }: { item: any; onClick: () => void }) 
   return (
     <button onClick={onClick} className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-accent transition-all group text-left">
       <div className="h-9 w-9 rounded-lg overflow-hidden border border-border bg-accent/50 shrink-0">
-        <img src={item.url} alt={item.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+        {item.kind === 'video' ? (
+          <video src={item.url} className="h-full w-full object-cover" muted />
+        ) : (
+          <img src={item.url} alt={item.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+        )}
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-bold text-foreground/90 truncate tracking-tight">{item.name}</div>
