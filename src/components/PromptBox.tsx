@@ -283,163 +283,102 @@ export function PromptBox({
               return att ? { ...att, mentionPos: m.position } : null;
             }).filter(Boolean) as (Attachment & { mentionPos: number })[];
 
-            // We need to render segments of text and inline attachments in order
-            const segments: (
-              | { type: "text"; content: string; start: number; end: number }
-              | { type: "mention"; attachment: Attachment; position: number }
-            )[] = [];
-
-            let lastPos = 0;
-            
-            // Iterate through sorted mentions and build segments
-            sortedMentions.forEach((m) => {
-              const att = attachments.find(a => a.id === m.id);
-              if (att) {
-                // Add text before this mention
-                if (m.position > lastPos) {
-                  segments.push({
-                    type: "text",
-                    content: text.slice(lastPos, m.position),
-                    start: lastPos,
-                    end: m.position
-                  });
-                }
-                // Add the mention itself
-                segments.push({
-                  type: "mention",
-                  attachment: att,
-                  position: m.position
-                });
-                lastPos = m.position;
-              }
-            });
-
-            // Add remaining text after last mention
-            if (lastPos < text.length || segments.length === 0) {
-              segments.push({
-                type: "text",
-                content: text.slice(lastPos),
-                start: lastPos,
-                end: text.length
-              });
-            }
-
             return (
-              <div className="flex flex-wrap items-center gap-y-1 w-full relative">
-                {segments.map((seg, idx) => {
-                  if (seg.type === "mention") {
-                    const a = seg.attachment;
-                    return (
-                      <div 
-                        key={`inline-${a.id}-${idx}`} 
-                        className="inline-flex items-center mx-0.5 animate-in zoom-in-95 duration-200 shrink-0"
-                      >
-                        {a.url && (
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
-                                <img src={a.url} alt="" className="w-full h-full object-cover" />
-                              </div>
-                            </PopoverTrigger>
-                            <PopoverContent 
-                              side="bottom" 
-                              align="start" 
-                              sideOffset={12} 
-                              className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
-                            >
-                              <div className="space-y-2">
-                                <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
-                                  <img src={a.url} alt="" className="w-full h-full object-cover" />
-                                </div>
-                                <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
-                                  {a.name}
-                                </div>
-                              </div>
-                            </PopoverContent>
-                          </Popover>
-                        )}
-                      </div>
-                    );
-                  } else {
-                    // This is a text segment
-                    // We need a way to let user type here. 
-                    // To maintain the "interleaved" look while keeping a single textarea source of truth,
-                    // we can't easily have multiple textareas.
-                    // Instead, we use a single textarea overlay or a contentEditable (too complex for this fix).
-                    // The simplest reliable fix for "interleaving" visual is to render the text segments as spans,
-                    // and keep the textarea hidden/transparent but active for input.
-                    
-                    // Actually, a better way for TanStack/React context is to use a container that mirrors the layout.
-                    return (
-                      <span 
-                        key={`text-${idx}`} 
-                        className="text-[15px] text-foreground whitespace-pre-wrap px-0.5 min-w-[2px]"
-                      >
-                        {seg.content}
-                      </span>
-                    );
-                  }
-                })}
-                
-                {/* The actual input field - hidden visually but handles all interaction */}
-                <textarea
-                  ref={textareaRef}
-                  rows={1}
-                  value={text}
-                  onChange={(e) => {
-                    const newText = e.target.value;
-                    const newCursorPos = e.target.selectionStart || 0;
-                    
-                    if (newText.length < text.length) {
-                      const diff = text.length - newText.length;
-                      setSelectedMentions(prev => prev.map(m => {
-                        if (m.position > newCursorPos) {
-                          return { ...m, position: Math.max(0, m.position - diff) };
-                        }
-                        return m;
-                      }));
-                    } else if (newText.length > text.length) {
-                      const diff = newText.length - text.length;
-                      setSelectedMentions(prev => prev.map(m => {
-                        if (m.position >= cursorPos) {
-                          return { ...m, position: m.position + diff };
-                        }
-                        return m;
-                      }));
-                    }
-
-                    setText(newText);
-                    setCursorPos(newCursorPos);
-                  }}
-                  onKeyUp={(e) => {
-                    setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
-                  }}
-                  onClick={(e) => {
-                    setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
-                      setSelectedMentions(prev => prev.slice(0, -1));
-                      return;
-                    }
-
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      const v = text.trim();
-                      if (v && onSubmit) {
-                        onSubmit(v, canvasMode);
-                        setText("");
-                        setAttachments([]);
-                        setSelectedMentions([]);
+              <>
+                {inlineAttachments.map((a, idx) => (
+                  <div 
+                    key={`inline-${a.id}-${idx}`} 
+                    className="inline-flex items-center animate-in zoom-in-95 duration-200"
+                    style={{ order: a.mentionPos }}
+                  >
+                    {a.url && (
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
+                            <img src={a.url} alt="" className="w-full h-full object-cover" />
+                          </div>
+                        </PopoverTrigger>
+                        {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
+                        <PopoverContent 
+                          side="bottom" 
+                          align="start" 
+                          sideOffset={12} 
+                          className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
+                        >
+                          <div className="space-y-2">
+                            <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
+                              <img src={a.url} alt="" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
+                              {a.name}
+                            </div>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                  </div>
+                ))}
+                <div 
+                  className="flex-1 min-w-[200px] relative" 
+                  style={{ order: cursorPos }}
+                >
+                  <textarea
+                    ref={textareaRef}
+                    rows={1}
+                    value={text}
+                    onChange={(e) => {
+                      const newText = e.target.value;
+                      const newCursorPos = e.target.selectionStart || 0;
+                      
+                      if (newText.length < text.length) {
+                        setSelectedMentions(prev => prev.map(m => {
+                          if (m.position > newCursorPos) {
+                            return { ...m, position: Math.max(0, m.position - (text.length - newText.length)) };
+                          }
+                          return m;
+                        }));
+                      } else if (newText.length > text.length) {
+                        setSelectedMentions(prev => prev.map(m => {
+                          if (m.position >= cursorPos) {
+                            return { ...m, position: m.position + (newText.length - text.length) };
+                          }
+                          return m;
+                        }));
                       }
-                    }
-                  }}
-                  placeholder={segments.length <= 1 && segments[0]?.type === "text" && !segments[0].content ? "由一个想法或故事开始..." : ""}
-                  className={`absolute inset-0 w-full h-full bg-transparent text-[15px] text-transparent caret-foreground placeholder:text-muted-foreground/50 focus:outline-none resize-none z-10 ${
-                    isMini ? 'py-1 cursor-pointer' : 'py-2'
-                  }`}
-                />
-              </div>
+
+                      setText(newText);
+                      setCursorPos(newCursorPos);
+                    }}
+                    onKeyUp={(e) => {
+                      setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
+                    }}
+                    onClick={(e) => {
+                      setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
+                        setSelectedMentions(prev => prev.slice(0, -1));
+                        return;
+                      }
+
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        const v = text.trim();
+                        if (v && onSubmit) {
+                          onSubmit(v, canvasMode);
+                          setText("");
+                          setAttachments([]);
+                          setSelectedMentions([]);
+                        }
+                      }
+                    }}
+                    placeholder="由一个想法或故事开始..."
+                    className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none ${
+                      isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
+                    }`}
+                  />
+                </div>
+              </>
             );
           })()}
         </div>
