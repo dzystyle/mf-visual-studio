@@ -286,7 +286,7 @@ export function SkillPicker({
             >
               {c.label}
               {c.key === "default" && (
-                <span className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-[#CCC] text-[8px] font-normal">i</span>
+                <span className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-[#CCC] dark:border-white/20 text-[8px] font-normal opacity-60">i</span>
               )}
             </button>
           ))}
