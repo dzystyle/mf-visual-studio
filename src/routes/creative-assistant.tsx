@@ -630,7 +630,6 @@ function CreativeAssistantPage() {
                         <div className="text-[11px] text-purple-700/60 dark:text-purple-300/60 font-medium self-end">2026/8/18 10:17:14</div>
                       </div>
                     </div>
-                    </div>
                   )}
 
                   <div className="text-[11px] text-[var(--color-muted-foreground)] px-1 font-medium">{msg.timestamp}</div>
