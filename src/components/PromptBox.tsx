@@ -313,7 +313,7 @@ export function PromptBox({
             const remainingText = text.slice(currentLastPos);
             
             return (
-              <div className="flex-1 flex flex-wrap items-center relative min-h-[40px] pointer-events-none">
+              <div className="flex-1 flex flex-wrap items-center relative min-h-[40px] pointer-events-none overflow-hidden">
                 <div className="flex-1 flex flex-wrap items-center pointer-events-auto">
                   {contentItems}
                   <div className="relative inline-flex items-center flex-1 min-w-[50px]">
