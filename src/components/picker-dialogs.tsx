@@ -806,6 +806,7 @@ export function CreativePreferencePicker() {
     { name: "Seedance 2.5", badge: "新", isVip: true, desc: "支持 4–30 秒视频生成、多模态参考、原生音频，以及符合条件的视频延长。" },
     { name: "Seedance 2.0 VIP", isVip: true, desc: "最强视频模型，图片及音视频全能参考，跨镜头强一致性保持和可控生成。" },
     { name: "Seedance 2.0 Fast VIP", isVip: true, desc: "最强性价比视频模型，兼具全能参考、跨镜头一致性和可控生成。" },
+    { name: "旗舰生图模型 V2-Flash", isVip: true, desc: "出图更快，文字准确性提升，真实感强。" },
     { name: "Seedance 2.0 Mini", isVip: true, desc: "更轻量的视频模型，支持全能参考，以更低积分实现可控生成。" },
     { name: "MiniMax H3", badge: "新", desc: "MiniMax 2K 视频模型，支持原生音画同步及 4–15 秒可控生成。" },
     { name: "HappyHorse 1.1", desc: "阿里旗下最新视频模型，超真实质感。" },
