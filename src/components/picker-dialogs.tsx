@@ -1350,7 +1350,7 @@ export function CreativePreferencePicker() {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1">
                     <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
-                    <h4 className="text-[12px] font-bold text-[#999]">组图</h4>
+                    <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">组图</h4>
                   </div>
                   <div 
                     className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${groupEnabled ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
