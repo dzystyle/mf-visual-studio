@@ -479,34 +479,17 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
 
-            <Popover onOpenChange={(open) => {
-              const el = document.getElementById('pref-capsule');
-              if (el) el.style.opacity = open ? '0' : '0';
-            }}>
+            <Popover>
               <PopoverTrigger asChild>
-                <div 
-                  className="group relative"
-                  onMouseEnter={() => {
-                    const el = document.getElementById('pref-capsule');
-                    if (el) el.style.opacity = '1';
-                  }}
-                  onMouseLeave={() => {
-                    const el = document.getElementById('pref-capsule');
-                    if (el) el.style.opacity = '0';
-                  }}
-                >
-                  <button type="button" className="relative">
-                    <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
-                    {/* Invisible hover bridge to capsule if needed, but the current logic relies on parent div */}
-                  </button>
-                </div>
+                <button type="button">
+                  <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
+                </button>
               </PopoverTrigger>
               <PopoverContent 
                 side="top" 
                 align="center"
                 sideOffset={16} 
                 className="w-[660px] p-0 border-none bg-transparent shadow-none z-[100]"
-                onOpenAutoFocus={(e) => e.preventDefault()}
               >
                 <CreativePreferencePicker />
               </PopoverContent>

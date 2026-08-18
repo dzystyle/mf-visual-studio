@@ -833,19 +833,16 @@ export function CreativePreferencePicker() {
 
   return (
     <div className="flex flex-col rounded-[28px] bg-white text-[#1A1A1A] shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50">
-      {/* Top Capsule Info - Show on hover via external control */}
-      <div 
-        id="pref-capsule"
-        className="absolute -top-14 left-1/2 -translate-x-1/2 flex justify-center pointer-events-none transition-opacity duration-300 opacity-0 z-[101]"
-      >
-        <div className="bg-[#1A1A1A] rounded-full px-5 py-2 flex flex-col items-center gap-0.5 shadow-xl border border-white/5 whitespace-nowrap">
+      {/* Top Capsule Info - Adjusted positioning and styling */}
+      <div className="absolute -top-14 left-0 right-0 flex justify-center pointer-events-none">
+        <div className="bg-[#1A1A1A] rounded-full px-5 py-2 flex flex-col items-center gap-0.5 shadow-xl animate-in slide-in-from-bottom-2 duration-500 border border-white/5">
           <div className="flex items-center gap-2 text-[10px] text-white/90">
             <span className="opacity-50">视频:</span>
             <span>{videoModel} · {ratio}比例 · {resolution} · {duration}秒</span>
           </div>
           <div className="flex items-center gap-2 text-[10px] text-white/90">
             <span className="opacity-50">图片:</span>
-            <span>{imageModel} · {ratio}比例 · 4K</span>
+            <span>{imageModel} · {ratio}比例 · {activeMode === 'image' ? '4K' : '4K'}</span>
           </div>
         </div>
       </div>
