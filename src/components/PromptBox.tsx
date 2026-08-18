@@ -267,39 +267,54 @@ export function PromptBox({
             const sortedMentions = [...selectedMentions].sort((a, b) => a.position - b.position);
             
             // Map the sorted names back to full attachment objects
-            const inlineAttachments = sortedMentions.map(m => attachments.find(a => a.name === m.name)).filter(Boolean) as Attachment[];
+            const inlineAttachments = sortedMentions.map(m => {
+              const att = attachments.find(a => a.name === m.name);
+              return att ? { ...att, mentionPos: m.position } : null;
+            }).filter(Boolean) as (Attachment & { mentionPos: number })[];
 
-            return inlineAttachments.map((a) => (
-              <div key={`inline-${a.id}`} className="inline-flex items-center animate-in zoom-in-95 duration-200">
-                {a.url && (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
-                        <img src={a.url} alt="" className="w-full h-full object-cover" />
-                      </div>
-                    </PopoverTrigger>
-                    {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
-                    <PopoverContent side="bottom" align="start" sideOffset={12} className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]">
-                      <div className="space-y-2">
-                        <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
-                          <img src={a.url} alt="" className="w-full h-full object-cover" />
-                        </div>
-                        <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
-                          {a.name}
-                        </div>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                )}
-              </div>
-            ));
-          })()}
-          
-          <textarea
-            ref={textareaRef}
-            rows={1}
-            value={text}
-            onChange={(e) => {
+            return (
+              <>
+                {inlineAttachments.map((a, idx) => (
+                  <div 
+                    key={`inline-${a.id}-${idx}`} 
+                    className="inline-flex items-center animate-in zoom-in-95 duration-200"
+                    style={{ order: a.mentionPos }}
+                  >
+                    {a.url && (
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
+                            <img src={a.url} alt="" className="w-full h-full object-cover" />
+                          </div>
+                        </PopoverTrigger>
+                        {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
+                        <PopoverContent 
+                          side="bottom" 
+                          align="start" 
+                          sideOffset={12} 
+                          className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
+                        >
+                          <div className="space-y-2">
+                            <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
+                              <img src={a.url} alt="" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
+                              {a.name}
+                            </div>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                  </div>
+                ))}
+                
+                <textarea
+                  ref={textareaRef}
+                  rows={1}
+                  value={text}
+                  style={{ order: 999 }}
+                  onChange={(e) => {
+
               const newText = e.target.value;
               const newCursorPos = e.target.selectionStart || 0;
               
