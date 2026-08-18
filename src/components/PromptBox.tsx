@@ -67,7 +67,7 @@ export function PromptBox({
   const [cursorPos, setCursorPos] = useState(0);
 
   // Stats for the hover capsule (synced with localStorage)
-  const [prefs, setPrefs] = useState({
+   const [prefs, setPrefs] = useState({
     videoModel: "智能匹配模型",
     videoRatio: "智能",
     resolution: "720P",
@@ -83,7 +83,9 @@ export function PromptBox({
     videoAudio: false,
     videoCount: 1,
     videoWatermark: true,
+    isAutoMode: true,
   });
+
 
 
 
