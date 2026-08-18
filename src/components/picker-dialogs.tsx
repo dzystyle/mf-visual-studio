@@ -146,7 +146,7 @@ export function ModelPicker({
               ref={(el) => { sectionRefs.current[tab.key] = el; }}
               className="space-y-4"
             >
-              <div className="text-[11px] font-bold text-[#999] uppercase tracking-wider sticky top-0 bg-white py-2 z-10">
+              <div className="text-[11px] font-bold text-[#999] dark:text-white/30 uppercase tracking-wider sticky top-0 bg-white dark:bg-[#1A1A1A] py-2 z-10">
                 {tab.label}
               </div>
               <div className="space-y-3">
