@@ -188,17 +188,7 @@ export function PromptBox({
       }
     }
 
-    // Add the @mention to the text if not already there
-    const mention = `@${name}`;
-    if (!text.includes(mention)) {
-      setText(prev => {
-        const space = prev.length > 0 && !prev.endsWith(" ") ? " " : "";
-        return prev + space + mention + " ";
-      });
-    }
-
     // Force focus and restore cursor position after state update
-    // We use a slightly longer delay to ensure the DOM has updated the Flex layout
     setTimeout(() => {
       if (textareaRef.current) {
         textareaRef.current.focus();
