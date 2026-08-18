@@ -135,6 +135,7 @@ export function PromptBox({
   const removeAttachment = (id: string, name?: string) => {
     setAttachments((prev) => prev.filter((a) => a.id !== id));
     if (name) {
+      setSelectedMentions(prev => prev.filter(n => n !== name));
       setText(prev => {
         // Find both cases: "@name " and "@name"
         const mentionWithSpace = `@${name} `;
