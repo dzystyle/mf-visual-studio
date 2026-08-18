@@ -1267,34 +1267,30 @@ export function CreativePreferencePicker() {
                 </div>
               </section>
 
-          <section>
-            <div className="flex items-center gap-6 py-2 px-1">
-              <div className="flex items-center gap-4 shrink-0">
-                <div className="flex items-center gap-1.5">
+              <section>
+                <div className="flex items-center gap-1 mb-4">
                   <Music className="w-3.5 h-3.5 text-[#999]" />
-                  <span className="text-[12px] font-bold text-[#999] whitespace-nowrap">音频</span>
+                  <h4 className="text-[12px] font-bold text-[#999]">音频</h4>
                 </div>
                 <div 
-                  className={`w-9 h-4.5 rounded-full relative transition-colors cursor-pointer ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                  className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
                   onClick={() => setVideoAudio(!videoAudio)}
                 >
-                  <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full transition-all ${videoAudio ? 'right-0.5' : 'left-0.5'}`} />
+                  <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoAudio ? 'right-1' : 'left-1'}`} />
                 </div>
-              </div>
+              </section>
 
-              <div className="w-px h-4 bg-[#F0F0F0]" />
-
-              <div className="flex items-center gap-4 shrink-0">
-                <div className="flex items-center gap-1.5">
+              <section>
+                <div className="flex items-center gap-1 mb-4">
                   <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
-                  <span className="text-[12px] font-bold text-[#999] whitespace-nowrap">数量</span>
+                  <h4 className="text-[12px] font-bold text-[#999]">数量</h4>
                 </div>
-                <div className="flex gap-1 p-0.5 bg-[#F5F5F5] rounded-lg">
+                <div className="flex gap-1.5 p-1 bg-[#F5F5F5] rounded-xl w-fit">
                   {[1, 2, 3, 4].map((num) => (
                     <button
                       key={num}
                       onClick={() => setVideoCount(num)}
-                      className={`w-7 h-7 flex items-center justify-center rounded-md text-[11px] font-bold transition-all ${
+                      className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${
                         videoCount === num ? 'bg-black text-white shadow-sm' : 'text-[#666] hover:text-black'
                       }`}
                     >
@@ -1302,24 +1298,22 @@ export function CreativePreferencePicker() {
                     </button>
                   ))}
                 </div>
-              </div>
+              </section>
 
-              <div className="w-px h-4 bg-[#F0F0F0]" />
-
-              <div className="flex items-center gap-4 shrink-0">
-                <div className="flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-[#999]" />
-                  <span className="text-[12px] font-bold text-[#999] whitespace-nowrap">水印</span>
+              <section>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[#999]" />
+                    <span className="text-[12px] font-bold text-[#999]">水印</span>
+                  </div>
+                  <div 
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoWatermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    onClick={() => setVideoWatermark(!videoWatermark)}
+                  >
+                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoWatermark ? 'right-1' : 'left-1'}`} />
+                  </div>
                 </div>
-                <div 
-                  className={`w-9 h-4.5 rounded-full relative transition-colors cursor-pointer ${videoWatermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
-                  onClick={() => setVideoWatermark(!videoWatermark)}
-                >
-                  <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full transition-all ${videoWatermark ? 'right-0.5' : 'left-0.5'}`} />
-                </div>
-              </div>
-            </div>
-          </section>
+              </section>
             </div>
           )}
 
