@@ -102,7 +102,11 @@ export function PromptBox({
         groupCount: Number(localStorage.getItem("pref_groupCount")) || 4,
         groupAuto: localStorage.getItem("pref_groupAuto") === "true",
         watermark: localStorage.getItem("pref_watermark") === "true",
+        videoAudio: localStorage.getItem("pref_videoAudio") === "true",
+        videoCount: Number(localStorage.getItem("pref_videoCount")) || 1,
+        videoWatermark: localStorage.getItem("pref_videoWatermark") !== "false",
       });
+
     };
 
 
