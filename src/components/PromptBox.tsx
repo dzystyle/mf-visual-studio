@@ -273,7 +273,7 @@ export function PromptBox({
       {!isMini && attachments.length > 0 && (
         <div className="flex flex-wrap gap-3 mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
           {attachments.map((a) => (
-            <div key={a.id} className="group relative w-20 h-20 rounded-xl overflow-hidden border border-border bg-accent/20">
+            <div key={a.id} className="group relative w-20 h-20 rounded-xl overflow-hidden border border-border bg-accent/20 dark:border-white/10">
               {a.url ? (
                 <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
               ) : (
@@ -310,7 +310,7 @@ export function PromptBox({
       <div className="relative">
         <div className={`flex flex-wrap items-center ${!isMini ? 'mb-2' : ''}`}>
           {!isMini && skill && (
-            <div className="flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1.5 text-[13px] text-white font-medium group transition-all hover:bg-white/15 animate-in fade-in slide-in-from-top-1 duration-300 mr-2 mb-1">
+            <div className="flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1.5 text-[13px] text-white font-medium group transition-all hover:bg-white/15 animate-in fade-in slide-in-from-top-1 duration-300 mr-2 mb-1 dark:bg-white/5 dark:border-white/10">
               <Package className="h-3.5 w-3.5 text-white/60" />
               <span>{skill}</span>
               <button 
@@ -554,7 +554,7 @@ export function PromptBox({
                 <div className="relative group/pref">
                   {!prefOpen && (
                     <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 opacity-0 group-hover/pref:opacity-100 transition-all duration-300 pointer-events-none z-[120]">
-                      <div className="bg-[#1A1A1A] text-white rounded-[20px] px-5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.24)] whitespace-nowrap border border-white/10 backdrop-blur-md">
+                      <div className="bg-[#1A1A1A] text-white rounded-[20px] px-5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.24)] whitespace-nowrap border border-white/10 backdrop-blur-md dark:bg-[#0A0A0A]/95">
                         <div className="flex flex-col gap-0.5">
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                             <span className="text-white/60">视频{prefs.isAutoMode && "(自动模式)"}:</span>
