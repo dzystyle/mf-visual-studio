@@ -1274,7 +1274,7 @@ export function CreativePreferencePicker() {
                     <h4 className="text-[12px] font-bold text-[#999]">音频</h4>
                   </div>
                   <div 
-                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
                     onClick={() => setVideoAudio(!videoAudio)}
                   >
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoAudio ? 'right-1' : 'left-1'}`} />
@@ -1286,13 +1286,13 @@ export function CreativePreferencePicker() {
                     <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
                     <h4 className="text-[12px] font-bold text-[#999]">数量</h4>
                   </div>
-                  <div className="flex gap-1.5 p-1 bg-[#F5F5F5] rounded-xl w-fit">
+                  <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-xl w-fit">
                     {[1, 2, 3, 4].map((num) => (
                       <button
                         key={num}
                         onClick={() => setVideoCount(num)}
                         className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${
-                          videoCount === num ? 'bg-black text-white shadow-sm' : 'text-[#666] hover:text-black'
+                          videoCount === num ? 'bg-black dark:bg-white/10 text-white shadow-sm' : 'text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/60'
                         }`}
                       >
                         {num}

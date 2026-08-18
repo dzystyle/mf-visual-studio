@@ -273,7 +273,7 @@ export function PromptBox({
       {!isMini && attachments.length > 0 && (
         <div className="flex flex-wrap gap-3 mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
           {attachments.map((a) => (
-            <div key={a.id} className="group relative w-20 h-20 rounded-xl overflow-hidden border border-border bg-accent/20">
+            <div key={a.id} className="group relative w-20 h-20 rounded-xl overflow-hidden border border-border bg-accent/20 dark:border-white/10">
               {a.url ? (
                 <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
               ) : (
@@ -310,7 +310,7 @@ export function PromptBox({
       <div className="relative">
         <div className={`flex flex-wrap items-center ${!isMini ? 'mb-2' : ''}`}>
           {!isMini && skill && (
-            <div className="flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1.5 text-[13px] text-white font-medium group transition-all hover:bg-white/15 animate-in fade-in slide-in-from-top-1 duration-300 mr-2 mb-1">
+            <div className="flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1.5 text-[13px] text-white font-medium group transition-all hover:bg-white/15 animate-in fade-in slide-in-from-top-1 duration-300 mr-2 mb-1 dark:bg-white/5 dark:border-white/10">
               <Package className="h-3.5 w-3.5 text-white/60" />
               <span>{skill}</span>
               <button 
