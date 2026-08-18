@@ -152,9 +152,10 @@ export function PromptBox({
     
     if (lastAtPos !== -1) {
       const afterAt = textBeforeCursor.slice(lastAtPos + 1);
-      if (!afterAt.includes(" ")) {
+      // Only trigger if there's no space after '@' or the space is just being typed
+      if (!afterAt.includes(" ") || afterAt.split(" ").length <= 1) {
         setMentionOpen(true);
-        setMentionFilter(afterAt);
+        setMentionFilter(afterAt.toLowerCase());
       } else {
         setMentionOpen(false);
       }
