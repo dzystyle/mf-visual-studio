@@ -1384,7 +1384,7 @@ export function CreativePreferencePicker() {
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
                         <div 
-                          className={`flex items-center gap-1.5 px-2 py-1 border rounded-lg transition-all ${groupAuto && groupType === 'link' ? 'bg-primary/5 border-primary/30' : 'border-[#E5E5E5]'}`}
+                          className={`flex items-center gap-1.5 px-2 py-1 border rounded-lg transition-all ${groupAuto && groupType === 'link' ? 'bg-primary/5 border-primary/30' : 'border-[#E5E5E5] dark:border-white/10'}`}
                           onClick={() => groupType === 'link' && setGroupAuto(!groupAuto)}
                         >
                           <div className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center transition-all ${groupAuto && groupType === 'link' ? 'bg-primary border-primary' : 'bg-white border-[#DDD]'}`}>
