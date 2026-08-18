@@ -1403,7 +1403,7 @@ export function CreativePreferencePicker() {
                           <div className="flex flex-col border-l border-[#F0F0F0] dark:border-white/5 ml-1">
                             <button 
                               onClick={() => setGroupCount(prev => Math.min(prev + 1, 9))}
-                              className="px-1 hover:bg-[#F5F5F5] transition-colors"
+                              className="px-1 hover:bg-[#F5F5F5] dark:hover:bg-white/5 transition-colors"
                             >
                               <ChevronRight className="w-2.5 h-2.5 rotate-[-90deg] text-[#999]" />
                             </button>
