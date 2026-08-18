@@ -317,7 +317,7 @@ export function PromptBox({
             const remainingText = text.slice(currentLastPos);
             
             return (
-              <div className="flex-1 flex flex-wrap items-center relative min-h-[40px] pointer-events-none">
+              <div className={`flex-1 flex flex-wrap items-center relative pointer-events-none ${isMini ? 'min-h-[32px]' : 'min-h-[80px]'}`}>
                 <div className="flex-1 flex flex-wrap items-center pointer-events-auto">
                   {contentItems}
                   <div className="relative inline-flex flex-1 min-w-[50px]">
@@ -375,7 +375,7 @@ export function PromptBox({
                       }}
                       placeholder={text === "" && selectedMentions.length === 0 ? "通过直接控制提示词快速生成单段片段。\n上传 1-50 张参考图或视频并用 @ 引用以创建互动。例如：用 @Image 1 作首帧、@Image 2 作尾帧，让他们像 @Video 1 那样跳舞。" : ""}
                       className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
-                        isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
+                        isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[64px]'
                       }`}
                     />
                   </div>
