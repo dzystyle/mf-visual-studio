@@ -489,7 +489,7 @@ export function PromptBox({
                 side="top" 
                 align="start" 
                 sideOffset={16} 
-                className="w-[720px] p-0 border-none bg-transparent shadow-none z-[100]"
+                className="w-[660px] p-0 border-none bg-transparent shadow-none z-[100]"
               >
                 <CreativePreferencePicker />
               </PopoverContent>
