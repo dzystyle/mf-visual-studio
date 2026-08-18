@@ -25,6 +25,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import * as Portal from "@radix-ui/react-portal";
 
 type Attachment = {
   id: string;
@@ -154,6 +155,10 @@ export function PromptBox({
       const afterAt = textBeforeCursor.slice(lastAtPos + 1);
       // Only trigger if there's no space after '@' or the space is just being typed
       if (!afterAt.includes(" ") || afterAt.split(" ").length <= 1) {
+        if (textareaRef.current) {
+          const rect = textareaRef.current.getBoundingClientRect();
+          setMentionRect(rect);
+        }
         setMentionOpen(true);
         setMentionFilter(afterAt.toLowerCase());
       } else {
@@ -459,49 +464,58 @@ export function PromptBox({
           })()}
         </div>
 
-        {!isMini && mentionOpen && (
-          <div className="absolute top-[calc(100%+8px)] left-0 w-80 bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[200] animate-in fade-in slide-in-from-top-2 duration-200">
-            <div className="p-3.5 border-b border-border/50">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
-                <input 
-                  autoFocus
-                  type="text" 
-                  value={mentionFilter}
-                  onChange={(e) => setMentionFilter(e.target.value)}
-                  placeholder="搜索素材、角色、商品..."
-                  className="w-full bg-accent/50 border-none rounded-xl pl-9 pr-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all"
-                />
+        {!isMini && mentionOpen && mentionRect && (
+          <Portal.Root>
+            <div 
+              className="fixed bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[9999] animate-in fade-in slide-in-from-top-2 duration-200"
+              style={{
+                top: mentionRect.bottom + 8,
+                left: mentionRect.left,
+                width: Math.max(320, mentionRect.width),
+              }}
+            >
+              <div className="p-3.5 border-b border-border/50">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
+                  <input 
+                    autoFocus
+                    type="text" 
+                    value={mentionFilter}
+                    onChange={(e) => setMentionFilter(e.target.value)}
+                    placeholder="搜索素材、角色、商品..."
+                    className="w-full bg-accent/50 border-none rounded-xl pl-9 pr-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all"
+                  />
+                </div>
+              </div>
+              <div className="max-h-64 overflow-y-auto p-1.5 scrollbar-hide">
+                <div className="px-2 py-1.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">最近使用</div>
+                {[
+                  ...attachments.map(a => ({ name: a.name, kind: a.kind, url: a.url })),
+                  { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
+                  { name: "角色01", kind: "image", url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" },
+                  { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
+                ].filter((item, index, self) => 
+                  item.name.toLowerCase().includes(mentionFilter.toLowerCase()) && 
+                  self.findIndex(t => t.name === item.name) === index
+                ).map((item, idx) => (
+                  <MentionListItem 
+                    key={idx}
+                    item={item}
+                    onClick={() => handleMentionSelect(item.name, item.kind as any, item.url)}
+                  />
+                ))}
+              </div>
+              <div className="p-2 border-t border-white/5 bg-white/[0.02]">
+                <button 
+                  onClick={() => { setAssetsOpen(true); setMentionOpen(false); }}
+                  className="flex w-full items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium text-white/60 hover:text-white hover:bg-white/5 transition"
+                >
+                  <LayoutGrid className="h-3.5 w-3.5" />
+                  打开资产库
+                </button>
               </div>
             </div>
-            <div className="max-h-64 overflow-y-auto p-1.5 scrollbar-hide">
-              <div className="px-2 py-1.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">最近使用</div>
-              {[
-                ...attachments.map(a => ({ name: a.name, kind: a.kind, url: a.url })),
-                { name: "画布生图", kind: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=64&h=64&fit=crop" },
-                { name: "角色01", kind: "image", url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" },
-                { name: "S1.mp4", kind: "video", url: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=64&h=64&fit=crop" },
-              ].filter((item, index, self) => 
-                item.name.toLowerCase().includes(mentionFilter.toLowerCase()) && 
-                self.findIndex(t => t.name === item.name) === index
-              ).map((item, idx) => (
-                <MentionListItem 
-                  key={idx}
-                  item={item}
-                  onClick={() => handleMentionSelect(item.name, item.kind as any, item.url)}
-                />
-              ))}
-            </div>
-            <div className="p-2 border-t border-white/5 bg-white/[0.02]">
-              <button 
-                onClick={() => { setAssetsOpen(true); setMentionOpen(false); }}
-                className="flex w-full items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium text-white/60 hover:text-white hover:bg-white/5 transition"
-              >
-                <LayoutGrid className="h-3.5 w-3.5" />
-                打开资产库
-              </button>
-            </div>
-          </div>
+          </Portal.Root>
         )}
       </div>
 
