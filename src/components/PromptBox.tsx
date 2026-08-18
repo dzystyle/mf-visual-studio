@@ -613,7 +613,7 @@ export function PromptBox({
                 <span className="text-[11px] font-bold text-muted-foreground dark:text-white/40 group-hover:text-foreground dark:group-hover:text-white/70">画布</span>
                 <button 
                   onClick={() => setCanvasMode(!canvasMode)}
-                  className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
+                  className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
                 >
                   <span
                     className={`pointer-events-none block h-3.5 w-3.5 rounded-full shadow-md ring-0 transition-transform ${canvasMode ? 'translate-x-4 bg-white' : 'translate-x-0.5 bg-white'}`}
