@@ -18,6 +18,7 @@ import {
   ModelPicker,
   SkillPicker,
   ElementsPickerDialog,
+  CreativePreferencePicker,
 } from "./picker-dialogs";
 import {
   Popover,
