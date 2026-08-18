@@ -305,8 +305,21 @@ export function PromptBox({
               
               // If text is being deleted, we might need to remove mentions
               if (newText.length < text.length) {
-                // Heuristic: if a mention was at a position that no longer makes sense, it might be gone
-                // But for now, simple text entry is the priority
+                // If we deleted characters, update positions of mentions after the cursor
+                setSelectedMentions(prev => prev.map(m => {
+                  if (m.position > newCursorPos) {
+                    return { ...m, position: Math.max(0, m.position - (text.length - newText.length)) };
+                  }
+                  return m;
+                }));
+              } else if (newText.length > text.length) {
+                // If we added characters, update positions of mentions after the cursor
+                setSelectedMentions(prev => prev.map(m => {
+                  if (m.position >= cursorPos) {
+                    return { ...m, position: m.position + (newText.length - text.length) };
+                  }
+                  return m;
+                }));
               }
 
               setText(newText);
