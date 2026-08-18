@@ -845,10 +845,22 @@ export function CreativePreferencePicker() {
     return localStorage.getItem("pref_groupEnabled") !== "false";
   });
   const [groupAuto, setGroupAuto] = useState(() => {
-
     if (typeof window === 'undefined') return false;
     return localStorage.getItem("pref_groupAuto") === "true";
   });
+  const [videoAudio, setVideoAudio] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem("pref_videoAudio") === "true";
+  });
+  const [videoCount, setVideoCount] = useState(() => {
+    if (typeof window === 'undefined') return 1;
+    return Number(localStorage.getItem("pref_videoCount")) || 1;
+  });
+  const [videoWatermark, setVideoWatermark] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return localStorage.getItem("pref_videoWatermark") !== "false";
+  });
+
 
 
   // Persist changes to localStorage
