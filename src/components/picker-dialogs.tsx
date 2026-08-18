@@ -860,6 +860,11 @@ export function CreativePreferencePicker() {
     if (typeof window === 'undefined') return true;
     return localStorage.getItem("pref_videoWatermark") !== "false";
   });
+  const [isAutoMode, setIsAutoMode] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return localStorage.getItem("pref_isAutoMode") !== "false";
+  });
+
 
 
 
