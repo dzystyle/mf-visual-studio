@@ -1043,8 +1043,9 @@ export function CreativePreferencePicker() {
         </div>
       </div>
 
-      <div className="flex px-6 py-6 gap-6">
+      <div className={`flex px-6 py-6 gap-6 transition-opacity duration-200 ${isAutoMode ? 'opacity-50 pointer-events-none grayscale-[0.2]' : 'opacity-100'}`}>
         {/* Left Side: Model Selection - Reference image layout */}
+
         <div className="flex-1 max-w-[340px]">
           <h4 className="text-[12px] font-bold text-[#999] mb-4">模型选择</h4>
           <div className="space-y-4 max-h-[380px] overflow-y-auto pr-2 scrollbar-hide">
