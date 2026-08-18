@@ -1328,9 +1328,9 @@ export function CreativePreferencePicker() {
               <section>
                 <div className="flex items-center gap-1 mb-2">
                   <FileText className="w-3.5 h-3.5 text-[#999]" />
-                  <h4 className="text-[12px] font-bold text-[#999]">格式</h4>
+                  <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">格式</h4>
                 </div>
-                <div className="flex gap-1.5 p-1 bg-[#F5F5F5] rounded-xl w-fit">
+                <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-xl w-fit">
                   {["jpeg", "png"].map((fmt) => (
                     <button
                       key={fmt}
