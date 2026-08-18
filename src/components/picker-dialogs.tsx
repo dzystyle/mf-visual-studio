@@ -1390,7 +1390,7 @@ export function CreativePreferencePicker() {
                           <div className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center transition-all ${groupAuto && groupType === 'link' ? 'bg-primary border-primary' : 'bg-white dark:bg-transparent border-[#DDD] dark:border-white/20'}`}>
                             {groupAuto && groupType === 'link' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
                           </div>
-                          <span className={`text-[11px] font-bold ${groupType === 'link' ? 'text-black' : 'text-[#BBB]'}`}>Auto</span>
+                          <span className={`text-[11px] font-bold ${groupType === 'link' ? 'text-black dark:text-white' : 'text-[#BBB] dark:text-white/20'}`}>Auto</span>
                         </div>
 
                         <div className={`flex items-center px-1.5 py-0.5 border border-[#E5E5E5] rounded-lg bg-white overflow-hidden transition-opacity ${groupAuto && groupType === 'link' ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
