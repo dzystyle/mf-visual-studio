@@ -142,9 +142,26 @@ export function PromptBox({
       textareaRef.current?.focus();
     };
 
+    const handleQuoteVideo = (e: any) => {
+      const { name, url, type } = e.detail;
+      const id = `${Date.now()}-${name}`;
+      
+      setAttachments(prev => {
+        if (prev.find(a => a.name === name)) return prev;
+        return [...prev, { id, name, kind: type, url }];
+      });
+      
+      // Auto-mention it at the current position
+      handleMentionSelect(name, type, url);
+    };
+
     window.addEventListener('select-skill', handleSelectSkill);
-    return () => window.removeEventListener('select-skill', handleSelectSkill);
-  }, []);
+    window.addEventListener('quote-video', handleQuoteVideo);
+    return () => {
+      window.removeEventListener('select-skill', handleSelectSkill);
+      window.removeEventListener('quote-video', handleQuoteVideo);
+    };
+  }, [text, cursorPos, attachments]);
 
   useEffect(() => {
     const textBeforeCursor = text.slice(0, cursorPos);
@@ -350,7 +367,11 @@ export function PromptBox({
                     <Popover open={hoveredMentionId === mentionKey}>
                       <PopoverTrigger asChild>
                         <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-default transition-transform hover:scale-110 shadow-sm relative group">
-                          <img src={att.url} alt="" className="w-full h-full object-cover" />
+                          {att.kind === 'video' ? (
+                            <video src={att.url} className="w-full h-full object-cover" autoPlay muted loop />
+                          ) : (
+                            <img src={att.url} alt="" className="w-full h-full object-cover" />
+                          )}
                         </div>
                       </PopoverTrigger>
                       <PopoverContent 
@@ -361,7 +382,11 @@ export function PromptBox({
                       >
                         <div className="space-y-2">
                           <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
-                            <img src={att.url} alt="" className="w-full h-full object-cover" />
+                            {att.kind === 'video' ? (
+                              <video src={att.url} className="w-full h-full object-cover" autoPlay muted loop />
+                            ) : (
+                              <img src={att.url} alt="" className="w-full h-full object-cover" />
+                            )}
                           </div>
                           <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
                             {att.name}
