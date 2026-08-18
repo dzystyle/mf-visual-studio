@@ -1067,7 +1067,7 @@ export function CreativePreferencePicker() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className={`text-[13px] font-bold transition-colors ${isActive ? 'text-black' : 'text-[#333] group-hover:text-black'}`}>
+                        <span className={`text-[13px] font-bold transition-colors ${isActive ? 'text-black dark:text-white' : 'text-[#333] dark:text-white/60 group-hover:text-black dark:group-hover:text-white'}`}>
                           {m.name}
                         </span>
                         {(m as any).extraBadge && (
