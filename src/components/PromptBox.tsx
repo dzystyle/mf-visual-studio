@@ -135,7 +135,7 @@ export function PromptBox({
   const removeAttachment = (id: string, name?: string) => {
     setAttachments((prev) => prev.filter((a) => a.id !== id));
     if (name) {
-      setSelectedMentions(prev => prev.filter(n => n !== name));
+      setSelectedMentions(prev => prev.filter(m => m.name !== name));
       setText(prev => {
         // Find both cases: "@name " and "@name"
         const mentionWithSpace = `@${name} `;
@@ -187,10 +187,8 @@ export function PromptBox({
           }
         ]);
       }
-      // Track that this asset is selected to be shown as an inline chip
-      if (!selectedMentions.includes(name)) {
-        setSelectedMentions(prev => [...prev, name]);
-      }
+      // Track that this asset is selected and its relative position in the text
+      setSelectedMentions(prev => [...prev, { name, position: newCursorPos }]);
     }
 
     // Force focus and restore cursor position after state update
