@@ -479,6 +479,22 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
 
+            <Popover>
+              <PopoverTrigger asChild>
+                <button type="button">
+                  <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent 
+                side="top" 
+                align="start" 
+                sideOffset={16} 
+                className="w-[720px] p-0 border-none bg-transparent shadow-none z-[100]"
+              >
+                <CreativePreferencePicker />
+              </PopoverContent>
+            </Popover>
+
 
             {showCanvasToggle && (
               <div className="flex items-center gap-2 px-3 py-1 bg-card/40 border border-border rounded-full hover:bg-card transition">
