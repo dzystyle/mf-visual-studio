@@ -342,6 +342,7 @@ export function PromptBox({
                     setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
                   }}
                   onKeyDown={(e) => {
+                    // Logic to handle backspace deleting mentions
                     if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
                       setSelectedMentions(prev => prev.slice(0, -1));
                       return;
@@ -367,6 +368,7 @@ export function PromptBox({
             );
           })()}
         </div>
+
 
 
 
