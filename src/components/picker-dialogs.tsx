@@ -1362,7 +1362,7 @@ export function CreativePreferencePicker() {
 
                 {groupEnabled && (
                   <div className="flex items-center gap-3 animate-in fade-in slide-in-from-top-1 duration-200">
-                    <div className="flex gap-1 p-1 bg-[#F5F5F5] rounded-xl">
+                    <div className="flex gap-1 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-xl">
                       <button
                         onClick={() => setGroupType("link")}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
