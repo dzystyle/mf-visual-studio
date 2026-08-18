@@ -373,7 +373,7 @@ export function PromptBox({
                           }
                         }
                       }}
-                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            鼠标移动到这个图片缩列图上面不要显示问号图标." : ""}
+                      placeholder={text === "" && selectedMentions.length === 0 ? "通过直接控制提示词快速生成单段片段。\n上传 1-50 张参考图或视频并用 @ 引用以创建互动。例如：用 @Image 1 作首帧、@Image 2 作尾帧，让他们像 @Video 1 那样跳舞。" : ""}
                       className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
                         isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
                       }`}
