@@ -86,6 +86,7 @@ export function PromptBox({
     videoCount: 1,
     videoWatermark: true,
     isAutoMode: true,
+    imgQuality: "medium",
   });
 
 
