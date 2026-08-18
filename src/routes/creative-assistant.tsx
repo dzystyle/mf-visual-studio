@@ -620,14 +620,31 @@ function CreativeAssistantPage() {
                         </div>
 
                         {/* Bottom Floating Toolbar */}
-                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-0.5 px-0.5 py-0.5 rounded-xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 translate-y-2 group-hover:translate-y-0 shadow-2xl z-20 overflow-hidden">
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center p-0.5 rounded-[14px] bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 translate-y-2 group-hover:translate-y-0 shadow-2xl z-20 overflow-hidden">
                           <VideoToolButton icon={<ChevronRightIcon className="h-4 w-4 rotate-[-90deg] translate-y-[0.5px]" />} label="标注视频帧" active />
+                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
                           <VideoToolButton icon={<div className="flex flex-col gap-[1px]"><div className="w-3 h-[1px] bg-current" /><div className="w-3 h-[1px] bg-current" /></div>} label="去剪映编辑" />
+                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
                           <VideoToolButton icon={<div className="relative"><ChevronRightIcon className="h-3 w-3 rotate-180" /><div className="absolute inset-0 flex items-center justify-center translate-x-[2px]"><div className="w-1.5 h-1.5 rounded-full border border-current" /></div></div>} label="重新生成" />
-                          <VideoToolButton icon={<div className="relative"><ImageIcon className="h-3 w-3" /><Plus className="absolute -top-1 -right-1 h-2 w-2" /></div>} label="引用到输入框" />
+                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
+                          <VideoToolButton 
+                            icon={<div className="relative"><ImageIcon className="h-3 w-3" /><Plus className="absolute -top-1 -right-1 h-2 w-2" /></div>} 
+                            label="引用到输入框" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const event = new CustomEvent('quote-video', { 
+                                detail: { name: 'onepunch-promo.mp4', url: videoFileUrl, type: 'video' } 
+                              });
+                              window.dispatchEvent(event);
+                            }}
+                          />
+                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
                           <VideoToolButton icon={<div className="px-1 border border-current rounded-[2px] text-[8px] font-bold">HD</div>} label="提升画质" />
+                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
                           <VideoToolButton icon={<div className="relative"><div className="w-3 h-3 border border-current rounded-[1px]" /><div className="absolute top-0 right-0 w-1.5 h-1.5 border-t border-r border-current" /></div>} label="字幕擦除" />
+                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
                           <VideoToolButton icon={<Download className="h-3.5 w-3.5" />} label="下载" />
+                          <div className="w-[1px] h-4 bg-white/10 mx-0.5 self-center" />
                           <VideoToolButton icon={<AudioLines className="h-3.5 w-3.5" />} label="取消静音" />
                         </div>
 
@@ -1391,5 +1408,38 @@ function StoryboardContent() {
         ))}
       </div>
     </div>
+  );
+}
+
+function VideoToolButton({ 
+  icon, 
+  label, 
+  active = false,
+  onClick
+}: { 
+  icon: React.ReactNode; 
+  label: string; 
+  active?: boolean;
+  onClick?: (e: React.MouseEvent) => void;
+}) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button 
+          onClick={onClick}
+          className={cn(
+            "w-9 h-9 flex items-center justify-center transition-all rounded-[10px]",
+            active 
+              ? "bg-white text-black shadow-lg" 
+              : "text-white/80 hover:bg-white/10 hover:text-white"
+          )}
+        >
+          {icon}
+        </button>
+      </PopoverTrigger>
+      <PopoverContent side="top" align="center" sideOffset={12} className="px-2 py-1 bg-black/80 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold rounded-lg w-fit shadow-2xl animate-in zoom-in-95 duration-200">
+        {label}
+      </PopoverContent>
+    </Popover>
   );
 }
