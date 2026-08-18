@@ -480,17 +480,22 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
 
-            <Popover>
+            <Popover open={prefHover} onOpenChange={setPrefHover}>
               <PopoverTrigger asChild>
-                <button type="button">
+                <div 
+                  onMouseEnter={() => setPrefHover(true)}
+                  onMouseLeave={() => setPrefHover(false)}
+                >
                   <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
-                </button>
+                </div>
               </PopoverTrigger>
               <PopoverContent 
                 side="top" 
                 align="center"
                 sideOffset={16} 
                 className="w-[660px] p-0 border-none bg-transparent shadow-none z-[100]"
+                onMouseEnter={() => setPrefHover(true)}
+                onMouseLeave={() => setPrefHover(false)}
               >
                 <CreativePreferencePicker />
               </PopoverContent>
