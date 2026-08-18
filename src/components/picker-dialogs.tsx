@@ -948,12 +948,25 @@ export function CreativePreferencePicker() {
               <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
             </div>
             <div className="relative flex items-center group/slider">
-              <div className="flex gap-2.5 overflow-x-auto scrollbar-hide pb-2">
+              <button 
+                className="absolute -left-2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
+                onClick={() => {
+                  const container = document.getElementById('ratio-container');
+                  if (container) container.scrollBy({ left: -100, behavior: 'smooth' });
+                }}
+              >
+                <ChevronRight className="w-3 h-3 rotate-180" />
+              </button>
+              
+              <div 
+                id="ratio-container"
+                className="flex gap-2.5 overflow-x-auto scrollbar-hide pb-1 px-1 snap-x"
+              >
                 {currentRatios.map((r) => (
                   <button
                     key={r.label}
                     onClick={() => setRatio(r.label)}
-                    className={`flex flex-col items-center justify-center w-14 h-14 rounded-xl border shrink-0 transition-all ${
+                    className={`flex flex-col items-center justify-center w-14 h-14 rounded-xl border shrink-0 transition-all snap-start ${
                       ratio === r.label 
                         ? 'bg-white border-black text-black shadow-md shadow-black/5' 
                         : 'bg-[#F8F8F8] border-transparent text-[#666] hover:bg-[#F0F0F0]'
@@ -964,6 +977,16 @@ export function CreativePreferencePicker() {
                   </button>
                 ))}
               </div>
+
+              <button 
+                className="absolute -right-2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
+                onClick={() => {
+                  const container = document.getElementById('ratio-container');
+                  if (container) container.scrollBy({ left: 100, behavior: 'smooth' });
+                }}
+              >
+                <ChevronRight className="w-3 h-3" />
+              </button>
             </div>
           </section>
 
