@@ -1195,7 +1195,7 @@ export function CreativePreferencePicker() {
                         : "bg-[#F5F5F5] dark:bg-white/5 text-[#666] dark:text-white/40 border-transparent border hover:bg-[#F0F0F0] dark:hover:bg-white/10"
                     }`}
                   >
-                    {durationMode === "custom" && <div className="w-1 h-1 rounded-full bg-black" />}
+                    {durationMode === "custom" && <div className="w-1 h-1 rounded-full bg-black dark:bg-white" />}
                     <span className="text-[12px] font-bold">自定义时长</span>
                     {durationMode === "custom" && (
                       <div className="flex items-center ml-1">
