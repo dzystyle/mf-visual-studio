@@ -262,7 +262,7 @@ export function PromptBox({
           )}
           
           {/* 输入框内的引用 (图1: @选择资源后只会显示小图标) */}
-          {!isMini && attachments.filter(a => text.includes(`@${a.name}`)).map((a) => (
+          {!isMini && attachments.filter(a => selectedMentions.includes(a.name)).map((a) => (
             <div key={`inline-${a.id}`} className="inline-flex items-center animate-in zoom-in-95 duration-200">
               {a.url && (
                 <Popover>
