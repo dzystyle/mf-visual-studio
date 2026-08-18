@@ -489,9 +489,7 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
 
-            <Popover onOpenChange={(open) => {
-              // Option to force re-render if needed or track state
-            }}>
+            <Popover>
               <PopoverTrigger asChild>
                 <div className="relative group/pref">
                   <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 opacity-0 group-hover/pref:opacity-100 group-data-[state=open]:hidden transition-all duration-300 pointer-events-none z-[120]">
