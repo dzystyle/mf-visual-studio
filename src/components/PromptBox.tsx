@@ -492,8 +492,8 @@ export function PromptBox({
             <Popover>
               <PopoverTrigger asChild>
                 <div className="relative group/pref">
-                  <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 opacity-0 group-hover/pref:opacity-100 group-data-[state=open]/pref:hidden transition-all duration-300 pointer-events-none z-[120]">
-                    <div className="bg-[#1A1A1A] text-white rounded-full px-5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.24)] whitespace-nowrap border border-white/10 backdrop-blur-md">
+                  <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 opacity-0 group-hover/pref:opacity-100 group-data-[state=open]:hidden transition-all duration-300 pointer-events-none z-[120]">
+                    <div className="bg-[#1A1A1A] text-white rounded-[20px] px-5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.24)] whitespace-nowrap border border-white/10 backdrop-blur-md">
                       <div className="flex flex-col gap-0.5">
                         <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                           <span className="text-white/60">视频:</span>
@@ -506,12 +506,9 @@ export function PromptBox({
                       </div>
                     </div>
                   </div>
-                  <button type="button" className="group-data-[state=open]/pref:hidden">
+                  <button type="button">
                     <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
                   </button>
-                  <div className="hidden group-data-[state=open]/pref:block">
-                    <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
-                  </div>
                 </div>
               </PopoverTrigger>
               <PopoverContent 
