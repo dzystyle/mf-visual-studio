@@ -1216,7 +1216,7 @@ export function CreativePreferencePicker() {
                 
                 <div className={`mt-6 relative px-1 transition-opacity duration-200 ${durationMode === 'custom' ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
                   <div 
-                    className="h-1 bg-[#F0F0F0] rounded-full w-full relative cursor-pointer"
+                    className="h-1 bg-[#F0F0F0] dark:bg-white/10 rounded-full w-full relative cursor-pointer"
                     onClick={(e) => {
                       if (durationMode !== 'custom') return;
                       const rect = e.currentTarget.getBoundingClientRect();
