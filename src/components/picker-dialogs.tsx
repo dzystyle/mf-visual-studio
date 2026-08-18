@@ -1208,7 +1208,7 @@ export function CreativePreferencePicker() {
                           }}
                           className="bg-transparent text-[12px] font-bold text-black dark:text-white w-7 outline-none text-center"
                         />
-                        <span className="text-[12px] font-medium text-[#999]">秒</span>
+                        <span className="text-[12px] font-medium text-[#999] dark:text-white/30">秒</span>
                       </div>
                     )}
                   </button>
