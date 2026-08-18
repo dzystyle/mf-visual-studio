@@ -920,6 +920,19 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_groupEnabled", groupEnabled.toString()); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [groupEnabled]);
+  useEffect(() => { 
+    localStorage.setItem("pref_videoAudio", videoAudio.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [videoAudio]);
+  useEffect(() => { 
+    localStorage.setItem("pref_videoCount", videoCount.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [videoCount]);
+  useEffect(() => { 
+    localStorage.setItem("pref_videoWatermark", videoWatermark.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [videoWatermark]);
+
 
 
 
