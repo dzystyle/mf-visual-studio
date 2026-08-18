@@ -798,6 +798,7 @@ export function CreativePreferencePicker() {
   const [ratio, setRatio] = useState("智能");
   const [resolution, setResolution] = useState("720P");
   const [duration, setDuration] = useState(85);
+  const [durationMode, setDurationMode] = useState<"smart" | "custom">("smart");
   const [canvas, setCanvas] = useState(false);
 
   const videoModels = [
