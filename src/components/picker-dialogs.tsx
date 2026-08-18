@@ -932,23 +932,30 @@ export function CreativePreferencePicker() {
               <h4 className="text-[12px] font-bold text-[#999]">画面比例</h4>
               <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
             </div>
-            <div className="flex gap-2.5">
-              {ratios.map((r) => (
-                <button
-                  key={r.label}
-                  onClick={() => setRatio(r.label)}
-                  className={`flex flex-col items-center justify-center w-14 h-14 rounded-xl border transition-all ${
-                    ratio === r.label 
-                      ? 'bg-white border-black text-black shadow-md shadow-black/5' 
-                      : 'bg-[#F8F8F8] border-transparent text-[#666] hover:bg-[#F0F0F0]'
-                  }`}
-                >
-                  <div className="scale-90">{r.icon}</div>
-                  <span className="text-[10px] font-bold mt-1.5">{r.label}</span>
-                </button>
-              ))}
-              <button className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#F8F8F8] text-[#666] hover:bg-[#F0F0F0] transition-colors">
-                <ChevronRight className="w-4 h-4" />
+            <div className="relative flex items-center group/slider">
+              <button className="absolute -left-4 z-10 w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-sm">
+                <ChevronRight className="w-3 h-3 rotate-180" />
+              </button>
+              
+              <div className="flex gap-2.5 overflow-hidden">
+                {ratios.map((r) => (
+                  <button
+                    key={r.label}
+                    onClick={() => setRatio(r.label)}
+                    className={`flex flex-col items-center justify-center w-14 h-14 rounded-xl border shrink-0 transition-all ${
+                      ratio === r.label 
+                        ? 'bg-white border-black text-black shadow-md shadow-black/5' 
+                        : 'bg-[#F8F8F8] border-transparent text-[#666] hover:bg-[#F0F0F0]'
+                    }`}
+                  >
+                    <div className="scale-90">{r.icon}</div>
+                    <span className="text-[10px] font-bold mt-1.5">{r.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              <button className="absolute -right-4 z-10 w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-sm">
+                <ChevronRight className="w-3 h-3" />
               </button>
             </div>
           </section>
