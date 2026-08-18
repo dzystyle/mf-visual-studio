@@ -559,20 +559,32 @@ export function PromptBox({
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                             <span className="text-white/60">视频{prefs.isAutoMode && "(自动模式)"}:</span>
                             <span>
-                              {prefs.videoModel} · {prefs.videoRatio}比例 · {prefs.resolution} · {prefs.duration}秒
-                              {prefs.videoAudio && ` · 带音频`}
-                              {prefs.videoCount > 1 && ` · x${prefs.videoCount}`}
-                              {!prefs.videoWatermark && ` · 无水印`}
+                              {prefs.isAutoMode ? (
+                                "智能匹配模型"
+                              ) : (
+                                <>
+                                  {prefs.videoModel} · {prefs.videoRatio}比例 · {prefs.resolution} · {prefs.duration}秒
+                                  {prefs.videoAudio && ` · 带音频`}
+                                  {prefs.videoCount > 1 && ` · x${prefs.videoCount}`}
+                                  {!prefs.videoWatermark && ` · 无水印`}
+                                </>
+                              )}
                             </span>
                           </div>
 
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                             <span className="text-white/60">图片{prefs.isAutoMode && "(自动模式)"}:</span>
                             <span>
-                              {prefs.imageModel} · {prefs.imageRatio}比例 · 4K
-                              {prefs.imgFormat !== 'jpeg' && ` · ${prefs.imgFormat.toUpperCase()}`}
-                              {prefs.groupEnabled && ` · 组图(${prefs.groupType === 'link' ? '关联' : '并行'}${prefs.groupAuto ? 'Auto' : prefs.groupCount})`}
-                              {prefs.watermark && ` · 水印`}
+                              {prefs.isAutoMode ? (
+                                "智能匹配模型"
+                              ) : (
+                                <>
+                                  {prefs.imageModel} · {prefs.imageRatio}比例 · 4K
+                                  {prefs.imgFormat !== 'jpeg' && ` · ${prefs.imgFormat.toUpperCase()}`}
+                                  {prefs.groupEnabled && ` · 组图(${prefs.groupType === 'link' ? '关联' : '并行'}${prefs.groupAuto ? 'Auto' : prefs.groupCount})`}
+                                  {prefs.watermark && ` · 水印`}
+                                </>
+                              )}
                             </span>
                           </div>
                         </div>
