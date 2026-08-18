@@ -1005,7 +1005,7 @@ export function CreativePreferencePicker() {
           <div className="flex bg-[#F5F5F5] dark:bg-white/5 p-1 rounded-xl">
             <button 
               onClick={() => setActiveMode("video")}
-              className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'video' ? 'bg-white shadow-sm text-black' : 'text-[#666]'}`}
+              className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'video' ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#666] dark:text-white/40'}`}
             >
               视频偏好
             </button>
