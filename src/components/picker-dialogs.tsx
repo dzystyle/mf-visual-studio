@@ -1267,7 +1267,7 @@ export function CreativePreferencePicker() {
                 </div>
               </section>
 
-              <div className="flex items-start gap-8">
+              <div className="flex items-start gap-8 mt-2">
                 <section className="flex-1">
                   <div className="flex items-center gap-1 mb-4 whitespace-nowrap">
                     <Music className="w-3.5 h-3.5 text-[#999]" />
