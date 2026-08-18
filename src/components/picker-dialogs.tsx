@@ -1097,7 +1097,7 @@ export function CreativePreferencePicker() {
         </div>
 
         {/* Vertical Divider */}
-        <div className="w-px bg-[#F0F0F0]" />
+        <div className="w-px bg-[#F0F0F0] dark:bg-white/5" />
 
         {/* Right Side: Parameters */}
         <div className="flex-1 space-y-8">
