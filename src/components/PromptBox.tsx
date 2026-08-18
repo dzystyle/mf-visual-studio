@@ -121,16 +121,6 @@ export function PromptBox({
       const id = `${Date.now()}-${f.name}`;
       const url = kind === "image" ? URL.createObjectURL(f) : undefined;
       
-      // Automatically add @mention for newly uploaded files
-      const mention = `@${f.name}`;
-      setText(prev => {
-        const space = prev.length > 0 && !prev.endsWith(" ") ? " " : "";
-        if (!prev.includes(mention)) {
-          return prev + space + mention + " ";
-        }
-        return prev;
-      });
-
       return {
         id,
         name: f.name,
@@ -277,36 +267,29 @@ export function PromptBox({
             </div>
           )}
           
-          {/* 输入框内的引用 (图2: @完后图片在输入框展示) */}
+          {/* 输入框内的引用 (图1: @选择资源后只会显示小图标) */}
           {!isMini && attachments.filter(a => text.includes(`@${a.name}`)).map((a) => (
-            <div key={`inline-${a.id}`} className="inline-flex h-[28px] items-center gap-1.5 rounded-md bg-primary/10 border border-primary/20 pl-1 pr-1.5 py-0.5 text-[13px] text-primary font-medium animate-in zoom-in-95 duration-200 group">
+            <div key={`inline-${a.id}`} className="inline-flex items-center animate-in zoom-in-95 duration-200">
               {a.url && (
                 <Popover>
                   <PopoverTrigger asChild>
-                    <div className="h-5 w-5 shrink-0 rounded-[4px] overflow-hidden border border-primary/10 cursor-help transition-transform hover:scale-110">
+                    <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm">
                       <img src={a.url} alt="" className="w-full h-full object-cover" />
                     </div>
                   </PopoverTrigger>
-                  {/* 鼠标悬停预览 (图3: 鼠标移动到输入框图片预览展示) */}
-                  <PopoverContent side="top" align="center" className="w-48 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200 z-[110]">
+                  {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
+                  <PopoverContent side="bottom" align="start" sideOffset={8} className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]">
                     <div className="space-y-2">
-                      <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border">
+                      <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
                         <img src={a.url} alt="" className="w-full h-full object-cover" />
                       </div>
-                      <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1">
+                      <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
                         {a.name}
                       </div>
                     </div>
                   </PopoverContent>
                 </Popover>
               )}
-              <span className="leading-none tracking-tight">{a.name}</span>
-              <button 
-                onClick={() => removeAttachment(a.id, a.name)}
-                className="text-primary/40 hover:text-primary transition-colors"
-              >
-                <X className="h-3 w-3" />
-              </button>
             </div>
           ))}
           
