@@ -12,6 +12,7 @@ import {
   ChevronDown,
   Search,
   Mic,
+  AtSign,
 } from "lucide-react";
 import {
   ModelPicker,
