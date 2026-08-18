@@ -145,11 +145,17 @@ export function PromptBox({
     setAttachments((prev) => prev.filter((a) => a.id !== id));
     if (name) {
       setText(prev => {
-        const mention = `@${name}`;
-        if (prev.includes(mention)) {
-          return prev.replace(new RegExp(`@${name}\\s?`), "");
+        // Find both cases: "@name " and "@name"
+        const mentionWithSpace = `@${name} `;
+        const mentionWithoutSpace = `@${name}`;
+        
+        let newText = prev;
+        if (prev.includes(mentionWithSpace)) {
+          newText = prev.replace(mentionWithSpace, "");
+        } else if (prev.includes(mentionWithoutSpace)) {
+          newText = prev.replace(mentionWithoutSpace, "");
         }
-        return prev;
+        return newText.trim() + (newText.endsWith(" ") ? " " : "");
       });
     }
   };
