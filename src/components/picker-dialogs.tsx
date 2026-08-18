@@ -266,8 +266,8 @@ export function SkillPicker({
   return (
     <div className="w-[480px] flex flex-col rounded-[28px] bg-white dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
       <div className="flex items-center justify-between px-6 py-5 border-b border-[#F0F0F0] dark:border-white/5">
-        <h3 className="text-sm font-bold text-[#1A1A1A]">Skill</h3>
-        <button className="flex items-center gap-0.5 text-[11px] font-bold text-[#999] hover:text-[#666] transition-colors">
+        <h3 className="text-sm font-bold text-[#1A1A1A] dark:text-white/90">Skill</h3>
+        <button className="flex items-center gap-0.5 text-[11px] font-bold text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/80 transition-colors">
           更多 <ChevronRight className="h-3 w-3" />
         </button>
       </div>
