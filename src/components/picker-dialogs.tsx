@@ -1178,8 +1178,8 @@ export function CreativePreferencePicker() {
                     onClick={() => setDurationMode("smart")}
                     className={`px-5 py-2 rounded-xl text-[12px] font-bold transition-all ${
                       durationMode === "smart" 
-                        ? "bg-white border-black text-black shadow-md border" 
-                        : "bg-[#F5F5F5] text-[#666] border-transparent border hover:bg-[#F0F0F0]"
+                        ? "bg-white dark:bg-white/10 border-black dark:border-white text-black dark:text-white shadow-md border" 
+                        : "bg-[#F5F5F5] dark:bg-white/5 text-[#666] dark:text-white/40 border-transparent border hover:bg-[#F0F0F0] dark:hover:bg-white/10"
                     }`}
                   >
                     <div className="flex items-center gap-2">
