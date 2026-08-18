@@ -1374,7 +1374,7 @@ export function CreativePreferencePicker() {
                       <button
                         onClick={() => setGroupType("parallel")}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                          groupType === "parallel" ? 'bg-primary text-white shadow-sm' : 'text-[#666] hover:text-black'
+                          groupType === "parallel" ? 'bg-primary text-white shadow-sm' : 'text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white'
                         }`}
                       >
                         并行
