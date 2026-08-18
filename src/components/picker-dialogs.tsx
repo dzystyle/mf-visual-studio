@@ -894,11 +894,11 @@ export function CreativePreferencePicker() {
         </div>
       </div>
 
-      <div className="flex px-6 py-6 gap-8">
-        {/* Left Side: Model Selection - Increased width */}
-        <div className="flex-1 max-w-[320px]">
+      <div className="flex px-6 py-6 gap-6">
+        {/* Left Side: Model Selection - Reference image layout */}
+        <div className="flex-1 max-w-[340px]">
           <h4 className="text-[12px] font-bold text-[#999] mb-4">模型选择</h4>
-          <div className="space-y-5 max-h-[380px] overflow-y-auto pr-2 scrollbar-hide">
+          <div className="space-y-4 max-h-[380px] overflow-y-auto pr-2 scrollbar-hide">
             {(activeMode === "video" ? videoModels : imageModels).map((m) => {
               const isActive = activeMode === "video" ? videoModel === m.name : imageModel === m.name;
               return (
@@ -907,12 +907,12 @@ export function CreativePreferencePicker() {
                   onClick={() => activeMode === "video" ? setVideoModel(m.name) : setImageModel(m.name)}
                   className="w-full text-left group"
                 >
-                  <div className="flex items-start gap-2.5">
-                    <div className="mt-1 w-3.5 h-3.5 flex items-center justify-center">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1.5 w-4 h-4 flex items-center justify-center shrink-0">
                       {isActive ? (
-                        <Check className="w-3.5 h-3.5 text-black stroke-[3px]" />
+                        <Check className="w-4 h-4 text-black stroke-[3px]" />
                       ) : (
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5]" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] group-hover:bg-[#CCC]" />
                       )}
                     </div>
                     <div className="flex-1">
