@@ -481,15 +481,26 @@ export function PromptBox({
 
             <Popover>
               <PopoverTrigger asChild>
-                <button type="button">
+                <div 
+                  className="group relative"
+                  onMouseEnter={() => {
+                    const el = document.getElementById('pref-capsule');
+                    if (el) el.style.opacity = '1';
+                  }}
+                  onMouseLeave={() => {
+                    const el = document.getElementById('pref-capsule');
+                    if (el) el.style.opacity = '0';
+                  }}
+                >
                   <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
-                </button>
+                </div>
               </PopoverTrigger>
               <PopoverContent 
                 side="top" 
                 align="center"
                 sideOffset={16} 
                 className="w-[660px] p-0 border-none bg-transparent shadow-none z-[100]"
+                onOpenAutoFocus={(e) => e.preventDefault()}
               >
                 <CreativePreferencePicker />
               </PopoverContent>
