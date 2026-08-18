@@ -549,6 +549,7 @@ export function PromptBox({
                   onSubmit(v, canvasMode); 
                   setText(""); 
                   setAttachments([]);
+                  setSelectedMentions([]);
                 }
               }} className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
             >
