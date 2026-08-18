@@ -59,6 +59,7 @@ export function PromptBox({
   const [assetsOpen, setAssetsOpen] = useState(false);
   const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
+  const [hoveredMentionId, setHoveredMentionId] = useState<string | null>(null);
   const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number, id: string}[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
   const [cursorPos, setCursorPos] = useState(0);
@@ -277,12 +278,15 @@ export function PromptBox({
 
               const att = attachments.find(a => a.name === m.name);
               if (att && att.url) {
+                const mentionKey = `inline-${m.id}-${idx}`;
                 contentItems.push(
                   <div 
-                    key={`inline-${m.id}-${idx}`} 
+                    key={mentionKey} 
                     className="inline-flex items-center mx-0.5 animate-in zoom-in-95 duration-200 align-middle"
+                    onMouseEnter={() => setHoveredMentionId(mentionKey)}
+                    onMouseLeave={() => setHoveredMentionId(null)}
                   >
-                    <Popover>
+                    <Popover open={hoveredMentionId === mentionKey}>
                       <PopoverTrigger asChild>
                         <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
                           <img src={att.url} alt="" className="w-full h-full object-cover" />
@@ -369,7 +373,7 @@ export function PromptBox({
                           }
                         }
                       }}
-                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            输入框现在@后选择图片不会在输入框显示了修复一下" : ""}
+                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            输入框的小图标现在书需要鼠标点击一下才显示预览需要改成鼠标移动输入框的小图标就显示预览." : ""}
                       className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
                         isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
                       }`}
