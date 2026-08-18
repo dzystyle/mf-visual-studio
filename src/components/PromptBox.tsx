@@ -491,11 +491,40 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
 
-            <Popover>
+            <Popover open={prefOpen} onOpenChange={setPrefOpen}>
               <PopoverTrigger asChild>
-                <button type="button">
-                  <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
-                </button>
+                <div 
+                  className="relative"
+                  onMouseEnter={() => setPrefHovered(true)}
+                  onMouseLeave={() => setPrefHovered(false)}
+                >
+                  <button type="button">
+                    <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
+                  </button>
+                  
+                  {/* Hover Capsule Menu */}
+                  {prefHovered && !prefOpen && (
+                    <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 animate-in fade-in slide-in-from-bottom-2 duration-200 z-[80]">
+                      <div className="bg-[#1A1A1A] text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-xl flex items-center gap-3 whitespace-nowrap backdrop-blur-md">
+                        <div className="flex items-center gap-1.5 opacity-60">
+                          <span className="w-1 h-1 rounded-full bg-white/40" />
+                          <span>12/秒</span>
+                        </div>
+                        <div className="w-[1px] h-2 bg-white/10" />
+                        <div className="flex items-center gap-1.5 opacity-60">
+                          <span className="w-1 h-1 rounded-full bg-white/40" />
+                          <span>16:9</span>
+                        </div>
+                        <div className="w-[1px] h-2 bg-white/10" />
+                        <div className="flex items-center gap-1.5 opacity-60">
+                          <span className="w-1 h-1 rounded-full bg-white/40" />
+                          <span>720P</span>
+                        </div>
+                      </div>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-[#1A1A1A]" />
+                    </div>
+                  )}
+                </div>
               </PopoverTrigger>
               <PopoverContent 
                 side="top" 
