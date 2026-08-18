@@ -479,7 +479,10 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
 
-            <Popover>
+            <Popover onOpenChange={(open) => {
+              const el = document.getElementById('pref-capsule');
+              if (el) el.style.opacity = '0';
+            }}>
               <PopoverTrigger asChild>
                 <div 
                   className="group relative"
@@ -492,7 +495,9 @@ export function PromptBox({
                     if (el) el.style.opacity = '0';
                   }}
                 >
-                  <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
+                  <button type="button">
+                    <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
+                  </button>
                 </div>
               </PopoverTrigger>
               <PopoverContent 
