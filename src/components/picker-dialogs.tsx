@@ -1391,7 +1391,6 @@ export function CreativePreferencePicker() {
                   ))}
                 </div>
               </section>
-              </section>
 
               {/* Image Quality Selection for GPT Image 2 */}
               {imageModel === "GPT Image 2" && (
