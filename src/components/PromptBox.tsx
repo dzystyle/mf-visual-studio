@@ -285,99 +285,122 @@ export function PromptBox({
 
             return (
               <>
-                {inlineAttachments.map((a, idx) => (
-                  <div 
-                    key={`inline-${a.id}-${idx}`} 
-                    className="inline-flex items-center animate-in zoom-in-95 duration-200"
-                    style={{ order: a.mentionPos }}
-                  >
-                    {a.url && (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
-                            <img src={a.url} alt="" className="w-full h-full object-cover" />
-                          </div>
-                        </PopoverTrigger>
-                        {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
-                        <PopoverContent 
-                          side="bottom" 
-                          align="start" 
-                          sideOffset={12} 
-                          className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
+                {(() => {
+                  let lastPos = 0;
+                  const result = [];
+                  const sortedMentions = [...selectedMentions].sort((a, b) => a.position - b.position);
+
+                  sortedMentions.forEach((m, idx) => {
+                    const segment = text.slice(lastPos, m.position);
+                    if (segment) {
+                      result.push(
+                        <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-2 align-middle">
+                          {segment}
+                        </span>
+                      );
+                    }
+
+                    const att = attachments.find(a => a.id === m.id);
+                    if (att && att.url) {
+                      result.push(
+                        <div 
+                          key={`inline-${m.id}-${idx}`} 
+                          className="inline-flex items-center mx-0.5 animate-in zoom-in-95 duration-200 align-middle"
                         >
-                          <div className="space-y-2">
-                            <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
-                              <img src={a.url} alt="" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
-                              {a.name}
-                            </div>
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                    )}
-                  </div>
-                ))}
-                <div 
-                  className="flex-1 min-w-[200px] relative" 
-                  style={{ order: cursorPos }}
-                >
-                  <textarea
-                    ref={textareaRef}
-                    rows={1}
-                    value={text}
-                    onChange={(e) => {
-                      const newText = e.target.value;
-                      const newCursorPos = e.target.selectionStart || 0;
-                      
-                      if (newText.length < text.length) {
-                        setSelectedMentions(prev => prev.map(m => {
-                          if (m.position > newCursorPos) {
-                            return { ...m, position: Math.max(0, m.position - (text.length - newText.length)) };
-                          }
-                          return m;
-                        }));
-                      } else if (newText.length > text.length) {
-                        setSelectedMentions(prev => prev.map(m => {
-                          if (m.position >= cursorPos) {
-                            return { ...m, position: m.position + (newText.length - text.length) };
-                          }
-                          return m;
-                        }));
-                      }
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
+                                <img src={att.url} alt="" className="w-full h-full object-cover" />
+                              </div>
+                            </PopoverTrigger>
+                            <PopoverContent 
+                              side="bottom" 
+                              align="start" 
+                              sideOffset={12} 
+                              className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
+                            >
+                              <div className="space-y-2">
+                                <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
+                                  <img src={att.url} alt="" className="w-full h-full object-cover" />
+                                </div>
+                                <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
+                                  {att.name}
+                                </div>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                      );
+                    }
+                    lastPos = m.position;
+                  });
 
-                      setText(newText);
-                      setCursorPos(newCursorPos);
-                    }}
-                    onKeyUp={(e) => {
-                      setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
-                    }}
-                    onClick={(e) => {
-                      setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
-                        setSelectedMentions(prev => prev.slice(0, -1));
-                        return;
-                      }
+                  const remainingText = text.slice(lastPos);
+                  
+                  return (
+                    <div className="flex-1 flex flex-wrap items-center">
+                      {result}
+                      <div className="relative inline-block min-w-[4px] align-middle flex-1">
+                        <textarea
+                          ref={textareaRef}
+                          rows={1}
+                          value={remainingText}
+                          onChange={(e) => {
+                            const newRemainingText = e.target.value;
+                            const newTotalText = text.slice(0, lastPos) + newRemainingText;
+                            const newCursorPos = lastPos + (e.target.selectionStart || 0);
+                            
+                            if (newTotalText.length < text.length) {
+                              setSelectedMentions(prev => prev.map(m => {
+                                if (m.position > lastPos) {
+                                  return { ...m, position: Math.max(lastPos, m.position - (text.length - newTotalText.length)) };
+                                }
+                                return m;
+                              }));
+                            } else if (newTotalText.length > text.length) {
+                              setSelectedMentions(prev => prev.map(m => {
+                                if (m.position >= lastPos) {
+                                  return { ...m, position: m.position + (newTotalText.length - text.length) };
+                                }
+                                return m;
+                              }));
+                            }
 
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        const v = text.trim();
-                        if (v && onSubmit) {
-                          onSubmit(v, canvasMode);
-                          setText("");
-                          setAttachments([]);
-                          setSelectedMentions([]);
-                        }
-                      }
-                    }}
-                    placeholder="由一个想法或故事开始..."
-                    className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none ${
-                      isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
-                    }`}
-                  />
-                </div>
+                            setText(newTotalText);
+                            setCursorPos(newCursorPos);
+                          }}
+                          onKeyUp={(e) => {
+                            setCursorPos(lastPos + ((e.target as HTMLTextAreaElement).selectionStart || 0));
+                          }}
+                          onClick={(e) => {
+                            setCursorPos(lastPos + ((e.target as HTMLTextAreaElement).selectionStart || 0));
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Backspace" && remainingText === "" && selectedMentions.length > 0) {
+                              setSelectedMentions(prev => prev.slice(0, -1));
+                              return;
+                            }
+
+                            if (e.key === "Enter" && !e.shiftKey) {
+                              e.preventDefault();
+                              const v = text.trim();
+                              if (v && onSubmit) {
+                                onSubmit(v, canvasMode);
+                                setText("");
+                                setAttachments([]);
+                                setSelectedMentions([]);
+                              }
+                            }
+                          }}
+                          placeholder={text === "" ? "由一个想法或故事开始..." : ""}
+                          className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
+                            isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  );
+                })()}
               </>
             );
           })()}
