@@ -840,6 +840,11 @@ export function CreativePreferencePicker() {
     if (typeof window === 'undefined') return false;
     return localStorage.getItem("pref_watermark") === "true";
   });
+  const [groupAuto, setGroupAuto] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem("pref_groupAuto") === "true";
+  });
+
 
   // Persist changes to localStorage
   useEffect(() => { 
