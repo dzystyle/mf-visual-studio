@@ -870,8 +870,8 @@ export function CreativePreferencePicker() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1 text-[#9333EA] font-bold">
             <Sparkles className="w-3.5 h-3.5 fill-current" />
-            <span className="text-xs">12/张</span>
-            <span className="text-[#999] font-normal text-[10px] ml-0.5 line-through">14/张</span>
+            <span className="text-xs">{activeMode === 'video' ? '12/秒' : '12/张'}</span>
+            <span className="text-[#999] font-normal text-[10px] ml-0.5 line-through">{activeMode === 'video' ? '14/秒' : '14/张'}</span>
           </div>
         </div>
       </div>
