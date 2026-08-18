@@ -1347,7 +1347,7 @@ export function CreativePreferencePicker() {
 
               {/* Group Image Settings */}
               <section>
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1">
                     <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
                     <h4 className="text-[12px] font-bold text-[#999]">组图</h4>
