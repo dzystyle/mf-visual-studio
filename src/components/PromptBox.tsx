@@ -64,6 +64,8 @@ export function PromptBox({
   const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number, id: string}[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
   const [cursorPos, setCursorPos] = useState(0);
+  const [prefHovered, setPrefHovered] = useState(false);
+  const [prefOpen, setPrefOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pendingKind = useRef<Attachment["kind"]>("image");
