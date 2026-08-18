@@ -59,6 +59,7 @@ export function PromptBox({
   const [assetsOpen, setAssetsOpen] = useState(false);
   const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
+  const [selectedMentions, setSelectedMentions] = useState<string[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
   const [cursorPos, setCursorPos] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -134,6 +135,7 @@ export function PromptBox({
   const removeAttachment = (id: string, name?: string) => {
     setAttachments((prev) => prev.filter((a) => a.id !== id));
     if (name) {
+      setSelectedMentions(prev => prev.filter(n => n !== name));
       setText(prev => {
         // Find both cases: "@name " and "@name"
         const mentionWithSpace = `@${name} `;
@@ -161,7 +163,6 @@ export function PromptBox({
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
       
-      // We keep everything before the @ and everything after the current mention context
       newText = (before + after);
       newCursorPos = before.length;
     } else {
@@ -185,6 +186,10 @@ export function PromptBox({
             url
           }
         ]);
+      }
+      // Track that this asset is selected to be shown as an inline chip
+      if (!selectedMentions.includes(name)) {
+        setSelectedMentions(prev => [...prev, name]);
       }
     }
 
@@ -258,7 +263,7 @@ export function PromptBox({
           )}
           
           {/* 输入框内的引用 (图1: @选择资源后只会显示小图标) */}
-          {!isMini && attachments.filter(a => text.includes(`@${a.name}`)).map((a) => (
+          {!isMini && attachments.filter(a => selectedMentions.includes(a.name)).map((a) => (
             <div key={`inline-${a.id}`} className="inline-flex items-center animate-in zoom-in-95 duration-200">
               {a.url && (
                 <Popover>
@@ -305,6 +310,7 @@ export function PromptBox({
                   onSubmit(v, canvasMode);
                   setText("");
                   setAttachments([]);
+                  setSelectedMentions([]);
                 }
               }
             }}
@@ -543,6 +549,7 @@ export function PromptBox({
                   onSubmit(v, canvasMode); 
                   setText(""); 
                   setAttachments([]);
+                  setSelectedMentions([]);
                 }
               }} className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-muted-foreground transition hover:bg-foreground hover:text-background"
             >
