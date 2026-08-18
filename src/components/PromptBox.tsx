@@ -111,6 +111,7 @@ export function PromptBox({
         videoCount: Number(localStorage.getItem("pref_videoCount")) || 1,
         videoWatermark: localStorage.getItem("pref_videoWatermark") !== "false",
         isAutoMode: localStorage.getItem("pref_isAutoMode") !== "false",
+        imgQuality: (localStorage.getItem("pref_imgQuality") as "low" | "medium" | "high") || "medium",
       });
 
 
