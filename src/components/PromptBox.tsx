@@ -115,15 +115,29 @@ export function PromptBox({
     if (!files.length) return;
     const kind = pendingKind.current;
     
-    // We clear current skill when uploading files to avoid conflict
     setSkill(null);
     
-    const next = files.map((f) => ({
-      id: `${Date.now()}-${f.name}`,
-      name: f.name,
-      kind,
-      url: kind === "image" ? URL.createObjectURL(f) : undefined,
-    }));
+    const next = files.map((f) => {
+      const id = `${Date.now()}-${f.name}`;
+      const url = kind === "image" ? URL.createObjectURL(f) : undefined;
+      
+      // Automatically add @mention for newly uploaded files
+      const mention = `@${f.name}`;
+      setText(prev => {
+        const space = prev.length > 0 && !prev.endsWith(" ") ? " " : "";
+        if (!prev.includes(mention)) {
+          return prev + space + mention + " ";
+        }
+        return prev;
+      });
+
+      return {
+        id,
+        name: f.name,
+        kind,
+        url,
+      };
+    });
     setAttachments((prev) => [...prev, ...next]);
   };
 
