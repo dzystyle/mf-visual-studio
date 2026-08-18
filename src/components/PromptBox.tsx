@@ -681,7 +681,7 @@ function Chip({ icon: Icon, label, badge, active, onClear }: { icon: any; label:
   return (
     <div className={`relative flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition ${active ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'border-border bg-card/40 dark:bg-white/5 dark:border-white/10 text-foreground hover:bg-card dark:hover:bg-white/10'}`}>
       <Icon className={`h-3.5 w-3.5 ${active ? 'text-aurora-blue' : 'text-muted-foreground dark:text-white/40'}`} />
-      <span className="font-medium">{label}</span>
+      <span className="font-medium dark:text-white/70">{label}</span>
       {badge && <span className="flex h-4 items-center rounded bg-aurora-purple/20 px-1 text-[8px] font-bold uppercase text-aurora-purple">{badge}</span>}
       {onClear && <button onClick={(e) => { e.stopPropagation(); onClear(); }} className="ml-0.5 hover:text-aurora-blue"><X className="h-3 w-3" /></button>}
     </div>
