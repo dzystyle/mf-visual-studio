@@ -193,6 +193,45 @@ export function PromptBox({
     <div className={`glass shadow-2xl relative z-20 transition-all duration-500 ease-out-expo ${
       isMini ? 'rounded-full p-2 pl-6' : 'rounded-2xl p-5'
     }`}>
+      {/* 资源预览展示区 (图1: 上传后展示在上方) */}
+      {!isMini && attachments.length > 0 && (
+        <div className="flex flex-wrap gap-3 mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          {attachments.map((a) => (
+            <div key={a.id} className="group relative w-20 h-20 rounded-xl overflow-hidden border border-border bg-accent/20">
+              {a.url ? (
+                <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-muted-foreground/40">
+                  {a.kind === 'video' ? <Video className="w-8 h-8" /> : <FileText className="w-8 h-8" />}
+                </div>
+              )}
+              
+              {/* 悬浮遮罩 (图4: 鼠标移动到图片然后的展示) */}
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 p-1">
+                <button 
+                  onClick={() => handleMentionSelect(a.name, a.kind, a.url)}
+                  className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-white backdrop-blur-sm transition-all hover:scale-110"
+                  title="引用到输入框"
+                >
+                  <AtSign className="w-4 h-4" />
+                </button>
+                <button 
+                  onClick={() => removeAttachment(a.id, a.name)}
+                  className="w-6 h-6 rounded-full bg-red-500/20 hover:bg-red-500/40 flex items-center justify-center text-red-500 backdrop-blur-sm transition-all"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* 资源名小标签 */}
+              <div className="absolute bottom-0 inset-x-0 bg-black/40 backdrop-blur-sm py-0.5 px-1 text-[8px] text-white/80 truncate text-center group-hover:hidden">
+                {a.name}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="relative">
         <div className={`flex flex-wrap items-center gap-2 ${!isMini ? 'mb-2' : ''}`}>
           {!isMini && skill && (
@@ -207,17 +246,34 @@ export function PromptBox({
               </button>
             </div>
           )}
-          {!isMini && attachments.map((a) => (
-            <div key={a.id} className="inline-flex h-[32px] items-center gap-2 rounded-lg bg-white/10 border border-white/20 pl-1.5 pr-2 py-1 text-xs text-white animate-in fade-in slide-in-from-top-1 duration-300">
+          
+          {/* 输入框内的引用 (图2: @完后图片在输入框展示) */}
+          {!isMini && attachments.filter(a => text.includes(`@${a.name}`)).map((a) => (
+            <div key={`inline-${a.id}`} className="inline-flex h-[28px] items-center gap-1.5 rounded-md bg-primary/10 border border-primary/20 pl-1 pr-1.5 py-0.5 text-[13px] text-primary font-medium animate-in zoom-in-95 duration-200 group">
               {a.url && (
-                <div className="h-5 w-5 shrink-0 rounded overflow-hidden border border-white/10">
-                  <img src={a.url} alt="" className="w-full h-full object-cover" />
-                </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <div className="h-5 w-5 shrink-0 rounded-[4px] overflow-hidden border border-primary/10 cursor-help transition-transform hover:scale-110">
+                      <img src={a.url} alt="" className="w-full h-full object-cover" />
+                    </div>
+                  </PopoverTrigger>
+                  {/* 鼠标悬停预览 (图3: 鼠标移动到输入框图片预览展示) */}
+                  <PopoverContent side="top" align="center" className="w-48 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200 z-[110]">
+                    <div className="space-y-2">
+                      <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border">
+                        <img src={a.url} alt="" className="w-full h-full object-cover" />
+                      </div>
+                      <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1">
+                        {a.name}
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
               )}
-              <span className="leading-none">{a.name}</span>
+              <span className="leading-none tracking-tight">{a.name}</span>
               <button 
                 onClick={() => removeAttachment(a.id, a.name)}
-                className="hover:text-white/60 transition-colors"
+                className="text-primary/40 hover:text-primary transition-colors"
               >
                 <X className="h-3 w-3" />
               </button>
