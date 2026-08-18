@@ -114,7 +114,7 @@ function Home() {
 
       {/* Floating Mini Prompt Box */}
       <div 
-        className={`fixed bottom-8 left-1/2 z-[100] -translate-x-1/2 transition-all duration-500 ease-out-expo ${
+        className={`fixed bottom-8 left-1/2 z-[200] -translate-x-1/2 transition-all duration-500 ease-out-expo ${
           isScrolledToBottom ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'
         }`}
         onMouseEnter={() => setIsHoveredInMini(true)}
