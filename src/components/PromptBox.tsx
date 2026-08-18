@@ -59,7 +59,7 @@ export function PromptBox({
   const [assetsOpen, setAssetsOpen] = useState(false);
   const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
-  const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number}[]>([]);
+  const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number, id: string}[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
   const [cursorPos, setCursorPos] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -174,25 +174,31 @@ export function PromptBox({
     setMentionOpen(false);
     
     if (url) {
-      const exists = attachments.find(a => a.name === name);
-      if (!exists) {
-        const id = `${Date.now()}-${name}`;
+      let attachmentId: string;
+      const existingAttachment = attachments.find(a => a.name === name);
+      
+      if (!existingAttachment) {
+        attachmentId = `${Date.now()}-${name}`;
         setAttachments(prev => [
           ...prev,
           {
-            id,
+            id: attachmentId,
             name,
             kind: (kind as any) || "image",
             url
           }
         ]);
+      } else {
+        attachmentId = existingAttachment.id;
       }
+
       // Track that this asset is selected and its relative position in the text
-      // We store the position based on the current text structure
       setSelectedMentions(prev => {
-        // Only add if not already mentioned at this exact spot (prevent duplicates)
-        if (prev.some(m => m.name === name && m.position === newCursorPos)) return prev;
-        return [...prev, { name, position: newCursorPos }];
+        // Prevent duplicate insertion at same spot
+        if (prev.some(m => m.id === attachmentId && m.position === newCursorPos)) return prev;
+        
+        // Add new mention with a unique key for the instance
+        return [...prev, { name, position: newCursorPos, id: attachmentId }];
       });
     }
 
@@ -273,7 +279,7 @@ export function PromptBox({
             
             // Map the sorted names back to full attachment objects
             const inlineAttachments = sortedMentions.map(m => {
-              const att = attachments.find(a => a.name === m.name);
+              const att = attachments.find(a => a.id === m.id);
               return att ? { ...att, mentionPos: m.position } : null;
             }).filter(Boolean) as (Attachment & { mentionPos: number })[];
 
@@ -312,62 +318,66 @@ export function PromptBox({
                     )}
                   </div>
                 ))}
-                <textarea
-                  ref={textareaRef}
-                  rows={1}
-                  value={text}
+                <div 
+                  className="flex-1 min-w-[200px] relative" 
                   style={{ order: cursorPos }}
-                  onChange={(e) => {
-                    const newText = e.target.value;
-                    const newCursorPos = e.target.selectionStart || 0;
-                    
-                    if (newText.length < text.length) {
-                      setSelectedMentions(prev => prev.map(m => {
-                        if (m.position > newCursorPos) {
-                          return { ...m, position: Math.max(0, m.position - (text.length - newText.length)) };
-                        }
-                        return m;
-                      }));
-                    } else if (newText.length > text.length) {
-                      setSelectedMentions(prev => prev.map(m => {
-                        if (m.position >= cursorPos) {
-                          return { ...m, position: m.position + (newText.length - text.length) };
-                        }
-                        return m;
-                      }));
-                    }
-
-                    setText(newText);
-                    setCursorPos(newCursorPos);
-                  }}
-                  onKeyUp={(e) => {
-                    setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
-                  }}
-                  onClick={(e) => {
-                    setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
-                      setSelectedMentions(prev => prev.slice(0, -1));
-                      return;
-                    }
-
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      const v = text.trim();
-                      if (v && onSubmit) {
-                        onSubmit(v, canvasMode);
-                        setText("");
-                        setAttachments([]);
-                        setSelectedMentions([]);
+                >
+                  <textarea
+                    ref={textareaRef}
+                    rows={1}
+                    value={text}
+                    onChange={(e) => {
+                      const newText = e.target.value;
+                      const newCursorPos = e.target.selectionStart || 0;
+                      
+                      if (newText.length < text.length) {
+                        setSelectedMentions(prev => prev.map(m => {
+                          if (m.position > newCursorPos) {
+                            return { ...m, position: Math.max(0, m.position - (text.length - newText.length)) };
+                          }
+                          return m;
+                        }));
+                      } else if (newText.length > text.length) {
+                        setSelectedMentions(prev => prev.map(m => {
+                          if (m.position >= cursorPos) {
+                            return { ...m, position: m.position + (newText.length - text.length) };
+                          }
+                          return m;
+                        }));
                       }
-                    }
-                  }}
-                  placeholder="由一个想法或故事开始..."
-                  className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 ${
-                    isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
-                  }`}
-                />
+
+                      setText(newText);
+                      setCursorPos(newCursorPos);
+                    }}
+                    onKeyUp={(e) => {
+                      setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
+                    }}
+                    onClick={(e) => {
+                      setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
+                        setSelectedMentions(prev => prev.slice(0, -1));
+                        return;
+                      }
+
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        const v = text.trim();
+                        if (v && onSubmit) {
+                          onSubmit(v, canvasMode);
+                          setText("");
+                          setAttachments([]);
+                          setSelectedMentions([]);
+                        }
+                      }
+                    }}
+                    placeholder="由一个想法或故事开始..."
+                    className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none ${
+                      isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
+                    }`}
+                  />
+                </div>
               </>
             );
           })()}
