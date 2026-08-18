@@ -431,8 +431,8 @@ export function PromptBox({
                         }
                       }}
                       placeholder={text === "" && selectedMentions.length === 0 ? "输入你的需求即可生成图片、视频；上传素材后可使用 @引用素材互动，例如：@Image 1 作首帧、@Image 2 作尾帧，参考 @Video 1 生成游戏宣发视频。" : ""}
-                      className={`w-full bg-transparent text-[15px] leading-6 text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
-                        isMini ? 'py-1 cursor-pointer' : 'py-0 min-h-[64px]'
+                      className={`w-full bg-transparent text-[15px] leading-6 text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden flex items-center ${
+                        isMini ? 'py-1 cursor-pointer' : 'py-0 min-h-[24px]'
                       }`}
                     />
                   </div>
