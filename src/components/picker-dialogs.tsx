@@ -1246,25 +1246,25 @@ export function CreativePreferencePicker() {
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
                     <Music className="w-3.5 h-3.5 text-[#999]" />
-                    <span className="text-[12px] font-bold text-[#666]">音频</span>
+                    <span className="text-[12px] font-bold text-[#666] whitespace-nowrap">音频</span>
                   </div>
                   <div 
-                    className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer shrink-0 ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
                     onClick={() => setVideoAudio(!videoAudio)}
                   >
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoAudio ? 'right-1' : 'left-1'}`} />
                   </div>
                 </div>
 
-                <div className="w-px h-4 bg-[#F0F0F0]" />
+                <div className="w-px h-4 bg-[#F0F0F0] shrink-0" />
 
                 {/* Count Stepper */}
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
                     <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
-                    <span className="text-[12px] font-bold text-[#666]">数量</span>
+                    <span className="text-[12px] font-bold text-[#666] whitespace-nowrap">数量</span>
                   </div>
-                  <div className="flex gap-1.5">
+                  <div className="flex gap-1.5 shrink-0">
                     {[1, 2, 3, 4].map((num) => (
                       <button
                         key={num}
@@ -1281,16 +1281,16 @@ export function CreativePreferencePicker() {
                   </div>
                 </div>
 
-                <div className="w-px h-4 bg-[#F0F0F0]" />
+                <div className="w-px h-4 bg-[#F0F0F0] shrink-0" />
 
                 {/* Watermark Toggle */}
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-[#999]" />
-                    <span className="text-[12px] font-bold text-[#666]">水印</span>
+                    <span className="text-[12px] font-bold text-[#666] whitespace-nowrap">水印</span>
                   </div>
                   <div 
-                    className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer ${videoWatermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer shrink-0 ${videoWatermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
                     onClick={() => setVideoWatermark(!videoWatermark)}
                   >
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoWatermark ? 'right-1' : 'left-1'}`} />
