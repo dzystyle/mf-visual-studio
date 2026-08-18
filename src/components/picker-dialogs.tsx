@@ -889,7 +889,7 @@ export function CreativePreferencePicker() {
         {/* Left Side: Model Selection - Reduced width */}
         <div className="flex-1 max-w-[280px]">
           <h4 className="text-[12px] font-bold text-[#999] mb-4">模型选择</h4>
-          <div className="space-y-5">
+          <div className="space-y-5 max-h-[380px] overflow-y-auto pr-2 scrollbar-hide">
             {(activeMode === "video" ? videoModels : imageModels).map((m) => {
               const isActive = activeMode === "video" ? videoModel === m.name : imageModel === m.name;
               return (
