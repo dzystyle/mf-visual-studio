@@ -144,36 +144,26 @@ export function PromptBox({
     const lastAtPos = textBeforeCursor.lastIndexOf("@");
     
     let newText: string;
-    let newCursorPos: number;
+    let insertionPos: number;
 
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
       newText = before + after;
-      newCursorPos = before.length;
+      insertionPos = before.length;
     } else {
       newText = text;
-      newCursorPos = cursorPos;
+      insertionPos = cursorPos;
     }
-
-    // Update positions of existing mentions after insertion point
-    setSelectedMentions(prev => prev.map(m => {
-      if (m.position > newCursorPos) {
-        // If we inserted text, we'd need to shift. Here we just return.
-        return m;
-      }
-      return m;
-    }));
 
     setText(newText);
     setMentionOpen(false);
     
     if (url) {
-      let attachmentId: string;
-      const existingAttachment = attachments.find(a => a.name === name);
+      const attachmentId = `${Date.now()}-${name}`;
       
-      if (!existingAttachment) {
-        attachmentId = `${Date.now()}-${name}`;
+      // Add the attachment if it doesn't exist
+      if (!attachments.find(a => a.name === name)) {
         setAttachments(prev => [
           ...prev,
           {
@@ -183,26 +173,34 @@ export function PromptBox({
             url
           }
         ]);
-      } else {
-        attachmentId = existingAttachment.id;
       }
 
+      // Update positions of existing mentions after the insertion point
       setSelectedMentions(prev => {
-        if (prev.some(m => m.id === attachmentId && m.position === newCursorPos)) return prev;
-        return [...prev, { name, position: newCursorPos, id: attachmentId }];
+        const shifted = prev.map(m => {
+          if (m.position >= insertionPos) {
+            // This is just a marker, the actual text didn't change length
+            // but we need to ensure the new mention is inserted at the exact spot
+            return m;
+          }
+          return m;
+        });
+        return [...shifted, { name, position: insertionPos, id: attachmentId }].sort((a, b) => a.position - b.position);
       });
     }
 
+    // Crucially set the cursor to the end of the new insertion point
+    // Since we remove the '@', the text length might decrease.
     setTimeout(() => {
       if (textareaRef.current) {
         textareaRef.current.focus();
-        // Since the mention was added at currentLastPos, the new cursor position 
-        // in the FINAL textarea should be 0 because all text before this mention 
-        // is now in the static spans.
-        textareaRef.current.setSelectionRange(0, 0);
-        setCursorPos(newText.length);
+        // The textarea only holds text AFTER the last mention.
+        // If we just inserted a mention at the end of the current static text, 
+        // the remaining text is everything after insertionPos.
+        // We set cursorPos so the next render knows where to split.
+        setCursorPos(insertionPos);
       }
-    }, 50);
+    }, 10);
   };
 
 
