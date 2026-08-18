@@ -1353,7 +1353,7 @@ export function CreativePreferencePicker() {
                     <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">组图</h4>
                   </div>
                   <div 
-                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${groupEnabled ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${groupEnabled ? 'bg-primary' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
                     onClick={() => setGroupEnabled(!groupEnabled)}
                   >
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${groupEnabled ? 'right-1' : 'left-1'}`} />
