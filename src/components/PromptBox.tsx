@@ -517,7 +517,7 @@ export function PromptBox({
             
             <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} onSelect={handleMentionSelect} />
             
-            <Popover>
+            {/* <Popover>
               <PopoverTrigger asChild>
                 <button type="button">
                   <Chip icon={LayoutGrid} label={model ? `模型：${model}` : "选择模型"} badge={model === "Seedance 2" ? "新" : undefined} active={!!model} onClear={model ? () => setModel(null) : undefined} />
@@ -531,7 +531,7 @@ export function PromptBox({
               >
                 <ModelPicker value={model} onSelect={setModel} />
               </PopoverContent>
-            </Popover>
+            </Popover> */}
 
             <Popover>
               <PopoverTrigger asChild>
