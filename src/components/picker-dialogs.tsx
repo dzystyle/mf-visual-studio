@@ -956,6 +956,10 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_klingMode", klingMode); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [klingMode]);
+  useEffect(() => { 
+    localStorage.setItem("pref_imgQuality", imgQuality); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [imgQuality]);
 
 
 
