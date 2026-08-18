@@ -188,6 +188,7 @@ export function PromptBox({
         ]);
       }
       // Track that this asset is selected and its relative position in the text
+      // We store the position based on the current text structure
       setSelectedMentions(prev => [...prev, { name, position: newCursorPos }]);
     }
 
