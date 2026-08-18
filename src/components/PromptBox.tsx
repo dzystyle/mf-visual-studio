@@ -67,7 +67,7 @@ export function PromptBox({
   const [cursorPos, setCursorPos] = useState(0);
 
   // Stats for the hover capsule (synced with localStorage)
-  const [prefs, setPrefs] = useState({
+   const [prefs, setPrefs] = useState({
     videoModel: "智能匹配模型",
     videoRatio: "智能",
     resolution: "720P",
@@ -83,7 +83,9 @@ export function PromptBox({
     videoAudio: false,
     videoCount: 1,
     videoWatermark: true,
+    isAutoMode: true,
   });
+
 
 
 
@@ -105,7 +107,9 @@ export function PromptBox({
         videoAudio: localStorage.getItem("pref_videoAudio") === "true",
         videoCount: Number(localStorage.getItem("pref_videoCount")) || 1,
         videoWatermark: localStorage.getItem("pref_videoWatermark") !== "false",
+        isAutoMode: localStorage.getItem("pref_isAutoMode") !== "false",
       });
+
 
     };
 
@@ -553,7 +557,7 @@ export function PromptBox({
                       <div className="bg-[#1A1A1A] text-white rounded-[20px] px-5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.24)] whitespace-nowrap border border-white/10 backdrop-blur-md">
                         <div className="flex flex-col gap-0.5">
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
-                            <span className="text-white/60">视频:</span>
+                            <span className="text-white/60">视频{prefs.isAutoMode && "(自动模式)"}:</span>
                             <span>
                               {prefs.videoModel} · {prefs.videoRatio}比例 · {prefs.resolution} · {prefs.duration}秒
                               {prefs.videoAudio && ` · 带音频`}
@@ -563,7 +567,7 @@ export function PromptBox({
                           </div>
 
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
-                            <span className="text-white/60">图片:</span>
+                            <span className="text-white/60">图片{prefs.isAutoMode && "(自动模式)"}:</span>
                             <span>
                               {prefs.imageModel} · {prefs.imageRatio}比例 · 4K
                               {prefs.imgFormat !== 'jpeg' && ` · ${prefs.imgFormat.toUpperCase()}`}
