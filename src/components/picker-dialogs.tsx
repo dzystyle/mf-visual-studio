@@ -1001,20 +1001,38 @@ export function CreativePreferencePicker() {
     <div className="flex flex-col rounded-[28px] bg-white text-[#1A1A1A] shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50">
       {/* Tabs Header */}
       <div className="flex items-center justify-between px-6 py-5 border-b border-[#F0F0F0]">
-        <div className="flex bg-[#F5F5F5] p-1 rounded-xl">
-          <button 
-            onClick={() => setActiveMode("video")}
-            className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'video' ? 'bg-white shadow-sm text-black' : 'text-[#666]'}`}
-          >
-            视频偏好
-          </button>
-          <button 
-            onClick={() => setActiveMode("image")}
-            className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'image' ? 'bg-white shadow-sm text-black' : 'text-[#666]'}`}
-          >
-            图片偏好<span className="ml-0.5 opacity-40 font-normal">*</span>
-          </button>
+        <div className="flex items-center gap-6">
+          <div className="flex bg-[#F5F5F5] p-1 rounded-xl">
+            <button 
+              onClick={() => setActiveMode("video")}
+              className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'video' ? 'bg-white shadow-sm text-black' : 'text-[#666]'}`}
+            >
+              视频偏好
+            </button>
+            <button 
+              onClick={() => setActiveMode("image")}
+              className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'image' ? 'bg-white shadow-sm text-black' : 'text-[#666]'}`}
+            >
+              图片偏好<span className="ml-0.5 opacity-40 font-normal">*</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className={`text-[11px] font-bold transition-colors ${isAutoMode ? 'text-[#3B82F6]' : 'text-[#22C55E]'}`}>
+              {isAutoMode ? '自动模式，算法由系统选择' : '手动模式，算法由用户选择'}
+            </span>
+            <div className="flex items-center gap-1.5 ml-1">
+              <span className="text-[10px] font-bold text-[#999]">自动控制</span>
+              <div 
+                className={`w-8 h-4.5 rounded-full relative transition-colors cursor-pointer ${isAutoMode ? 'bg-[#3B82F6]' : 'bg-[#E5E5E5]'}`}
+                onClick={() => setIsAutoMode(!isAutoMode)}
+              >
+                <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full shadow-sm transition-all ${isAutoMode ? 'right-0.5' : 'left-0.5'}`} />
+              </div>
+            </div>
+          </div>
         </div>
+
         
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1 text-[#9333EA] font-bold">
