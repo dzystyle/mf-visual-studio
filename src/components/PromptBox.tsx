@@ -274,10 +274,9 @@ export function PromptBox({
           
           {/* 输入框内的引用 (图1: @选择资源后只会显示小图标) */}
           {(() => {
-            // Sort mentions by their insertion position to maintain order
+            let lastPos = 0;
+            const result: React.ReactNode[] = [];
             const sortedMentions = [...selectedMentions].sort((a, b) => a.position - b.position);
-            
-            // Map the sorted names back to full attachment objects
             const inlineAttachments = sortedMentions.map(m => {
               const att = attachments.find(a => a.id === m.id);
               return att ? { ...att, mentionPos: m.position } : null;
