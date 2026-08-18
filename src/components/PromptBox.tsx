@@ -268,55 +268,75 @@ export function PromptBox({
           
           {/* 输入框内的引用 (图1: @选择资源后只会显示小图标) */}
           {(() => {
-            // Sort mentions by their insertion position to maintain order
             const sortedMentions = [...selectedMentions].sort((a, b) => a.position - b.position);
             
-            // Map the sorted names back to full attachment objects
-            const inlineAttachments = sortedMentions.map(m => {
+            const parts: React.ReactNode[] = [];
+            let lastPos = 0;
+
+            sortedMentions.forEach((m, idx) => {
+              // Add text before this mention
+              if (m.position > lastPos) {
+                parts.push(
+                  <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-2">
+                    {text.slice(lastPos, m.position)}
+                  </span>
+                );
+              }
+
+              // Add mention icon
               const att = attachments.find(a => a.name === m.name);
-              return att ? { ...att, mentionPos: m.position } : null;
-            }).filter(Boolean) as (Attachment & { mentionPos: number })[];
+              if (att && att.url) {
+                parts.push(
+                  <div 
+                    key={`inline-${att.id}-${idx}`} 
+                    className="inline-flex items-center animate-in zoom-in-95 duration-200 py-2"
+                  >
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
+                          <img src={att.url} alt="" className="w-full h-full object-cover" />
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent 
+                        side="bottom" 
+                        align="start" 
+                        sideOffset={12} 
+                        className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
+                      >
+                        <div className="space-y-2">
+                          <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
+                            <img src={att.url} alt="" className="w-full h-full object-cover" />
+                          </div>
+                          <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
+                            {att.name}
+                          </div>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                );
+              }
+              lastPos = m.position;
+            });
+
+            // Add remaining text
+            if (lastPos < text.length) {
+              parts.push(
+                <span key="text-end" className="text-[15px] whitespace-pre-wrap py-2">
+                  {text.slice(lastPos)}
+                </span>
+              );
+            }
 
             return (
-              <>
-                {inlineAttachments.map((a, idx) => (
-                  <div 
-                    key={`inline-${a.id}-${idx}`} 
-                    className="inline-flex items-center animate-in zoom-in-95 duration-200"
-                    style={{ order: a.mentionPos }}
-                  >
-                    {a.url && (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
-                            <img src={a.url} alt="" className="w-full h-full object-cover" />
-                          </div>
-                        </PopoverTrigger>
-                        {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
-                        <PopoverContent 
-                          side="bottom" 
-                          align="start" 
-                          sideOffset={12} 
-                          className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
-                        >
-                          <div className="space-y-2">
-                            <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
-                              <img src={a.url} alt="" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
-                              {a.name}
-                            </div>
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                    )}
-                  </div>
-                ))}
+              <div className="relative flex flex-wrap items-center w-full min-h-[32px]">
+                <div className="flex flex-wrap items-center w-full pointer-events-none text-transparent select-none">
+                  {parts}
+                </div>
                 <textarea
                   ref={textareaRef}
                   rows={1}
                   value={text}
-                  style={{ order: 999 }}
                   onChange={(e) => {
                     const newText = e.target.value;
                     const newCursorPos = e.target.selectionStart || 0;
@@ -347,7 +367,6 @@ export function PromptBox({
                     setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
                   }}
                   onKeyDown={(e) => {
-                    // Logic to handle backspace deleting mentions
                     if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
                       setSelectedMentions(prev => prev.slice(0, -1));
                       return;
@@ -364,15 +383,16 @@ export function PromptBox({
                       }
                     }
                   }}
-                  placeholder="由一个想法或故事开始..."
-                  className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 order-last ${
+                  placeholder={parts.length === 0 ? "由一个想法或故事开始..." : ""}
+                  className={`absolute inset-0 w-full h-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
                     isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
                   }`}
                 />
-              </>
+              </div>
             );
           })()}
         </div>
+
 
 
 
