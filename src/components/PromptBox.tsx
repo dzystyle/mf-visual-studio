@@ -481,7 +481,7 @@ export function PromptBox({
 
             <Popover onOpenChange={(open) => {
               const el = document.getElementById('pref-capsule');
-              if (el) el.style.opacity = '0';
+              if (el) el.style.opacity = open ? '0' : '0';
             }}>
               <PopoverTrigger asChild>
                 <div 
@@ -495,8 +495,9 @@ export function PromptBox({
                     if (el) el.style.opacity = '0';
                   }}
                 >
-                  <button type="button">
+                  <button type="button" className="relative">
                     <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
+                    {/* Invisible hover bridge to capsule if needed, but the current logic relies on parent div */}
                   </button>
                 </div>
               </PopoverTrigger>
