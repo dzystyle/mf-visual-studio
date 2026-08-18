@@ -1400,7 +1400,7 @@ export function CreativePreferencePicker() {
                             readOnly
                             className="w-5 bg-transparent text-[11px] font-bold text-center outline-none py-1 dark:text-white"
                           />
-                          <div className="flex flex-col border-l border-[#F0F0F0] ml-1">
+                          <div className="flex flex-col border-l border-[#F0F0F0] dark:border-white/5 ml-1">
                             <button 
                               onClick={() => setGroupCount(prev => Math.min(prev + 1, 9))}
                               className="px-1 hover:bg-[#F5F5F5] transition-colors"
