@@ -481,15 +481,26 @@ export function PromptBox({
 
             <Popover>
               <PopoverTrigger asChild>
-                <button type="button">
-                  <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
+                <button type="button" className="group">
+                  <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border bg-card/40 transition-all hover:bg-accent/20 hover:border-border/80 cursor-pointer`}>
+                    <div className="flex items-center gap-1.5 border-r border-border/50 pr-2 mr-0.5">
+                      <div className="w-4 h-4 rounded-full border border-dashed border-muted-foreground/50 flex items-center justify-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
+                      </div>
+                      <span className="text-[11px] font-bold text-foreground/80">智能匹配模型</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="text-[11px] font-bold text-foreground/80">创作偏好</span>
+                      <ChevronDown className="w-3 h-3 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                    </div>
+                  </div>
                 </button>
               </PopoverTrigger>
               <PopoverContent 
                 side="top" 
-                align="start" 
-                sideOffset={16} 
-                className="w-[720px] p-0 border-none bg-transparent shadow-none z-[100]"
+                align="center" 
+                sideOffset={20} 
+                className="w-[740px] p-0 border-none bg-transparent shadow-none z-[110] animate-in fade-in zoom-in-95 duration-300"
               >
                 <CreativePreferencePicker />
               </PopoverContent>
