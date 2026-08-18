@@ -1138,7 +1138,7 @@ export function CreativePreferencePicker() {
               </div>
 
               <button 
-                className="absolute -right-2 top-1/2 -translate-y-1/2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
+                className="absolute -right-2 top-1/2 -translate-y-1/2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white dark:bg-[#1A1A1A] border border-[#F0F0F0] dark:border-white/5 text-[#999] dark:text-white/40 hover:text-black dark:hover:text-white transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
                 onClick={() => {
                   const container = document.getElementById('ratio-container');
                   if (container) container.scrollBy({ left: 80, behavior: 'smooth' });
