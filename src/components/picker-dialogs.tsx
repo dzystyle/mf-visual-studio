@@ -832,9 +832,9 @@ export function CreativePreferencePicker() {
   ];
 
   return (
-    <div className="flex flex-col rounded-[28px] bg-white text-[#1A1A1A] shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50">
+    <div className="flex flex-col rounded-[28px] bg-white text-[#1A1A1A] shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 relative">
       {/* Top Capsule Info - Adjusted positioning and styling */}
-      <div className="absolute -top-14 left-0 right-0 flex justify-center pointer-events-none">
+      <div className="absolute -top-16 left-0 right-0 flex justify-center pointer-events-none z-50">
         <div className="bg-[#1A1A1A] rounded-full px-5 py-2 flex flex-col items-center gap-0.5 shadow-xl animate-in slide-in-from-bottom-2 duration-500 border border-white/5">
           <div className="flex items-center gap-2 text-[10px] text-white/90">
             <span className="opacity-50">视频:</span>
