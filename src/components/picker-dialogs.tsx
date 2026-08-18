@@ -913,8 +913,8 @@ export function CreativePreferencePicker() {
                   onClick={() => setRatio(r.label)}
                   className={`flex flex-col items-center justify-center w-[84px] h-[84px] rounded-[24px] border-2 transition-all ${
                     ratio === r.label 
-                      ? 'bg-white border-black text-black shadow-xl shadow-black/5' 
-                      : 'bg-[#F8F8F8] border-transparent text-[#666] hover:bg-[#F0F0F0]'
+                      ? 'bg-white border-black text-black shadow-xl shadow-black/10' 
+                      : 'bg-[#F8F8F8] border-transparent text-[#999] hover:bg-[#F3F3F3]'
                   }`}
                 >
                   <div className="mb-2.5 transform scale-110">{r.icon}</div>
