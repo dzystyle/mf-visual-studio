@@ -65,6 +65,39 @@ export function PromptBox({
   const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number, id: string}[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
   const [cursorPos, setCursorPos] = useState(0);
+
+  // Stats for the hover capsule (synced with localStorage)
+  const [prefs, setPrefs] = useState({
+    videoModel: "智能匹配模型",
+    videoRatio: "智能",
+    resolution: "720P",
+    duration: 85,
+    imageModel: "Seedream 5.0 Pro",
+    imageRatio: "智能",
+  });
+
+  useEffect(() => {
+    const updatePrefs = () => {
+      setPrefs({
+        videoModel: localStorage.getItem("pref_videoModel") || "智能匹配模型",
+        videoRatio: localStorage.getItem("pref_ratio") || "智能",
+        resolution: localStorage.getItem("pref_resolution") || "720P",
+        duration: Number(localStorage.getItem("pref_duration")) || 85,
+        imageModel: localStorage.getItem("pref_imageModel") || "Seedream 5.0 Pro",
+        imageRatio: localStorage.getItem("pref_ratio") || "智能",
+      });
+    };
+
+    updatePrefs();
+    window.addEventListener('storage', updatePrefs);
+    // Also listen for a custom event since localStorage event only fires in OTHER tabs
+    window.addEventListener('pref-updated', updatePrefs);
+    
+    return () => {
+      window.removeEventListener('storage', updatePrefs);
+      window.removeEventListener('pref-updated', updatePrefs);
+    };
+  }, []);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pendingKind = useRef<Attachment["kind"]>("image");
