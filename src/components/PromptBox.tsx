@@ -383,7 +383,11 @@ export function PromptBox({
               <ArrowUp className="h-4 w-4" />
             </button>
           )}
+              </>
+            );
+          })()}
         </div>
+
 
         {!isMini && mentionOpen && (
           <div className="absolute top-[calc(100%+8px)] left-0 w-80 bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
