@@ -342,10 +342,6 @@ export function PromptBox({
                         setText(newTotalText);
                         setCursorPos(newCursorPos);
                       }}
-
-                        setText(newTotalText);
-                        setCursorPos(newCursorPos);
-                      }}
                       onKeyUp={(e) => {
                         setCursorPos(currentLastPos + ((e.target as HTMLTextAreaElement).selectionStart || 0));
                       }}
