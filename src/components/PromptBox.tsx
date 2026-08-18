@@ -550,7 +550,12 @@ export function PromptBox({
                           </div>
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                             <span className="text-white/60">图片:</span>
-                            <span>{prefs.imageModel} · {prefs.imageRatio}比例 · 4K</span>
+                            <span>
+                              {prefs.imageModel} · {prefs.imageRatio}比例 · 4K
+                              {prefs.imgFormat !== 'jpeg' && ` · ${prefs.imgFormat.toUpperCase()}`}
+                              {prefs.groupEnabled && ` · 组图(${prefs.groupType === 'link' ? '关联' : '并行'}${prefs.groupAuto ? 'Auto' : prefs.groupCount})`}
+                              {prefs.watermark && ` · 水印`}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -559,6 +564,7 @@ export function PromptBox({
                   <button type="button" onClick={() => setPrefOpen(true)}>
                     <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" active={prefOpen} />
                   </button>
+
                 </div>
               </PopoverTrigger>
               <PopoverContent 
