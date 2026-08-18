@@ -1150,8 +1150,8 @@ export function CreativePreferencePicker() {
           </section>
 
           <section className="mb-4">
-            <h4 className="text-[12px] font-bold text-[#999] mb-2">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
-            <div className="flex gap-1.5 p-1 bg-[#F5F5F5] rounded-full w-fit">
+            <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30 mb-2">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
+            <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-full w-fit">
               {(activeMode === 'video' ? ["4K", "2K", "1080P", "720P"] : ["1K", "2K", "4K"]).map((res) => (
                 <button
                   key={res}
