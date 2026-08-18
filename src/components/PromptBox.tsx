@@ -460,7 +460,7 @@ export function PromptBox({
         </div>
 
         {!isMini && mentionOpen && (
-          <div className="absolute bottom-[calc(100%+8px)] left-0 w-80 bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[200] animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div className="absolute top-[calc(100%+8px)] left-0 w-80 bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[200] animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="p-3.5 border-b border-border/50">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
