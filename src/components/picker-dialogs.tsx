@@ -1227,7 +1227,7 @@ export function CreativePreferencePicker() {
                     }}
                   >
                     <div 
-                      className="absolute h-1 bg-black rounded-full" 
+                      className="absolute h-1 bg-black dark:bg-white rounded-full" 
                       style={{ width: `${((duration - 4) / (180 - 4)) * 100}%` }}
                     />
                     <div 
