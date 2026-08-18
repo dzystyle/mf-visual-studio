@@ -840,7 +840,12 @@ export function CreativePreferencePicker() {
     if (typeof window === 'undefined') return false;
     return localStorage.getItem("pref_watermark") === "true";
   });
+  const [groupEnabled, setGroupEnabled] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return localStorage.getItem("pref_groupEnabled") !== "false";
+  });
   const [groupAuto, setGroupAuto] = useState(() => {
+
     if (typeof window === 'undefined') return false;
     return localStorage.getItem("pref_groupAuto") === "true";
   });
@@ -899,6 +904,11 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_groupAuto", groupAuto.toString()); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [groupAuto]);
+  useEffect(() => { 
+    localStorage.setItem("pref_groupEnabled", groupEnabled.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [groupEnabled]);
+
 
 
   const videoModels = [
@@ -1228,69 +1238,80 @@ export function CreativePreferencePicker() {
 
               {/* Group Image Settings */}
               <section>
-                <div className="flex items-center gap-1 mb-4">
-                  <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
-                  <h4 className="text-[12px] font-bold text-[#999]">组图</h4>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex gap-1 p-1 bg-[#F5F5F5] rounded-xl">
-                    <button
-                      onClick={() => setGroupType("link")}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                        groupType === "link" ? 'bg-primary text-white shadow-sm' : 'text-[#666] hover:text-black'
-                      }`}
-                    >
-                      关联
-                    </button>
-                    <button
-                      onClick={() => setGroupType("parallel")}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                        groupType === "parallel" ? 'bg-primary text-white shadow-sm' : 'text-[#666] hover:text-black'
-                      }`}
-                    >
-                      并行
-                    </button>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-1">
+                    <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
+                    <h4 className="text-[12px] font-bold text-[#999]">组图</h4>
                   </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2">
-                      <div 
-                        className={`flex items-center gap-1.5 px-2 py-1 border rounded-lg transition-all ${groupAuto && groupType === 'link' ? 'bg-primary/5 border-primary/30' : 'border-[#E5E5E5]'}`}
-                        onClick={() => groupType === 'link' && setGroupAuto(!groupAuto)}
-                      >
-                        <div className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center transition-all ${groupAuto && groupType === 'link' ? 'bg-primary border-primary' : 'bg-white border-[#DDD]'}`}>
-                          {groupAuto && groupType === 'link' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
-                        </div>
-                        <span className={`text-[11px] font-bold ${groupType === 'link' ? 'text-black' : 'text-[#BBB]'}`}>Auto</span>
-                      </div>
+                  <div 
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${groupEnabled ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    onClick={() => setGroupEnabled(!groupEnabled)}
+                  >
+                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${groupEnabled ? 'right-1' : 'left-1'}`} />
+                  </div>
+                </div>
 
-                      <div className={`flex items-center px-1.5 py-0.5 border border-[#E5E5E5] rounded-lg bg-white overflow-hidden transition-opacity ${groupAuto && groupType === 'link' ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
-                        <input 
-                          type="text" 
-                          value={groupCount}
-                          readOnly
-                          className="w-5 bg-transparent text-[11px] font-bold text-center outline-none py-1"
-                        />
-                        <div className="flex flex-col border-l border-[#F0F0F0] ml-1">
-                          <button 
-                            onClick={() => setGroupCount(prev => Math.min(prev + 1, 9))}
-                            className="px-1 hover:bg-[#F5F5F5] transition-colors"
-                          >
-                            <ChevronRight className="w-2.5 h-2.5 rotate-[-90deg] text-[#999]" />
-                          </button>
-                          <button 
-                            onClick={() => setGroupCount(prev => Math.max(prev - 1, 1))}
-                            className="px-1 border-t border-[#F0F0F0] hover:bg-[#F5F5F5] transition-colors"
-                          >
-                            <ChevronRight className="w-2.5 h-2.5 rotate-90 text-[#999]" />
-                          </button>
+                {groupEnabled && (
+                  <div className="flex items-center gap-3 animate-in fade-in slide-in-from-top-1 duration-200">
+                    <div className="flex gap-1 p-1 bg-[#F5F5F5] rounded-xl">
+                      <button
+                        onClick={() => setGroupType("link")}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                          groupType === "link" ? 'bg-primary text-white shadow-sm' : 'text-[#666] hover:text-black'
+                        }`}
+                      >
+                        关联
+                      </button>
+                      <button
+                        onClick={() => setGroupType("parallel")}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                          groupType === "parallel" ? 'bg-primary text-white shadow-sm' : 'text-[#666] hover:text-black'
+                        }`}
+                      >
+                        并行
+                      </button>
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
+                        <div 
+                          className={`flex items-center gap-1.5 px-2 py-1 border rounded-lg transition-all ${groupAuto && groupType === 'link' ? 'bg-primary/5 border-primary/30' : 'border-[#E5E5E5]'}`}
+                          onClick={() => groupType === 'link' && setGroupAuto(!groupAuto)}
+                        >
+                          <div className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center transition-all ${groupAuto && groupType === 'link' ? 'bg-primary border-primary' : 'bg-white border-[#DDD]'}`}>
+                            {groupAuto && groupType === 'link' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
+                          </div>
+                          <span className={`text-[11px] font-bold ${groupType === 'link' ? 'text-black' : 'text-[#BBB]'}`}>Auto</span>
+                        </div>
+
+                        <div className={`flex items-center px-1.5 py-0.5 border border-[#E5E5E5] rounded-lg bg-white overflow-hidden transition-opacity ${groupAuto && groupType === 'link' ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
+                          <input 
+                            type="text" 
+                            value={groupCount}
+                            readOnly
+                            className="w-5 bg-transparent text-[11px] font-bold text-center outline-none py-1"
+                          />
+                          <div className="flex flex-col border-l border-[#F0F0F0] ml-1">
+                            <button 
+                              onClick={() => setGroupCount(prev => Math.min(prev + 1, 9))}
+                              className="px-1 hover:bg-[#F5F5F5] transition-colors"
+                            >
+                              <ChevronRight className="w-2.5 h-2.5 rotate-[-90deg] text-[#999]" />
+                            </button>
+                            <button 
+                              onClick={() => setGroupCount(prev => Math.max(prev - 1, 1))}
+                              className="px-1 border-t border-[#F0F0F0] hover:bg-[#F5F5F5] transition-colors"
+                            >
+                              <ChevronRight className="w-2.5 h-2.5 rotate-90 text-[#999]" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-
+                )}
               </section>
+
 
               {/* Watermark Section (if standalone requested but combined above usually) */}
               <section>
