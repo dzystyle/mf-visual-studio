@@ -92,8 +92,15 @@ export function PromptBox({
         duration: Number(localStorage.getItem("pref_duration")) || 85,
         imageModel: localStorage.getItem("pref_imageModel") || "Seedream 5.0 Pro",
         imageRatio: localStorage.getItem("pref_ratio") || "智能",
+        imgFormat: localStorage.getItem("pref_imgFormat") || "jpeg",
+        groupEnabled: localStorage.getItem("pref_groupEnabled") !== "false",
+        groupType: localStorage.getItem("pref_groupType") || "parallel",
+        groupCount: Number(localStorage.getItem("pref_groupCount")) || 4,
+        groupAuto: localStorage.getItem("pref_groupAuto") === "true",
+        watermark: localStorage.getItem("pref_watermark") === "true",
       });
     };
+
 
     updatePrefs();
     window.addEventListener('storage', updatePrefs);
