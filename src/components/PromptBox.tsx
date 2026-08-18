@@ -136,19 +136,6 @@ export function PromptBox({
     setAttachments((prev) => prev.filter((a) => a.id !== id));
     if (name) {
       setSelectedMentions(prev => prev.filter(m => m.name !== name));
-      setText(prev => {
-        // Find both cases: "@name " and "@name"
-        const mentionWithSpace = `@${name} `;
-        const mentionWithoutSpace = `@${name}`;
-        
-        let newText = prev;
-        if (prev.includes(mentionWithSpace)) {
-          newText = prev.replace(mentionWithSpace, "");
-        } else if (prev.includes(mentionWithoutSpace)) {
-          newText = prev.replace(mentionWithoutSpace, "");
-        }
-        return newText.trim() + (newText.endsWith(" ") ? " " : "");
-      });
     }
   };
 
@@ -162,7 +149,6 @@ export function PromptBox({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
-      
       newText = (before + after);
       newCursorPos = before.length;
     } else {
@@ -192,17 +178,12 @@ export function PromptBox({
         attachmentId = existingAttachment.id;
       }
 
-      // Track that this asset is selected and its relative position in the text
       setSelectedMentions(prev => {
-        // Prevent duplicate insertion at same spot
         if (prev.some(m => m.id === attachmentId && m.position === newCursorPos)) return prev;
-        
-        // Add new mention with a unique key for the instance
         return [...prev, { name, position: newCursorPos, id: attachmentId }];
       });
     }
 
-    // Force focus and restore cursor position after state update
     setTimeout(() => {
       if (textareaRef.current) {
         textareaRef.current.focus();
@@ -217,7 +198,6 @@ export function PromptBox({
     <div className={`glass shadow-2xl relative z-20 transition-all duration-500 ease-out-expo ${
       isMini ? 'rounded-full p-2 pl-6' : 'rounded-2xl p-5'
     }`}>
-      {/* 资源预览展示区 (图1: 上传后展示在上方) */}
       {!isMini && attachments.length > 0 && (
         <div className="flex flex-wrap gap-3 mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
           {attachments.map((a) => (
@@ -230,7 +210,6 @@ export function PromptBox({
                 </div>
               )}
               
-              {/* 悬浮遮罩 (图4: 鼠标移动到图片然后的展示) */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-start justify-between p-2">
                 <button 
                   onClick={() => handleMentionSelect(a.name, a.kind, a.url)}
@@ -248,7 +227,6 @@ export function PromptBox({
                 </button>
               </div>
 
-              {/* 资源名小标签 */}
               <div className="absolute bottom-0 inset-x-0 bg-black/40 backdrop-blur-sm py-0.5 px-1 text-[8px] text-white/80 truncate text-center group-hover:hidden">
                 {a.name}
               </div>
@@ -258,9 +236,9 @@ export function PromptBox({
       )}
 
       <div className="relative">
-        <div className={`flex flex-wrap items-center gap-2 ${!isMini ? 'mb-2' : ''}`}>
+        <div className={`flex flex-wrap items-center ${!isMini ? 'mb-2' : ''}`}>
           {!isMini && skill && (
-            <div className="flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1.5 text-[13px] text-white font-medium group transition-all hover:bg-white/15 animate-in fade-in slide-in-from-top-1 duration-300">
+            <div className="flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1.5 text-[13px] text-white font-medium group transition-all hover:bg-white/15 animate-in fade-in slide-in-from-top-1 duration-300 mr-2 mb-1">
               <Package className="h-3.5 w-3.5 text-white/60" />
               <span>{skill}</span>
               <button 
@@ -271,92 +249,99 @@ export function PromptBox({
               </button>
             </div>
           )}
-          
-          {/* 输入框内的引用 (图1: @选择资源后只会显示小图标) */}
-          {(() => {
-            // Sort mentions by their insertion position to maintain order
-            const sortedMentions = [...selectedMentions].sort((a, b) => a.position - b.position);
-            
-            // Map the sorted names back to full attachment objects
-            const inlineAttachments = sortedMentions.map(m => {
-              const att = attachments.find(a => a.id === m.id);
-              return att ? { ...att, mentionPos: m.position } : null;
-            }).filter(Boolean) as (Attachment & { mentionPos: number })[];
 
-            return (
-              <>
-                {inlineAttachments.map((a, idx) => (
+          {(() => {
+            let currentLastPos = 0;
+            const contentItems: React.ReactNode[] = [];
+            const sortedMentions = [...selectedMentions].sort((a, b) => a.position - b.position);
+
+            sortedMentions.forEach((m, idx) => {
+              const segment = text.slice(currentLastPos, m.position);
+              if (segment) {
+                contentItems.push(
+                  <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-2 align-middle">
+                    {segment}
+                  </span>
+                );
+              }
+
+              const att = attachments.find(a => a.id === m.id);
+              if (att && att.url) {
+                contentItems.push(
                   <div 
-                    key={`inline-${a.id}-${idx}`} 
-                    className="inline-flex items-center animate-in zoom-in-95 duration-200"
-                    style={{ order: a.mentionPos }}
+                    key={`inline-${m.id}-${idx}`} 
+                    className="inline-flex items-center mx-0.5 animate-in zoom-in-95 duration-200 align-middle"
                   >
-                    {a.url && (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
-                            <img src={a.url} alt="" className="w-full h-full object-cover" />
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
+                          <img src={att.url} alt="" className="w-full h-full object-cover" />
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent 
+                        side="bottom" 
+                        align="start" 
+                        sideOffset={12} 
+                        className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
+                      >
+                        <div className="space-y-2">
+                          <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
+                            <img src={att.url} alt="" className="w-full h-full object-cover" />
                           </div>
-                        </PopoverTrigger>
-                        {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
-                        <PopoverContent 
-                          side="bottom" 
-                          align="start" 
-                          sideOffset={12} 
-                          className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
-                        >
-                          <div className="space-y-2">
-                            <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
-                              <img src={a.url} alt="" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
-                              {a.name}
-                            </div>
+                          <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
+                            {att.name}
                           </div>
-                        </PopoverContent>
-                      </Popover>
-                    )}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
                   </div>
-                ))}
-                <div 
-                  className="flex-1 min-w-[200px] relative" 
-                  style={{ order: cursorPos }}
-                >
+                );
+              }
+              currentLastPos = m.position;
+            });
+
+            const remainingText = text.slice(currentLastPos);
+            
+            return (
+              <div className="flex-1 flex flex-wrap items-center">
+                {contentItems}
+                <div className="relative inline-block min-w-[4px] align-middle flex-1">
                   <textarea
                     ref={textareaRef}
                     rows={1}
-                    value={text}
+                    value={remainingText}
                     onChange={(e) => {
-                      const newText = e.target.value;
-                      const newCursorPos = e.target.selectionStart || 0;
+                      const newRemainingText = e.target.value;
+                      const newTotalText = text.slice(0, currentLastPos) + newRemainingText;
+                      const newCursorPos = currentLastPos + (e.target.selectionStart || 0);
                       
-                      if (newText.length < text.length) {
+                      if (newTotalText.length < text.length) {
                         setSelectedMentions(prev => prev.map(m => {
-                          if (m.position > newCursorPos) {
-                            return { ...m, position: Math.max(0, m.position - (text.length - newText.length)) };
+                          if (m.position > currentLastPos) {
+                            return { ...m, position: Math.max(currentLastPos, m.position - (text.length - newTotalText.length)) };
                           }
                           return m;
                         }));
-                      } else if (newText.length > text.length) {
+                      } else if (newTotalText.length > text.length) {
                         setSelectedMentions(prev => prev.map(m => {
-                          if (m.position >= cursorPos) {
-                            return { ...m, position: m.position + (newText.length - text.length) };
+                          if (m.position >= currentLastPos) {
+                            return { ...m, position: m.position + (newTotalText.length - text.length) };
                           }
                           return m;
                         }));
                       }
 
-                      setText(newText);
+                      setText(newTotalText);
                       setCursorPos(newCursorPos);
                     }}
                     onKeyUp={(e) => {
-                      setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
+                      setCursorPos(currentLastPos + ((e.target as HTMLTextAreaElement).selectionStart || 0));
                     }}
                     onClick={(e) => {
-                      setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
+                      setCursorPos(currentLastPos + ((e.target as HTMLTextAreaElement).selectionStart || 0));
                     }}
                     onKeyDown={(e) => {
-                      if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
+                      if (e.key === "Backspace" && remainingText === "" && selectedMentions.length > 0) {
                         setSelectedMentions(prev => prev.slice(0, -1));
                         return;
                       }
@@ -372,20 +357,16 @@ export function PromptBox({
                         }
                       }
                     }}
-                    placeholder="由一个想法或故事开始..."
-                    className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none ${
+                    placeholder={text === "" ? "由一个想法或故事开始..." : ""}
+                    className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
                       isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
                     }`}
                   />
                 </div>
-              </>
+              </div>
             );
           })()}
         </div>
-
-
-
-
 
         {!isMini && mentionOpen && (
           <div className="absolute top-[calc(100%+8px)] left-0 w-80 bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
@@ -458,7 +439,6 @@ export function PromptBox({
             
             <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} onSelect={handleMentionSelect} />
             
-
             <Popover>
               <PopoverTrigger asChild>
                 <button type="button">
@@ -480,7 +460,6 @@ export function PromptBox({
                 <SkillPicker onSelect={(title) => { setSkill(title); textareaRef.current?.focus(); }} />
               </PopoverContent>
             </Popover>
-
 
             <Popover>
               <PopoverTrigger asChild>
