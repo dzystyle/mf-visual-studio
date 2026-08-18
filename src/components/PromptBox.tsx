@@ -463,7 +463,12 @@ export function PromptBox({
                   <Chip icon={LayoutGrid} label={model ? `模型：${model}` : "选择模型"} badge={model === "Seedance 2" ? "新" : undefined} active={!!model} onClear={model ? () => setModel(null) : undefined} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-[580px] p-0 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
+              <PopoverContent 
+                side="top"
+                align="center" 
+                sideOffset={16}
+                className="w-[580px] p-0 border-none bg-transparent shadow-none z-[100]"
+              >
                 <ModelPicker value={model} onSelect={setModel} />
               </PopoverContent>
             </Popover>
@@ -474,7 +479,12 @@ export function PromptBox({
                   <Chip icon={Package} label={skill ? `Skill：${skill}` : "Skill"} active={!!skill} onClear={skill ? () => setSkill(null) : undefined} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-[480px] p-0 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
+              <PopoverContent 
+                side="top"
+                align="center" 
+                sideOffset={16}
+                className="w-[480px] p-0 border-none bg-transparent shadow-none z-[100]"
+              >
                 <SkillPicker onSelect={(title) => { setSkill(title); textareaRef.current?.focus(); }} />
               </PopoverContent>
             </Popover>
@@ -497,14 +507,14 @@ export function PromptBox({
 
 
             {showCanvasToggle && (
-              <div className="flex items-center gap-2 px-3 py-1 bg-card/40 border border-border rounded-full hover:bg-card transition">
-                <span className="text-[11px] font-medium text-muted-foreground">画布</span>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F5F5] border border-transparent rounded-full hover:bg-[#F0F0F0] transition group">
+                <span className="text-[11px] font-bold text-[#666] group-hover:text-[#333]">画布</span>
                 <button 
                   onClick={() => setCanvasMode(!canvasMode)}
-                  className={`relative inline-flex h-4 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-aurora-blue' : 'bg-white/10'}`}
+                  className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
                 >
                   <span
-                    className={`pointer-events-none block h-2.5 w-2.5 rounded-full shadow-lg ring-0 transition-transform ${canvasMode ? 'translate-x-4.5 bg-white' : 'translate-x-1 bg-white/60'}`}
+                    className={`pointer-events-none block h-3.5 w-3.5 rounded-full shadow-md ring-0 transition-transform ${canvasMode ? 'translate-x-4 bg-white' : 'translate-x-0.5 bg-white'}`}
                   />
                 </button>
               </div>

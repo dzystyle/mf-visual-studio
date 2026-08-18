@@ -113,19 +113,19 @@ export function ModelPicker({
   };
 
   return (
-    <div className="w-[580px] text-white">
-      <div className="px-6 pt-6">
-        <h3 className="text-lg font-bold">模型</h3>
+    <div className="w-[580px] flex flex-col rounded-[28px] bg-white text-[#1A1A1A] shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50">
+      <div className="px-6 py-5 border-b border-[#F0F0F0]">
+        <h3 className="text-sm font-bold text-[#1A1A1A]">模型</h3>
       </div>
       
-      <div className="px-6 pt-4">
-        <div className="flex w-full items-center gap-1 rounded-full bg-white/5 p-1">
+      <div className="px-6 py-4">
+        <div className="flex w-full items-center gap-1 rounded-xl bg-[#F5F5F5] p-1">
           {tabs.map((t) => (
             <button
               key={t.key}
               onClick={() => handleTabClick(t.key)}
-              className={`flex-1 rounded-full py-1.5 text-xs font-medium transition-all ${
-                activeTab === t.key ? "bg-white/10 text-white" : "text-white/40 hover:text-white/60"
+              className={`flex-1 rounded-lg py-1.5 text-xs font-bold transition-all ${
+                activeTab === t.key ? "bg-white shadow-sm text-black" : "text-[#666] hover:text-black"
               }`}
             >
               {t.label}
@@ -134,62 +134,53 @@ export function ModelPicker({
         </div>
       </div>
 
-      <div className="mt-4 px-6 pb-6">
+      <div className="px-6 pb-6">
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
-          className="max-h-[400px] space-y-6 overflow-y-auto pr-2 scrollbar-hide text-white"
+          className="max-h-[400px] space-y-6 overflow-y-auto pr-2 scrollbar-hide"
         >
           {tabs.map((tab) => (
             <div 
               key={tab.key}
               ref={(el) => { sectionRefs.current[tab.key] = el; }}
-              className="space-y-3"
+              className="space-y-4"
             >
-              <div className="text-[10px] font-medium uppercase tracking-wider text-white/40 sticky top-0 bg-[#0A0A0A] py-1 z-10">
+              <div className="text-[11px] font-bold text-[#999] uppercase tracking-wider sticky top-0 bg-white py-2 z-10">
                 {tab.label}
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {modelData[tab.key].map((m) => {
                   const active = selected === m.name;
                   return (
                     <button
                       key={m.name}
                       onClick={() => onSelect?.(m.name)}
-                      className={`group relative flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition-all ${
-                        active
-                          ? "border-white/20 bg-white/10"
-                          : "border-transparent bg-white/[0.02] hover:bg-white/[0.05]"
-                      }`}
+                      className="group relative flex w-full items-start gap-3 text-left transition-all"
                     >
-                      <div className={`mt-1 h-5 w-5 rounded-full border-2 ${active ? 'border-white bg-white' : 'border-white/20'} flex items-center justify-center`}>
-                        {active && <Check className="h-3 w-3 text-black stroke-[3px]" />}
+                      <div className="mt-1 w-3.5 h-3.5 flex items-center justify-center">
+                        {active ? (
+                          <Check className="w-3.5 h-3.5 text-black stroke-[3px]" />
+                        ) : (
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5]" />
+                        )}
                       </div>
                       
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold text-white">{m.name}</span>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className={`text-[13px] font-bold transition-colors ${active ? 'text-black' : 'text-[#333] group-hover:text-black'}`}>{m.name}</span>
                           {"badge" in m && m.badge && (
-                            <span className="rounded bg-green-500/20 px-1 py-0.5 text-[8px] font-bold text-green-500">
+                            <span className="bg-[#22C55E] text-white text-[8px] font-black px-1 rounded-sm leading-tight">
                               {m.badge}
                             </span>
                           )}
                           {"tag" in m && m.tag && (
-                            <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[8px] font-bold text-white">
+                            <span className="bg-[#F97316] text-white text-[8px] font-black px-1 rounded-sm leading-tight">
                               {m.tag}
                             </span>
                           )}
-                          {"upgrade" in m && m.upgrade && (
-                            <span className="rounded bg-blue-500/20 px-1.5 py-0.5 text-[8px] font-bold text-blue-500">
-                              升级
-                            </span>
-                          )}
                         </div>
-                        <p className="mt-1 text-[11px] leading-relaxed text-white/50">{m.desc}</p>
-                      </div>
-
-                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Plus className="h-3 w-3" />
+                        <p className="mt-0.5 text-[10px] leading-relaxed text-[#999]">{m.desc}</p>
                       </div>
                     </button>
                   );
@@ -302,24 +293,27 @@ export function SkillPicker({
         </div>
       </div>
 
-      <div className="mt-2 max-h-[400px] overflow-y-auto px-6 pb-6 scrollbar-hide">
-        <div className="space-y-3">
+      <div className="px-6 pb-6">
+        <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-hide">
           {skillList.map((s) => (
             <div
               key={s.title}
-              className="group flex cursor-pointer items-start gap-3 rounded-xl py-1 transition-all"
+              className="group flex cursor-pointer items-start gap-3 py-1 transition-all"
               onClick={() => setPreviewSkill(s)}
             >
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-white/5">
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-[#F5F5F5]">
                 <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-[13px] font-bold text-white group-hover:text-white/90">{s.title}</h4>
-                  <div className="flex items-center gap-2 transition-opacity">
+                  <h4 className="text-[13px] font-bold text-[#1A1A1A] group-hover:text-black">{s.title}</h4>
+                  <div className="flex items-center gap-2">
                     <button 
-                      onClick={() => setPreviewSkill(s)}
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPreviewSkill(s);
+                      }}
+                      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#F0F0F0] text-[#999] hover:bg-[#F5F5F5] hover:text-[#666] transition-colors"
                     >
                       <Eye className="h-3 w-3" />
                     </button>
@@ -328,13 +322,13 @@ export function SkillPicker({
                         e.stopPropagation();
                         onSelect?.(s.title);
                       }}
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 text-white/40 hover:bg-white/5 hover:text-white transition-colors"
+                      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#F0F0F0] text-[#999] hover:bg-[#F5F5F5] hover:text-[#666] transition-colors"
                     >
                       <Plus className="h-3 w-3" />
                     </button>
                   </div>
                 </div>
-                <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-white/40">
+                <p className="mt-0.5 line-clamp-2 text-[10px] leading-relaxed text-[#999]">
                   {s.desc}
                 </p>
               </div>
