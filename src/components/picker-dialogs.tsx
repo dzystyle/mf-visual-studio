@@ -871,6 +871,10 @@ export function CreativePreferencePicker() {
     if (typeof window === 'undefined') return "standard";
     return (localStorage.getItem("pref_klingMode") as "standard" | "high") || "standard";
   });
+  const [imgQuality, setImgQuality] = useState<"low" | "medium" | "high">(() => {
+    if (typeof window === 'undefined') return "medium";
+    return (localStorage.getItem("pref_imgQuality") as "low" | "medium" | "high") || "medium";
+  });
 
 
 
@@ -952,6 +956,10 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_klingMode", klingMode); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [klingMode]);
+  useEffect(() => { 
+    localStorage.setItem("pref_imgQuality", imgQuality); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [imgQuality]);
 
 
 
@@ -1383,6 +1391,33 @@ export function CreativePreferencePicker() {
                   ))}
                 </div>
               </section>
+
+              {/* Image Quality Selection for GPT Image 2 */}
+              {imageModel === "GPT Image 2" && (
+                <section>
+                  <div className="flex items-center gap-1 mb-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[#999]" />
+                    <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">输入画质</h4>
+                  </div>
+                  <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-xl w-fit">
+                    {[
+                      { id: "low", label: "低" },
+                      { id: "medium", label: "中" },
+                      { id: "high", label: "高" }
+                    ].map((q) => (
+                      <button
+                        key={q.id}
+                        onClick={() => setImgQuality(q.id as "low" | "medium" | "high")}
+                        className={`px-8 py-2 rounded-lg text-xs font-bold transition-all ${
+                          imgQuality === q.id ? "bg-primary text-white shadow-md" : "text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/60"
+                        }`}
+                      >
+                        {q.label}
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               {/* Group Image Settings */}
               <section>

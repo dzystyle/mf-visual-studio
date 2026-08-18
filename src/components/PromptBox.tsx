@@ -86,6 +86,7 @@ export function PromptBox({
     videoCount: 1,
     videoWatermark: true,
     isAutoMode: true,
+    imgQuality: "medium",
   });
 
 
@@ -110,6 +111,7 @@ export function PromptBox({
         videoCount: Number(localStorage.getItem("pref_videoCount")) || 1,
         videoWatermark: localStorage.getItem("pref_videoWatermark") !== "false",
         isAutoMode: localStorage.getItem("pref_isAutoMode") !== "false",
+        imgQuality: (localStorage.getItem("pref_imgQuality") as "low" | "medium" | "high") || "medium",
       });
 
 
@@ -608,6 +610,7 @@ export function PromptBox({
                               ) : (
                                 <>
                                   {prefs.imageModel} · {prefs.imageRatio}比例 · 4K
+                                  {prefs.imageModel === "GPT Image 2" && ` · ${prefs.imgQuality === 'low' ? '低画质' : prefs.imgQuality === 'medium' ? '中画质' : '高画质'}`}
                                   {prefs.imgFormat !== 'jpeg' && ` · ${prefs.imgFormat.toUpperCase()}`}
                                   {prefs.groupEnabled && ` · 组图(${prefs.groupType === 'link' ? '关联' : '并行'}${prefs.groupAuto ? 'Auto' : prefs.groupCount})`}
                                   {prefs.watermark && ` · 水印`}
