@@ -1167,7 +1167,7 @@ export function CreativePreferencePicker() {
           </section>
 
           {activeMode === "video" && (
-            <div className="space-y-8">
+            <div className="space-y-4">
               <section>
                 <div className="flex items-center gap-1 mb-4">
                   <h4 className="text-[12px] font-bold text-[#999]">时长</h4>
