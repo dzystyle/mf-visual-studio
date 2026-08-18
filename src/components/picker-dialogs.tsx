@@ -114,18 +114,18 @@ export function ModelPicker({
 
   return (
     <div className="w-[580px] flex flex-col rounded-[28px] bg-white dark:bg-[#1A1A1A] text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10">
-      <div className="px-6 py-5 border-b border-[#F0F0F0]">
-        <h3 className="text-sm font-bold text-[#1A1A1A]">模型</h3>
+      <div className="px-6 py-5 border-b border-[#F0F0F0] dark:border-white/5">
+        <h3 className="text-sm font-bold text-[#1A1A1A] dark:text-white/90">模型</h3>
       </div>
       
       <div className="px-6 py-4">
-        <div className="flex w-full items-center gap-1 rounded-xl bg-[#F5F5F5] p-1">
+        <div className="flex w-full items-center gap-1 rounded-xl bg-[#F5F5F5] dark:bg-white/5 p-1">
           {tabs.map((t) => (
             <button
               key={t.key}
               onClick={() => handleTabClick(t.key)}
               className={`flex-1 rounded-lg py-1.5 text-xs font-bold transition-all ${
-                activeTab === t.key ? "bg-white shadow-sm text-black" : "text-[#666] hover:text-black"
+                activeTab === t.key ? "bg-white dark:bg-white/10 shadow-sm text-black dark:text-white" : "text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/80"
               }`}
             >
               {t.label}
