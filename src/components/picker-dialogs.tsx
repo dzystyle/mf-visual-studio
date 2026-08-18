@@ -1366,7 +1366,7 @@ export function CreativePreferencePicker() {
                       <button
                         onClick={() => setGroupType("link")}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                          groupType === "link" ? 'bg-primary text-white shadow-sm' : 'text-[#666] hover:text-black'
+                          groupType === "link" ? 'bg-primary text-white shadow-sm' : 'text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white'
                         }`}
                       >
                         关联
