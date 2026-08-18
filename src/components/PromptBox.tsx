@@ -121,16 +121,6 @@ export function PromptBox({
       const id = `${Date.now()}-${f.name}`;
       const url = kind === "image" ? URL.createObjectURL(f) : undefined;
       
-      // Automatically add @mention for newly uploaded files
-      const mention = `@${f.name}`;
-      setText(prev => {
-        const space = prev.length > 0 && !prev.endsWith(" ") ? " " : "";
-        if (!prev.includes(mention)) {
-          return prev + space + mention + " ";
-        }
-        return prev;
-      });
-
       return {
         id,
         name: f.name,
