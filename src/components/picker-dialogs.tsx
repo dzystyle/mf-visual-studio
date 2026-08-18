@@ -868,15 +868,6 @@ export function CreativePreferencePicker() {
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-[#666]">画布</span>
-            <button 
-              onClick={() => setCanvas(!canvas)}
-              className={`w-8 h-4.5 rounded-full relative transition-colors ${canvas ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
-            >
-              <div className={`absolute top-0.5 w-3.5 h-3.5 rounded-full bg-white transition-all ${canvas ? 'left-[16px]' : 'left-0.5'}`} />
-            </button>
-          </div>
           <div className="flex items-center gap-1 text-[#9333EA] font-bold">
             <Sparkles className="w-3.5 h-3.5 fill-current" />
             <span className="text-xs">12/张</span>
