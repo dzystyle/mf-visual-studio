@@ -1231,7 +1231,7 @@ export function CreativePreferencePicker() {
                       style={{ width: `${((duration - 4) / (180 - 4)) * 100}%` }}
                     />
                     <div 
-                      className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-black rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition-transform z-10"
+                      className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white dark:bg-[#1A1A1A] border-2 border-black dark:border-white rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition-transform z-10"
                       style={{ 
                         left: `${((duration - 4) / (180 - 4)) * 100}%`,
                       }}
