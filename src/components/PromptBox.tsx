@@ -312,12 +312,18 @@ export function PromptBox({
               setCursorPos(newCursorPos);
             }}
             onKeyUp={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
             }}
             onClick={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
+              setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
             }}
             onKeyDown={(e) => {
+              if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
+                // If text is empty and user hits backspace, remove the last mention
+                setSelectedMentions(prev => prev.slice(0, -1));
+                return;
+              }
+
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 const v = text.trim();
