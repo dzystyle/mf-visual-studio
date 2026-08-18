@@ -316,7 +316,7 @@ export function PromptBox({
                   ref={textareaRef}
                   rows={1}
                   value={text}
-                  style={{ order: 999 }}
+                  style={{ order: cursorPos }}
                   onChange={(e) => {
                     const newText = e.target.value;
                     const newCursorPos = e.target.selectionStart || 0;
@@ -347,7 +347,6 @@ export function PromptBox({
                     setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
                   }}
                   onKeyDown={(e) => {
-                    // Logic to handle backspace deleting mentions
                     if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
                       setSelectedMentions(prev => prev.slice(0, -1));
                       return;
@@ -365,7 +364,7 @@ export function PromptBox({
                     }
                   }}
                   placeholder="由一个想法或故事开始..."
-                  className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 order-last ${
+                  className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 ${
                     isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
                   }`}
                 />
