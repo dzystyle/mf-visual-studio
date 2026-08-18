@@ -1391,33 +1391,34 @@ export function CreativePreferencePicker() {
                   ))}
                 </div>
               </section>
-1386: 
-1387:               {/* Image Quality Selection for GPT Image 2 */}
-1388:               {imageModel === "GPT Image 2" && (
-1389:                 <section>
-1390:                   <div className="flex items-center gap-1 mb-2">
-1391:                     <Sparkles className="w-3.5 h-3.5 text-[#999]" />
-1392:                     <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">输入画质</h4>
-1393:                   </div>
-1394:                   <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-xl w-fit">
-1395:                     {[
-1396:                       { id: "low", label: "低" },
-1397:                       { id: "medium", label: "中" },
-1398:                       { id: "high", label: "高" }
-1399:                     ].map((q) => (
-1400:                       <button
-1401:                         key={q.id}
-1402:                         onClick={() => setImgQuality(q.id as "low" | "medium" | "high")}
-1403:                         className={`px-8 py-2 rounded-lg text-xs font-bold transition-all ${
-1404:                           imgQuality === q.id ? 'bg-primary text-white shadow-md' : 'text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/60'
-1405:                         }`}
-1406:                       >
-1407:                         {q.label}
-1408:                       </button>
-1409:                     ))}
-1410:                   </div>
-1411:                 </section>
-1412:               )}
+              </section>
+
+              {/* Image Quality Selection for GPT Image 2 */}
+              {imageModel === "GPT Image 2" && (
+                <section>
+                  <div className="flex items-center gap-1 mb-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[#999]" />
+                    <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">输入画质</h4>
+                  </div>
+                  <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-xl w-fit">
+                    {[
+                      { id: "low", label: "低" },
+                      { id: "medium", label: "中" },
+                      { id: "high", label: "高" }
+                    ].map((q) => (
+                      <button
+                        key={q.id}
+                        onClick={() => setImgQuality(q.id as "low" | "medium" | "high")}
+                        className={`px-8 py-2 rounded-lg text-xs font-bold transition-all ${
+                          imgQuality === q.id ? "bg-primary text-white shadow-md" : "text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/60"
+                        }`}
+                      >
+                        {q.label}
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               {/* Group Image Settings */}
               <section>
