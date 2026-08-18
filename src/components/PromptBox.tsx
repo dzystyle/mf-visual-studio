@@ -339,7 +339,7 @@ export function PromptBox({
                 contentItems.push(
                   <div 
                     key={mentionKey} 
-                    className="inline-flex items-center mx-1 animate-in zoom-in-95 duration-200 align-baseline relative top-[2px]"
+                    className="inline-flex items-center mx-1 animate-in zoom-in-95 duration-200 align-middle relative"
                     onMouseEnter={() => setHoveredMentionId(mentionKey)}
                     onMouseLeave={() => setHoveredMentionId(null)}
                   >
