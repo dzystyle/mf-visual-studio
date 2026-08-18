@@ -159,8 +159,7 @@ export function PromptBox({
     // Update positions of existing mentions after insertion point
     setSelectedMentions(prev => prev.map(m => {
       if (m.position > newCursorPos) {
-        // This is simplified; since we aren't adding text here, we don't shift.
-        // But if we were inserting a text-based chip, we would.
+        // If we inserted text, we'd need to shift. Here we just return.
         return m;
       }
       return m;
