@@ -113,7 +113,7 @@ export function ModelPicker({
   };
 
   return (
-    <div className="w-[580px] flex flex-col rounded-[28px] bg-white text-[#1A1A1A] shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50">
+    <div className="w-[580px] flex flex-col rounded-[28px] bg-white dark:bg-[#1A1A1A] text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10">
       <div className="px-6 py-5 border-b border-[#F0F0F0]">
         <h3 className="text-sm font-bold text-[#1A1A1A]">模型</h3>
       </div>
