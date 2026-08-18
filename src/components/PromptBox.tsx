@@ -307,83 +307,67 @@ export function PromptBox({
                     )}
                   </div>
                 ))}
-                
                 <textarea
                   ref={textareaRef}
                   rows={1}
                   value={text}
                   style={{ order: 999 }}
                   onChange={(e) => {
+                    const newText = e.target.value;
+                    const newCursorPos = e.target.selectionStart || 0;
+                    
+                    if (newText.length < text.length) {
+                      setSelectedMentions(prev => prev.map(m => {
+                        if (m.position > newCursorPos) {
+                          return { ...m, position: Math.max(0, m.position - (text.length - newText.length)) };
+                        }
+                        return m;
+                      }));
+                    } else if (newText.length > text.length) {
+                      setSelectedMentions(prev => prev.map(m => {
+                        if (m.position >= cursorPos) {
+                          return { ...m, position: m.position + (newText.length - text.length) };
+                        }
+                        return m;
+                      }));
+                    }
 
-              const newText = e.target.value;
-              const newCursorPos = e.target.selectionStart || 0;
-              
-              // If text is being deleted, we might need to remove mentions
-              if (newText.length < text.length) {
-                // If we deleted characters, update positions of mentions after the cursor
-                setSelectedMentions(prev => prev.map(m => {
-                  if (m.position > newCursorPos) {
-                    return { ...m, position: Math.max(0, m.position - (text.length - newText.length)) };
-                  }
-                  return m;
-                }));
-              } else if (newText.length > text.length) {
-                // If we added characters, update positions of mentions after the cursor
-                setSelectedMentions(prev => prev.map(m => {
-                  if (m.position >= cursorPos) {
-                    return { ...m, position: m.position + (newText.length - text.length) };
-                  }
-                  return m;
-                }));
-              }
+                    setText(newText);
+                    setCursorPos(newCursorPos);
+                  }}
+                  onKeyUp={(e) => {
+                    setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
+                  }}
+                  onClick={(e) => {
+                    setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
+                      setSelectedMentions(prev => prev.slice(0, -1));
+                      return;
+                    }
 
-              setText(newText);
-              setCursorPos(newCursorPos);
-            }}
-            onKeyUp={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
-            }}
-            onClick={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
-                // If text is empty and user hits backspace, remove the last mention
-                setSelectedMentions(prev => prev.slice(0, -1));
-                return;
-              }
-
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                const v = text.trim();
-                if (v && onSubmit) {
-                  onSubmit(v, canvasMode);
-                  setText("");
-                  setAttachments([]);
-                  setSelectedMentions([]);
-                }
-              }
-            }}
-            placeholder="由一个想法或故事开始..."
-            className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 order-last ${
-              isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
-            }`}
-          />
-          {isMini && (
-            <button
-              onClick={() => {
-                const v = text.trim();
-                if (v && onSubmit) {
-                  onSubmit(v, canvasMode);
-                  setText("");
-                }
-              }}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground text-background transition hover:scale-105"
-            >
-              <ArrowUp className="h-4 w-4" />
-            </button>
-          )}
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      const v = text.trim();
+                      if (v && onSubmit) {
+                        onSubmit(v, canvasMode);
+                        setText("");
+                        setAttachments([]);
+                        setSelectedMentions([]);
+                      }
+                    }
+                  }}
+                  placeholder="由一个想法或故事开始..."
+                  className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 order-last ${
+                    isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
+                  }`}
+                />
+              </>
+            );
+          })()}
         </div>
+
 
 
 
