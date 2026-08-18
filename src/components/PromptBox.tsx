@@ -144,36 +144,26 @@ export function PromptBox({
     const lastAtPos = textBeforeCursor.lastIndexOf("@");
     
     let newText: string;
-    let newCursorPos: number;
+    let insertionPos: number;
 
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
       newText = before + after;
-      newCursorPos = before.length;
+      insertionPos = before.length;
     } else {
       newText = text;
-      newCursorPos = cursorPos;
+      insertionPos = cursorPos;
     }
-
-    // Update positions of existing mentions after insertion point
-    setSelectedMentions(prev => prev.map(m => {
-      if (m.position > newCursorPos) {
-        // If we inserted text, we'd need to shift. Here we just return.
-        return m;
-      }
-      return m;
-    }));
 
     setText(newText);
     setMentionOpen(false);
     
     if (url) {
-      let attachmentId: string;
-      const existingAttachment = attachments.find(a => a.name === name);
+      const attachmentId = `${Date.now()}-${name}`;
       
-      if (!existingAttachment) {
-        attachmentId = `${Date.now()}-${name}`;
+      // Add the attachment if it doesn't exist
+      if (!attachments.find(a => a.name === name)) {
         setAttachments(prev => [
           ...prev,
           {
@@ -183,26 +173,34 @@ export function PromptBox({
             url
           }
         ]);
-      } else {
-        attachmentId = existingAttachment.id;
       }
 
+      // Update positions of existing mentions after the insertion point
       setSelectedMentions(prev => {
-        if (prev.some(m => m.id === attachmentId && m.position === newCursorPos)) return prev;
-        return [...prev, { name, position: newCursorPos, id: attachmentId }];
+        const shifted = prev.map(m => {
+          if (m.position >= insertionPos) {
+            // This is just a marker, the actual text didn't change length
+            // but we need to ensure the new mention is inserted at the exact spot
+            return m;
+          }
+          return m;
+        });
+        return [...shifted, { name, position: insertionPos, id: attachmentId }].sort((a, b) => a.position - b.position);
       });
     }
 
+    // Crucially set the cursor to the end of the new insertion point
+    // Since we remove the '@', the text length might decrease.
     setTimeout(() => {
       if (textareaRef.current) {
         textareaRef.current.focus();
-        // Since the mention was added at currentLastPos, the new cursor position 
-        // in the FINAL textarea should be 0 because all text before this mention 
-        // is now in the static spans.
-        textareaRef.current.setSelectionRange(0, 0);
-        setCursorPos(newText.length);
+        // The textarea only holds text AFTER the last mention.
+        // If we just inserted a mention at the end of the current static text, 
+        // the remaining text is everything after insertionPos.
+        // We set cursorPos so the next render knows where to split.
+        setCursorPos(insertionPos);
       }
-    }, 50);
+    }, 10);
   };
 
 
@@ -324,22 +322,17 @@ export function PromptBox({
                       rows={1}
                       value={remainingText}
                       onChange={(e) => {
-                        const newRemainingText = e.target.value;
-                        const newTotalText = text.slice(0, currentLastPos) + newRemainingText + text.slice(currentLastPos + remainingText.length);
-                        const newCursorPos = currentLastPos + (e.target.selectionStart || 0);
+                        const val = e.target.value;
+                        const selection = e.target.selectionStart || 0;
                         
-                        if (newTotalText.length < text.length) {
-                          const diff = text.length - newTotalText.length;
-                          setSelectedMentions(prev => prev.map(m => {
-                            if (m.position > currentLastPos) {
-                              return { ...m, position: Math.max(currentLastPos, m.position - diff) };
-                            }
-                            return m;
-                          }));
-                        } else if (newTotalText.length > text.length) {
+                        // Reconstruct total text
+                        const newTotalText = text.slice(0, currentLastPos) + val;
+                        const newCursorPos = currentLastPos + selection;
+
+                        if (newTotalText.length !== text.length) {
                           const diff = newTotalText.length - text.length;
                           setSelectedMentions(prev => prev.map(m => {
-                            if (m.position >= currentLastPos) {
+                            if (m.position > currentLastPos) {
                               return { ...m, position: m.position + diff };
                             }
                             return m;
@@ -376,7 +369,7 @@ export function PromptBox({
                           }
                         }
                       }}
-                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            首页输入框还是一样输入的内容自动跑到了图片的前面修复一下。" : ""}
+                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            修复首页输入框在图片@插入后输入内容仍会跑到图片前面的光标定位与渲染时序问题。" : ""}
                       className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
                         isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
                       }`}
