@@ -792,14 +792,48 @@ export function ElementsPickerDialog({
 
 /* ---------------- Creative Preference Picker ---------------- */
 export function CreativePreferencePicker() {
-  const [activeMode, setActiveMode] = useState<"video" | "image">("video");
-  const [videoModel, setVideoModel] = useState("智能匹配模型");
-  const [imageModel, setImageModel] = useState("Seedream 5.0 Pro");
-  const [ratio, setRatio] = useState("智能");
-  const [resolution, setResolution] = useState("720P");
-  const [duration, setDuration] = useState(85);
-  const [durationMode, setDurationMode] = useState<"smart" | "custom">("smart");
-  const [canvas, setCanvas] = useState(false);
+  const [activeMode, setActiveMode] = useState<"video" | "image">(() => {
+    if (typeof window === 'undefined') return "video";
+    return (localStorage.getItem("pref_activeMode") as "video" | "image") || "video";
+  });
+  const [videoModel, setVideoModel] = useState(() => {
+    if (typeof window === 'undefined') return "智能匹配模型";
+    return localStorage.getItem("pref_videoModel") || "智能匹配模型";
+  });
+  const [imageModel, setImageModel] = useState(() => {
+    if (typeof window === 'undefined') return "Seedream 5.0 Pro";
+    return localStorage.getItem("pref_imageModel") || "Seedream 5.0 Pro";
+  });
+  const [ratio, setRatio] = useState(() => {
+    if (typeof window === 'undefined') return "智能";
+    return localStorage.getItem("pref_ratio") || "智能";
+  });
+  const [resolution, setResolution] = useState(() => {
+    if (typeof window === 'undefined') return "720P";
+    return localStorage.getItem("pref_resolution") || "720P";
+  });
+  const [duration, setDuration] = useState(() => {
+    if (typeof window === 'undefined') return 85;
+    return Number(localStorage.getItem("pref_duration")) || 85;
+  });
+  const [durationMode, setDurationMode] = useState<"smart" | "custom">(() => {
+    if (typeof window === 'undefined') return "smart";
+    return (localStorage.getItem("pref_durationMode") as "smart" | "custom") || "smart";
+  });
+  const [canvas, setCanvas] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem("pref_canvas") === "true";
+  });
+
+  // Persist changes to localStorage
+  useEffect(() => { localStorage.setItem("pref_activeMode", activeMode); }, [activeMode]);
+  useEffect(() => { localStorage.setItem("pref_videoModel", videoModel); }, [videoModel]);
+  useEffect(() => { localStorage.setItem("pref_imageModel", imageModel); }, [imageModel]);
+  useEffect(() => { localStorage.setItem("pref_ratio", ratio); }, [ratio]);
+  useEffect(() => { localStorage.setItem("pref_resolution", resolution); }, [resolution]);
+  useEffect(() => { localStorage.setItem("pref_duration", duration.toString()); }, [duration]);
+  useEffect(() => { localStorage.setItem("pref_durationMode", durationMode); }, [durationMode]);
+  useEffect(() => { localStorage.setItem("pref_canvas", canvas.toString()); }, [canvas]);
 
   const videoModels = [
     { name: "智能匹配模型", desc: "当 Agent 识别到视频生成诉求时为你智能选择视频模型", icon: true },
