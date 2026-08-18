@@ -236,17 +236,18 @@ export function PromptBox({
               )}
               
               {/* 悬浮遮罩 (图4: 鼠标移动到图片然后的展示) */}
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 p-1">
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-start justify-between p-2">
                 <button 
                   onClick={() => handleMentionSelect(a.name, a.kind, a.url)}
-                  className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-white backdrop-blur-sm transition-all hover:scale-110"
+                  className="w-7 h-7 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110"
                   title="引用到输入框"
                 >
-                  <AtSign className="w-4 h-4" />
+                  <AtSign className="w-3.5 h-3.5" />
                 </button>
                 <button 
                   onClick={() => removeAttachment(a.id, a.name)}
-                  className="w-6 h-6 rounded-full bg-red-500/20 hover:bg-red-500/40 flex items-center justify-center text-red-500 backdrop-blur-sm transition-all"
+                  className="w-7 h-7 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110"
+                  title="删除"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
