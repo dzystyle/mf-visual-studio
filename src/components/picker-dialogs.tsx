@@ -840,6 +840,11 @@ export function CreativePreferencePicker() {
     if (typeof window === 'undefined') return false;
     return localStorage.getItem("pref_watermark") === "true";
   });
+  const [groupAuto, setGroupAuto] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem("pref_groupAuto") === "true";
+  });
+
 
   // Persist changes to localStorage
   useEffect(() => { 
@@ -890,6 +895,11 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_watermark", watermark.toString()); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [watermark]);
+  useEffect(() => { 
+    localStorage.setItem("pref_groupAuto", groupAuto.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [groupAuto]);
+
 
   const videoModels = [
     { name: "智能匹配模型", desc: "当 Agent 识别到视频生成诉求时为你智能选择视频模型", icon: true },
@@ -1242,26 +1252,44 @@ export function CreativePreferencePicker() {
                     </button>
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-2 px-3 py-1.5 border border-[#E5E5E5] rounded-lg">
-                      <input 
-                        type="text" 
-                        value={groupCount}
-                        onChange={(e) => {
-                          const val = parseInt(e.target.value);
-                          if (!isNaN(val)) setGroupCount(Math.min(Math.max(val, 1), 9));
-                        }}
-                        className="w-4 bg-transparent text-xs font-bold text-center outline-none"
-                      />
-                    </div>
-                    <div 
-                      className={`w-8 h-4 rounded-full relative transition-colors cursor-pointer ${watermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
-                      onClick={() => setWatermark(!watermark)}
-                    >
-                      <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-all ${watermark ? 'right-0.5' : 'left-0.5'}`} />
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <div 
+                        className={`flex items-center gap-1.5 px-2 py-1 border rounded-lg transition-all ${groupAuto && groupType === 'link' ? 'bg-primary/5 border-primary/30' : 'border-[#E5E5E5]'}`}
+                        onClick={() => groupType === 'link' && setGroupAuto(!groupAuto)}
+                      >
+                        <div className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center transition-all ${groupAuto && groupType === 'link' ? 'bg-primary border-primary' : 'bg-white border-[#DDD]'}`}>
+                          {groupAuto && groupType === 'link' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
+                        </div>
+                        <span className={`text-[11px] font-bold ${groupType === 'link' ? 'text-black' : 'text-[#BBB]'}`}>Auto</span>
+                      </div>
+
+                      <div className={`flex items-center px-1.5 py-0.5 border border-[#E5E5E5] rounded-lg bg-white overflow-hidden transition-opacity ${groupAuto && groupType === 'link' ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
+                        <input 
+                          type="text" 
+                          value={groupCount}
+                          readOnly
+                          className="w-5 bg-transparent text-[11px] font-bold text-center outline-none py-1"
+                        />
+                        <div className="flex flex-col border-l border-[#F0F0F0] ml-1">
+                          <button 
+                            onClick={() => setGroupCount(prev => Math.min(prev + 1, 9))}
+                            className="px-1 hover:bg-[#F5F5F5] transition-colors"
+                          >
+                            <ChevronRight className="w-2.5 h-2.5 rotate-[-90deg] text-[#999]" />
+                          </button>
+                          <button 
+                            onClick={() => setGroupCount(prev => Math.max(prev - 1, 1))}
+                            className="px-1 border-t border-[#F0F0F0] hover:bg-[#F5F5F5] transition-colors"
+                          >
+                            <ChevronRight className="w-2.5 h-2.5 rotate-90 text-[#999]" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
               </section>
 
               {/* Watermark Section (if standalone requested but combined above usually) */}
