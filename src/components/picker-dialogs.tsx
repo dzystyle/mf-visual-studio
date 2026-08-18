@@ -832,7 +832,7 @@ export function CreativePreferencePicker() {
   ];
 
   return (
-    <div className="flex flex-col rounded-[32px] bg-white text-[#1A1A1A] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.18)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#F0F0F0]">
+    <div className="flex flex-col rounded-[48px] bg-white text-[#1A1A1A] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#F0F0F0]">
       <div className="flex items-center justify-between px-10 py-8">
         <div className="flex bg-[#F5F5F5] p-1.5 rounded-2xl">
           <button 
