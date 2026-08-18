@@ -854,8 +854,6 @@ export function CreativePreferencePicker() {
 
   return (
     <div className="flex flex-col rounded-[28px] bg-white text-[#1A1A1A] shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50">
-      <div className="flex items-center justify-between px-6 py-5 border-b border-[#F0F0F0]">
-
       {/* Tabs Header */}
       <div className="flex items-center justify-between px-6 py-5 border-b border-[#F0F0F0]">
         <div className="flex bg-[#F5F5F5] p-1 rounded-xl">
