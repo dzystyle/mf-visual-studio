@@ -60,6 +60,7 @@ export function PromptBox({
   const [assetsOpen, setAssetsOpen] = useState(false);
   const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
+  const [prefHover, setPrefHover] = useState(false);
   const [hoveredMentionId, setHoveredMentionId] = useState<string | null>(null);
   const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number, id: string}[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
