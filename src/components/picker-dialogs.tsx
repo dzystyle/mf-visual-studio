@@ -1427,7 +1427,7 @@ export function CreativePreferencePicker() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-[#999]" />
-                    <span className="text-[12px] font-bold text-[#999]">水印</span>
+                    <span className="text-[12px] font-bold text-[#999] dark:text-white/30">水印</span>
                   </div>
                   <div 
                     className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${watermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
