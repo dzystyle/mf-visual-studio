@@ -288,7 +288,7 @@ export function PromptBox({
                   >
                     <Popover open={hoveredMentionId === mentionKey}>
                       <PopoverTrigger asChild>
-                        <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
+                        <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-default transition-transform hover:scale-110 shadow-sm relative group">
                           <img src={att.url} alt="" className="w-full h-full object-cover" />
                         </div>
                       </PopoverTrigger>
