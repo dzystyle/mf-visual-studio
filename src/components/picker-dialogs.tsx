@@ -1084,7 +1084,7 @@ export function CreativePreferencePicker() {
                         )}
                       </div>
                       {m.desc && (
-                        <p className="text-[10px] leading-relaxed text-[#999] mt-0.5 pr-2">
+                        <p className="text-[10px] leading-relaxed text-[#999] dark:text-white/30 mt-0.5 pr-2">
                           {m.desc}
                         </p>
                       )}
