@@ -845,10 +845,22 @@ export function CreativePreferencePicker() {
     return localStorage.getItem("pref_groupEnabled") !== "false";
   });
   const [groupAuto, setGroupAuto] = useState(() => {
-
     if (typeof window === 'undefined') return false;
     return localStorage.getItem("pref_groupAuto") === "true";
   });
+  const [videoAudio, setVideoAudio] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem("pref_videoAudio") === "true";
+  });
+  const [videoCount, setVideoCount] = useState(() => {
+    if (typeof window === 'undefined') return 1;
+    return Number(localStorage.getItem("pref_videoCount")) || 1;
+  });
+  const [videoWatermark, setVideoWatermark] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return localStorage.getItem("pref_videoWatermark") !== "false";
+  });
+
 
 
   // Persist changes to localStorage
@@ -908,6 +920,19 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_groupEnabled", groupEnabled.toString()); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [groupEnabled]);
+  useEffect(() => { 
+    localStorage.setItem("pref_videoAudio", videoAudio.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [videoAudio]);
+  useEffect(() => { 
+    localStorage.setItem("pref_videoCount", videoCount.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [videoCount]);
+  useEffect(() => { 
+    localStorage.setItem("pref_videoWatermark", videoWatermark.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [videoWatermark]);
+
 
 
 
@@ -1113,6 +1138,8 @@ export function CreativePreferencePicker() {
           </section>
 
           {activeMode === "video" && (
+            <>
+
             <section>
               <div className="flex items-center gap-1 mb-4">
                 <h4 className="text-[12px] font-bold text-[#999]">时长</h4>
@@ -1211,7 +1238,71 @@ export function CreativePreferencePicker() {
                 </div>
               </div>
             </section>
+
+            {/* Video Controls: Audio, Count, Watermark - Restoration based on reference image user-uploads://file-305 */}
+            <section className="pt-4 border-t border-[#F0F0F0]">
+              <div className="flex items-center gap-6">
+                {/* Audio Toggle */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <Music className="w-3.5 h-3.5 text-[#999]" />
+                    <span className="text-[12px] font-bold text-[#666]">音频</span>
+                  </div>
+                  <div 
+                    className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    onClick={() => setVideoAudio(!videoAudio)}
+                  >
+                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoAudio ? 'right-1' : 'left-1'}`} />
+                  </div>
+                </div>
+
+                <div className="w-px h-4 bg-[#F0F0F0]" />
+
+                {/* Count Stepper */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
+                    <span className="text-[12px] font-bold text-[#666]">数量</span>
+                  </div>
+                  <div className="flex gap-1.5">
+                    {[1, 2, 3, 4].map((num) => (
+                      <button
+                        key={num}
+                        onClick={() => setVideoCount(num)}
+                        className={`w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold transition-all ${
+                          videoCount === num 
+                            ? 'bg-black text-white shadow-sm' 
+                            : 'bg-[#F5F5F5] text-[#999] hover:bg-[#F0F0F0]'
+                        }`}
+                      >
+                        {num}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="w-px h-4 bg-[#F0F0F0]" />
+
+                {/* Watermark Toggle */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[#999]" />
+                    <span className="text-[12px] font-bold text-[#666]">水印</span>
+                  </div>
+                  <div 
+                    className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer ${videoWatermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    onClick={() => setVideoWatermark(!videoWatermark)}
+                  >
+                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoWatermark ? 'right-1' : 'left-1'}`} />
+                  </div>
+                </div>
+              </div>
+            </section>
+            </>
           )}
+
+
+
 
           {activeMode === "image" && (
             <div className="space-y-8">
