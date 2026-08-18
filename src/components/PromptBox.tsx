@@ -261,7 +261,7 @@ export function PromptBox({
             </div>
           )}
 
-          {(() => {
+            {(() => {
             let currentLastPos = 0;
             const contentItems: React.ReactNode[] = [];
             const sortedMentions = [...selectedMentions].sort((a, b) => a.position - b.position);
@@ -270,7 +270,7 @@ export function PromptBox({
               const segment = text.slice(currentLastPos, m.position);
               if (segment) {
                 contentItems.push(
-                  <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-2 align-middle inline-block">
+                  <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-2 leading-6 align-middle inline-block">
                     {segment}
                   </span>
                 );
@@ -320,7 +320,7 @@ export function PromptBox({
               <div className={`flex-1 flex flex-wrap items-center relative pointer-events-none ${isMini ? 'min-h-[32px]' : 'min-h-[80px]'}`}>
                 <div className="flex-1 flex flex-wrap items-center pointer-events-auto">
                   {contentItems}
-                  <div className="relative inline-flex flex-1 min-w-[50px]">
+                  <div className="relative inline-flex flex-1 min-w-[50px] align-middle">
                     <textarea
                       ref={textareaRef}
                       rows={1}
