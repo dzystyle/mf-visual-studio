@@ -840,7 +840,12 @@ export function CreativePreferencePicker() {
     if (typeof window === 'undefined') return false;
     return localStorage.getItem("pref_watermark") === "true";
   });
+  const [groupEnabled, setGroupEnabled] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return localStorage.getItem("pref_groupEnabled") !== "false";
+  });
   const [groupAuto, setGroupAuto] = useState(() => {
+
     if (typeof window === 'undefined') return false;
     return localStorage.getItem("pref_groupAuto") === "true";
   });
