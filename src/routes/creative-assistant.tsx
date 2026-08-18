@@ -5,9 +5,10 @@ import {
   ChevronRight, 
   LayoutGrid, 
   Plus, 
-  ArrowUp, 
-  Mic, 
-  ChevronDown,
+   ArrowUp, 
+   Mic, 
+   AudioLines,
+   ChevronDown,
   FileText,
   Image as ImageIcon,
   Video,
@@ -599,7 +600,6 @@ function CreativeAssistantPage() {
                         <video 
                           src={videoFileUrl} 
                           className="w-full h-full object-cover" 
-                          controls
                           autoPlay
                           muted
                           loop
@@ -608,7 +608,30 @@ function CreativeAssistantPage() {
                         <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-1 pointer-events-none">
                           <span className="opacity-70">AI 生成</span>
                         </div>
-                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white pointer-events-none">
+                        
+                        {/* Video hover toolbar based on references */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none" />
+                        
+                        {/* Center Hover Indicator */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                          <div className="px-4 py-2 rounded-full bg-black/80 text-white text-[13px] font-bold border border-white/10 backdrop-blur-md shadow-2xl">
+                            标注视频帧
+                          </div>
+                        </div>
+
+                        {/* Bottom Floating Toolbar */}
+                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-0.5 px-0.5 py-0.5 rounded-xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-95 group-hover:scale-100 translate-y-2 group-hover:translate-y-0 shadow-2xl z-20 overflow-hidden">
+                          <VideoToolButton icon={<ChevronRightIcon className="h-4 w-4 rotate-[-90deg] translate-y-[0.5px]" />} label="标注视频帧" active />
+                          <VideoToolButton icon={<div className="flex flex-col gap-[1px]"><div className="w-3 h-[1px] bg-current" /><div className="w-3 h-[1px] bg-current" /></div>} label="去剪映编辑" />
+                          <VideoToolButton icon={<div className="relative"><ChevronRightIcon className="h-3 w-3 rotate-180" /><div className="absolute inset-0 flex items-center justify-center translate-x-[2px]"><div className="w-1.5 h-1.5 rounded-full border border-current" /></div></div>} label="重新生成" />
+                          <VideoToolButton icon={<div className="relative"><ImageIcon className="h-3 w-3" /><Plus className="absolute -top-1 -right-1 h-2 w-2" /></div>} label="引用到输入框" />
+                          <VideoToolButton icon={<div className="px-1 border border-current rounded-[2px] text-[8px] font-bold">HD</div>} label="提升画质" />
+                          <VideoToolButton icon={<div className="relative"><div className="w-3 h-3 border border-current rounded-[1px]" /><div className="absolute top-0 right-0 w-1.5 h-1.5 border-t border-r border-current" /></div>} label="字幕擦除" />
+                          <VideoToolButton icon={<Download className="h-3.5 w-3.5" />} label="下载" />
+                          <VideoToolButton icon={<AudioLines className="h-3.5 w-3.5" />} label="取消静音" />
+                        </div>
+
+                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white pointer-events-none group-hover:hidden">
                           0:15
                         </div>
                       </div>
@@ -878,6 +901,27 @@ function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChang
 }
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+
+function VideoToolButton({ icon, label, active = false, onClick }: { icon: React.ReactNode; label: string; active?: boolean; onClick?: () => void }) {
+  return (
+    <div className="relative group/btn">
+      <button 
+        onClick={onClick}
+        className={cn(
+          "flex h-8 w-8 items-center justify-center rounded-lg transition-all",
+          active 
+            ? "bg-white text-black shadow-sm" 
+            : "text-white/60 hover:bg-white/10 hover:text-white"
+        )}
+      >
+        {icon}
+      </button>
+      <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg bg-black text-white text-[11px] font-bold whitespace-nowrap opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none shadow-xl border border-white/10 backdrop-blur-md z-[60]">
+        {label}
+      </div>
+    </div>
+  );
+}
 
 function StatusLine({ icon, text, subText }: { icon: 'check' | 'loading'; text: string; subText?: string }) {
   return (
