@@ -609,11 +609,11 @@ export function PromptBox({
 
 
             {showCanvasToggle && (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-card/40 border border-border rounded-full hover:bg-card transition group">
-                <span className="text-[11px] font-bold text-muted-foreground group-hover:text-foreground">画布</span>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-card/40 border border-border dark:bg-white/5 dark:border-white/10 rounded-full hover:bg-card dark:hover:bg-white/10 transition group">
+                <span className="text-[11px] font-bold text-muted-foreground dark:text-white/40 group-hover:text-foreground dark:group-hover:text-white/70">画布</span>
                 <button 
                   onClick={() => setCanvasMode(!canvasMode)}
-                  className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
+                  className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
                 >
                   <span
                     className={`pointer-events-none block h-3.5 w-3.5 rounded-full shadow-md ring-0 transition-transform ${canvasMode ? 'translate-x-4 bg-white' : 'translate-x-0.5 bg-white'}`}
@@ -679,11 +679,11 @@ function MentionListItem({ item, onClick }: { item: any; onClick: () => void }) 
 
 function Chip({ icon: Icon, label, badge, active, onClear }: { icon: any; label: string; badge?: string; active?: boolean; onClear?: () => void; }) {
   return (
-    <div className={`relative flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition ${active ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'border-border bg-card/40 text-foreground hover:bg-card'}`}>
-      <Icon className={`h-3.5 w-3.5 ${active ? 'text-aurora-blue' : 'text-muted-foreground'}`} />
-      <span className="font-medium">{label}</span>
+    <div className={`relative flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition ${active ? 'bg-aurora-blue/20 border-aurora-blue/40 text-foreground' : 'border-border bg-card/40 dark:bg-white/5 dark:border-white/10 text-foreground hover:bg-card dark:hover:bg-white/10'}`}>
+      <Icon className={`h-3.5 w-3.5 ${active ? 'text-aurora-blue' : 'text-muted-foreground dark:text-white/40'}`} />
+      <span className="font-medium dark:text-white/70">{label}</span>
       {badge && <span className="flex h-4 items-center rounded bg-aurora-purple/20 px-1 text-[8px] font-bold uppercase text-aurora-purple">{badge}</span>}
-      {onClear && <button onClick={(e) => { e.stopPropagation(); onClear(); }} className="ml-0.5 hover:text-aurora-blue"><X className="h-3 w-3" /></button>}
+      {onClear && <button onClick={(e) => { e.stopPropagation(); onClear(); }} className="ml-0.5 hover:text-aurora-blue dark:text-white/40 dark:hover:text-white"><X className="h-3 w-3" /></button>}
     </div>
   );
 }
