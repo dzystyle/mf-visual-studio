@@ -74,7 +74,14 @@ export function PromptBox({
     duration: 85,
     imageModel: "Seedream 5.0 Pro",
     imageRatio: "智能",
+    imgFormat: "jpeg",
+    groupEnabled: true,
+    groupType: "parallel",
+    groupCount: 4,
+    groupAuto: false,
+    watermark: false,
   });
+
 
   useEffect(() => {
     const updatePrefs = () => {
@@ -85,8 +92,15 @@ export function PromptBox({
         duration: Number(localStorage.getItem("pref_duration")) || 85,
         imageModel: localStorage.getItem("pref_imageModel") || "Seedream 5.0 Pro",
         imageRatio: localStorage.getItem("pref_ratio") || "智能",
+        imgFormat: localStorage.getItem("pref_imgFormat") || "jpeg",
+        groupEnabled: localStorage.getItem("pref_groupEnabled") !== "false",
+        groupType: localStorage.getItem("pref_groupType") || "parallel",
+        groupCount: Number(localStorage.getItem("pref_groupCount")) || 4,
+        groupAuto: localStorage.getItem("pref_groupAuto") === "true",
+        watermark: localStorage.getItem("pref_watermark") === "true",
       });
     };
+
 
     updatePrefs();
     window.addEventListener('storage', updatePrefs);
@@ -536,7 +550,12 @@ export function PromptBox({
                           </div>
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                             <span className="text-white/60">图片:</span>
-                            <span>{prefs.imageModel} · {prefs.imageRatio}比例 · 4K</span>
+                            <span>
+                              {prefs.imageModel} · {prefs.imageRatio}比例 · 4K
+                              {prefs.imgFormat !== 'jpeg' && ` · ${prefs.imgFormat.toUpperCase()}`}
+                              {prefs.groupEnabled && ` · 组图(${prefs.groupType === 'link' ? '关联' : '并行'}${prefs.groupAuto ? 'Auto' : prefs.groupCount})`}
+                              {prefs.watermark && ` · 水印`}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -545,6 +564,7 @@ export function PromptBox({
                   <button type="button" onClick={() => setPrefOpen(true)}>
                     <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" active={prefOpen} />
                   </button>
+
                 </div>
               </PopoverTrigger>
               <PopoverContent 
