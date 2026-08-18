@@ -826,13 +826,28 @@ export function CreativePreferencePicker() {
     { name: "Nano Banana 2", desc: "高品质 · 更快速 · 更低成本。" },
   ];
 
-  const ratios = [
+  const videoRatios = [
     { label: "智能", icon: <LayoutGrid className="w-4 h-4" /> },
     { label: "16:9", icon: <div className="w-4 h-2.5 border border-current rounded-sm" /> },
-    { label: "21:9", icon: <div className="w-5 h-2 border border-current rounded-sm" /> },
-    { label: "9:16", icon: <div className="w-2.5 h-4 border border-current rounded-sm" /> },
     { label: "4:3", icon: <div className="w-4 h-3 border border-current rounded-sm" /> },
+    { label: "1:1", icon: <div className="w-3.5 h-3.5 border border-current rounded-sm" /> },
+    { label: "3:4", icon: <div className="w-3 h-4 border border-current rounded-sm" /> },
+    { label: "9:16", icon: <div className="w-2.5 h-4 border border-current rounded-sm" /> },
+    { label: "21:9", icon: <div className="w-5 h-2 border border-current rounded-sm" /> },
   ];
+
+  const imageRatios = [
+    { label: "1:1", icon: <div className="w-3.5 h-3.5 border border-current rounded-sm" /> },
+    { label: "4:3", icon: <div className="w-4 h-3 border border-current rounded-sm" /> },
+    { label: "3:4", icon: <div className="w-3 h-4 border border-current rounded-sm" /> },
+    { label: "16:9", icon: <div className="w-4 h-2.5 border border-current rounded-sm" /> },
+    { label: "9:16", icon: <div className="w-2.5 h-4 border border-current rounded-sm" /> },
+    { label: "3:2", icon: <div className="w-4 h-2.5 border border-current rounded-sm" /> },
+    { label: "2:3", icon: <div className="w-2.5 h-4 border border-current rounded-sm" /> },
+    { label: "21:9", icon: <div className="w-5 h-2 border border-current rounded-sm" /> },
+  ];
+
+  const currentRatios = activeMode === "video" ? videoRatios : imageRatios;
 
   return (
     <div className="flex flex-col rounded-[28px] bg-white text-[#1A1A1A] shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50">
