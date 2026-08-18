@@ -472,7 +472,7 @@ export function PromptBox({
               style={{
                 top: mentionRect.bottom + 8,
                 left: mentionRect.left,
-                width: Math.max(320, mentionRect.width),
+                width: 320, // Fixed width for better readability and UI balance
               }}
             >
               <div className="p-3.5 border-b border-border/50">
