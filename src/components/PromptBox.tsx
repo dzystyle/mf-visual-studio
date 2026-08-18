@@ -196,8 +196,11 @@ export function PromptBox({
     setTimeout(() => {
       if (textareaRef.current) {
         textareaRef.current.focus();
-        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
-        setCursorPos(newCursorPos);
+        // Since the mention was added at currentLastPos, the new cursor position 
+        // in the FINAL textarea should be 0 because all text before this mention 
+        // is now in the static spans.
+        textareaRef.current.setSelectionRange(0, 0);
+        setCursorPos(newText.length);
       }
     }, 50);
   };
@@ -315,7 +318,7 @@ export function PromptBox({
               <div className="flex-1 flex flex-wrap items-center relative min-h-[40px] pointer-events-none overflow-hidden">
                 <div className="flex-1 flex flex-wrap items-center pointer-events-auto">
                   {contentItems}
-                  <div className="relative inline-flex items-center flex-1 min-w-[50px]">
+                  <div className="relative flex-1 min-w-[50px]">
                     <textarea
                       ref={textareaRef}
                       rows={1}
@@ -373,7 +376,7 @@ export function PromptBox({
                           }
                         }
                       }}
-                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            输入框输入还是乱的,以你资深产品经理的角度深度思考一下。" : ""}
+                      placeholder={text === "" && selectedMentions.length === 0 ? "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            首页输入框文字还是有问题,我上传了一张图片然后在输入框@选择这张图片显示到输入框后输入光标定位在图片后面输入文字后文字会跑到图片前面修复一下这个问题。" : ""}
                       className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
                         isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
                       }`}
