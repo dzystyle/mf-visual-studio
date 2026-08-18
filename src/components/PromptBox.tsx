@@ -609,8 +609,8 @@ export function PromptBox({
 
 
             {showCanvasToggle && (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F5F5] border border-transparent rounded-full hover:bg-[#F0F0F0] transition group">
-                <span className="text-[11px] font-bold text-[#666] group-hover:text-[#333]">画布</span>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F5F5] dark:bg-white/10 border border-transparent rounded-full hover:bg-[#F0F0F0] dark:hover:bg-white/20 transition group">
+                <span className="text-[11px] font-bold text-[#666] dark:text-white/60 group-hover:text-[#333] dark:group-hover:text-white">画布</span>
                 <button 
                   onClick={() => setCanvasMode(!canvasMode)}
                   className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
