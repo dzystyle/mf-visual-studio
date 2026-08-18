@@ -162,7 +162,6 @@ export function PromptBox({
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
       
-      // We keep everything before the @ and everything after the current mention context
       newText = (before + after);
       newCursorPos = before.length;
     } else {
@@ -186,6 +185,10 @@ export function PromptBox({
             url
           }
         ]);
+      }
+      // Track that this asset is selected to be shown as an inline chip
+      if (!selectedMentions.includes(name)) {
+        setSelectedMentions(prev => [...prev, name]);
       }
     }
 
