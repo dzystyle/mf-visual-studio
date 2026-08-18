@@ -327,7 +327,7 @@ export function PromptBox({
               const segment = text.slice(currentLastPos, m.position);
               if (segment) {
                 contentItems.push(
-                  <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-0 leading-6 align-baseline inline-block">
+                  <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-0 leading-6 align-middle inline-block">
                     {segment}
                   </span>
                 );
