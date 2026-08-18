@@ -798,6 +798,7 @@ export function CreativePreferencePicker() {
   const [ratio, setRatio] = useState("智能");
   const [resolution, setResolution] = useState("720P");
   const [duration, setDuration] = useState(85);
+  const [durationMode, setDurationMode] = useState<"smart" | "custom">("smart");
   const [canvas, setCanvas] = useState(false);
 
   const videoModels = [
@@ -977,32 +978,94 @@ export function CreativePreferencePicker() {
                 <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
               </div>
               <div className="flex items-center gap-3">
-                <button className="px-5 py-2 rounded-xl bg-[#F5F5F5] text-[12px] font-bold text-[#666] hover:bg-[#F0F0F0] transition-colors">
-                  智能时长
+                <button 
+                  onClick={() => setDurationMode("smart")}
+                  className={`px-5 py-2 rounded-xl text-[12px] font-bold transition-all ${
+                    durationMode === "smart" 
+                      ? "bg-white border-black text-black shadow-md border" 
+                      : "bg-[#F5F5F5] text-[#666] border-transparent border hover:bg-[#F0F0F0]"
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    {durationMode === "smart" && <div className="w-1 h-1 rounded-full bg-black" />}
+                    智能时长
+                  </div>
                 </button>
-                <div className="flex items-center gap-2 bg-[#F5F5F5] rounded-xl px-4 py-2 min-w-[100px]">
-                  <div className="w-1 h-1 rounded-full bg-black" />
-                  <input 
-                    type="text" 
-                    value={duration} 
-                    onChange={(e) => setDuration(parseInt(e.target.value) || 0)}
-                    className="bg-transparent text-[12px] font-bold text-black w-6 outline-none text-center"
-                  />
-                  <span className="text-[12px] font-medium text-[#999]">秒</span>
-                </div>
+                <button 
+                  onClick={() => setDurationMode("custom")}
+                  className={`flex items-center gap-2 rounded-xl px-5 py-2 min-w-[100px] transition-all ${
+                    durationMode === "custom"
+                      ? "bg-white border-black text-black shadow-md border"
+                      : "bg-[#F5F5F5] text-[#666] border-transparent border hover:bg-[#F0F0F0]"
+                  }`}
+                >
+                  {durationMode === "custom" && <div className="w-1 h-1 rounded-full bg-black" />}
+                  <span className="text-[12px] font-bold">自定义时长</span>
+                  {durationMode === "custom" && (
+                    <div className="flex items-center ml-1">
+                      <input 
+                        type="text" 
+                        value={duration} 
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value);
+                          if (!isNaN(val)) setDuration(Math.min(Math.max(val, 4), 180));
+                        }}
+                        className="bg-transparent text-[12px] font-bold text-black w-7 outline-none text-center"
+                      />
+                      <span className="text-[12px] font-medium text-[#999]">秒</span>
+                    </div>
+                  )}
+                </button>
               </div>
-              <div className="mt-6 relative px-1">
-                <div className="h-0.5 bg-[#F0F0F0] rounded-full w-full relative">
+              
+              <div className={`mt-6 relative px-1 transition-opacity duration-200 ${durationMode === 'custom' ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
+                <div 
+                  className="h-1 bg-[#F0F0F0] rounded-full w-full relative cursor-pointer"
+                  onClick={(e) => {
+                    if (durationMode !== 'custom') return;
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const percent = x / rect.width;
+                    const newVal = Math.round(4 + percent * (180 - 4));
+                    setDuration(Math.min(Math.max(newVal, 4), 180));
+                  }}
+                >
                   <div 
-                    className="absolute h-0.5 bg-black rounded-full" 
-                    style={{ width: `${(duration / 180) * 100}%` }}
+                    className="absolute h-1 bg-black rounded-full" 
+                    style={{ width: `${((duration - 4) / (180 - 4)) * 100}%` }}
                   />
                   <div 
-                    className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white border-2 border-black rounded-full shadow-md cursor-pointer"
-                    style={{ left: `${(duration / 180) * 100}%` }}
+                    className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-black rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition-transform"
+                    style={{ 
+                      left: `${((duration - 4) / (180 - 4)) * 100}%`,
+                      transform: 'translate(-50%, -50%)'
+                    }}
+                    onMouseDown={(e) => {
+                      if (durationMode !== 'custom') return;
+                      const startX = e.clientX;
+                      const startVal = duration;
+                      const container = e.currentTarget.parentElement;
+                      if (!container) return;
+                      const width = container.clientWidth;
+
+                      const onMouseMove = (moveEvent: MouseEvent) => {
+                        const deltaX = moveEvent.clientX - startX;
+                        const deltaVal = (deltaX / width) * (180 - 4);
+                        const newVal = Math.round(startVal + deltaVal);
+                        setDuration(Math.min(Math.max(newVal, 4), 180));
+                      };
+
+                      const onMouseUp = () => {
+                        document.removeEventListener('mousemove', onMouseMove);
+                        document.removeEventListener('mouseup', onMouseUp);
+                      };
+
+                      document.addEventListener('mousemove', onMouseMove);
+                      document.addEventListener('mouseup', onMouseUp);
+                    }}
                   />
                 </div>
-                <div className="flex justify-between mt-2.5 text-[9px] font-medium text-[#BBB]">
+                <div className="flex justify-between mt-3 text-[10px] font-bold text-[#BBB] px-0.5">
                   <span>4秒</span>
                   <span>180秒</span>
                 </div>
