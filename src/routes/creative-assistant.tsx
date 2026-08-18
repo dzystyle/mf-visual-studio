@@ -1403,23 +1403,22 @@ function VideoToolButton({
   onClick?: (e: React.MouseEvent) => void;
 }) {
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <button 
-          onClick={onClick}
-          className={cn(
-            "w-9 h-9 flex items-center justify-center transition-all rounded-[10px]",
-            active 
-              ? "bg-white text-black shadow-lg" 
-              : "text-white/80 hover:bg-white/10 hover:text-white"
-          )}
-        >
-          {icon}
-        </button>
-      </PopoverTrigger>
-      <PopoverContent side="top" align="center" sideOffset={12} className="px-2 py-1 bg-black/80 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold rounded-lg w-fit shadow-2xl animate-in zoom-in-95 duration-200">
+    <div className="group/tooltip relative">
+      <button 
+        onClick={onClick}
+        className={cn(
+          "w-9 h-9 flex items-center justify-center transition-all rounded-[10px]",
+          active 
+            ? "bg-white text-black shadow-lg" 
+            : "text-white/80 hover:bg-white/10 hover:text-white"
+        )}
+      >
+        {icon}
+      </button>
+      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-1.5 bg-black text-white text-[12px] font-bold rounded-full w-fit whitespace-nowrap shadow-2xl opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-[100]">
         {label}
-      </PopoverContent>
-    </Popover>
+        <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-black" />
+      </div>
+    </div>
   );
 }
