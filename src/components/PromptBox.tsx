@@ -377,7 +377,7 @@ export function PromptBox({
               <div className={`flex-1 flex flex-wrap items-center relative pointer-events-none ${isMini ? 'min-h-[32px]' : 'min-h-[80px]'}`}>
                 <div className="flex-1 flex flex-wrap items-center pointer-events-auto">
                   {contentItems}
-                  <div className="relative inline-flex flex-1 min-w-[50px] align-baseline">
+                  <div className="relative inline-flex flex-1 min-w-[50px] align-middle">
                     <textarea
                       ref={textareaRef}
                       rows={1}
