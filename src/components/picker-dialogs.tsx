@@ -1299,6 +1299,7 @@ export function CreativePreferencePicker() {
           )}
 
 
+
           {activeMode === "image" && (
             <div className="space-y-8">
               {/* Format Selection */}
