@@ -904,6 +904,11 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_groupAuto", groupAuto.toString()); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [groupAuto]);
+  useEffect(() => { 
+    localStorage.setItem("pref_groupEnabled", groupEnabled.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [groupEnabled]);
+
 
 
   const videoModels = [
