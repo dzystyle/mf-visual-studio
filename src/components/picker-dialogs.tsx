@@ -826,14 +826,38 @@ export function CreativePreferencePicker() {
   });
 
   // Persist changes to localStorage
-  useEffect(() => { localStorage.setItem("pref_activeMode", activeMode); }, [activeMode]);
-  useEffect(() => { localStorage.setItem("pref_videoModel", videoModel); }, [videoModel]);
-  useEffect(() => { localStorage.setItem("pref_imageModel", imageModel); }, [imageModel]);
-  useEffect(() => { localStorage.setItem("pref_ratio", ratio); }, [ratio]);
-  useEffect(() => { localStorage.setItem("pref_resolution", resolution); }, [resolution]);
-  useEffect(() => { localStorage.setItem("pref_duration", duration.toString()); }, [duration]);
-  useEffect(() => { localStorage.setItem("pref_durationMode", durationMode); }, [durationMode]);
-  useEffect(() => { localStorage.setItem("pref_canvas", canvas.toString()); }, [canvas]);
+  useEffect(() => { 
+    localStorage.setItem("pref_activeMode", activeMode); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [activeMode]);
+  useEffect(() => { 
+    localStorage.setItem("pref_videoModel", videoModel); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [videoModel]);
+  useEffect(() => { 
+    localStorage.setItem("pref_imageModel", imageModel); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [imageModel]);
+  useEffect(() => { 
+    localStorage.setItem("pref_ratio", ratio); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [ratio]);
+  useEffect(() => { 
+    localStorage.setItem("pref_resolution", resolution); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [resolution]);
+  useEffect(() => { 
+    localStorage.setItem("pref_duration", duration.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [duration]);
+  useEffect(() => { 
+    localStorage.setItem("pref_durationMode", durationMode); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [durationMode]);
+  useEffect(() => { 
+    localStorage.setItem("pref_canvas", canvas.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [canvas]);
 
   const videoModels = [
     { name: "智能匹配模型", desc: "当 Agent 识别到视频生成诉求时为你智能选择视频模型", icon: true },

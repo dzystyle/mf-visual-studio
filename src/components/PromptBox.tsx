@@ -65,6 +65,39 @@ export function PromptBox({
   const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number, id: string}[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
   const [cursorPos, setCursorPos] = useState(0);
+
+  // Stats for the hover capsule (synced with localStorage)
+  const [prefs, setPrefs] = useState({
+    videoModel: "智能匹配模型",
+    videoRatio: "智能",
+    resolution: "720P",
+    duration: 85,
+    imageModel: "Seedream 5.0 Pro",
+    imageRatio: "智能",
+  });
+
+  useEffect(() => {
+    const updatePrefs = () => {
+      setPrefs({
+        videoModel: localStorage.getItem("pref_videoModel") || "智能匹配模型",
+        videoRatio: localStorage.getItem("pref_ratio") || "智能",
+        resolution: localStorage.getItem("pref_resolution") || "720P",
+        duration: Number(localStorage.getItem("pref_duration")) || 85,
+        imageModel: localStorage.getItem("pref_imageModel") || "Seedream 5.0 Pro",
+        imageRatio: localStorage.getItem("pref_ratio") || "智能",
+      });
+    };
+
+    updatePrefs();
+    window.addEventListener('storage', updatePrefs);
+    // Also listen for a custom event since localStorage event only fires in OTHER tabs
+    window.addEventListener('pref-updated', updatePrefs);
+    
+    return () => {
+      window.removeEventListener('storage', updatePrefs);
+      window.removeEventListener('pref-updated', updatePrefs);
+    };
+  }, []);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pendingKind = useRef<Attachment["kind"]>("image");
@@ -499,11 +532,11 @@ export function PromptBox({
                         <div className="flex flex-col gap-0.5">
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                             <span className="text-white/60">视频:</span>
-                            <span>智能匹配模型 · 智能比例 · 720P · 85秒</span>
+                            <span>{prefs.videoModel} · {prefs.videoRatio}比例 · {prefs.resolution} · {prefs.duration}秒</span>
                           </div>
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                             <span className="text-white/60">图片:</span>
-                            <span>Seedream 5.0 Pro · 智能比例 · 4K</span>
+                            <span>{prefs.imageModel} · {prefs.imageRatio}比例 · 4K</span>
                           </div>
                         </div>
                       </div>
