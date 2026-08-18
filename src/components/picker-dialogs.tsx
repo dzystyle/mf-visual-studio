@@ -836,9 +836,9 @@ export function CreativePreferencePicker() {
       {/* Top Capsule Info - Show on hover via external control */}
       <div 
         id="pref-capsule"
-        className="absolute -top-14 left-0 right-0 flex justify-center pointer-events-none transition-opacity duration-300 opacity-0 z-[101]"
+        className="absolute -top-14 left-1/2 -translate-x-1/2 flex justify-center pointer-events-none transition-opacity duration-300 opacity-0 z-[101]"
       >
-        <div className="bg-[#1A1A1A] rounded-full px-5 py-2 flex flex-col items-center gap-0.5 shadow-xl border border-white/5">
+        <div className="bg-[#1A1A1A] rounded-full px-5 py-2 flex flex-col items-center gap-0.5 shadow-xl border border-white/5 whitespace-nowrap">
           <div className="flex items-center gap-2 text-[10px] text-white/90">
             <span className="opacity-50">视频:</span>
             <span>{videoModel} · {ratio}比例 · {resolution} · {duration}秒</span>
