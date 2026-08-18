@@ -871,6 +871,10 @@ export function CreativePreferencePicker() {
     if (typeof window === 'undefined') return "standard";
     return (localStorage.getItem("pref_klingMode") as "standard" | "high") || "standard";
   });
+  const [imgQuality, setImgQuality] = useState<"low" | "medium" | "high">(() => {
+    if (typeof window === 'undefined') return "medium";
+    return (localStorage.getItem("pref_imgQuality") as "low" | "medium" | "high") || "medium";
+  });
 
 
 
