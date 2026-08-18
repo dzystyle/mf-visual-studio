@@ -1103,8 +1103,8 @@ export function CreativePreferencePicker() {
         <div className="flex-1 space-y-8">
           <section>
             <div className="flex items-center gap-1 mb-4">
-              <h4 className="text-[12px] font-bold text-[#999]">画面比例</h4>
-              <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
+              <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">画面比例</h4>
+              <div className="w-3 h-3 rounded-full border border-[#CCC] dark:border-white/20 flex items-center justify-center text-[8px] text-[#999] dark:text-white/30 cursor-help">?</div>
             </div>
             <div className="relative group/slider w-full max-w-[320px]">
               <button 
