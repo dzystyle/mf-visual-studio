@@ -182,7 +182,7 @@ export function PromptBox({
     
     const next = files.map((f) => {
       const id = `${Date.now()}-${f.name}`;
-      const url = kind === "image" ? URL.createObjectURL(f) : undefined;
+      const url = (kind === "image" || kind === "video") ? URL.createObjectURL(f) : undefined;
       
       return {
         id,
@@ -275,7 +275,11 @@ export function PromptBox({
           {attachments.map((a) => (
             <div key={a.id} className="group relative w-20 h-20 rounded-xl overflow-hidden border border-border bg-accent/20 dark:border-white/10">
               {a.url ? (
-                <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
+                a.kind === 'video' ? (
+                  <video src={a.url} className="w-full h-full object-cover" muted playsInline />
+                ) : (
+                  <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
+                )
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-muted-foreground/40">
                   {a.kind === 'video' ? <Video className="w-8 h-8" /> : <FileText className="w-8 h-8" />}
@@ -350,7 +354,11 @@ export function PromptBox({
                     <Popover open={hoveredMentionId === mentionKey}>
                       <PopoverTrigger asChild>
                         <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-default transition-transform hover:scale-110 shadow-sm relative group">
-                          <img src={att.url} alt="" className="w-full h-full object-cover" />
+                          {att.kind === 'video' ? (
+                            <video src={att.url} className="w-full h-full object-cover" muted />
+                          ) : (
+                            <img src={att.url} alt="" className="w-full h-full object-cover" />
+                          )}
                         </div>
                       </PopoverTrigger>
                       <PopoverContent 
@@ -360,8 +368,12 @@ export function PromptBox({
                         className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
                       >
                         <div className="space-y-2">
-                          <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
-                            <img src={att.url} alt="" className="w-full h-full object-cover" />
+                          <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner bg-black">
+                            {att.kind === 'video' ? (
+                              <video src={att.url} className="w-full h-full object-contain" autoPlay loop muted playsInline />
+                            ) : (
+                              <img src={att.url} alt="" className="w-full h-full object-cover" />
+                            )}
                           </div>
                           <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
                             {att.name}
