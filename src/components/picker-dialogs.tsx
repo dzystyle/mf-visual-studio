@@ -1164,22 +1164,46 @@ export function CreativePreferencePicker() {
             </div>
           </section>
 
-          <section className="mb-4">
-            <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30 mb-2">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
-            <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-full w-fit">
-              {(activeMode === 'video' ? ["4K", "2K", "1080P", "720P"] : ["1K", "2K", "4K"]).map((res) => (
-                <button
-                  key={res}
-                  onClick={() => setResolution(res)}
-                  className={`px-5 py-1 rounded-full text-[10px] font-bold transition-all ${
-                    resolution === res ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60'
-                  }`}
-                >
-                  {res}
-                </button>
-              ))}
-            </div>
-          </section>
+          {!(activeMode === 'video' && videoModel.includes("Kling")) && (
+            <section className="mb-4">
+              <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30 mb-2">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
+              <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-full w-fit">
+                {(activeMode === 'video' ? ["4K", "2K", "1080P", "720P"] : ["1K", "2K", "4K"]).map((res) => (
+                  <button
+                    key={res}
+                    onClick={() => setResolution(res)}
+                    className={`px-5 py-1 rounded-full text-[10px] font-bold transition-all ${
+                      resolution === res ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60'
+                    }`}
+                  >
+                    {res}
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {activeMode === 'video' && videoModel.includes("Kling") && (
+            <section className="mb-4">
+              <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30 mb-2">生成模式</h4>
+              <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-full w-fit">
+                {[
+                  { id: "standard", label: "标准(720p)" },
+                  { id: "high", label: "高品质(1080p)" }
+                ].map((mode) => (
+                  <button
+                    key={mode.id}
+                    onClick={() => setKlingMode(mode.id as "standard" | "high")}
+                    className={`px-5 py-1 rounded-full text-[10px] font-bold transition-all ${
+                      klingMode === mode.id ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60'
+                    }`}
+                  >
+                    {mode.label}
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
 
           {activeMode === "video" && (
             <div className="space-y-4">
