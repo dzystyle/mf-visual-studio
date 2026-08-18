@@ -937,6 +937,11 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_videoWatermark", videoWatermark.toString()); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [videoWatermark]);
+  useEffect(() => { 
+    localStorage.setItem("pref_isAutoMode", isAutoMode.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [isAutoMode]);
+
 
 
 
