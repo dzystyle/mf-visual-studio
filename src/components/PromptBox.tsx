@@ -59,7 +59,7 @@ export function PromptBox({
   const [assetsOpen, setAssetsOpen] = useState(false);
   const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
-  const [selectedMentions, setSelectedMentions] = useState<string[]>([]);
+  const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number}[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
   const [cursorPos, setCursorPos] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -135,7 +135,7 @@ export function PromptBox({
   const removeAttachment = (id: string, name?: string) => {
     setAttachments((prev) => prev.filter((a) => a.id !== id));
     if (name) {
-      setSelectedMentions(prev => prev.filter(n => n !== name));
+      setSelectedMentions(prev => prev.filter(m => m.name !== name));
       setText(prev => {
         // Find both cases: "@name " and "@name"
         const mentionWithSpace = `@${name} `;
@@ -174,7 +174,7 @@ export function PromptBox({
     setMentionOpen(false);
     
     if (url) {
-      const exists = attachments.find(a => a.url === url);
+      const exists = attachments.find(a => a.name === name);
       if (!exists) {
         const id = `${Date.now()}-${name}`;
         setAttachments(prev => [
@@ -187,10 +187,13 @@ export function PromptBox({
           }
         ]);
       }
-      // Track that this asset is selected to be shown as an inline chip
-      if (!selectedMentions.includes(name)) {
-        setSelectedMentions(prev => [...prev, name]);
-      }
+      // Track that this asset is selected and its relative position in the text
+      // We store the position based on the current text structure
+      setSelectedMentions(prev => {
+        // Only add if not already mentioned at this exact spot (prevent duplicates)
+        if (prev.some(m => m.name === name && m.position === newCursorPos)) return prev;
+        return [...prev, { name, position: newCursorPos }];
+      });
     }
 
     // Force focus and restore cursor position after state update
@@ -202,6 +205,7 @@ export function PromptBox({
       }
     }, 50);
   };
+
 
   return (
     <div className={`glass shadow-2xl relative z-20 transition-all duration-500 ease-out-expo ${
@@ -263,77 +267,116 @@ export function PromptBox({
           )}
           
           {/* 输入框内的引用 (图1: @选择资源后只会显示小图标) */}
-          {!isMini && attachments.filter(a => selectedMentions.includes(a.name)).map((a) => (
-            <div key={`inline-${a.id}`} className="inline-flex items-center animate-in zoom-in-95 duration-200">
-              {a.url && (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm">
-                      <img src={a.url} alt="" className="w-full h-full object-cover" />
-                    </div>
-                  </PopoverTrigger>
-                  {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
-                  <PopoverContent side="bottom" align="start" sideOffset={8} className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]">
-                    <div className="space-y-2">
-                      <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
-                        <img src={a.url} alt="" className="w-full h-full object-cover" />
-                      </div>
-                      <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
-                        {a.name}
-                      </div>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              )}
-            </div>
-          ))}
-          
-          <textarea
-            ref={textareaRef}
-            rows={1}
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-              setCursorPos(e.target.selectionStart);
-            }}
-            onKeyUp={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-            }}
-            onClick={(e) => {
-              setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                const v = text.trim();
-                if (v && onSubmit) {
-                  onSubmit(v, canvasMode);
-                  setText("");
-                  setAttachments([]);
-                  setSelectedMentions([]);
-                }
-              }
-            }}
-            placeholder="由一个想法或故事开始..."
-            className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 order-last ${
-              isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
-            }`}
-          />
-          {isMini && (
-            <button
-              onClick={() => {
-                const v = text.trim();
-                if (v && onSubmit) {
-                  onSubmit(v, canvasMode);
-                  setText("");
-                }
-              }}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground text-background transition hover:scale-105"
-            >
-              <ArrowUp className="h-4 w-4" />
-            </button>
-          )}
+          {(() => {
+            // Sort mentions by their insertion position to maintain order
+            const sortedMentions = [...selectedMentions].sort((a, b) => a.position - b.position);
+            
+            // Map the sorted names back to full attachment objects
+            const inlineAttachments = sortedMentions.map(m => {
+              const att = attachments.find(a => a.name === m.name);
+              return att ? { ...att, mentionPos: m.position } : null;
+            }).filter(Boolean) as (Attachment & { mentionPos: number })[];
+
+            return (
+              <>
+                {inlineAttachments.map((a, idx) => (
+                  <div 
+                    key={`inline-${a.id}-${idx}`} 
+                    className="inline-flex items-center animate-in zoom-in-95 duration-200"
+                    style={{ order: a.mentionPos }}
+                  >
+                    {a.url && (
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
+                            <img src={a.url} alt="" className="w-full h-full object-cover" />
+                          </div>
+                        </PopoverTrigger>
+                        {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
+                        <PopoverContent 
+                          side="bottom" 
+                          align="start" 
+                          sideOffset={12} 
+                          className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]"
+                        >
+                          <div className="space-y-2">
+                            <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
+                              <img src={a.url} alt="" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
+                              {a.name}
+                            </div>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                  </div>
+                ))}
+                <textarea
+                  ref={textareaRef}
+                  rows={1}
+                  value={text}
+                  style={{ order: 999 }}
+                  onChange={(e) => {
+                    const newText = e.target.value;
+                    const newCursorPos = e.target.selectionStart || 0;
+                    
+                    if (newText.length < text.length) {
+                      setSelectedMentions(prev => prev.map(m => {
+                        if (m.position > newCursorPos) {
+                          return { ...m, position: Math.max(0, m.position - (text.length - newText.length)) };
+                        }
+                        return m;
+                      }));
+                    } else if (newText.length > text.length) {
+                      setSelectedMentions(prev => prev.map(m => {
+                        if (m.position >= cursorPos) {
+                          return { ...m, position: m.position + (newText.length - text.length) };
+                        }
+                        return m;
+                      }));
+                    }
+
+                    setText(newText);
+                    setCursorPos(newCursorPos);
+                  }}
+                  onKeyUp={(e) => {
+                    setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
+                  }}
+                  onClick={(e) => {
+                    setCursorPos((e.target as HTMLTextAreaElement).selectionStart || 0);
+                  }}
+                  onKeyDown={(e) => {
+                    // Logic to handle backspace deleting mentions
+                    if (e.key === "Backspace" && text === "" && selectedMentions.length > 0) {
+                      setSelectedMentions(prev => prev.slice(0, -1));
+                      return;
+                    }
+
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      const v = text.trim();
+                      if (v && onSubmit) {
+                        onSubmit(v, canvasMode);
+                        setText("");
+                        setAttachments([]);
+                        setSelectedMentions([]);
+                      }
+                    }
+                  }}
+                  placeholder="由一个想法或故事开始..."
+                  className={`flex-1 min-w-[200px] bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 order-last ${
+                    isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
+                  }`}
+                />
+              </>
+            );
+          })()}
         </div>
+
+
+
+
 
         {!isMini && mentionOpen && (
           <div className="absolute top-[calc(100%+8px)] left-0 w-80 bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
