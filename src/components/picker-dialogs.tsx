@@ -1183,7 +1183,7 @@ export function CreativePreferencePicker() {
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      {durationMode === "smart" && <div className="w-1 h-1 rounded-full bg-black" />}
+                      {durationMode === "smart" && <div className="w-1 h-1 rounded-full bg-black dark:bg-white" />}
                       智能时长
                     </div>
                   </button>
