@@ -310,6 +310,7 @@ export function PromptBox({
                   onSubmit(v, canvasMode);
                   setText("");
                   setAttachments([]);
+                  setSelectedMentions([]);
                 }
               }
             }}
