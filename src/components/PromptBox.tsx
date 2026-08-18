@@ -305,7 +305,7 @@ export function PromptBox({
               const segment = text.slice(currentLastPos, m.position);
               if (segment) {
                 contentItems.push(
-                  <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-2 leading-6 align-middle inline-block">
+                  <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-0 leading-6 align-baseline inline-block">
                     {segment}
                   </span>
                 );
@@ -317,7 +317,7 @@ export function PromptBox({
                 contentItems.push(
                   <div 
                     key={mentionKey} 
-                    className="inline-flex items-center mx-0.5 animate-in zoom-in-95 duration-200 align-middle"
+                    className="inline-flex items-center mx-1 animate-in zoom-in-95 duration-200 align-baseline relative top-[2px]"
                     onMouseEnter={() => setHoveredMentionId(mentionKey)}
                     onMouseLeave={() => setHoveredMentionId(null)}
                   >
@@ -355,7 +355,7 @@ export function PromptBox({
               <div className={`flex-1 flex flex-wrap items-center relative pointer-events-none ${isMini ? 'min-h-[32px]' : 'min-h-[80px]'}`}>
                 <div className="flex-1 flex flex-wrap items-center pointer-events-auto">
                   {contentItems}
-                  <div className="relative inline-flex flex-1 min-w-[50px] align-middle">
+                  <div className="relative inline-flex flex-1 min-w-[50px] align-baseline">
                     <textarea
                       ref={textareaRef}
                       rows={1}
@@ -410,7 +410,7 @@ export function PromptBox({
                       }}
                       placeholder={text === "" && selectedMentions.length === 0 ? "输入你的需求即可生成图片、视频；上传素材后可使用 @引用素材互动，例如：@Image 1 作首帧、@Image 2 作尾帧，参考 @Video 1 生成游戏宣发视频。" : ""}
                       className={`w-full bg-transparent text-[15px] leading-6 text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
-                        isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[64px]'
+                        isMini ? 'py-1 cursor-pointer' : 'py-0 min-h-[64px]'
                       }`}
                     />
                   </div>
