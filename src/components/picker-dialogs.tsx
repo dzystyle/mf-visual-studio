@@ -919,7 +919,13 @@ export function CreativePreferencePicker() {
                         <span className={`text-[13px] font-bold transition-colors ${isActive ? 'text-black' : 'text-[#333] group-hover:text-black'}`}>
                           {m.name}
                         </span>
-                        {"isVip" in m && m.isVip && <Sparkles className="w-3 h-3 text-[#9333EA] fill-current" />}
+                        {"extraBadge" in m && m.extraBadge && (
+                          <span className="bg-[#9333EA]/10 text-[#9333EA] text-[8px] font-black px-1 rounded-sm leading-tight flex items-center gap-0.5">
+                            <Sparkles className="w-2 h-2 fill-current" />
+                            {m.extraBadge}
+                          </span>
+                        )}
+                        {"isVip" in m && m.isVip && !("extraBadge" in m) && <Sparkles className="w-3 h-3 text-[#9333EA] fill-current" />}
                         {"badge" in m && m.badge && (
                           <span className="bg-[#22C55E] text-white text-[8px] font-black px-1 rounded-sm leading-tight">
                             {m.badge}
