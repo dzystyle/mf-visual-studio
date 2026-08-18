@@ -1282,7 +1282,7 @@ export function CreativePreferencePicker() {
                 </section>
 
                 <section className="flex-[2]">
-                  <div className="flex items-center gap-1 mb-4">
+                  <div className="flex items-center gap-1 mb-2">
                     <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
                     <h4 className="text-[12px] font-bold text-[#999]">数量</h4>
                   </div>
