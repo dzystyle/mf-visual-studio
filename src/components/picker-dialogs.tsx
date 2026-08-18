@@ -895,6 +895,11 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_watermark", watermark.toString()); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [watermark]);
+  useEffect(() => { 
+    localStorage.setItem("pref_groupAuto", groupAuto.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [groupAuto]);
+
 
   const videoModels = [
     { name: "智能匹配模型", desc: "当 Agent 识别到视频生成诉求时为你智能选择视频模型", icon: true },
