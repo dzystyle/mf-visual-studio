@@ -301,7 +301,7 @@ export function SkillPicker({
               className="group flex cursor-pointer items-start gap-3 py-1 transition-all"
               onClick={() => setPreviewSkill(s)}
             >
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-[#F5F5F5]">
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-[#F5F5F5] dark:bg-white/5">
                 <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
