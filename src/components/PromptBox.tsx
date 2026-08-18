@@ -319,66 +319,67 @@ export function PromptBox({
                   <div className="relative inline-flex items-center flex-1 min-w-[50px]">
                     <textarea
                       ref={textareaRef}
-                    rows={1}
-                    value={remainingText}
-                    onChange={(e) => {
-                      const newRemainingText = e.target.value;
-                      const newTotalText = text.slice(0, currentLastPos) + newRemainingText;
-                      const newCursorPos = currentLastPos + (e.target.selectionStart || 0);
-                      
-                      if (newTotalText.length < text.length) {
-                        const diff = text.length - newTotalText.length;
-                        setSelectedMentions(prev => prev.map(m => {
-                          if (m.position > currentLastPos) {
-                            return { ...m, position: Math.max(currentLastPos, m.position - diff) };
-                          }
-                          return m;
-                        }));
-                      } else if (newTotalText.length > text.length) {
-                        const diff = newTotalText.length - text.length;
-                        setSelectedMentions(prev => prev.map(m => {
-                          if (m.position >= currentLastPos) {
-                            return { ...m, position: m.position + diff };
-                          }
-                          return m;
-                        }));
-                      }
-
-                      setText(newTotalText);
-                      setCursorPos(newCursorPos);
-                    }}
-                    onKeyUp={(e) => {
-                      setCursorPos(currentLastPos + ((e.target as HTMLTextAreaElement).selectionStart || 0));
-                    }}
-                    onClick={(e) => {
-                      setCursorPos(currentLastPos + ((e.target as HTMLTextAreaElement).selectionStart || 0));
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Backspace" && remainingText === "" && selectedMentions.length > 0) {
-                        e.preventDefault();
-                        const lastMention = [...selectedMentions].sort((a, b) => a.position - b.position).pop();
-                        if (lastMention) {
-                          setSelectedMentions(prev => prev.filter(m => m !== lastMention));
+                      rows={1}
+                      value={remainingText}
+                      onChange={(e) => {
+                        const newRemainingText = e.target.value;
+                        const newTotalText = text.slice(0, currentLastPos) + newRemainingText;
+                        const newCursorPos = currentLastPos + (e.target.selectionStart || 0);
+                        
+                        if (newTotalText.length < text.length) {
+                          const diff = text.length - newTotalText.length;
+                          setSelectedMentions(prev => prev.map(m => {
+                            if (m.position > currentLastPos) {
+                              return { ...m, position: Math.max(currentLastPos, m.position - diff) };
+                            }
+                            return m;
+                          }));
+                        } else if (newTotalText.length > text.length) {
+                          const diff = newTotalText.length - text.length;
+                          setSelectedMentions(prev => prev.map(m => {
+                            if (m.position >= currentLastPos) {
+                              return { ...m, position: m.position + diff };
+                            }
+                            return m;
+                          }));
                         }
-                        return;
-                      }
 
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        const v = text.trim();
-                        if (v && onSubmit) {
-                          onSubmit(v, canvasMode);
-                          setText("");
-                          setAttachments([]);
-                          setSelectedMentions([]);
+                        setText(newTotalText);
+                        setCursorPos(newCursorPos);
+                      }}
+                      onKeyUp={(e) => {
+                        setCursorPos(currentLastPos + ((e.target as HTMLTextAreaElement).selectionStart || 0));
+                      }}
+                      onClick={(e) => {
+                        setCursorPos(currentLastPos + ((e.target as HTMLTextAreaElement).selectionStart || 0));
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Backspace" && remainingText === "" && selectedMentions.length > 0) {
+                          e.preventDefault();
+                          const lastMention = [...selectedMentions].sort((a, b) => a.position - b.position).pop();
+                          if (lastMention) {
+                            setSelectedMentions(prev => prev.filter(m => m !== lastMention));
+                          }
+                          return;
                         }
-                      }
-                    }}
-                    placeholder={text === "" && selectedMentions.length === 0 ? "由一个想法或故事开始..." : ""}
-                    className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
-                      isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
-                    }`}
-                  />
+
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          e.preventDefault();
+                          const v = text.trim();
+                          if (v && onSubmit) {
+                            onSubmit(v, canvasMode);
+                            setText("");
+                            setAttachments([]);
+                            setSelectedMentions([]);
+                          }
+                        }
+                      }}
+                      placeholder={text === "" && selectedMentions.length === 0 ? "由一个想法或故事开始..." : ""}
+                      className={`w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden ${
+                        isMini ? 'py-1 cursor-pointer' : 'py-2 min-h-[32px]'
+                      }`}
+                    />
+                  </div>
                 </div>
               </div>
             );
