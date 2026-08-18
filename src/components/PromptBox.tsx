@@ -60,6 +60,7 @@ export function PromptBox({
   const [assetsOpen, setAssetsOpen] = useState(false);
   const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
+  const [prefOpen, setPrefOpen] = useState(false);
   const [hoveredMentionId, setHoveredMentionId] = useState<string | null>(null);
   const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number, id: string}[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
@@ -489,25 +490,27 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
 
-            <Popover>
+            <Popover open={prefOpen} onOpenChange={setPrefOpen}>
               <PopoverTrigger asChild>
                 <div className="relative group/pref">
-                  <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 opacity-0 group-hover/pref:opacity-100 group-data-[state=open]:hidden transition-all duration-300 pointer-events-none z-[120]">
-                    <div className="bg-[#1A1A1A] text-white rounded-[20px] px-5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.24)] whitespace-nowrap border border-white/10 backdrop-blur-md">
-                      <div className="flex flex-col gap-0.5">
-                        <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
-                          <span className="text-white/60">视频:</span>
-                          <span>智能匹配模型 · 智能比例 · 720P · 85秒</span>
-                        </div>
-                        <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
-                          <span className="text-white/60">图片:</span>
-                          <span>Seedream 5.0 Pro · 智能比例 · 4K</span>
+                  {!prefOpen && (
+                    <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 opacity-0 group-hover/pref:opacity-100 transition-all duration-300 pointer-events-none z-[120]">
+                      <div className="bg-[#1A1A1A] text-white rounded-[20px] px-5 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.24)] whitespace-nowrap border border-white/10 backdrop-blur-md">
+                        <div className="flex flex-col gap-0.5">
+                          <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
+                            <span className="text-white/60">视频:</span>
+                            <span>智能匹配模型 · 智能比例 · 720P · 85秒</span>
+                          </div>
+                          <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
+                            <span className="text-white/60">图片:</span>
+                            <span>Seedream 5.0 Pro · 智能比例 · 4K</span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <button type="button">
-                    <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
+                  )}
+                  <button type="button" onClick={() => setPrefOpen(true)}>
+                    <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" active={prefOpen} />
                   </button>
                 </div>
               </PopoverTrigger>
