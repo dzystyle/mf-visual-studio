@@ -1284,7 +1284,7 @@ export function CreativePreferencePicker() {
                 <section className="flex-[2]">
                   <div className="flex items-center gap-1 mb-2">
                     <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
-                    <h4 className="text-[12px] font-bold text-[#999]">数量</h4>
+                    <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">数量</h4>
                   </div>
                   <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-xl w-fit">
                     {[1, 2, 3, 4].map((num) => (
