@@ -867,6 +867,10 @@ export function CreativePreferencePicker() {
     if (typeof window === 'undefined') return true;
     return localStorage.getItem("pref_isAutoMode") !== "false";
   });
+  const [klingMode, setKlingMode] = useState<"standard" | "high">(() => {
+    if (typeof window === 'undefined') return "standard";
+    return (localStorage.getItem("pref_klingMode") as "standard" | "high") || "standard";
+  });
 
 
 
@@ -944,6 +948,10 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_isAutoMode", isAutoMode.toString()); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [isAutoMode]);
+  useEffect(() => { 
+    localStorage.setItem("pref_klingMode", klingMode); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [klingMode]);
 
 
 
@@ -959,6 +967,10 @@ export function CreativePreferencePicker() {
     { name: "MiniMax H3", badge: "新", desc: "MiniMax 2K 视频模型，支持原生音画同步及 4–15 秒可控生成。" },
     { name: "HappyHorse 1.1", desc: "阿里旗下最新视频模型，超真实质感。" },
     { name: "Kling 3.0 Audio", desc: "Kling 3.0，全面升级的高质量视频生成模型。" },
+    { name: "Kling 3.0 Omni (ucloud)", badge: "新", desc: "多模态模型，支持4K高清，多图驱动，一镜成片。" },
+    { name: "Kling 01 (ucloud)", desc: "多模态模型，超高一致性。" },
+    { name: "Kling Video 3.0 (ucloud)", desc: "音画同步升级，支持4K高清。" },
+    { name: "Kling Video 2.6 (ucloud)", desc: "音画同步。" },
     { name: "Vidu Q3 Pro", desc: "最强智能切镜、音画直出，支持1-16S视频模型。" },
     { name: "Grok Imagine Video", desc: "xAI最新视频模型，动作表现力好。" },
     { name: "Sora 2", desc: "OpenAI 的媒体生成模型，生成带同步音频的视频。" },
@@ -1152,22 +1164,46 @@ export function CreativePreferencePicker() {
             </div>
           </section>
 
-          <section className="mb-4">
-            <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30 mb-2">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
-            <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-full w-fit">
-              {(activeMode === 'video' ? ["4K", "2K", "1080P", "720P"] : ["1K", "2K", "4K"]).map((res) => (
-                <button
-                  key={res}
-                  onClick={() => setResolution(res)}
-                  className={`px-5 py-1 rounded-full text-[10px] font-bold transition-all ${
-                    resolution === res ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60'
-                  }`}
-                >
-                  {res}
-                </button>
-              ))}
-            </div>
-          </section>
+          {!(activeMode === 'video' && videoModel.includes("Kling")) && (
+            <section className="mb-4">
+              <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30 mb-2">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
+              <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-full w-fit">
+                {(activeMode === 'video' ? ["4K", "2K", "1080P", "720P"] : ["1K", "2K", "4K"]).map((res) => (
+                  <button
+                    key={res}
+                    onClick={() => setResolution(res)}
+                    className={`px-5 py-1 rounded-full text-[10px] font-bold transition-all ${
+                      resolution === res ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60'
+                    }`}
+                  >
+                    {res}
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {activeMode === 'video' && videoModel.includes("Kling") && (
+            <section className="mb-4">
+              <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30 mb-2">生成模式</h4>
+              <div className="flex gap-1.5 p-1 bg-[#F5F5F5] dark:bg-white/5 rounded-full w-fit">
+                {[
+                  { id: "standard", label: "标准(720p)" },
+                  { id: "high", label: "高品质(1080p)" }
+                ].map((mode) => (
+                  <button
+                    key={mode.id}
+                    onClick={() => setKlingMode(mode.id as "standard" | "high")}
+                    className={`px-5 py-1 rounded-full text-[10px] font-bold transition-all ${
+                      klingMode === mode.id ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60'
+                    }`}
+                  >
+                    {mode.label}
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
 
           {activeMode === "video" && (
             <div className="space-y-4">
