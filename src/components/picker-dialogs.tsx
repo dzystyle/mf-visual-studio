@@ -796,3 +796,225 @@ export function ElementsPickerDialog({
   );
 }
 
+/* ---------------- Creative Preference Picker ---------------- */
+export function CreativePreferencePicker() {
+  const [activeMode, setActiveMode] = useState<"video" | "image">("video");
+  const [videoModel, setVideoModel] = useState("智能匹配模型");
+  const [imageModel, setImageModel] = useState("Seedream 5.0 Pro");
+  const [ratio, setRatio] = useState("智能");
+  const [resolution, setResolution] = useState("720P");
+  const [duration, setDuration] = useState(85);
+  const [canvas, setCanvas] = useState(false);
+
+  const videoModels = [
+    { name: "智能匹配模型", desc: "当 Agent 识别到视频生成诉求时为你智能选择视频模型", icon: true },
+    { name: "Seedance 2.5", badge: "新", isVip: true, desc: "支持30s直出和精准时间戳控制，会员积分消耗低至5.4折" },
+    { name: "Seedance 2.0 Fast VIP", isVip: true, desc: "极速推理，会员专属通道" },
+    { name: "Seedance 2.0 VIP", isVip: true, desc: "效果无损，会员专属通道" },
+    { name: "Seedance 2.0 Mini 体验版", isVip: true, desc: "非会员限次体验，单秒限时低至4积分" },
+  ];
+
+  const imageModels = [
+    { name: "智能匹配模型", desc: "当 Agent 识别到图片生成诉求时为你智能选择图片模型" },
+    { name: "Seedream 5.0 Pro", badge: "新", isVip: true, desc: "支持交互式编辑，精准改图更可控" },
+    { name: "Seedream 5.0 Lite", desc: "超强指令响应，智能逻辑推理" },
+    { name: "Seedream 4.0 美感版", badge: "新", desc: "图像画质美感提升" },
+    { name: "旗舰生图模型 V2-Flash", isVip: true, desc: "出图更快，文字准确性提升，真实感强" },
+    { name: "Seedream 4.5", desc: "" },
+  ];
+
+  const ratios = [
+    { label: "智能", icon: <LayoutGrid className="w-4 h-4" /> },
+    { label: "16:9", icon: <div className="w-4 h-2.5 border border-current rounded-sm" /> },
+    { label: "21:9", icon: <div className="w-5 h-2 border border-current rounded-sm" /> },
+    { label: "9:16", icon: <div className="w-2.5 h-4 border border-current rounded-sm" /> },
+    { label: "4:3", icon: <div className="w-4 h-3 border border-current rounded-sm" /> },
+  ];
+
+  return (
+    <div className="flex flex-col rounded-[32px] bg-white text-[#1A1A1A] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.18)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom">
+      {/* Top Capsule Info */}
+      <div className="absolute -top-16 left-0 right-0 flex justify-center pointer-events-none">
+        <div className="bg-black rounded-full px-6 py-2.5 flex flex-col items-center gap-0.5 shadow-2xl animate-in slide-in-from-bottom-2 duration-500">
+          <div className="flex items-center gap-2 text-[11px] text-white/90">
+            <span className="opacity-60">视频:</span>
+            <span>{videoModel} · {ratio}比例 · {resolution} · {duration}秒</span>
+          </div>
+          <div className="flex items-center gap-2 text-[11px] text-white/90">
+            <span className="opacity-60">图片:</span>
+            <span>{imageModel} · {ratio}比例 · {activeMode === 'image' ? '4K' : '4K'}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between px-8 py-6">
+        <div className="flex bg-[#F5F5F5] p-1 rounded-xl">
+          <button 
+            onClick={() => setActiveMode("video")}
+            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeMode === 'video' ? 'bg-white shadow-sm text-black' : 'text-[#666]'}`}
+          >
+            视频偏好
+          </button>
+          <button 
+            onClick={() => setActiveMode("image")}
+            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeMode === 'image' ? 'bg-white shadow-sm text-black' : 'text-[#666]'}`}
+          >
+            图片偏好<span className="ml-0.5 opacity-40 font-normal">*</span>
+          </button>
+        </div>
+        
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-[#1A1A1A]">画布</span>
+            <button 
+              onClick={() => setCanvas(!canvas)}
+              className={`w-10 h-5 rounded-full relative transition-colors ${canvas ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
+            >
+              <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${canvas ? 'left-[22px]' : 'left-0.5'}`} />
+            </button>
+          </div>
+          <div className="flex items-center gap-1 text-[#9333EA] font-bold">
+            <Sparkles className="w-4 h-4 fill-current" />
+            <span className="text-sm">12/张</span>
+            <span className="text-[#999] font-normal text-xs ml-0.5">14/张</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex px-8 pb-10 gap-12">
+        {/* Left Side: Model Selection */}
+        <div className="flex-1 max-w-[320px]">
+          <h4 className="text-sm font-bold text-[#666] mb-5">模型选择</h4>
+          <div className="space-y-6">
+            {(activeMode === "video" ? videoModels : imageModels).map((m) => {
+              const isActive = activeMode === "video" ? videoModel === m.name : imageModel === m.name;
+              return (
+                <button 
+                  key={m.name}
+                  onClick={() => activeMode === "video" ? setVideoModel(m.name) : setImageModel(m.name)}
+                  className="w-full text-left group"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 w-4 h-4 flex items-center justify-center">
+                      {isActive ? (
+                        <Check className="w-4 h-4 text-black stroke-[3px]" />
+                      ) : (
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5]" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className={`text-sm font-bold transition-colors ${isActive ? 'text-black' : 'text-[#333] group-hover:text-black'}`}>
+                          {m.name}
+                        </span>
+                        {"isVip" in m && m.isVip && <Sparkles className="w-3.5 h-3.5 text-[#9333EA] fill-current" />}
+                        {"badge" in m && m.badge && (
+                          <span className="bg-[#22C55E] text-white text-[9px] font-black px-1 rounded-sm leading-tight">
+                            {m.badge}
+                          </span>
+                        )}
+                      </div>
+                      {m.desc && (
+                        <p className="text-[11px] leading-relaxed text-[#999] mt-1 pr-2">
+                          {m.desc}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Right Side: Parameters */}
+        <div className="flex-1 space-y-10">
+          <section>
+            <div className="flex items-center gap-1 mb-5">
+              <h4 className="text-sm font-bold text-[#666]">画面比例</h4>
+              <div className="w-3.5 h-3.5 rounded-full border border-[#CCC] flex items-center justify-center text-[9px] text-[#999]">?</div>
+            </div>
+            <div className="flex gap-3">
+              {ratios.map((r) => (
+                <button
+                  key={r.label}
+                  onClick={() => setRatio(r.label)}
+                  className={`flex flex-col items-center justify-center w-[72px] h-[72px] rounded-2xl border transition-all ${
+                    ratio === r.label 
+                      ? 'bg-white border-black text-black shadow-lg shadow-black/5' 
+                      : 'bg-[#F8F8F8] border-transparent text-[#666] hover:bg-[#F0F0F0]'
+                  }`}
+                >
+                  {r.icon}
+                  <span className="text-[11px] font-bold mt-2">{r.label}</span>
+                </button>
+              ))}
+              <button className="flex items-center justify-center w-[72px] h-[72px] rounded-2xl bg-[#F8F8F8] text-[#666] hover:bg-[#F0F0F0] transition-colors">
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </section>
+
+          <section>
+            <h4 className="text-sm font-bold text-[#666] mb-5">{activeMode === 'video' ? '视频分辨率' : '图片分辨率'}</h4>
+            <div className="flex gap-2 p-1 bg-[#F5F5F5] rounded-full w-fit">
+              {(activeMode === 'video' ? ["4K", "2K", "1080P", "720P"] : ["1K", "2K", "4K"]).map((res) => (
+                <button
+                  key={res}
+                  onClick={() => setResolution(res)}
+                  className={`px-8 py-1.5 rounded-full text-[11px] font-bold transition-all ${
+                    resolution === res ? 'bg-white shadow-sm text-black' : 'text-[#999] hover:text-[#666]'
+                  }`}
+                >
+                  {res}
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {activeMode === "video" && (
+            <section>
+              <div className="flex items-center gap-1 mb-5">
+                <h4 className="text-sm font-bold text-[#666]">时长</h4>
+                <div className="w-3.5 h-3.5 rounded-full border border-[#CCC] flex items-center justify-center text-[9px] text-[#999]">?</div>
+              </div>
+              <div className="flex items-center gap-4">
+                <button className="px-8 py-3 rounded-2xl bg-[#F5F5F5] text-[13px] font-bold text-[#666] hover:bg-[#F0F0F0] transition-colors">
+                  智能时长
+                </button>
+                <div className="flex items-center gap-2 bg-[#F5F5F5] rounded-2xl px-6 py-3 min-w-[120px]">
+                  <div className="w-1 h-1 rounded-full bg-black" />
+                  <input 
+                    type="text" 
+                    value={duration} 
+                    onChange={(e) => setDuration(parseInt(e.target.value) || 0)}
+                    className="bg-transparent text-[13px] font-bold text-black w-8 outline-none text-center"
+                  />
+                  <span className="text-[13px] font-medium text-[#999]">秒</span>
+                </div>
+              </div>
+              <div className="mt-8 relative px-2">
+                <div className="h-0.5 bg-[#F0F0F0] rounded-full w-full relative">
+                  <div 
+                    className="absolute h-0.5 bg-black rounded-full" 
+                    style={{ width: `${(duration / 180) * 100}%` }}
+                  />
+                  <div 
+                    className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-black rounded-full shadow-md cursor-pointer"
+                    style={{ left: `${(duration / 180) * 100}%` }}
+                  />
+                </div>
+                <div className="flex justify-between mt-3 text-[10px] font-medium text-[#BBB]">
+                  <span>4秒</span>
+                  <span>180秒</span>
+                </div>
+              </div>
+            </section>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+

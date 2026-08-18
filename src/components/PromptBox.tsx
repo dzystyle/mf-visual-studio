@@ -18,6 +18,7 @@ import {
   ModelPicker,
   SkillPicker,
   ElementsPickerDialog,
+  CreativePreferencePicker,
 } from "./picker-dialogs";
 import {
   Popover,
@@ -475,6 +476,22 @@ export function PromptBox({
               </PopoverTrigger>
               <PopoverContent align="start" className="w-[480px] p-0 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
                 <SkillPicker onSelect={(title) => { setSkill(title); textareaRef.current?.focus(); }} />
+              </PopoverContent>
+            </Popover>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button type="button">
+                  <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent 
+                side="top" 
+                align="start" 
+                sideOffset={16} 
+                className="w-[720px] p-0 border-none bg-transparent shadow-none z-[100]"
+              >
+                <CreativePreferencePicker />
               </PopoverContent>
             </Popover>
 
