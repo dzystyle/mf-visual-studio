@@ -817,12 +817,14 @@ export function CreativePreferencePicker() {
   ];
 
   const imageModels = [
-    { name: "智能匹配模型", desc: "当 Agent 识别到图片生成诉求时为你智能选择图片模型" },
-    { name: "Seedream 5.0 Pro", badge: "新", isVip: true, desc: "支持交互式编辑，精准改图更可控。" },
+    { name: "智能匹配模型", desc: "当 Agent 识别到图片生成诉求时为你智能选择图片模型", icon: true },
+    { name: "Seedream 5.0 Pro", badge: "新", isVip: true, desc: "支持交互式编辑，精准改图更可控。", extraBadge: "限次" },
     { name: "Seedream 5.0 Lite", desc: "超强指令响应，智能逻辑推理。" },
+    { name: "Seedream 4.0 美感版", badge: "新", desc: "图像画质美感提升。" },
+    { name: "旗舰生图模型 V2-Flash", isVip: true, desc: "出图更快，文字准确性提升，真实感强。" },
+    { name: "Seedream 4.5", desc: "字节跳动的图像模型，用于文本生成图像/编辑，在性能和速度方面表现更佳。" },
     { name: "GPT Image 2", badge: "新", desc: "OpenAI 的模型，用于从文本或现有图像生成高质量图像。" },
     { name: "Midjourney", desc: "高精度模型，具有准确的提示、优质纹理 and 细节。" },
-    { name: "Seedream 4.5", desc: "字节跳动的图像模型，在性能和速度方面表现更佳。" },
     { name: "Nano Banana 2", desc: "高品质 · 更快速 · 更低成本。" },
   ];
 
