@@ -261,38 +261,55 @@ export function PromptBox({
           )}
           
           {/* 输入框内的引用 (图1: @选择资源后只会显示小图标) */}
-          {!isMini && attachments.filter(a => selectedMentions.includes(a.name)).map((a) => (
-            <div key={`inline-${a.id}`} className="inline-flex items-center animate-in zoom-in-95 duration-200">
-              {a.url && (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm">
-                      <img src={a.url} alt="" className="w-full h-full object-cover" />
-                    </div>
-                  </PopoverTrigger>
-                  {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
-                  <PopoverContent side="bottom" align="start" sideOffset={8} className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]">
-                    <div className="space-y-2">
-                      <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
+          {(() => {
+            // Sort mentions by their insertion position to maintain order
+            const sortedMentions = [...selectedMentions].sort((a, b) => a.position - b.position);
+            
+            // Map the sorted names back to full attachment objects
+            const inlineAttachments = sortedMentions.map(m => attachments.find(a => a.name === m.name)).filter(Boolean) as Attachment[];
+
+            return inlineAttachments.map((a) => (
+              <div key={`inline-${a.id}`} className="inline-flex items-center animate-in zoom-in-95 duration-200">
+                {a.url && (
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
                         <img src={a.url} alt="" className="w-full h-full object-cover" />
                       </div>
-                      <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
-                        {a.name}
+                    </PopoverTrigger>
+                    {/* 鼠标悬停预览 (图2: 鼠标移动到小图标自动放大并在右下方展示) */}
+                    <PopoverContent side="bottom" align="start" sideOffset={12} className="w-64 p-2 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl animate-in zoom-in-95 slide-in-from-top-2 duration-200 z-[110]">
+                      <div className="space-y-2">
+                        <div className="aspect-[3/4] rounded-xl overflow-hidden border border-border shadow-inner">
+                          <img src={a.url} alt="" className="w-full h-full object-cover" />
+                        </div>
+                        <div className="text-[10px] font-bold text-foreground/70 truncate text-center px-1 bg-accent/30 py-1 rounded-lg">
+                          {a.name}
+                        </div>
                       </div>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              )}
-            </div>
-          ))}
+                    </PopoverContent>
+                  </Popover>
+                )}
+              </div>
+            ));
+          })()}
           
           <textarea
             ref={textareaRef}
             rows={1}
             value={text}
             onChange={(e) => {
-              setText(e.target.value);
-              setCursorPos(e.target.selectionStart);
+              const newText = e.target.value;
+              const newCursorPos = e.target.selectionStart || 0;
+              
+              // If text is being deleted, we might need to remove mentions
+              if (newText.length < text.length) {
+                // Heuristic: if a mention was at a position that no longer makes sense, it might be gone
+                // But for now, simple text entry is the priority
+              }
+
+              setText(newText);
+              setCursorPos(newCursorPos);
             }}
             onKeyUp={(e) => {
               setCursorPos((e.target as HTMLTextAreaElement).selectionStart);
