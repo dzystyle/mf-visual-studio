@@ -532,11 +532,11 @@ export function PromptBox({
                         <div className="flex flex-col gap-0.5">
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                             <span className="text-white/60">视频:</span>
-                            <span>智能匹配模型 · 智能比例 · 720P · 85秒</span>
+                            <span>{prefs.videoModel} · {prefs.videoRatio}比例 · {prefs.resolution} · {prefs.duration}秒</span>
                           </div>
                           <div className="text-[11px] leading-tight flex items-center gap-1.5 font-medium">
                             <span className="text-white/60">图片:</span>
-                            <span>Seedream 5.0 Pro · 智能比例 · 4K</span>
+                            <span>{prefs.imageModel} · {prefs.imageRatio}比例 · 4K</span>
                           </div>
                         </div>
                       </div>
