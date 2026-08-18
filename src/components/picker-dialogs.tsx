@@ -1011,7 +1011,7 @@ export function CreativePreferencePicker() {
             </button>
             <button 
               onClick={() => setActiveMode("image")}
-              className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'image' ? 'bg-white shadow-sm text-black' : 'text-[#666]'}`}
+              className={`px-5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeMode === 'image' ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#666] dark:text-white/40'}`}
             >
               图片偏好<span className="ml-0.5 opacity-40 font-normal">*</span>
             </button>
