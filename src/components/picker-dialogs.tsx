@@ -956,12 +956,12 @@ export function CreativePreferencePicker() {
               <h4 className="text-[12px] font-bold text-[#999]">画面比例</h4>
               <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
             </div>
-            <div className="relative flex items-center group/slider">
+            <div className="relative group/slider w-full max-w-[320px]">
               <button 
-                className="absolute -left-2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
+                className="absolute -left-2 top-1/2 -translate-y-1/2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
                 onClick={() => {
                   const container = document.getElementById('ratio-container');
-                  if (container) container.scrollBy({ left: -100, behavior: 'smooth' });
+                  if (container) container.scrollBy({ left: -80, behavior: 'smooth' });
                 }}
               >
                 <ChevronRight className="w-3 h-3 rotate-180" />
@@ -969,7 +969,7 @@ export function CreativePreferencePicker() {
               
               <div 
                 id="ratio-container"
-                className="flex gap-2.5 overflow-x-auto scrollbar-hide pb-1 px-1 snap-x"
+                className="flex gap-2.5 overflow-x-auto scrollbar-hide pb-1 px-1 snap-x scroll-smooth"
               >
                 {currentRatios.map((r) => (
                   <button
@@ -988,10 +988,10 @@ export function CreativePreferencePicker() {
               </div>
 
               <button 
-                className="absolute -right-2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
+                className="absolute -right-2 top-1/2 -translate-y-1/2 z-20 w-5 h-5 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-md hover:scale-110 active:scale-95"
                 onClick={() => {
                   const container = document.getElementById('ratio-container');
-                  if (container) container.scrollBy({ left: 100, behavior: 'smooth' });
+                  if (container) container.scrollBy({ left: 80, behavior: 'smooth' });
                 }}
               >
                 <ChevronRight className="w-3 h-3" />
