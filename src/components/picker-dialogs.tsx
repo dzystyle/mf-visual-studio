@@ -803,19 +803,27 @@ export function CreativePreferencePicker() {
 
   const videoModels = [
     { name: "智能匹配模型", desc: "当 Agent 识别到视频生成诉求时为你智能选择视频模型", icon: true },
-    { name: "Seedance 2.5", badge: "新", isVip: true, desc: "支持30s直出和精准时间戳控制，会员积分消耗低至5.4折" },
-    { name: "Seedance 2.0 Fast VIP", isVip: true, desc: "极速推理，会员专属通道" },
-    { name: "Seedance 2.0 VIP", isVip: true, desc: "效果无损，会员专属通道" },
-    { name: "Seedance 2.0 Mini 体验版", isVip: true, desc: "非会员限次体验，单秒限时低至4积分" },
+    { name: "Seedance 2.5", badge: "新", isVip: true, desc: "支持 4–30 秒视频生成、多模态参考、原生音频，以及符合条件的视频延长。" },
+    { name: "Seedance 2.0 VIP", isVip: true, desc: "最强视频模型，图片及音视频全能参考，跨镜头强一致性保持和可控生成。" },
+    { name: "Seedance 2.0 Fast VIP", isVip: true, desc: "最强性价比视频模型，兼具全能参考、跨镜头一致性和可控生成。" },
+    { name: "Seedance 2.0 Mini", isVip: true, desc: "更轻量的视频模型，支持全能参考，以更低积分实现可控生成。" },
+    { name: "MiniMax H3", badge: "新", desc: "MiniMax 2K 视频模型，支持原生音画同步及 4–15 秒可控生成。" },
+    { name: "HappyHorse 1.1", desc: "阿里旗下最新视频模型，超真实质感。" },
+    { name: "Kling 3.0 Audio", desc: "Kling 3.0，全面升级的高质量视频生成模型。" },
+    { name: "Vidu Q3 Pro", desc: "最强智能切镜、音画直出，支持1-16S视频模型。" },
+    { name: "Grok Imagine Video", desc: "xAI最新视频模型，动作表现力好。" },
+    { name: "Sora 2", desc: "OpenAI 的媒体生成模型，生成带同步音频的视频。" },
+    { name: "Wan 2.6", desc: "阿里通义最新多模态生成模型，支持音画同出。" },
   ];
 
   const imageModels = [
     { name: "智能匹配模型", desc: "当 Agent 识别到图片生成诉求时为你智能选择图片模型" },
-    { name: "Seedream 5.0 Pro", badge: "新", isVip: true, desc: "支持交互式编辑，精准改图更可控" },
-    { name: "Seedream 5.0 Lite", desc: "超强指令响应，智能逻辑推理" },
-    { name: "Seedream 4.0 美感版", badge: "新", desc: "图像画质美感提升" },
-    { name: "旗舰生图模型 V2-Flash", isVip: true, desc: "出图更快，文字准确性提升，真实感强" },
-    { name: "Seedream 4.5", desc: "" },
+    { name: "Seedream 5.0 Pro", badge: "新", isVip: true, desc: "支持交互式编辑，精准改图更可控。" },
+    { name: "Seedream 5.0 Lite", desc: "超强指令响应，智能逻辑推理。" },
+    { name: "GPT Image 2", badge: "新", desc: "OpenAI 的模型，用于从文本或现有图像生成高质量图像。" },
+    { name: "Midjourney", desc: "高精度模型，具有准确的提示、优质纹理 and 细节。" },
+    { name: "Seedream 4.5", desc: "字节跳动的图像模型，在性能和速度方面表现更佳。" },
+    { name: "Nano Banana 2", desc: "高品质 · 更快速 · 更低成本。" },
   ];
 
   const ratios = [
