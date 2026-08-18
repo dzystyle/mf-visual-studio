@@ -328,7 +328,7 @@ export function SkillPicker({
                     </button>
                   </div>
                 </div>
-                <p className="mt-0.5 line-clamp-2 text-[10px] leading-relaxed text-[#999]">
+                <p className="mt-0.5 line-clamp-2 text-[10px] leading-relaxed text-[#999] dark:text-white/30">
                   {s.desc}
                 </p>
               </div>
