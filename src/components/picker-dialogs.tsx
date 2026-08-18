@@ -824,6 +824,22 @@ export function CreativePreferencePicker() {
     if (typeof window === 'undefined') return false;
     return localStorage.getItem("pref_canvas") === "true";
   });
+  const [imgFormat, setImgFormat] = useState(() => {
+    if (typeof window === 'undefined') return "jpeg";
+    return localStorage.getItem("pref_imgFormat") || "jpeg";
+  });
+  const [groupType, setGroupType] = useState(() => {
+    if (typeof window === 'undefined') return "parallel";
+    return localStorage.getItem("pref_groupType") || "parallel";
+  });
+  const [groupCount, setGroupCount] = useState(() => {
+    if (typeof window === 'undefined') return 4;
+    return Number(localStorage.getItem("pref_groupCount")) || 4;
+  });
+  const [watermark, setWatermark] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem("pref_watermark") === "true";
+  });
 
   // Persist changes to localStorage
   useEffect(() => { 
@@ -858,6 +874,22 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_canvas", canvas.toString()); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [canvas]);
+  useEffect(() => { 
+    localStorage.setItem("pref_imgFormat", imgFormat); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [imgFormat]);
+  useEffect(() => { 
+    localStorage.setItem("pref_groupType", groupType); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [groupType]);
+  useEffect(() => { 
+    localStorage.setItem("pref_groupCount", groupCount.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [groupCount]);
+  useEffect(() => { 
+    localStorage.setItem("pref_watermark", watermark.toString()); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [watermark]);
 
   const videoModels = [
     { name: "智能匹配模型", desc: "当 Agent 识别到视频生成诉求时为你智能选择视频模型", icon: true },
@@ -1159,6 +1191,95 @@ export function CreativePreferencePicker() {
                 </div>
               </div>
             </section>
+          )}
+
+          {activeMode === "image" && (
+            <div className="space-y-8">
+              {/* Format Selection */}
+              <section>
+                <div className="flex items-center gap-1 mb-4">
+                  <FileText className="w-3.5 h-3.5 text-[#999]" />
+                  <h4 className="text-[12px] font-bold text-[#999]">格式</h4>
+                </div>
+                <div className="flex gap-1.5 p-1 bg-[#F5F5F5] rounded-xl w-fit">
+                  {["jpeg", "png"].map((fmt) => (
+                    <button
+                      key={fmt}
+                      onClick={() => setImgFormat(fmt)}
+                      className={`px-8 py-2 rounded-lg text-xs font-bold transition-all ${
+                        imgFormat === fmt ? 'bg-primary text-white shadow-md' : 'text-[#666] hover:text-black'
+                      }`}
+                    >
+                      {fmt}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              {/* Group Image Settings */}
+              <section>
+                <div className="flex items-center gap-1 mb-4">
+                  <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
+                  <h4 className="text-[12px] font-bold text-[#999]">组图</h4>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-1 p-1 bg-[#F5F5F5] rounded-xl">
+                    <button
+                      onClick={() => setGroupType("link")}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        groupType === "link" ? 'bg-primary text-white shadow-sm' : 'text-[#666] hover:text-black'
+                      }`}
+                    >
+                      关联
+                    </button>
+                    <button
+                      onClick={() => setGroupType("parallel")}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        groupType === "parallel" ? 'bg-primary text-white shadow-sm' : 'text-[#666] hover:text-black'
+                      }`}
+                    >
+                      并行
+                    </button>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 px-3 py-1.5 border border-[#E5E5E5] rounded-lg">
+                      <input 
+                        type="text" 
+                        value={groupCount}
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value);
+                          if (!isNaN(val)) setGroupCount(Math.min(Math.max(val, 1), 9));
+                        }}
+                        className="w-4 bg-transparent text-xs font-bold text-center outline-none"
+                      />
+                    </div>
+                    <div 
+                      className={`w-8 h-4 rounded-full relative transition-colors cursor-pointer ${watermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                      onClick={() => setWatermark(!watermark)}
+                    >
+                      <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-all ${watermark ? 'right-0.5' : 'left-0.5'}`} />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Watermark Section (if standalone requested but combined above usually) */}
+              <section>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[#999]" />
+                    <span className="text-[12px] font-bold text-[#999]">水印</span>
+                  </div>
+                  <div 
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${watermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    onClick={() => setWatermark(!watermark)}
+                  >
+                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${watermark ? 'right-1' : 'left-1'}`} />
+                  </div>
+                </div>
+              </section>
+            </div>
           )}
         </div>
       </div>
