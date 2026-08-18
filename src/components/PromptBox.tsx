@@ -492,12 +492,6 @@ export function PromptBox({
                 />
               ))}
             </div>
-          </div>
-        )}
-                  onClick={() => handleMentionSelect(item.name, item.kind, item.url)}
-                />
-              ))}
-            </div>
             <div className="p-2 border-t border-white/5 bg-white/[0.02]">
               <button 
                 onClick={() => { setAssetsOpen(true); setMentionOpen(false); }}
