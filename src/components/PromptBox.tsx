@@ -74,7 +74,14 @@ export function PromptBox({
     duration: 85,
     imageModel: "Seedream 5.0 Pro",
     imageRatio: "智能",
+    imgFormat: "jpeg",
+    groupEnabled: true,
+    groupType: "parallel",
+    groupCount: 4,
+    groupAuto: false,
+    watermark: false,
   });
+
 
   useEffect(() => {
     const updatePrefs = () => {
