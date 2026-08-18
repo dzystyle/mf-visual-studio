@@ -867,6 +867,10 @@ export function CreativePreferencePicker() {
     if (typeof window === 'undefined') return true;
     return localStorage.getItem("pref_isAutoMode") !== "false";
   });
+  const [klingMode, setKlingMode] = useState<"standard" | "high">(() => {
+    if (typeof window === 'undefined') return "standard";
+    return (localStorage.getItem("pref_klingMode") as "standard" | "high") || "standard";
+  });
 
 
 
