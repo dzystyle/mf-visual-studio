@@ -948,6 +948,10 @@ export function CreativePreferencePicker() {
     localStorage.setItem("pref_isAutoMode", isAutoMode.toString()); 
     window.dispatchEvent(new Event('pref-updated'));
   }, [isAutoMode]);
+  useEffect(() => { 
+    localStorage.setItem("pref_klingMode", klingMode); 
+    window.dispatchEvent(new Event('pref-updated'));
+  }, [klingMode]);
 
 
 
