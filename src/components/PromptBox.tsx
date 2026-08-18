@@ -41,13 +41,11 @@ const ACCEPT_MAP: Record<Attachment["kind"], string> = {
 export function PromptBox({ 
   onSubmit, 
   isMini = false,
-  showCanvasToggle = true,
-  onAddAttachment
+  showCanvasToggle = true
 }: { 
   onSubmit?: (text: string, canvasMode: boolean) => void;
   isMini?: boolean;
   showCanvasToggle?: boolean;
-  onAddAttachment?: (attachment: Attachment) => void;
 } = {}) {
   const [text, setText] = useState("");
   const [plusOpen, setPlusOpen] = useState(false);
@@ -80,21 +78,8 @@ export function PromptBox({
       textareaRef.current?.focus();
     };
 
-    const handleAddAttachment = (e: any) => {
-      const attachment = e.detail;
-      setAttachments(prev => {
-        if (prev.find(a => a.url === attachment.url)) return prev;
-        return [...prev, attachment];
-      });
-      textareaRef.current?.focus();
-    };
-
     window.addEventListener('select-skill', handleSelectSkill);
-    window.addEventListener('add-prompt-attachment', handleAddAttachment);
-    return () => {
-      window.removeEventListener('select-skill', handleSelectSkill);
-      window.removeEventListener('add-prompt-attachment', handleAddAttachment);
-    };
+    return () => window.removeEventListener('select-skill', handleSelectSkill);
   }, []);
 
   useEffect(() => {
@@ -139,9 +124,6 @@ export function PromptBox({
       url: kind === "image" ? URL.createObjectURL(f) : undefined,
     }));
     setAttachments((prev) => [...prev, ...next]);
-    if (onAddAttachment) {
-      next.forEach(a => onAddAttachment(a));
-    }
   };
 
   const removeAttachment = (id: string, name?: string) => {

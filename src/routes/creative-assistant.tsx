@@ -119,7 +119,7 @@ function CreativeAssistantPage() {
       {
         id: "2",
         role: "assistant",
-        content: "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            Creative Assistant页面:1.生成完的图片和视频然后需要有引用按钮点击引用按钮回把这个资源引用到输入框.",
+        content: "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n\nCreative Assistant页面如果是有错误的时候应该展示这个.下面是整个对话流程以你资深产品经理的角度深度梳理一下.下面内容:我想生成掌趣的一拳超人的游戏宣发视频.\n2026/8/13 14:34:26\n掌趣一拳超人游戏宣发，埼玉一拳秒杀的震撼感很适合做营销短视频的开场钩子。我先确认几个关键信息，帮你把方向定准。\n视频时长希望控制在多少秒以内？",
         timestamp: "2026/8/13 14:34:26",
       },
       {
@@ -522,26 +522,8 @@ function CreativeAssistantPage() {
                       
                       <div className="w-full bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
                         <StatusLine icon="check" text="生成图像" subText="日系少年热血动漫风格，赛璐璐平涂动画质感。杰诺斯（魔鬼改造人），年轻男性，金色短发，锐利的眼神，…" />
-                        <div className="flex items-center justify-between mt-2 mb-4">
-                          <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed">
-                            杰诺斯参考图已生成。我先确认一下效果是否符合预期。
-                          </div>
-                          <button 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              const newAttachment = {
-                                id: `gen-${Date.now()}`,
-                                name: "杰诺斯参考图.png",
-                                kind: "image" as const,
-                                url: charBoss
-                              };
-                              window.dispatchEvent(new CustomEvent('add-prompt-attachment', { detail: newAttachment }));
-                            }}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold hover:bg-[var(--color-primary)] hover:text-white transition-all shadow-sm active:scale-95"
-                          >
-                            <Plus className="h-3.5 w-3.5" />
-                            引用
-                          </button>
+                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4 mt-2">
+                          杰诺斯参考图已生成。我先确认一下效果是否符合预期。
                         </div>
                       </div>
 
@@ -623,27 +605,9 @@ function CreativeAssistantPage() {
                           loop
                           poster={videoPreview}
                         />
-                        <div className="absolute top-2 left-2 flex items-center gap-2 pointer-events-none">
-                          <div className="px-2 py-0.5 rounded bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-1">
-                            <span className="opacity-70">AI 生成</span>
-                          </div>
+                        <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-1 pointer-events-none">
+                          <span className="opacity-70">AI 生成</span>
                         </div>
-                        <button 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            const newAttachment = {
-                              id: `gen-vid-${Date.now()}`,
-                              name: "生成的视频.mp4",
-                              kind: "video" as const,
-                              url: videoFileUrl
-                            };
-                            window.dispatchEvent(new CustomEvent('add-prompt-attachment', { detail: newAttachment }));
-                          }}
-                          className="absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 text-white text-xs font-bold transition-all shadow-lg active:scale-95"
-                        >
-                          <Plus className="h-3.5 w-3.5" />
-                          引用
-                        </button>
                         <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white pointer-events-none">
                           0:15
                         </div>
