@@ -322,7 +322,7 @@ export function SkillPicker({
                         e.stopPropagation();
                         onSelect?.(s.title);
                       }}
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#F0F0F0] text-[#999] hover:bg-[#F5F5F5] hover:text-[#666] transition-colors"
+                      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#F0F0F0] dark:border-white/5 text-[#999] dark:text-white/40 hover:bg-[#F5F5F5] dark:hover:bg-white/10 hover:text-[#666] dark:hover:text-white transition-colors"
                     >
                       <Plus className="h-3 w-3" />
                     </button>
