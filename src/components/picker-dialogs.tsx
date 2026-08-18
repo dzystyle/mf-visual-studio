@@ -1206,7 +1206,7 @@ export function CreativePreferencePicker() {
                             const val = parseInt(e.target.value);
                             if (!isNaN(val)) setDuration(Math.min(Math.max(val, 4), 180));
                           }}
-                          className="bg-transparent text-[12px] font-bold text-black w-7 outline-none text-center"
+                          className="bg-transparent text-[12px] font-bold text-black dark:text-white w-7 outline-none text-center"
                         />
                         <span className="text-[12px] font-medium text-[#999]">秒</span>
                       </div>
