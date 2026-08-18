@@ -291,7 +291,9 @@ export function PromptBox({
         <div className="flex flex-wrap gap-3 mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
           {attachments.map((a) => (
             <div key={a.id} className="group relative w-20 h-20 rounded-xl overflow-hidden border border-border bg-accent/20">
-              {a.url ? (
+              {a.kind === 'video' && a.url ? (
+                <video src={a.url} className="w-full h-full object-cover" muted />
+              ) : a.url ? (
                 <img src={a.url} alt={a.name} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-muted-foreground/40">
