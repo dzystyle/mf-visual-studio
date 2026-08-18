@@ -149,12 +149,22 @@ export function PromptBox({
     if (lastAtPos !== -1 && !textBeforeCursor.slice(lastAtPos).includes(" ")) {
       const before = text.slice(0, lastAtPos);
       const after = text.slice(cursorPos);
-      newText = (before + after);
+      newText = before + after;
       newCursorPos = before.length;
     } else {
       newText = text;
       newCursorPos = cursorPos;
     }
+
+    // Update positions of existing mentions after insertion point
+    setSelectedMentions(prev => prev.map(m => {
+      if (m.position > newCursorPos) {
+        // This is simplified; since we aren't adding text here, we don't shift.
+        // But if we were inserting a text-based chip, we would.
+        return m;
+      }
+      return m;
+    }));
 
     setText(newText);
     setMentionOpen(false);
