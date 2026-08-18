@@ -305,7 +305,7 @@ export function PromptBox({
               const segment = text.slice(currentLastPos, m.position);
               if (segment) {
                 contentItems.push(
-                  <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-2 leading-6 align-middle inline-block">
+                  <span key={`text-${idx}`} className="text-[15px] whitespace-pre-wrap py-0 leading-6 align-baseline inline-block">
                     {segment}
                   </span>
                 );
@@ -317,7 +317,7 @@ export function PromptBox({
                 contentItems.push(
                   <div 
                     key={mentionKey} 
-                    className="inline-flex items-center mx-0.5 animate-in zoom-in-95 duration-200 align-middle"
+                    className="inline-flex items-center mx-1 animate-in zoom-in-95 duration-200 align-baseline relative top-[2px]"
                     onMouseEnter={() => setHoveredMentionId(mentionKey)}
                     onMouseLeave={() => setHoveredMentionId(null)}
                   >
