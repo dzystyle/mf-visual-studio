@@ -174,25 +174,31 @@ export function PromptBox({
     setMentionOpen(false);
     
     if (url) {
-      const exists = attachments.find(a => a.name === name);
-      if (!exists) {
-        const id = `${Date.now()}-${name}`;
+      let attachmentId: string;
+      const existingAttachment = attachments.find(a => a.name === name);
+      
+      if (!existingAttachment) {
+        attachmentId = `${Date.now()}-${name}`;
         setAttachments(prev => [
           ...prev,
           {
-            id,
+            id: attachmentId,
             name,
             kind: (kind as any) || "image",
             url
           }
         ]);
+      } else {
+        attachmentId = existingAttachment.id;
       }
+
       // Track that this asset is selected and its relative position in the text
-      // We store the position based on the current text structure
       setSelectedMentions(prev => {
-        // Only add if not already mentioned at this exact spot (prevent duplicates)
-        if (prev.some(m => m.name === name && m.position === newCursorPos)) return prev;
-        return [...prev, { name, position: newCursorPos }];
+        // Prevent duplicate insertion at same spot
+        if (prev.some(m => m.id === attachmentId && m.position === newCursorPos)) return prev;
+        
+        // Add new mention with a unique key for the instance
+        return [...prev, { name, position: newCursorPos, id: attachmentId }];
       });
     }
 
