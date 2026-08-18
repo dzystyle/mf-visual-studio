@@ -119,7 +119,7 @@ function CreativeAssistantPage() {
       {
         id: "2",
         role: "assistant",
-        content: "掌趣一拳超人游戏宣发，埼玉一拳秒杀的震撼感很适合做营销短视频的开场钩子。我先确认几个关键信息，帮你把方向定准。",
+        content: "'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n\nCreative Assistant页面如果是有错误的时候应该展示这个.下面是整个对话流程以你资深产品经理的角度深度梳理一下.下面内容:我想生成掌趣的一拳超人的游戏宣发视频.\n2026/8/13 14:34:26\n掌趣一拳超人游戏宣发，埼玉一拳秒杀的震撼感很适合做营销短视频的开场钩子。我先确认几个关键信息，帮你把方向定准。\n视频时长希望控制在多少秒以内？",
         timestamp: "2026/8/13 14:34:26",
       },
       {
@@ -624,6 +624,12 @@ function CreativeAssistantPage() {
                       <StatusLine icon="check" text="发送产物" />
                       
                       <div className="text-[15px] mb-2 font-medium">成片已交付。由于平台审核限制，原IP角色形象（埼玉/杰诺斯）无法直接生成，已替换为原创的赤焰拳客角色，保留了热血燃战的游戏宣发风格。如果你有官方授权的角色素材，可以上传后重新生成更贴近原作的画面。需要调整什么直接说。</div>
+                      
+                      <div className="mt-6 p-4 rounded-2xl bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800/50 flex flex-col gap-2 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                        <div className="text-[15px] text-purple-900 dark:text-purple-100 font-medium">小云雀遇到了一些问题，请稍后重试</div>
+                        <div className="text-[11px] text-purple-700/60 dark:text-purple-300/60 font-medium self-end">2026/8/18 10:17:14</div>
+                      </div>
+                    </div>
                     </div>
                   )}
 
