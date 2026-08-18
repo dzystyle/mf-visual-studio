@@ -1060,9 +1060,9 @@ export function CreativePreferencePicker() {
                   <div className="flex items-start gap-3">
                     <div className="mt-1.5 w-4 h-4 flex items-center justify-center shrink-0">
                       {isActive ? (
-                        <Check className="w-4 h-4 text-black stroke-[3px]" />
+                        <Check className="w-4 h-4 text-black dark:text-white stroke-[3px]" />
                       ) : (
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] group-hover:bg-[#CCC]" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/10 group-hover:bg-[#CCC] dark:group-hover:bg-white/20" />
                       )}
                     </div>
                     <div className="flex-1">
