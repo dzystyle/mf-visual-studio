@@ -264,10 +264,10 @@ export function SkillPicker({
   const [previewSkill, setPreviewSkill] = useState<typeof skillList[number] | null>(null);
   
   return (
-    <div className="w-[480px] flex flex-col rounded-[28px] bg-white text-[#1A1A1A] shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50">
-      <div className="flex items-center justify-between px-6 py-5 border-b border-[#F0F0F0]">
-        <h3 className="text-sm font-bold text-[#1A1A1A]">Skill</h3>
-        <button className="flex items-center gap-0.5 text-[11px] font-bold text-[#999] hover:text-[#666] transition-colors">
+    <div className="w-[480px] flex flex-col rounded-[28px] bg-white dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-[#F0F0F0] dark:border-white/5">
+        <h3 className="text-sm font-bold text-[#1A1A1A] dark:text-white/90">Skill</h3>
+        <button className="flex items-center gap-0.5 text-[11px] font-bold text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/80 transition-colors">
           更多 <ChevronRight className="h-3 w-3" />
         </button>
       </div>
@@ -280,13 +280,13 @@ export function SkillPicker({
               onClick={() => setTab(c.key)}
               className={`whitespace-nowrap rounded-lg px-4 py-1.5 text-xs font-bold transition-all ${
                 tab === c.key
-                  ? "bg-[#F5F5F5] text-black shadow-sm"
-                  : "text-[#999] hover:text-[#666]"
+                  ? "bg-[#F5F5F5] dark:bg-white/10 text-black dark:text-white shadow-sm"
+                  : "text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60"
               }`}
             >
               {c.label}
               {c.key === "default" && (
-                <span className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-[#CCC] text-[8px] font-normal">i</span>
+                <span className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-[#CCC] dark:border-white/20 text-[8px] font-normal opacity-60">i</span>
               )}
             </button>
           ))}
@@ -301,19 +301,19 @@ export function SkillPicker({
               className="group flex cursor-pointer items-start gap-3 py-1 transition-all"
               onClick={() => setPreviewSkill(s)}
             >
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-[#F5F5F5]">
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-[#F5F5F5] dark:bg-white/5">
                 <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-[13px] font-bold text-[#1A1A1A] group-hover:text-black">{s.title}</h4>
+                  <h4 className="text-[13px] font-bold text-[#1A1A1A] dark:text-white/90 group-hover:text-black dark:group-hover:text-white transition-colors">{s.title}</h4>
                   <div className="flex items-center gap-2">
                     <button 
                       onClick={(e) => {
                         e.stopPropagation();
                         setPreviewSkill(s);
                       }}
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#F0F0F0] text-[#999] hover:bg-[#F5F5F5] hover:text-[#666] transition-colors"
+                      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#F0F0F0] dark:border-white/5 text-[#999] dark:text-white/40 hover:bg-[#F5F5F5] dark:hover:bg-white/10 hover:text-[#666] dark:hover:text-white transition-colors"
                     >
                       <Eye className="h-3 w-3" />
                     </button>
@@ -322,13 +322,13 @@ export function SkillPicker({
                         e.stopPropagation();
                         onSelect?.(s.title);
                       }}
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#F0F0F0] text-[#999] hover:bg-[#F5F5F5] hover:text-[#666] transition-colors"
+                      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#F0F0F0] dark:border-white/5 text-[#999] dark:text-white/40 hover:bg-[#F5F5F5] dark:hover:bg-white/10 hover:text-[#666] dark:hover:text-white transition-colors"
                     >
                       <Plus className="h-3 w-3" />
                     </button>
                   </div>
                 </div>
-                <p className="mt-0.5 line-clamp-2 text-[10px] leading-relaxed text-[#999]">
+                <p className="mt-0.5 line-clamp-2 text-[10px] leading-relaxed text-[#999] dark:text-white/30">
                   {s.desc}
                 </p>
               </div>
