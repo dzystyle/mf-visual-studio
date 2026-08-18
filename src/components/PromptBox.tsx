@@ -278,12 +278,15 @@ export function PromptBox({
 
               const att = attachments.find(a => a.name === m.name);
               if (att && att.url) {
+                const mentionKey = `inline-${m.id}-${idx}`;
                 contentItems.push(
                   <div 
-                    key={`inline-${m.id}-${idx}`} 
+                    key={mentionKey} 
                     className="inline-flex items-center mx-0.5 animate-in zoom-in-95 duration-200 align-middle"
+                    onMouseEnter={() => setHoveredMentionId(mentionKey)}
+                    onMouseLeave={() => setHoveredMentionId(null)}
                   >
-                    <Popover>
+                    <Popover open={hoveredMentionId === mentionKey}>
                       <PopoverTrigger asChild>
                         <div className="h-6 w-6 shrink-0 rounded-md overflow-hidden border border-border cursor-help transition-transform hover:scale-110 shadow-sm relative group">
                           <img src={att.url} alt="" className="w-full h-full object-cover" />
