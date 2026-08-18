@@ -107,7 +107,9 @@ export function PromptBox({
         videoAudio: localStorage.getItem("pref_videoAudio") === "true",
         videoCount: Number(localStorage.getItem("pref_videoCount")) || 1,
         videoWatermark: localStorage.getItem("pref_videoWatermark") !== "false",
+        isAutoMode: localStorage.getItem("pref_isAutoMode") !== "false",
       });
+
 
     };
 
