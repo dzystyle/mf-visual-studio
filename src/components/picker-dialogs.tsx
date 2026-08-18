@@ -806,6 +806,7 @@ export function CreativePreferencePicker() {
     { name: "Seedance 2.5", badge: "新", isVip: true, desc: "支持 4–30 秒视频生成、多模态参考、原生音频，以及符合条件的视频延长。" },
     { name: "Seedance 2.0 VIP", isVip: true, desc: "最强视频模型，图片及音视频全能参考，跨镜头强一致性保持和可控生成。" },
     { name: "Seedance 2.0 Fast VIP", isVip: true, desc: "最强性价比视频模型，兼具全能参考、跨镜头一致性和可控生成。" },
+    { name: "旗舰生图模型 V2-Flash", isVip: true, desc: "出图更快，文字准确性提升，真实感强。" },
     { name: "Seedance 2.0 Mini", isVip: true, desc: "更轻量的视频模型，支持全能参考，以更低积分实现可控生成。" },
     { name: "MiniMax H3", badge: "新", desc: "MiniMax 2K 视频模型，支持原生音画同步及 4–15 秒可控生成。" },
     { name: "HappyHorse 1.1", desc: "阿里旗下最新视频模型，超真实质感。" },
@@ -817,12 +818,14 @@ export function CreativePreferencePicker() {
   ];
 
   const imageModels = [
-    { name: "智能匹配模型", desc: "当 Agent 识别到图片生成诉求时为你智能选择图片模型" },
-    { name: "Seedream 5.0 Pro", badge: "新", isVip: true, desc: "支持交互式编辑，精准改图更可控。" },
+    { name: "智能匹配模型", desc: "当 Agent 识别到图片生成诉求时为你智能选择图片模型", icon: true },
+    { name: "Seedream 5.0 Pro", badge: "新", isVip: true, desc: "支持交互式编辑，精准改图更可控。", extraBadge: "限次" },
     { name: "Seedream 5.0 Lite", desc: "超强指令响应，智能逻辑推理。" },
+    { name: "Seedream 4.0 美感版", badge: "新", desc: "图像画质美感提升。" },
+    { name: "旗舰生图模型 V2-Flash", isVip: true, desc: "出图更快，文字准确性提升，真实感强。" },
+    { name: "Seedream 4.5", desc: "字节跳动的图像模型，用于文本生成图像/编辑，在性能和速度方面表现更佳。" },
     { name: "GPT Image 2", badge: "新", desc: "OpenAI 的模型，用于从文本或现有图像生成高质量图像。" },
     { name: "Midjourney", desc: "高精度模型，具有准确的提示、优质纹理 and 细节。" },
-    { name: "Seedream 4.5", desc: "字节跳动的图像模型，在性能和速度方面表现更佳。" },
     { name: "Nano Banana 2", desc: "高品质 · 更快速 · 更低成本。" },
   ];
 
@@ -891,11 +894,11 @@ export function CreativePreferencePicker() {
         </div>
       </div>
 
-      <div className="flex px-6 py-6 gap-8">
-        {/* Left Side: Model Selection - Increased width */}
-        <div className="flex-1 max-w-[320px]">
+      <div className="flex px-6 py-6 gap-6">
+        {/* Left Side: Model Selection - Reference image layout */}
+        <div className="flex-1 max-w-[340px]">
           <h4 className="text-[12px] font-bold text-[#999] mb-4">模型选择</h4>
-          <div className="space-y-5 max-h-[380px] overflow-y-auto pr-2 scrollbar-hide">
+          <div className="space-y-4 max-h-[380px] overflow-y-auto pr-2 scrollbar-hide">
             {(activeMode === "video" ? videoModels : imageModels).map((m) => {
               const isActive = activeMode === "video" ? videoModel === m.name : imageModel === m.name;
               return (
@@ -904,12 +907,12 @@ export function CreativePreferencePicker() {
                   onClick={() => activeMode === "video" ? setVideoModel(m.name) : setImageModel(m.name)}
                   className="w-full text-left group"
                 >
-                  <div className="flex items-start gap-2.5">
-                    <div className="mt-1 w-3.5 h-3.5 flex items-center justify-center">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1.5 w-4 h-4 flex items-center justify-center shrink-0">
                       {isActive ? (
-                        <Check className="w-3.5 h-3.5 text-black stroke-[3px]" />
+                        <Check className="w-4 h-4 text-black stroke-[3px]" />
                       ) : (
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5]" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] group-hover:bg-[#CCC]" />
                       )}
                     </div>
                     <div className="flex-1">
@@ -917,10 +920,16 @@ export function CreativePreferencePicker() {
                         <span className={`text-[13px] font-bold transition-colors ${isActive ? 'text-black' : 'text-[#333] group-hover:text-black'}`}>
                           {m.name}
                         </span>
-                        {"isVip" in m && m.isVip && <Sparkles className="w-3 h-3 text-[#9333EA] fill-current" />}
-                        {"badge" in m && m.badge && (
+                        {(m as any).extraBadge && (
+                          <span className="bg-[#9333EA]/10 text-[#9333EA] text-[8px] font-black px-1 rounded-sm leading-tight flex items-center gap-0.5">
+                            <Sparkles className="w-2 h-2 fill-current" />
+                            {(m as any).extraBadge}
+                          </span>
+                        )}
+                        {(m as any).isVip && !(m as any).extraBadge && <Sparkles className="w-3 h-3 text-[#9333EA] fill-current" />}
+                        {(m as any).badge && (
                           <span className="bg-[#22C55E] text-white text-[8px] font-black px-1 rounded-sm leading-tight">
-                            {m.badge}
+                            {(m as any).badge}
                           </span>
                         )}
                       </div>
