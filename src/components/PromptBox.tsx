@@ -196,8 +196,11 @@ export function PromptBox({
     setTimeout(() => {
       if (textareaRef.current) {
         textareaRef.current.focus();
-        textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
-        setCursorPos(newCursorPos);
+        // Since the mention was added at currentLastPos, the new cursor position 
+        // in the FINAL textarea should be 0 because all text before this mention 
+        // is now in the static spans.
+        textareaRef.current.setSelectionRange(0, 0);
+        setCursorPos(newText.length);
       }
     }, 50);
   };
