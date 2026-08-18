@@ -268,7 +268,7 @@ export function PromptBox({
 
 
   return (
-    <div className={`glass shadow-2xl relative z-40 transition-all duration-500 ease-out-expo ${
+    <div className={`glass shadow-2xl relative z-[150] transition-all duration-500 ease-out-expo ${
       isMini ? 'rounded-full p-2 pl-6' : 'rounded-2xl p-5'
     }`}>
       {!isMini && attachments.length > 0 && (
