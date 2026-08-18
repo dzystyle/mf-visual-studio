@@ -1167,167 +1167,154 @@ export function CreativePreferencePicker() {
           </section>
 
           {activeMode === "video" && (
-            <>
-
-            <section>
-              <div className="flex items-center gap-1 mb-4">
-                <h4 className="text-[12px] font-bold text-[#999]">时长</h4>
-                <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
-              </div>
-              <div className="flex items-center gap-3">
-                <button 
-                  onClick={() => setDurationMode("smart")}
-                  className={`px-5 py-2 rounded-xl text-[12px] font-bold transition-all ${
-                    durationMode === "smart" 
-                      ? "bg-white border-black text-black shadow-md border" 
-                      : "bg-[#F5F5F5] text-[#666] border-transparent border hover:bg-[#F0F0F0]"
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    {durationMode === "smart" && <div className="w-1 h-1 rounded-full bg-black" />}
-                    智能时长
-                  </div>
-                </button>
-                <button 
-                  onClick={() => setDurationMode("custom")}
-                  className={`flex items-center gap-2 rounded-xl px-5 py-2 min-w-[100px] transition-all ${
-                    durationMode === "custom"
-                      ? "bg-white border-black text-black shadow-md border"
-                      : "bg-[#F5F5F5] text-[#666] border-transparent border hover:bg-[#F0F0F0]"
-                  }`}
-                >
-                  {durationMode === "custom" && <div className="w-1 h-1 rounded-full bg-black" />}
-                  <span className="text-[12px] font-bold">自定义时长</span>
-                  {durationMode === "custom" && (
-                    <div className="flex items-center ml-1">
-                      <input 
-                        type="text" 
-                        value={duration} 
-                        onChange={(e) => {
-                          const val = parseInt(e.target.value);
-                          if (!isNaN(val)) setDuration(Math.min(Math.max(val, 4), 180));
-                        }}
-                        className="bg-transparent text-[12px] font-bold text-black w-7 outline-none text-center"
-                      />
-                      <span className="text-[12px] font-medium text-[#999]">秒</span>
-                    </div>
-                  )}
-                </button>
-              </div>
-              
-              <div className={`mt-6 relative px-1 transition-opacity duration-200 ${durationMode === 'custom' ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
-                <div 
-                  className="h-1 bg-[#F0F0F0] rounded-full w-full relative cursor-pointer"
-                  onClick={(e) => {
-                    if (durationMode !== 'custom') return;
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const percent = x / rect.width;
-                    const newVal = Math.round(4 + percent * (180 - 4));
-                    setDuration(Math.min(Math.max(newVal, 4), 180));
-                  }}
-                >
-                  <div 
-                    className="absolute h-1 bg-black rounded-full" 
-                    style={{ width: `${((duration - 4) / (180 - 4)) * 100}%` }}
-                  />
-                  <div 
-                    className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-black rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition-transform z-10"
-                    style={{ 
-                      left: `${((duration - 4) / (180 - 4)) * 100}%`,
-                    }}
-                    onMouseDown={(e) => {
-                      if (durationMode !== 'custom') return;
-                      const startX = e.clientX;
-                      const startVal = duration;
-                      const container = e.currentTarget.parentElement;
-                      if (!container) return;
-                      const width = container.clientWidth;
-
-                      const onMouseMove = (moveEvent: MouseEvent) => {
-                        const deltaX = moveEvent.clientX - startX;
-                        const deltaVal = (deltaX / width) * (180 - 4);
-                        const newVal = Math.round(startVal + deltaVal);
-                        setDuration(Math.min(Math.max(newVal, 4), 180));
-                      };
-
-                      const onMouseUp = () => {
-                        document.removeEventListener('mousemove', onMouseMove);
-                        document.removeEventListener('mouseup', onMouseUp);
-                      };
-
-                      document.addEventListener('mousemove', onMouseMove);
-                      document.addEventListener('mouseup', onMouseUp);
-                    }}
-                  />
+            <div className="space-y-8">
+              <section>
+                <div className="flex items-center gap-1 mb-4">
+                  <h4 className="text-[12px] font-bold text-[#999]">时长</h4>
+                  <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
                 </div>
-                <div className="flex justify-between mt-3 text-[10px] font-bold text-[#BBB] px-0.5">
-                  <span>4秒</span>
-                  <span>180秒</span>
-                </div>
-              </div>
-            </section>
-
-            {/* Video Controls: Audio, Count, Watermark - Restoration based on reference image user-uploads://file-305 */}
-            <section className="pt-4 border-t border-[#F0F0F0]">
-              <div className="flex items-center gap-6">
-                {/* Audio Toggle */}
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2">
-                    <Music className="w-3.5 h-3.5 text-[#999]" />
-                    <span className="text-[12px] font-bold text-[#666] whitespace-nowrap">音频</span>
-                  </div>
-                  <div 
-                    className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer shrink-0 ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
-                    onClick={() => setVideoAudio(!videoAudio)}
+                  <button 
+                    onClick={() => setDurationMode("smart")}
+                    className={`px-5 py-2 rounded-xl text-[12px] font-bold transition-all ${
+                      durationMode === "smart" 
+                        ? "bg-white border-black text-black shadow-md border" 
+                        : "bg-[#F5F5F5] text-[#666] border-transparent border hover:bg-[#F0F0F0]"
+                    }`}
                   >
-                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoAudio ? 'right-1' : 'left-1'}`} />
+                    <div className="flex items-center gap-2">
+                      {durationMode === "smart" && <div className="w-1 h-1 rounded-full bg-black" />}
+                      智能时长
+                    </div>
+                  </button>
+                  <button 
+                    onClick={() => setDurationMode("custom")}
+                    className={`flex items-center gap-2 rounded-xl px-5 py-2 min-w-[100px] transition-all ${
+                      durationMode === "custom"
+                        ? "bg-white border-black text-black shadow-md border"
+                        : "bg-[#F5F5F5] text-[#666] border-transparent border hover:bg-[#F0F0F0]"
+                    }`}
+                  >
+                    {durationMode === "custom" && <div className="w-1 h-1 rounded-full bg-black" />}
+                    <span className="text-[12px] font-bold">自定义时长</span>
+                    {durationMode === "custom" && (
+                      <div className="flex items-center ml-1">
+                        <input 
+                          type="text" 
+                          value={duration} 
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value);
+                            if (!isNaN(val)) setDuration(Math.min(Math.max(val, 4), 180));
+                          }}
+                          className="bg-transparent text-[12px] font-bold text-black w-7 outline-none text-center"
+                        />
+                        <span className="text-[12px] font-medium text-[#999]">秒</span>
+                      </div>
+                    )}
+                  </button>
+                </div>
+                
+                <div className={`mt-6 relative px-1 transition-opacity duration-200 ${durationMode === 'custom' ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
+                  <div 
+                    className="h-1 bg-[#F0F0F0] rounded-full w-full relative cursor-pointer"
+                    onClick={(e) => {
+                      if (durationMode !== 'custom') return;
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      const x = e.clientX - rect.left;
+                      const percent = x / rect.width;
+                      const newVal = Math.round(4 + percent * (180 - 4));
+                      setDuration(Math.min(Math.max(newVal, 4), 180));
+                    }}
+                  >
+                    <div 
+                      className="absolute h-1 bg-black rounded-full" 
+                      style={{ width: `${((duration - 4) / (180 - 4)) * 100}%` }}
+                    />
+                    <div 
+                      className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-black rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition-transform z-10"
+                      style={{ 
+                        left: `${((duration - 4) / (180 - 4)) * 100}%`,
+                      }}
+                      onMouseDown={(e) => {
+                        if (durationMode !== 'custom') return;
+                        const startX = e.clientX;
+                        const startVal = duration;
+                        const container = e.currentTarget.parentElement;
+                        if (!container) return;
+                        const width = container.clientWidth;
+
+                        const onMouseMove = (moveEvent: MouseEvent) => {
+                          const deltaX = moveEvent.clientX - startX;
+                          const deltaVal = (deltaX / width) * (180 - 4);
+                          const newVal = Math.round(startVal + deltaVal);
+                          setDuration(Math.min(Math.max(newVal, 4), 180));
+                        };
+
+                        const onMouseUp = () => {
+                          document.removeEventListener('mousemove', onMouseMove);
+                          document.removeEventListener('mouseup', onMouseUp);
+                        };
+
+                        document.addEventListener('mousemove', onMouseMove);
+                        document.addEventListener('mouseup', onMouseUp);
+                      }}
+                    />
+                  </div>
+                  <div className="flex justify-between mt-3 text-[10px] font-bold text-[#BBB] px-0.5">
+                    <span>4秒</span>
+                    <span>180秒</span>
                   </div>
                 </div>
+              </section>
 
-                <div className="w-px h-4 bg-[#F0F0F0] shrink-0" />
-
-                {/* Count Stepper */}
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2">
-                    <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
-                    <span className="text-[12px] font-bold text-[#666] whitespace-nowrap">数量</span>
-                  </div>
-                  <div className="flex gap-1.5 shrink-0">
-                    {[1, 2, 3, 4].map((num) => (
-                      <button
-                        key={num}
-                        onClick={() => setVideoCount(num)}
-                        className={`w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold transition-all ${
-                          videoCount === num 
-                            ? 'bg-black text-white shadow-sm' 
-                            : 'bg-[#F5F5F5] text-[#999] hover:bg-[#F0F0F0]'
-                        }`}
-                      >
-                        {num}
-                      </button>
-                    ))}
-                  </div>
+              <section>
+                <div className="flex items-center gap-1 mb-4">
+                  <Music className="w-3.5 h-3.5 text-[#999]" />
+                  <h4 className="text-[12px] font-bold text-[#999]">音频</h4>
                 </div>
+                <div 
+                  className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                  onClick={() => setVideoAudio(!videoAudio)}
+                >
+                  <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoAudio ? 'right-1' : 'left-1'}`} />
+                </div>
+              </section>
 
-                <div className="w-px h-4 bg-[#F0F0F0] shrink-0" />
+              <section>
+                <div className="flex items-center gap-1 mb-4">
+                  <LayoutGrid className="w-3.5 h-3.5 text-[#999]" />
+                  <h4 className="text-[12px] font-bold text-[#999]">数量</h4>
+                </div>
+                <div className="flex gap-1.5 p-1 bg-[#F5F5F5] rounded-xl w-fit">
+                  {[1, 2, 3, 4].map((num) => (
+                    <button
+                      key={num}
+                      onClick={() => setVideoCount(num)}
+                      className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${
+                        videoCount === num ? 'bg-black text-white shadow-sm' : 'text-[#666] hover:text-black'
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+              </section>
 
-                {/* Watermark Toggle */}
-                <div className="flex items-center gap-3">
+              <section>
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-[#999]" />
-                    <span className="text-[12px] font-bold text-[#666] whitespace-nowrap">水印</span>
+                    <span className="text-[12px] font-bold text-[#999]">水印</span>
                   </div>
                   <div 
-                    className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer shrink-0 ${videoWatermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoWatermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
                     onClick={() => setVideoWatermark(!videoWatermark)}
                   >
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${videoWatermark ? 'right-1' : 'left-1'}`} />
                   </div>
                 </div>
-              </div>
-            </section>
-            </>
+              </section>
+            </div>
           )}
 
 
