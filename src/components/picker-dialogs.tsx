@@ -1336,7 +1336,7 @@ export function CreativePreferencePicker() {
                       key={fmt}
                       onClick={() => setImgFormat(fmt)}
                       className={`px-8 py-2 rounded-lg text-xs font-bold transition-all ${
-                        imgFormat === fmt ? 'bg-primary text-white shadow-md' : 'text-[#666] hover:text-black'
+                        imgFormat === fmt ? 'bg-primary text-white shadow-md' : 'text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white'
                       }`}
                     >
                       {fmt}
