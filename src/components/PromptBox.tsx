@@ -174,7 +174,7 @@ export function PromptBox({
     setMentionOpen(false);
     
     if (url) {
-      const exists = attachments.find(a => a.url === url);
+      const exists = attachments.find(a => a.name === name);
       if (!exists) {
         const id = `${Date.now()}-${name}`;
         setAttachments(prev => [
@@ -189,7 +189,11 @@ export function PromptBox({
       }
       // Track that this asset is selected and its relative position in the text
       // We store the position based on the current text structure
-      setSelectedMentions(prev => [...prev, { name, position: newCursorPos }]);
+      setSelectedMentions(prev => {
+        // Only add if not already mentioned at this exact spot (prevent duplicates)
+        if (prev.some(m => m.name === name && m.position === newCursorPos)) return prev;
+        return [...prev, { name, position: newCursorPos }];
+      });
     }
 
     // Force focus and restore cursor position after state update
@@ -201,6 +205,7 @@ export function PromptBox({
       }
     }, 50);
   };
+
 
   return (
     <div className={`glass shadow-2xl relative z-20 transition-all duration-500 ease-out-expo ${
