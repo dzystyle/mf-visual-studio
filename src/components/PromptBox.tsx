@@ -60,7 +60,6 @@ export function PromptBox({
   const [assetsOpen, setAssetsOpen] = useState(false);
   const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
-  const [prefHover, setPrefHover] = useState(false);
   const [hoveredMentionId, setHoveredMentionId] = useState<string | null>(null);
   const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number, id: string}[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
@@ -480,22 +479,17 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
 
-            <Popover open={prefHover} onOpenChange={setPrefHover}>
+            <Popover>
               <PopoverTrigger asChild>
-                <div 
-                  onMouseEnter={() => setPrefHover(true)}
-                  onMouseLeave={() => setPrefHover(false)}
-                >
+                <button type="button">
                   <Chip icon={LayoutGrid} label="自定义模型 | 创作偏好" />
-                </div>
+                </button>
               </PopoverTrigger>
               <PopoverContent 
                 side="top" 
                 align="center"
                 sideOffset={16} 
                 className="w-[660px] p-0 border-none bg-transparent shadow-none z-[100]"
-                onMouseEnter={() => setPrefHover(true)}
-                onMouseLeave={() => setPrefHover(false)}
               >
                 <CreativePreferencePicker />
               </PopoverContent>
