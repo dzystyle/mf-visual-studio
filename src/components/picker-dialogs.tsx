@@ -1323,7 +1323,7 @@ export function CreativePreferencePicker() {
 
 
           {activeMode === "image" && (
-            <div className="space-y-8">
+            <div className="space-y-4">
               {/* Format Selection */}
               <section>
                 <div className="flex items-center gap-1 mb-4">
