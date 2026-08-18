@@ -1271,7 +1271,7 @@ export function CreativePreferencePicker() {
                 <section className="flex-1">
                   <div className="flex items-center gap-1 mb-2 whitespace-nowrap">
                     <Music className="w-3.5 h-3.5 text-[#999]" />
-                    <h4 className="text-[12px] font-bold text-[#999]">音频</h4>
+                    <h4 className="text-[12px] font-bold text-[#999] dark:text-white/30">音频</h4>
                   </div>
                   <div 
                     className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${videoAudio ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
