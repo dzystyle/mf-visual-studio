@@ -487,7 +487,7 @@ export function PromptBox({
               </PopoverTrigger>
               <PopoverContent 
                 side="top" 
-                align="start" 
+                align="center"
                 sideOffset={16} 
                 className="w-[660px] p-0 border-none bg-transparent shadow-none z-[100]"
               >
