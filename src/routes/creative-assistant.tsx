@@ -630,7 +630,7 @@ function CreativeAssistantPage() {
                           <VideoToolButton 
                             icon={<div className="relative"><ImageIcon className="h-3 w-3" /><Plus className="absolute -top-1 -right-1 h-2 w-2" /></div>} 
                             label="引用到输入框" 
-                            onClick={(e) => {
+                            onClick={(e: React.MouseEvent) => {
                               e.stopPropagation();
                               const event = new CustomEvent('quote-video', { 
                                 detail: { name: 'onepunch-promo.mp4', url: videoFileUrl, type: 'video' } 
@@ -919,26 +919,6 @@ function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChang
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
-function VideoToolButton({ icon, label, active = false, onClick }: { icon: React.ReactNode; label: string; active?: boolean; onClick?: () => void }) {
-  return (
-    <div className="relative group/btn">
-      <button 
-        onClick={onClick}
-        className={cn(
-          "flex h-8 w-8 items-center justify-center rounded-lg transition-all",
-          active 
-            ? "bg-white text-black shadow-sm" 
-            : "text-white/60 hover:bg-white/10 hover:text-white"
-        )}
-      >
-        {icon}
-      </button>
-      <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg bg-black text-white text-[11px] font-bold whitespace-nowrap opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none shadow-xl border border-white/10 backdrop-blur-md z-[60]">
-        {label}
-      </div>
-    </div>
-  );
-}
 
 function StatusLine({ icon, text, subText }: { icon: 'check' | 'loading'; text: string; subText?: string }) {
   return (
