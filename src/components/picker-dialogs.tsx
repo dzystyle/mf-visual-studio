@@ -948,12 +948,8 @@ export function CreativePreferencePicker() {
               <div className="w-3 h-3 rounded-full border border-[#CCC] flex items-center justify-center text-[8px] text-[#999] cursor-help">?</div>
             </div>
             <div className="relative flex items-center group/slider">
-              <button className="absolute -left-4 z-10 w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-sm">
-                <ChevronRight className="w-3 h-3 rotate-180" />
-              </button>
-              
-              <div className="flex gap-2.5 overflow-hidden">
-                {ratios.map((r) => (
+              <div className="flex gap-2.5 overflow-x-auto scrollbar-hide pb-2">
+                {currentRatios.map((r) => (
                   <button
                     key={r.label}
                     onClick={() => setRatio(r.label)}
@@ -968,10 +964,6 @@ export function CreativePreferencePicker() {
                   </button>
                 ))}
               </div>
-
-              <button className="absolute -right-4 z-10 w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#F0F0F0] text-[#999] hover:text-black transition-all opacity-0 group-hover/slider:opacity-100 shadow-sm">
-                <ChevronRight className="w-3 h-3" />
-              </button>
             </div>
           </section>
 
