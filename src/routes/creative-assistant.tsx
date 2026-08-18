@@ -626,7 +626,7 @@ function CreativeAssistantPage() {
                       <div className="text-[15px] mb-2 font-medium">成片已交付。由于平台审核限制，原IP角色形象（埼玉/杰诺斯）无法直接生成，已替换为原创的赤焰拳客角色，保留了热血燃战的游戏宣发风格。如果你有官方授权的角色素材，可以上传后重新生成更贴近原作的画面。需要调整什么直接说。</div>
                       
                       <div className="mt-6 p-4 rounded-2xl bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800/50 flex flex-col gap-2 animate-in fade-in slide-in-from-bottom-2 duration-500">
-                        <div className="text-[15px] text-purple-900 dark:text-purple-100 font-medium">Artrail遇到了一些问题，请稍后重试</div>
+                        <div className="text-[15px] text-purple-900 dark:text-purple-100 font-medium">小云雀遇到了一些问题，请稍后重试</div>
                         <div className="text-[11px] text-purple-700/60 dark:text-purple-300/60 font-medium self-end">2026/8/18 10:17:14</div>
                       </div>
                     </div>
