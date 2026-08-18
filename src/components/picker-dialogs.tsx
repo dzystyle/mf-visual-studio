@@ -1430,7 +1430,7 @@ export function CreativePreferencePicker() {
                     <span className="text-[12px] font-bold text-[#999] dark:text-white/30">水印</span>
                   </div>
                   <div 
-                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${watermark ? 'bg-primary' : 'bg-[#E5E5E5]'}`}
+                    className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${watermark ? 'bg-primary' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
                     onClick={() => setWatermark(!watermark)}
                   >
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${watermark ? 'right-1' : 'left-1'}`} />
