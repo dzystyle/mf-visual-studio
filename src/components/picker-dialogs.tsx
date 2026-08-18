@@ -1022,9 +1022,9 @@ export function CreativePreferencePicker() {
               {isAutoMode ? '自动模式，算法由系统选择' : '手动模式，算法由用户选择'}
             </span>
             <div className="flex items-center gap-1.5 ml-1">
-              <span className="text-[10px] font-bold text-[#999]">自动控制</span>
+              <span className="text-[10px] font-bold text-[#999] dark:text-white/30">自动控制</span>
               <div 
-                className={`w-8 h-4.5 rounded-full relative transition-colors cursor-pointer ${isAutoMode ? 'bg-[#3B82F6]' : 'bg-[#E5E5E5]'}`}
+                className={`w-8 h-4.5 rounded-full relative transition-colors cursor-pointer ${isAutoMode ? 'bg-[#3B82F6]' : 'bg-[#E5E5E5] dark:bg-white/10'}`}
                 onClick={() => setIsAutoMode(!isAutoMode)}
               >
                 <div className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full shadow-sm transition-all ${isAutoMode ? 'right-0.5' : 'left-0.5'}`} />
