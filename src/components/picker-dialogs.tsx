@@ -306,7 +306,7 @@ export function SkillPicker({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-[13px] font-bold text-[#1A1A1A] group-hover:text-black">{s.title}</h4>
+                  <h4 className="text-[13px] font-bold text-[#1A1A1A] dark:text-white/90 group-hover:text-black dark:group-hover:text-white transition-colors">{s.title}</h4>
                   <div className="flex items-center gap-2">
                     <button 
                       onClick={(e) => {
