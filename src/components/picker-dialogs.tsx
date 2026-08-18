@@ -1157,7 +1157,7 @@ export function CreativePreferencePicker() {
                   key={res}
                   onClick={() => setResolution(res)}
                   className={`px-5 py-1 rounded-full text-[10px] font-bold transition-all ${
-                    resolution === res ? 'bg-white shadow-sm text-black' : 'text-[#999] hover:text-[#666]'
+                    resolution === res ? 'bg-white dark:bg-white/10 shadow-sm text-black dark:text-white' : 'text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60'
                   }`}
                 >
                   {res}
