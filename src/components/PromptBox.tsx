@@ -505,7 +505,7 @@ export function PromptBox({
                 </button>
               </PopoverTrigger>
               <PopoverContent side="top" align="start" className="w-44 p-1.5 border-border bg-popover/90 backdrop-blur-xl rounded-2xl shadow-2xl z-[100] animate-in fade-in zoom-in-95 duration-200">
-                <AddItem icon={ImageIcon} label="本地上传" onClick={() => triggerPick("image")} />
+                <AddItem icon={ImageIcon} label="图片上传" onClick={() => triggerPick("image")} />
                 <AddItem icon={AudioLines} label="音频上传" onClick={() => triggerPick("audio")} />
                 <AddItem icon={Video} label="视频上传" onClick={() => triggerPick("video")} />
                 <AddItem icon={FileText} label="文档上传" onClick={() => triggerPick("text")} />
