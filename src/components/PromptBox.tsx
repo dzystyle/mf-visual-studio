@@ -80,7 +80,11 @@ export function PromptBox({
     groupCount: 4,
     groupAuto: false,
     watermark: false,
+    videoAudio: false,
+    videoCount: 1,
+    videoWatermark: true,
   });
+
 
 
   useEffect(() => {
