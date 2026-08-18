@@ -66,6 +66,7 @@ export function PromptBox({
   const [selectedMentions, setSelectedMentions] = useState<{name: string, position: number, id: string}[]>([]);
   const [mentionFilter, setMentionFilter] = useState("");
   const [cursorPos, setCursorPos] = useState(0);
+  const [mentionRect, setMentionRect] = useState<DOMRect | null>(null);
 
   // Stats for the hover capsule (synced with localStorage)
    const [prefs, setPrefs] = useState({
