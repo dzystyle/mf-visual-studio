@@ -397,7 +397,7 @@ export function SkillPicker({
                   }}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/60 dark:bg-white/5 hover:bg-white/90 dark:hover:bg-white/10 text-[13px] font-bold text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white transition-all shadow-sm border border-black/5 dark:border-white/5"
                 >
-                  创建技能 <div className="grid grid-cols-2 gap-0.5 opacity-60"><div className="w-[5px] h-[5px] rounded-[1px] border border-current"></div><div className="w-[5px] h-[5px] rounded-[1px] border border-current"></div><div className="w-[5px] h-[5px] rounded-[1px] border border-current"></div><div className="w-[5px] h-[5px] rounded-[1px] border border-current"></div></div>
+                  创建技能 <div className="grid grid-cols-2 gap-0.5 opacity-60"><div className="w-[6px] h-[6px] rounded-[1px] border border-current"></div><div className="w-[6px] h-[6px] rounded-[1px] border border-current"></div><div className="w-[6px] h-[6px] rounded-[1px] border border-current"></div><div className="w-[6px] h-[6px] rounded-[1px] border border-current"></div></div>
                 </button>
               </div>
             </div>
