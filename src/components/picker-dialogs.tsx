@@ -331,7 +331,7 @@ export function SkillPicker({
             >
               <div className="flex-1 min-w-0 pr-4">
                 <h4 className="text-[14px] font-bold text-[#333] dark:text-white/90 truncate">{s.title}</h4>
-                <p className="mt-1 text-[11px] text-[#999] dark:text-white/40 font-bold tracking-tight">
+                <p className="mt-0.5 text-[11px] text-[#999] dark:text-white/40 font-bold tracking-tight">
                   {s.models}
                 </p>
               </div>
