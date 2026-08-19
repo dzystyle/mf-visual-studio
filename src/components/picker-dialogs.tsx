@@ -319,28 +319,28 @@ export function SkillPicker({
         </div>
 
         {/* Middle Skill List */}
-        <div className="w-[300px] border-x border-[#F0F0F0] dark:border-white/5 bg-white/30 dark:bg-white/5 overflow-y-auto scrollbar-hide py-2 relative z-10">
+        <div className="w-[300px] border-x border-[#F0F0F0] dark:border-white/5 bg-white dark:bg-white/5 overflow-y-auto scrollbar-hide py-2 relative z-10">
           {skillList.map((s) => (
             <div
               key={s.id}
               onMouseEnter={() => setHoveredSkill(s)}
               onClick={() => onSelect?.(s.title)}
               className={`group flex items-center justify-between px-6 py-4 cursor-pointer transition-all ${
-                hoveredSkill?.id === s.id ? "bg-white dark:bg-white/10 shadow-sm" : "hover:bg-white/50 dark:hover:bg-white/5"
+                hoveredSkill?.id === s.id ? "bg-[#F5F5F5] dark:bg-white/10" : "hover:bg-[#F9F9F9] dark:hover:bg-white/5"
               }`}
             >
               <div className="flex-1 min-w-0 pr-4">
                 <h4 className="text-[14px] font-bold text-[#1A1A1A] dark:text-white/90 truncate">{s.title}</h4>
-                <p className="mt-1 text-[11px] text-[#999] dark:text-white/40 font-medium tracking-tight">
+                <p className="mt-1 text-[11px] text-[#999] dark:text-white/40 font-bold tracking-tight">
                   {s.models}
-                </p>
+                </h4>
               </div>
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
                   onSelect?.(s.title);
                 }}
-                className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-[#F5F5F5] dark:hover:bg-white/10 text-[#999] dark:text-white/40 hover:text-black dark:hover:text-white transition-all opacity-0 group-hover:opacity-100"
+                className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-white dark:hover:bg-white/10 text-[#999] dark:text-white/40 hover:text-black dark:hover:text-white transition-all opacity-0 group-hover:opacity-100"
               >
                 <Plus className="h-4 w-4" />
               </button>
