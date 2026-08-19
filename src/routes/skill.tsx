@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Plus, ChevronDown, Check, Info } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TopBar } from "@/components/TopBar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
@@ -129,7 +129,7 @@ function SkillDiscoveryPage() {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [userCreatedSkills, setUserCreatedSkills] = useState<any[]>([]);
 
-  useState(() => {
+  useEffect(() => {
     const handleSkillSaved = (e: any) => {
       const newSkill = {
         id: e.detail.id,
@@ -150,11 +150,22 @@ function SkillDiscoveryPage() {
       setMyFilter("我创建的");
     };
 
+    const handleOpenCreateSkill = (e: any) => {
+      // In a real app, 'mode' could be passed to CreateSkillDialog to pre-fill or adjust state
+      // For now, we just open the dialog as requested
+      setIsCreateDialogOpen(true);
+    };
+
     if (typeof window !== 'undefined') {
       window.addEventListener('skill-saved', handleSkillSaved);
-      return () => window.removeEventListener('skill-saved', handleSkillSaved);
+      window.addEventListener('open-create-skill', handleOpenCreateSkill);
+      return () => {
+        window.removeEventListener('skill-saved', handleSkillSaved);
+        window.removeEventListener('open-create-skill', handleOpenCreateSkill);
+      };
     }
-  });
+  }, []);
+
 
   const myFilters = ["全部", "我创建的", "历史使用", "草稿"];
 
