@@ -340,6 +340,18 @@ skill_description: "适用于角色扮演游戏（RPG）的新游预告、版本
 
 
 export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps) {
+  const [skillName, setSkillName] = React.useState("");
+  const [skillIntro, setSkillIntro] = React.useState("");
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+  const [allowPublic, setAllowPublic] = React.useState(false);
+  
+  const tags = ["专业影视", "专业营销", "产品推广", "短剧漫剧", "创意发散", "特效玩法", "社媒热点", "视频", "图片"];
+  
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) ? prev.filter(t => t !== tag) : (prev.length < 3 ? [...prev, tag] : prev)
+    );
+  };
   const [viewMode, setViewMode] = React.useState<"preview" | "markdown">("preview");
   const [markdownContent, setMarkdownContent] = React.useState<string>("");
 
