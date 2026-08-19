@@ -525,7 +525,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
           </div>
           
           {/* Main Layout: Left Sidebar & Right Chat Panel */}
-          <div className="flex w-full overflow-hidden">
+          <div className="flex w-full flex-1 overflow-hidden">
             
             {/* Left Scrollable Settings */}
             <div className="flex flex-1 flex-col overflow-y-auto scrollbar-hide border-r border-[var(--color-border)]">
