@@ -299,7 +299,7 @@ export function SkillPicker({
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#999] stroke-[2.5px]" />
           <input 
             type="text" 
-            placeholder="搜索技能" 
+            placeholder="搜索skill" 
             className="w-full bg-transparent pl-10 pr-4 py-2 text-[15px] font-bold focus:outline-none placeholder:text-[#999]" 
           />
         </div>
