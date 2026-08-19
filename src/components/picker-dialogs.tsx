@@ -8,6 +8,8 @@ import skillReenact from "@/assets/skill-reenact.jpg";
 import skillMv from "@/assets/skill-mv.jpg";
 import skillProduct from "@/assets/skill-product.jpg";
 import skillTravel from "@/assets/skill-travel.jpg";
+import skillPreviewVideo from "@/assets/skill-preview-video.mp4.asset.json";
+
 
 /* ---------------- Model Picker ---------------- */
 const modelData = {
