@@ -319,7 +319,7 @@ export function SkillPicker({
         </div>
 
         {/* Middle Skill List */}
-        <div className="w-[300px] border-x border-[#F0F0F0] dark:border-white/5 bg-white/30 dark:bg-white/5 overflow-y-auto scrollbar-hide py-2">
+        <div className="w-[300px] border-x border-[#F0F0F0] dark:border-white/5 bg-white/30 dark:bg-white/5 overflow-y-auto scrollbar-hide py-2 relative z-10">
           {skillList.map((s) => (
             <div
               key={s.id}
