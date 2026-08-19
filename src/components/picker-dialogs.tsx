@@ -347,7 +347,7 @@ export function SkillPicker({
               {hoveredSkill?.id === s.id && (
                 <div className="ml-2">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[#999] dark:text-white/40">
-                    <path d="m7 15 5-5-5-5"/>
+                    <polyline points="15 18 9 12 15 6" transform="rotate(180 12 12)"/>
                   </svg>
                 </div>
               )}
