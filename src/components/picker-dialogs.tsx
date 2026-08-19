@@ -333,7 +333,7 @@ export function SkillPicker({
                 <h4 className="text-[14px] font-bold text-[#1A1A1A] dark:text-white/90 truncate">{s.title}</h4>
                 <p className="mt-1 text-[11px] text-[#999] dark:text-white/40 font-bold tracking-tight">
                   {s.models}
-                </h4>
+                </p>
               </div>
               <button 
                 onClick={(e) => {
