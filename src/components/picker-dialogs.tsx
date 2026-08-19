@@ -326,7 +326,7 @@ export function SkillPicker({
               onMouseEnter={() => setHoveredSkill(s)}
               onClick={() => onSelect?.(s.title)}
               className={`group flex items-center justify-between px-6 py-4 cursor-pointer transition-all ${
-                hoveredSkill?.id === s.id ? "bg-[#F5F5F5] dark:bg-white/10" : "hover:bg-[#F9F9F9] dark:hover:bg-white/5"
+                hoveredSkill?.id === s.id ? "bg-[#F5F5F5] dark:bg-white/10 rounded-2xl" : "hover:bg-[#F9F9F9] dark:hover:bg-white/5 rounded-2xl"
               }`}
             >
               <div className="flex-1 min-w-0 pr-4">
