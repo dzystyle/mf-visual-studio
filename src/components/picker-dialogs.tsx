@@ -345,10 +345,8 @@ export function SkillPicker({
                 <Plus className="h-4 w-4" />
               </button>
               {hoveredSkill?.id === s.id && (
-                <div className="ml-2">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[#999] dark:text-white/40">
-                    <polyline points="15 18 9 12 15 6" transform="rotate(180 12 12)"/>
-                  </svg>
+                <div className="ml-2 flex items-center">
+                  <span className="text-[14px] leading-none text-[#999] dark:text-white/40 font-serif">↵</span>
                 </div>
               )}
             </div>
