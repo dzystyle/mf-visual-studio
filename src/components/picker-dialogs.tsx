@@ -219,126 +219,192 @@ export function ModelPickerDialog({
 
 /* ---------------- Skill Picker ---------------- */
 const categories = [
-  { key: "default", label: "默认调用" },
-  { key: "newbie", label: "新手必用" },
-  { key: "master", label: "大师美学" },
-  { key: "story", label: "剧情短片" },
+  { key: "all", label: "全部" },
+  { key: "mine", label: "我的" },
+  { key: "starred", label: "收藏" },
+  { key: "film", label: "专业影视" },
+  { key: "marketing", label: "专业营销" },
+  { key: "product", label: "产品推广" },
+  { key: "drama", label: "短剧漫剧" },
+  { key: "creative", label: "创意发散" },
 ] as const;
 
 const skillList = [
   {
-    id: "destiny",
-    title: "百万主角登场动效",
-    desc: "主角高燃登场视频生成：用户上传主角人物图和结算画面图，基于案例提示词模板替换画风，保留极限镜头语言，并...",
+    id: "tang",
+    title: "《大唐妖探》同款转场",
+    desc: "电影《大唐妖探》官方合作模板，一起带毛孩子勇闯机关大唐吧！",
+    models: "SD 2.0 Fast VIP",
+    tags: ["特效玩法", "社媒热点", "视频"],
     img: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=800&auto=format&fit=crop",
   },
   {
-    id: "jojo",
-    title: "JOJO 风格变身玩法",
-    desc: "把任何一张图片（人物、场景、物件都行）变成一段 30 秒的 JOJO 动画风格短片：厚描边、硬阴影、高饱和和平涂、满屏...",
+    id: "reenact",
+    title: "爆款复刻",
+    desc: "高燃登场视频生成：基于案例提示词模板替换画风，保留极限镜头语言。",
+    models: "SD 2.5 • Seedream 5.0 Pro",
+    tags: ["特效", "电影感"],
     img: "https://images.unsplash.com/photo-1578632738981-43c9ad4c585f?q=80&w=800&auto=format&fit=crop",
   },
   {
-    id: "gta6",
-    title: "GTA 6 风格演示 (玩转我的人生)",
-    desc: "受 GTA6 官方公开素材启发的主题视频、分镜、提示词和视觉审查。只借鉴公开素材里的视觉语法、城市气质、镜头组...",
+    id: "zine",
+    title: "Zine风格Skill",
+    desc: "将任何场景转化为精致的杂志排版风格短片，突出时尚感与设计力。",
+    models: "SD 2.0 Fast VIP • Seedream 5.0 Pro",
+    tags: ["排版", "时尚"],
     img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
   },
   {
-    id: "3d-horror",
-    title: "经典 3D 日式怪谈风",
-    desc: "专用于生成具有日式恐怖（如《死魂曲》《零》）风格的写实 3D 游戏恐怖视频。聚焦于阴雨浓雾下的旧校舍、民居、生...",
+    id: "multicell",
+    title: "多宫格分镜",
+    desc: "经典多宫格构图，适合展示多角度细节或快节奏叙事切换。",
+    models: "SD 2.5 • Seedream 5.0 Pro",
+    tags: ["分镜", "叙事"],
     img: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=800&auto=format&fit=crop",
   },
   {
-    id: "dimension",
-    title: "次元破壁互动玩法",
-    desc: "打破屏幕让自己喜欢的角色来到现实世界或者去到他们的世界。",
+    id: "youth",
+    title: "日系青春广告短片",
+    desc: "清新通透的画面感，捕捉夏日微风与少年感，极具呼吸感的影像表达。",
+    models: "SD 2.0 Fast VIP • Seedream 5.0 Pro",
+    tags: ["青春", "日系"],
     img: "https://images.unsplash.com/photo-1560972550-aba3456b5564?q=80&w=800&auto=format&fit=crop",
   },
 ];
+
 
 export function SkillPicker({
   onSelect,
 }: {
   onSelect?: (title: string) => void;
 }) {
-  const [tab, setTab] = useState<typeof categories[number]["key"]>("newbie");
+  const [tab, setTab] = useState<typeof categories[number]["key"]>("all");
+  const [hoveredSkill, setHoveredSkill] = useState<typeof skillList[number]>(skillList[0]);
   const [previewSkill, setPreviewSkill] = useState<typeof skillList[number] | null>(null);
   
   return (
-    <div className="w-[480px] flex flex-col rounded-[28px] bg-white dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
-      <div className="flex items-center justify-between px-6 py-5 border-b border-[#F0F0F0] dark:border-white/5">
-        <h3 className="text-sm font-bold text-[#1A1A1A] dark:text-white/90">Skill</h3>
-        <button className="flex items-center gap-0.5 text-[11px] font-bold text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/80 transition-colors">
-          更多 <ChevronRight className="h-3 w-3" />
+    <div className="w-[840px] flex flex-col rounded-[28px] bg-[#F9F9F9] dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
+      {/* Search Header */}
+      <div className="flex items-center px-6 py-4 border-b border-[#F0F0F0] dark:border-white/5 bg-white/50 dark:bg-transparent">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#999]" />
+          <input 
+            type="text" 
+            placeholder="搜索技能" 
+            className="w-full bg-transparent pl-10 pr-4 py-2 text-sm focus:outline-none placeholder:text-[#999]" 
+          />
+        </div>
+        <button className="flex items-center gap-1 text-xs font-medium text-[#666] dark:text-white/60 hover:text-black dark:hover:text-white transition-colors">
+          全部 <ChevronRight className="h-4 w-4" />
         </button>
       </div>
 
-      <div className="px-6 py-4">
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+      <div className="flex flex-1 overflow-hidden h-[480px]">
+        {/* Left Sidebar Categories */}
+        <div className="w-[140px] border-right border-[#F0F0F0] dark:border-white/5 py-4 flex flex-col gap-1">
           {categories.map((c) => (
             <button
               key={c.key}
               onClick={() => setTab(c.key)}
-              className={`whitespace-nowrap rounded-lg px-4 py-1.5 text-xs font-bold transition-all ${
+              className={`flex items-center gap-3 px-6 py-2.5 text-[13px] font-medium transition-all relative ${
                 tab === c.key
-                  ? "bg-[#F5F5F5] dark:bg-white/10 text-black dark:text-white shadow-sm"
-                  : "text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60"
+                  ? "text-black dark:text-white"
+                  : "text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/60"
               }`}
             >
-              {c.label}
-              {c.key === "default" && (
-                <span className="ml-1 inline-flex h-3 w-3 items-center justify-center rounded-full border border-[#CCC] dark:border-white/20 text-[8px] font-normal opacity-60">i</span>
-              )}
+              {tab === c.key && <Check className="h-3.5 w-3.5 absolute left-2" />}
+              <span className={tab === c.key ? "pl-0" : "pl-0"}>{c.label}</span>
             </button>
           ))}
         </div>
-      </div>
 
-      <div className="px-6 pb-6">
-        <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-hide">
+        {/* Middle Skill List */}
+        <div className="w-[300px] border-x border-[#F0F0F0] dark:border-white/5 bg-white/30 dark:bg-white/5 overflow-y-auto scrollbar-hide py-2">
           {skillList.map((s) => (
             <div
-              key={s.title}
-              className="group flex cursor-pointer items-start gap-3 py-1 transition-all"
-              onClick={() => setPreviewSkill(s)}
+              key={s.id}
+              onMouseEnter={() => setHoveredSkill(s)}
+              onClick={() => onSelect?.(s.title)}
+              className={`group flex items-center justify-between px-6 py-4 cursor-pointer transition-all ${
+                hoveredSkill?.id === s.id ? "bg-white dark:bg-white/10 shadow-sm" : "hover:bg-white/50 dark:hover:bg-white/5"
+              }`}
             >
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-[#F5F5F5] dark:bg-white/5">
-                <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-[13px] font-bold text-[#1A1A1A] dark:text-white/90 group-hover:text-black dark:group-hover:text-white transition-colors">{s.title}</h4>
-                  <div className="flex items-center gap-2">
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setPreviewSkill(s);
-                      }}
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#F0F0F0] dark:border-white/5 text-[#999] dark:text-white/40 hover:bg-[#F5F5F5] dark:hover:bg-white/10 hover:text-[#666] dark:hover:text-white transition-colors"
-                    >
-                      <Eye className="h-3 w-3" />
-                    </button>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelect?.(s.title);
-                      }}
-                      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#F0F0F0] dark:border-white/5 text-[#999] dark:text-white/40 hover:bg-[#F5F5F5] dark:hover:bg-white/10 hover:text-[#666] dark:hover:text-white transition-colors"
-                    >
-                      <Plus className="h-3 w-3" />
-                    </button>
-                  </div>
-                </div>
-                <p className="mt-0.5 line-clamp-2 text-[10px] leading-relaxed text-[#999] dark:text-white/30">
-                  {s.desc}
+              <div className="flex-1 min-w-0 pr-4">
+                <h4 className="text-[14px] font-bold text-[#1A1A1A] dark:text-white/90 truncate">{s.title}</h4>
+                <p className="mt-1 text-[11px] text-[#999] dark:text-white/40 font-medium tracking-tight">
+                  {s.models}
                 </p>
               </div>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelect?.(s.title);
+                }}
+                className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-[#F5F5F5] dark:hover:bg-white/10 text-[#999] dark:text-white/40 hover:text-black dark:hover:text-white transition-all opacity-0 group-hover:opacity-100"
+              >
+                <Plus className="h-4 w-4" />
+              </button>
+              {hoveredSkill?.id === s.id && (
+                <div className="ml-2">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#999] dark:text-white/40">
+                    <path d="m9 18 6-6-6-6"/>
+                  </svg>
+                </div>
+              )}
             </div>
           ))}
         </div>
+
+        {/* Right Preview Area */}
+        <div className="flex-1 flex flex-col p-6 overflow-y-auto scrollbar-hide bg-white/50 dark:bg-transparent relative">
+          {hoveredSkill && (
+            <div className="animate-in fade-in duration-300">
+              <div className="relative aspect-[16/10] rounded-2xl overflow-hidden group shadow-lg">
+                <img src={hoveredSkill.img} alt={hoveredSkill.title} className="w-full h-full object-cover" />
+                <button className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-black/20 backdrop-blur text-white hover:bg-black/40 transition-all">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </button>
+              </div>
+              
+              <div className="mt-6 space-y-4">
+                <div>
+                  <h3 className="text-lg font-bold text-[#1A1A1A] dark:text-white/90 tracking-tight">{hoveredSkill.models}</h3>
+                  <p className="mt-2 text-[13px] leading-relaxed text-[#666] dark:text-white/60">
+                    {hoveredSkill.desc}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {hoveredSkill.tags.map(tag => (
+                    <span key={tag} className="px-3 py-1 rounded-full bg-[#F2F2F2] dark:bg-white/5 text-[11px] font-medium text-[#666] dark:text-white/60">
+                      {tag}
+                    </span>
+                  ))}
+                  <button 
+                    onClick={() => setPreviewSkill(hoveredSkill)}
+                    className="ml-auto flex items-center gap-1 text-[13px] font-bold text-black dark:text-white hover:opacity-70 transition-all"
+                  >
+                    详情 <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="absolute bottom-4 right-6">
+                <button 
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('open-create-skill'));
+                  }}
+                  className="flex items-center gap-2 text-xs font-bold text-[#999] dark:text-white/40 hover:text-black dark:hover:text-white transition-colors"
+                >
+                  创建技能 <LayoutGrid className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+
 
       {/* Skill Detail Preview Modal */}
       <Dialog open={!!previewSkill} onOpenChange={(open) => !open && setPreviewSkill(null)}>
@@ -438,12 +504,13 @@ export function SkillPickerDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[500px] border-none bg-transparent p-0 text-white backdrop-blur-none shadow-none">
+      <DialogContent className="max-w-[840px] border-none bg-transparent p-0 text-white backdrop-blur-none shadow-none">
         <SkillPicker onSelect={(title) => { onSelect?.(title); onOpenChange(false); }} />
       </DialogContent>
     </Dialog>
   );
 }
+
 
 /* ---------------- Assets Picker ---------------- */
 const assetTabs = [
