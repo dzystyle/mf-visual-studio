@@ -342,12 +342,12 @@ export function SkillPicker({
 
       {/* Skill Detail Preview Modal */}
       <Dialog open={!!previewSkill} onOpenChange={(open) => !open && setPreviewSkill(null)}>
-        <DialogContent className="max-w-[560px] p-0 border-white/10 bg-[#121212] overflow-hidden rounded-3xl shadow-2xl [&>button]:hidden">
+        <DialogContent className="max-w-[560px] p-0 border-[#E5E5E5]/50 dark:border-white/10 bg-white dark:bg-[#121212] overflow-hidden rounded-3xl shadow-2xl [&>button]:hidden dark:text-white">
           <div className="relative">
             {/* Header Image */}
             <div className="relative aspect-[16/9] w-full overflow-hidden">
               <img src={previewSkill?.img} className="w-full h-full object-cover" alt={previewSkill?.title} />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#121212] via-transparent to-transparent" />
               
               {/* Top Controls */}
               <div className="absolute top-4 left-4">
