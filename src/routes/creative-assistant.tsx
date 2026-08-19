@@ -653,13 +653,14 @@ function CreativeAssistantPage() {
           <button 
             onClick={() => setShowResources(!showResources)}
             className={cn(
-              "absolute right-0 top-1/2 -translate-y-1/2 z-[60] flex flex-col items-center gap-2 px-3 py-8 bg-[var(--color-card)] border border-[var(--color-border)] rounded-l-[1.5rem] shadow-xl transition-all duration-500 hover:pr-5 group",
+              "absolute right-0 top-60 z-[60] flex flex-col items-center gap-2 px-3 py-8 bg-[var(--color-card)] border border-[var(--color-border)] rounded-l-[1.5rem] shadow-xl transition-all duration-500 hover:pr-5 group",
               showResources ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"
             )}
           >
             <LayoutGrid className="h-5 w-5 text-[var(--color-foreground)]" />
             <span className="text-[12px] [writing-mode:vertical-lr] text-[var(--color-foreground)] font-bold tracking-widest uppercase py-2">查看对话资源</span>
           </button>
+
         </div>
 
         {/* Resources Panel */}
