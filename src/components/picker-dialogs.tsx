@@ -231,44 +231,49 @@ const categories = [
 
 const skillList = [
   {
-    id: "tang",
-    title: "《大唐妖探》同款转场",
-    desc: "电影《大唐妖探》官方合作模板，一起带毛孩子勇闯机关大唐吧！",
-    models: "SD 2.0 Fast VIP",
-    tags: ["特效玩法", "社媒热点", "视频"],
+    id: "destiny",
+    title: "百万主角登场动效",
+    desc: "主角高燃登场视频生成：基于案例提示词模板替换画风，保留极限镜头语言。",
+    models: "MiniMax H3",
+    tags: ["动漫游戏", "新手必用"],
     img: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=800&auto=format&fit=crop",
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4"
   },
   {
-    id: "reenact",
-    title: "爆款复刻",
-    desc: "高燃登场视频生成：基于案例提示词模板替换画风，保留极限镜头语言。",
-    models: "SD 2.5 • Seedream 5.0 Pro",
-    tags: ["特效", "电影感"],
+    id: "jojo",
+    title: "JOJO 风格变身玩法",
+    desc: "把任何一张图片变成一段 30 秒的 JOJO 动画风格短片：厚描边、硬阴影、高饱和。",
+    models: "Seedance 2.5",
+    tags: ["动漫游戏", "新手必用"],
     img: "https://images.unsplash.com/photo-1578632738981-43c9ad4c585f?q=80&w=800&auto=format&fit=crop",
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4"
   },
   {
-    id: "zine",
-    title: "Zine风格Skill",
-    desc: "将任何场景转化为精致的杂志排版风格短片，突出时尚感与设计力。",
-    models: "SD 2.0 Fast VIP • Seedream 5.0 Pro",
-    tags: ["排版", "时尚"],
+    id: "gta6",
+    title: "GTA 6 风格演示",
+    desc: "受 GTA6 官方公开素材启发的主题视频、分镜、提示词和视觉审查。",
+    models: "Seedance 2.5",
+    tags: ["新手必用", "动漫游戏"],
     img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4"
   },
   {
-    id: "multicell",
-    title: "多宫格分镜",
-    desc: "经典多宫格构图，适合展示多角度细节或快节奏叙事切换。",
-    models: "SD 2.5 • Seedream 5.0 Pro",
-    tags: ["分镜", "叙事"],
+    id: "3d-horror",
+    title: "经典 3D 日式怪谈风",
+    desc: "专用于生成具有日式恐怖风格的写实 3D 游戏恐怖视频。",
+    models: "Seedance 2.5",
+    tags: ["大师美学", "动漫游戏"],
     img: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=800&auto=format&fit=crop",
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4"
   },
   {
-    id: "youth",
-    title: "日系青春广告短片",
-    desc: "清新通透的画面感，捕捉夏日微风与少年感，极具呼吸感的影像表达。",
-    models: "SD 2.0 Fast VIP • Seedream 5.0 Pro",
-    tags: ["青春", "日系"],
+    id: "dimension",
+    title: "次元破壁互动玩法",
+    desc: "打破屏幕让自己喜欢的角色来到现实世界或者去到他们的世界。",
+    models: "Seedance 2.5",
+    tags: ["新手必用", "动漫游戏"],
     img: "https://images.unsplash.com/photo-1560972550-aba3456b5564?q=80&w=800&auto=format&fit=crop",
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4"
   },
 ];
 
@@ -358,7 +363,18 @@ export function SkillPicker({
           {hoveredSkill && (
             <div className="animate-in fade-in duration-300">
               <div className="relative aspect-[16/10] rounded-2xl overflow-hidden group shadow-md border border-[#F0F0F0] dark:border-white/10">
-                <img src={hoveredSkill.img} alt={hoveredSkill.title} className="w-full h-full object-cover" />
+                {hoveredSkill.video ? (
+                  <video 
+                    src={hoveredSkill.video} 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline 
+                    className="w-full h-full object-cover" 
+                  />
+                ) : (
+                  <img src={hoveredSkill.img} alt={hoveredSkill.title} className="w-full h-full object-cover" />
+                )}
                 <button className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-black/20 backdrop-blur text-black/40 dark:text-white hover:bg-black/20 dark:hover:bg-black/40 transition-all">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </button>
