@@ -287,11 +287,11 @@ export function SkillPicker({
       {/* Search Header */}
       <div className="flex items-center px-6 py-4 border-b border-[#F0F0F0] dark:border-white/5 bg-white dark:bg-transparent">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#999]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#999] stroke-[2.5px]" />
           <input 
             type="text" 
             placeholder="搜索技能" 
-            className="w-full bg-transparent pl-10 pr-4 py-2 text-sm focus:outline-none placeholder:text-[#999]" 
+            className="w-full bg-transparent pl-10 pr-4 py-2 text-[15px] font-bold focus:outline-none placeholder:text-[#999]" 
           />
         </div>
         <button className="flex items-center gap-0.5 text-[13px] font-bold text-[#666] dark:text-white/60 hover:text-black dark:hover:text-white transition-colors">
