@@ -497,7 +497,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
         <DialogPrimitive.Overlay className="fixed inset-0 z-[200] bg-black/40 backdrop-blur-sm transition-all duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <DialogPrimitive.Content className="fixed inset-x-0 bottom-0 z-[201] flex h-[92vh] flex-col overflow-hidden rounded-t-[2.5rem] border-t border-x border-[var(--color-border)] bg-[var(--color-background)] text-[var(--color-foreground)] shadow-[0_-8px_40px_-12px_rgba(0,0,0,0.3)] focus:outline-none transition-all duration-500 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:slide-in-from-bottom-full data-[state=closed]:slide-out-to-bottom-full">
           {/* Global Action Bar (Floating Right) */}
-          <div className="absolute top-4 right-6 z-[60] flex items-center gap-3">
+          <div className="absolute top-6 right-8 z-[60] flex items-center gap-3">
             <button 
               onClick={handleSave}
               disabled={isSaving}
