@@ -653,13 +653,14 @@ function CreativeAssistantPage() {
           <button 
             onClick={() => setShowResources(!showResources)}
             className={cn(
-              "absolute right-0 top-1/2 -translate-y-1/2 z-[60] flex flex-col items-center gap-2 px-3 py-8 bg-[var(--color-card)] border border-[var(--color-border)] rounded-l-[1.5rem] shadow-xl transition-all duration-500 hover:pr-5 group",
+              "absolute right-0 top-60 z-[60] flex flex-col items-center gap-2 px-3 py-8 bg-[var(--color-card)] border border-[var(--color-border)] rounded-l-[1.5rem] shadow-xl transition-all duration-500 hover:pr-5 group",
               showResources ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"
             )}
           >
             <LayoutGrid className="h-5 w-5 text-[var(--color-foreground)]" />
             <span className="text-[12px] [writing-mode:vertical-lr] text-[var(--color-foreground)] font-bold tracking-widest uppercase py-2">查看对话资源</span>
           </button>
+
         </div>
 
         {/* Resources Panel */}
@@ -670,17 +671,17 @@ function CreativeAssistantPage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 bottom-0 w-[600px] z-[150] bg-[var(--color-card)] border-l border-[var(--color-border)] flex flex-col shadow-2xl"
+              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-[1200px] z-[150] bg-[var(--color-card)] border-l border-[var(--color-border)] flex flex-col shadow-2xl"
             >
-              <div className="p-6 flex items-center justify-between border-b border-[var(--color-border)]">
+              <div className="p-6 flex items-center justify-between border-b border-[var(--color-border)] relative z-[100] bg-[var(--color-card)]/80 backdrop-blur-xl">
                 <div className="flex items-center gap-6">
                   <h2 className="text-xl font-bold text-[var(--color-foreground)]">资源</h2>
-                  <div className="flex items-center bg-[var(--color-secondary)] rounded-lg p-1 border border-[var(--color-border)]">
+                  <div className="flex items-center bg-[var(--color-secondary)]/50 rounded-xl p-1 border border-[var(--color-border)] shadow-sm">
                     <button 
                       onClick={() => setResourceMode('grid')}
                       className={cn(
-                        "p-1.5 rounded-md transition-all shadow-sm",
-                        resourceMode === 'grid' ? "bg-[var(--color-card)] text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+                        "p-1.5 rounded-lg transition-all",
+                        resourceMode === 'grid' ? "bg-[var(--color-card)] text-[var(--color-foreground)] shadow-sm" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
                       )}
                     >
                       <LayoutGrid className="h-4 w-4" />
@@ -688,8 +689,8 @@ function CreativeAssistantPage() {
                     <button 
                       onClick={() => setResourceMode('folder')}
                       className={cn(
-                        "p-1.5 rounded-md transition-all shadow-sm",
-                        resourceMode === 'folder' ? "bg-[var(--color-card)] text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+                        "p-1.5 rounded-lg transition-all",
+                        resourceMode === 'folder' ? "bg-[var(--color-card)] text-[var(--color-foreground)] shadow-sm" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
                       )}
                     >
                       <Folder className="h-4 w-4" />
@@ -698,62 +699,66 @@ function CreativeAssistantPage() {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#86868B]" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-muted-foreground)]" />
                     <input 
                       type="text" 
                       placeholder="查找..." 
-                      className="bg-[var(--color-secondary)] border border-[var(--color-border)] rounded-full pl-9 pr-4 py-2 text-sm text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 w-56 transition-all"
+                      className="bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-full pl-9 pr-4 py-2 text-sm text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]/20 w-56 transition-all"
                     />
                   </div>
-                  <button onClick={() => setShowResources(false)} className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] p-1 rounded-full hover:bg-[var(--color-secondary)] transition-colors"><X className="h-6 w-6" /></button>
+                  <button 
+                    onClick={() => {
+                      setShowResources(false);
+                      setActiveResource(null);
+                    }} 
+                    className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] p-2 rounded-full hover:bg-[var(--color-secondary)] transition-colors"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-hidden flex flex-col relative">
+              <div className="flex-1 overflow-hidden flex flex-col relative bg-[#F5F5F7] dark:bg-[#0A0A0A]">
                 <div className={cn(
-                  "absolute inset-0 z-10 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out scrollbar-hide overflow-y-auto p-8",
+                  "absolute inset-0 z-10 flex flex-col transition-all duration-300 ease-in-out scrollbar-hide overflow-y-auto p-12",
                   activeResource ? "pointer-events-none opacity-0 translate-x-[-20px]" : "opacity-100 translate-x-0"
                 )}>
+
                   {resourceMode === 'grid' ? (
-                    <div className="space-y-10">
+                    <div className="space-y-16">
                       {/* Documents */}
                       <section>
-                        <div className="flex items-center justify-between mb-5">
-                          <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
-                          <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
+                        <div className="flex items-center justify-between mb-6">
+                          <h3 className="text-[14px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">文稿</h3>
+                          <span className="text-[13px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-5">
-                          <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
-                          <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
-                          <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
-                          <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
-                          <ResourceCard 
-                            title="story-script.md" 
-                            type="MD" 
-                            date="1小时前" 
-                            onClick={() => setActiveResource({ type: 'script' })} 
-                          />
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                          <ResourceCard title="video-projects_20260813-14..." type="JSON" date="5天前" />
+                          <ResourceCard title="video-projects_20260813-14..." type="JSON" date="5天前" />
+                          <ResourceCard title="final-generation-info.md" type="MD" date="5天前" />
+                          <ResourceCard title="story-brief.md" type="MD" date="5天前" />
+                          <ResourceCard title="story-script.md" type="MD" date="5天前" onClick={() => setActiveResource({ type: 'script' })} />
                         </div>
                       </section>
 
                       {/* Images */}
                       <section>
-                        <div className="flex items-center justify-between mb-5">
-                          <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
-                          <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
+                        <div className="flex items-center justify-between mb-6">
+                          <h3 className="text-[14px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">图片</h3>
+                          <span className="text-[13px] text-[var(--color-muted-foreground)] font-medium">其他 2</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-5">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                           <ImageResourceCard 
                             title="user_upload_image_1.webp" 
                             type="WEBP" 
-                            date="1小时前" 
+                            date="5天前" 
                             img={charSam} 
                             onClick={() => setActiveResource({ type: 'image', data: { url: charSam, name: 'user_upload_image_1.webp' } })}
                           />
                           <ImageResourceCard 
                             title="genos-reference.png" 
                             type="PNG" 
-                            date="1小时前" 
+                            date="5天前" 
                             img={charBoss} 
                             onClick={() => setActiveResource({ type: 'image', data: { url: charBoss, name: 'genos-reference.png' } })}
                           />
@@ -762,11 +767,11 @@ function CreativeAssistantPage() {
 
                       {/* Videos */}
                       <section>
-                        <div className="flex items-center justify-between mb-5">
-                          <h3 className="text-[13px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
-                          <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
+                        <div className="flex items-center justify-between mb-6">
+                          <h3 className="text-[14px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.1em] flex items-center gap-2">视频</h3>
+                          <span className="text-[13px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-5">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                           <ImageResourceCard 
                             title="intro-animation.mp4" 
                             type="MP4" 
@@ -789,18 +794,18 @@ function CreativeAssistantPage() {
 
                 {/* Resource Detail View (Integrated into Panel) */}
                 <div className={cn(
-                  "absolute inset-0 z-20 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out",
+                  "absolute inset-0 z-20 bg-[#F5F5F7] dark:bg-[#0A0A0A] flex flex-col transition-all duration-300 ease-in-out",
                   activeResource ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
                 )}>
-                  <div className="p-4 border-b border-[var(--color-border)] flex items-center justify-between">
+                  <div className="px-8 py-5 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-card)]/80 backdrop-blur-xl">
                     <button 
                       onClick={() => setActiveResource(null)}
-                      className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] flex items-center gap-1 text-[13px] font-medium"
+                      className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] flex items-center gap-1 text-[14px] font-bold"
                     >
                       <ChevronRight className="h-4 w-4 rotate-180" />
                       返回
                     </button>
-                    <span className="text-sm font-bold text-[var(--color-foreground)] truncate max-w-[200px]">
+                    <span className="text-[16px] font-bold text-[var(--color-foreground)] truncate max-w-[400px]">
                       {activeResource?.type === 'script' ? 'story-script.md' : activeResource?.data?.name}
                     </span>
                     <button 
@@ -826,27 +831,28 @@ function CreativeAssistantPage() {
                           link.click();
                         }
                       }}
-                      className="p-1.5 rounded-lg bg-[var(--color-secondary)] border border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-colors"
+                      className="p-2 rounded-xl bg-[var(--color-secondary)]/50 border border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all shadow-sm"
                     >
-                      <Download className="h-4 w-4" />
+                      <Download className="h-5 w-5" />
                     </button>
                   </div>
                   
-                  <div className="flex-1 overflow-y-auto p-4 scrollbar-hide">
+                  <div className="flex-1 overflow-y-auto p-12 scrollbar-hide">
                     {activeResource?.type === 'script' && <StoryboardContent />}
                     {activeResource?.type === 'image' && (
-                      <div className="flex flex-col items-center justify-center h-full gap-4">
-                        <img src={activeResource.data.url} alt="Preview" className="max-w-full max-h-[70%] object-contain rounded-xl shadow-lg border border-[var(--color-border)]" />
+                      <div className="flex flex-col items-center justify-center h-full gap-8">
+                        <img src={activeResource.data.url} alt="Preview" className="max-w-full max-h-[85%] object-contain rounded-3xl shadow-2xl border border-[var(--color-border)] bg-white dark:bg-black" />
                       </div>
                     )}
                     {activeResource?.type === 'video' && (
-                      <div className="flex flex-col items-center justify-center h-full gap-4">
-                        <video src={activeResource.data.url} controls className="max-w-full max-h-[70%] rounded-xl shadow-lg border border-[var(--color-border)]" />
+                      <div className="flex flex-col items-center justify-center h-full gap-8">
+                        <video src={activeResource.data.url} controls className="max-w-full max-h-[85%] rounded-3xl shadow-2xl border border-[var(--color-border)] bg-black" />
                       </div>
                     )}
                   </div>
                 </div>
               </div>
+
               
               {/* Collapse handle */}
               <button 
