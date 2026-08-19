@@ -389,6 +389,7 @@ export function SkillPicker({
                 </div>
               </div>
 
+
               <div className="absolute bottom-4 right-6">
                 <button 
                   onClick={() => {
