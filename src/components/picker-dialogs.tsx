@@ -365,18 +365,15 @@ export function SkillPicker({
           {hoveredSkill && (
             <div className="animate-in fade-in duration-300">
               <div className="relative aspect-[16/10] rounded-2xl overflow-hidden group shadow-md border border-[#F0F0F0] dark:border-white/10">
-                {hoveredSkill.video ? (
-                  <video 
-                    src="https://cdn.artrail.ai/assets/videos/one-punch-man.mp4" 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline 
-                    className="w-full h-full object-cover" 
-                  />
-                ) : (
-                  <img src={hoveredSkill.img} alt={hoveredSkill.title} className="w-full h-full object-cover" />
-                )}
+                <video 
+                  src={skillPreviewVideo.url} 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline 
+                  className="w-full h-full object-cover" 
+                />
+
                 <button className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-black/20 backdrop-blur text-black/40 dark:text-white hover:bg-black/20 dark:hover:bg-black/40 transition-all">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </button>
