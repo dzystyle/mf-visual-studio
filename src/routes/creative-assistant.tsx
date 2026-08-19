@@ -670,17 +670,17 @@ function CreativeAssistantPage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 bottom-0 w-[600px] z-[150] bg-[var(--color-card)] border-l border-[var(--color-border)] flex flex-col shadow-2xl"
+              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-[1200px] z-[150] bg-[var(--color-card)] border-l border-[var(--color-border)] flex flex-col shadow-2xl"
             >
-              <div className="p-6 flex items-center justify-between border-b border-[var(--color-border)]">
+              <div className="p-6 flex items-center justify-between border-b border-[var(--color-border)] relative z-[100] bg-[var(--color-card)]/80 backdrop-blur-xl">
                 <div className="flex items-center gap-6">
                   <h2 className="text-xl font-bold text-[var(--color-foreground)]">资源</h2>
-                  <div className="flex items-center bg-[var(--color-secondary)] rounded-lg p-1 border border-[var(--color-border)]">
+                  <div className="flex items-center bg-[var(--color-secondary)]/50 rounded-xl p-1 border border-[var(--color-border)] shadow-sm">
                     <button 
                       onClick={() => setResourceMode('grid')}
                       className={cn(
-                        "p-1.5 rounded-md transition-all shadow-sm",
-                        resourceMode === 'grid' ? "bg-[var(--color-card)] text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+                        "p-1.5 rounded-lg transition-all",
+                        resourceMode === 'grid' ? "bg-[var(--color-card)] text-[var(--color-foreground)] shadow-sm" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
                       )}
                     >
                       <LayoutGrid className="h-4 w-4" />
@@ -688,8 +688,8 @@ function CreativeAssistantPage() {
                     <button 
                       onClick={() => setResourceMode('folder')}
                       className={cn(
-                        "p-1.5 rounded-md transition-all shadow-sm",
-                        resourceMode === 'folder' ? "bg-[var(--color-card)] text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+                        "p-1.5 rounded-lg transition-all",
+                        resourceMode === 'folder' ? "bg-[var(--color-card)] text-[var(--color-foreground)] shadow-sm" : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
                       )}
                     >
                       <Folder className="h-4 w-4" />
@@ -698,22 +698,31 @@ function CreativeAssistantPage() {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#86868B]" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-muted-foreground)]" />
                     <input 
                       type="text" 
                       placeholder="查找..." 
-                      className="bg-[var(--color-secondary)] border border-[var(--color-border)] rounded-full pl-9 pr-4 py-2 text-sm text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 w-56 transition-all"
+                      className="bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-full pl-9 pr-4 py-2 text-sm text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]/20 w-56 transition-all"
                     />
                   </div>
-                  <button onClick={() => setShowResources(false)} className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] p-1 rounded-full hover:bg-[var(--color-secondary)] transition-colors"><X className="h-6 w-6" /></button>
+                  <button 
+                    onClick={() => {
+                      setShowResources(false);
+                      setActiveResource(null);
+                    }} 
+                    className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] p-2 rounded-full hover:bg-[var(--color-secondary)] transition-colors"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-hidden flex flex-col relative">
+              <div className="flex-1 overflow-hidden flex flex-col relative bg-[#F5F5F7] dark:bg-[#0A0A0A]">
                 <div className={cn(
-                  "absolute inset-0 z-10 bg-[var(--color-card)] flex flex-col transition-all duration-300 ease-in-out scrollbar-hide overflow-y-auto p-8",
+                  "absolute inset-0 z-10 flex flex-col transition-all duration-300 ease-in-out scrollbar-hide overflow-y-auto p-12",
                   activeResource ? "pointer-events-none opacity-0 translate-x-[-20px]" : "opacity-100 translate-x-0"
                 )}>
+
                   {resourceMode === 'grid' ? (
                     <div className="space-y-10">
                       {/* Documents */}
