@@ -9,6 +9,7 @@ import skillMv from "@/assets/skill-mv.jpg";
 import skillProduct from "@/assets/skill-product.jpg";
 import skillTravel from "@/assets/skill-travel.jpg";
 import skillPreviewVideo from "@/assets/skill-preview-video.mp4.asset.json";
+import { CreateSkillDialog } from "./skill/CreateSkillDialog";
 
 
 /* ---------------- Model Picker ---------------- */
@@ -288,6 +289,7 @@ export function SkillPicker({
   const [tab, setTab] = useState<typeof categories[number]["key"]>("all");
   const [hoveredSkill, setHoveredSkill] = useState<typeof skillList[number]>(skillList[0]);
   const [previewSkill, setPreviewSkill] = useState<typeof skillList[number] | null>(null);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
   
   return (
     <div className="w-[840px] flex flex-col rounded-[28px] bg-white dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
@@ -422,9 +424,7 @@ export function SkillPicker({
                   <PopoverContent side="right" align="end" alignOffset={-10} sideOffset={10} className="w-[180px] p-2 rounded-2xl bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5] dark:border-white/10 shadow-2xl animate-in fade-in slide-in-from-left-2 duration-200 z-[300]">
                     <div className="flex flex-col gap-1">
                       <button 
-                        onClick={() => {
-                          window.dispatchEvent(new CustomEvent('open-create-skill', { detail: { mode: 'ai' } }));
-                        }}
+                        onClick={() => setCreateDialogOpen(true)}
                         className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-white/5 text-[13px] font-bold text-[#333] dark:text-white transition-all text-left"
                       >
                         <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/20" />
@@ -435,10 +435,7 @@ export function SkillPicker({
                         上传本地Skill
                       </button>
                       <button 
-                        onClick={() => {
-                          // Redirect to skill creation page with manual reference
-                          window.dispatchEvent(new CustomEvent('open-create-skill', { detail: { mode: 'manual' } }));
-                        }}
+                        onClick={() => setCreateDialogOpen(true)}
                         className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-white/5 text-[13px] font-bold text-[#333] dark:text-white transition-all text-left"
                       >
                         <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/20" />
@@ -447,6 +444,11 @@ export function SkillPicker({
                     </div>
                   </PopoverContent>
                 </Popover>
+
+                <CreateSkillDialog 
+                  open={createDialogOpen} 
+                  onOpenChange={setCreateDialogOpen} 
+                />
               </div>
             </div>
           )}
