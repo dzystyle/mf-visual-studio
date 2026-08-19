@@ -346,7 +346,7 @@ export function SkillPicker({
               </button>
               {hoveredSkill?.id === s.id && (
                 <div className="ml-2 flex items-center">
-                  <span className="text-[14px] leading-none text-[#999] dark:text-white/40 font-serif">↵</span>
+                  <span className="text-[16px] leading-none text-[#999] dark:text-white/40 font-serif">↵</span>
                 </div>
               )}
             </div>
