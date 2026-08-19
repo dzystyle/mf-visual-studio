@@ -391,10 +391,11 @@ export function SkillPicker({
 
               <div className="absolute bottom-6 right-6 z-20">
                 <button 
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     window.dispatchEvent(new CustomEvent('open-create-skill'));
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 text-[13px] font-bold text-black/60 dark:text-white/40 hover:text-black dark:hover:text-white transition-all shadow-sm border border-black/5 dark:border-white/5"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/60 dark:bg-white/5 hover:bg-white/90 dark:hover:bg-white/10 text-[13px] font-bold text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white transition-all shadow-sm border border-black/5 dark:border-white/5"
                 >
                   创建技能 <LayoutGrid className="h-4 w-4 opacity-60" />
                 </button>
