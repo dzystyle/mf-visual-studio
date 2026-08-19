@@ -670,7 +670,7 @@ function CreativeAssistantPage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-24 right-6 bottom-32 w-[500px] z-[150] bg-[var(--color-card)]/90 backdrop-blur-xl border border-[var(--color-border)] flex flex-col shadow-2xl rounded-[2.5rem] overflow-hidden"
+              className="fixed top-0 right-0 bottom-0 w-[600px] z-[150] bg-[var(--color-card)] border-l border-[var(--color-border)] flex flex-col shadow-2xl"
             >
               <div className="p-6 flex items-center justify-between border-b border-[var(--color-border)]">
                 <div className="flex items-center gap-6">
