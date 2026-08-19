@@ -342,12 +342,12 @@ export function SkillPicker({
 
       {/* Skill Detail Preview Modal */}
       <Dialog open={!!previewSkill} onOpenChange={(open) => !open && setPreviewSkill(null)}>
-        <DialogContent className="max-w-[560px] p-0 border-white/10 bg-[#121212] overflow-hidden rounded-3xl shadow-2xl [&>button]:hidden">
+        <DialogContent className="max-w-[560px] p-0 border-[#E5E5E5]/50 dark:border-white/10 bg-white dark:bg-[#121212] overflow-hidden rounded-3xl shadow-2xl [&>button]:hidden dark:text-white">
           <div className="relative">
             {/* Header Image */}
             <div className="relative aspect-[16/9] w-full overflow-hidden">
               <img src={previewSkill?.img} className="w-full h-full object-cover" alt={previewSkill?.title} />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#121212] via-transparent to-transparent" />
               
               {/* Top Controls */}
               <div className="absolute top-4 left-4">
@@ -364,30 +364,30 @@ export function SkillPicker({
 
               {/* Title */}
               <div className="absolute bottom-6 left-6 pr-6">
-                <h2 className="text-xl font-bold text-white tracking-tight">{previewSkill?.title}</h2>
+                <h2 className="text-xl font-bold text-white dark:text-white tracking-tight">{previewSkill?.title}</h2>
               </div>
             </div>
 
             {/* Content Area */}
             <div className="px-6 pb-6">
-              <div className="flex border-b border-white/5 mb-6">
-                <button className="px-1 pb-3 text-sm font-medium text-white border-b-2 border-white">简介</button>
-                <button className="px-1 pb-3 text-sm font-medium text-white/40 hover:text-white/60 ml-6">内容</button>
+              <div className="flex border-b border-[#F0F0F0] dark:border-white/5 mb-6">
+                <button className="px-1 pb-3 text-sm font-medium text-black dark:text-white border-b-2 border-black dark:border-white">简介</button>
+                <button className="px-1 pb-3 text-sm font-medium text-[#999] dark:text-white/40 hover:text-[#666] dark:hover:text-white/60 ml-6">内容</button>
               </div>
 
               <div className="space-y-6">
-                <div className="text-[14px] leading-relaxed text-white/70">
+                <div className="text-[14px] leading-relaxed text-[#666] dark:text-white/70">
                   {previewSkill?.id === 'destiny' ? (
                     "分析上传的剧本（图片/PDF/文本），通过学习其电影语法——提取脚本、镜头结构、视觉语言和节奏——围绕您的主题生成全新的视频。使用 Nano Banana + Seedance 2.5（分辨率480p）生成视觉素材。"
                   ) : previewSkill?.desc}
                 </div>
 
-                <div className="flex items-center justify-between py-4 border-t border-b border-white/5">
+                <div className="flex items-center justify-between py-4 border-t border-b border-[#F0F0F0] dark:border-white/5">
                   <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-white/40">历史使用</span>
+                    <span className="px-2 py-0.5 rounded bg-[#F5F5F5] dark:bg-white/5 text-[10px] text-[#999] dark:text-white/40">历史使用</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-white/20">最近一次更新时间 2026-08-11 16:56</span>
+                    <span className="text-[11px] text-[#CCC] dark:text-white/20">最近一次更新时间 2026-08-11 16:56</span>
                   </div>
                 </div>
 
@@ -397,11 +397,11 @@ export function SkillPicker({
                       <X className="h-3.5 w-3.5" />
                       删除
                     </button>
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 text-white/80 text-xs hover:bg-white/10 transition-colors">
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F5F5F5] dark:bg-white/5 text-[#333] dark:text-white/80 text-xs hover:bg-[#EEE] dark:hover:bg-white/10 transition-colors">
                       <FileText className="h-3.5 w-3.5" />
                       创建副本
                     </button>
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 text-white/80 text-xs hover:bg-white/10 transition-colors">
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F5F5F5] dark:bg-white/5 text-[#333] dark:text-white/80 text-xs hover:bg-[#EEE] dark:hover:bg-white/10 transition-colors">
                       <Sparkles className="h-3.5 w-3.5" />
                       分享
                     </button>
@@ -412,7 +412,7 @@ export function SkillPicker({
                       if (previewSkill) onSelect?.(previewSkill.title);
                       setPreviewSkill(null);
                     }}
-                    className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FFE5B4] to-white px-8 py-2.5 text-sm font-bold text-black hover:opacity-90 transition-all shadow-xl shadow-white/5"
+                    className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FFE5B4] to-[#FFD700] dark:to-white px-8 py-2.5 text-sm font-bold text-black hover:opacity-90 transition-all shadow-xl shadow-black/5 dark:shadow-white/5"
                   >
                     <Sparkles className="h-4 w-4" />
                     去使用 Skill
