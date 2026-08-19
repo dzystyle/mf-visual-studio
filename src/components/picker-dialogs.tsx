@@ -376,7 +376,7 @@ export function SkillPicker({
  
                 <div className="flex flex-wrap items-center gap-2 pt-2">
                   {hoveredSkill.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1.5 rounded-xl bg-white/60 dark:bg-white/5 text-[12px] font-bold text-[#666] dark:text-white/60 shadow-sm border border-black/5 dark:border-white/5">
+                    <span key={tag} className="px-3 py-1.5 rounded-xl bg-white/60 dark:bg-white/5 text-[12px] font-bold text-[#666] dark:text-white/60 shadow-sm border border-black/5 dark:border-white/5 whitespace-nowrap">
                       {tag}
                     </span>
                   ))}
