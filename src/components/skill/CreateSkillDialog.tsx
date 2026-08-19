@@ -495,7 +495,14 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-[500] bg-black/60 backdrop-blur-sm transition-all duration-300" />
-        <DialogPrimitive.Content className="fixed inset-[30px] z-[501] flex overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-background)] text-[var(--color-foreground)] shadow-2xl focus:outline-none">
+        <DialogPrimitive.Content 
+          className={cn(
+            "fixed inset-x-0 bottom-0 top-[60px] z-[501] flex flex-col overflow-hidden bg-[var(--color-background)] shadow-2xl animate-in slide-in-from-bottom-full duration-500 rounded-t-[32px] border-t border-white/5",
+            "max-w-none focus:outline-none"
+          )}
+        >
+
+
 
           {/* Global Action Bar (Floating Right) */}
           <div className="absolute top-4 right-6 z-[60] flex items-center gap-3">
@@ -519,7 +526,7 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
           </div>
           
           {/* Main Layout: Left Sidebar & Right Chat Panel */}
-          <div className="flex w-full overflow-hidden">
+          <div className="flex w-full flex-1 overflow-hidden">
             
             {/* Left Scrollable Settings */}
             <div className="flex flex-1 flex-col overflow-y-auto scrollbar-hide border-r border-[var(--color-border)]">
