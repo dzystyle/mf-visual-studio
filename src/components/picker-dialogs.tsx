@@ -9,6 +9,7 @@ import skillMv from "@/assets/skill-mv.jpg";
 import skillProduct from "@/assets/skill-product.jpg";
 import skillTravel from "@/assets/skill-travel.jpg";
 import skillPreviewVideo from "@/assets/skill-preview-video.mp4.asset.json";
+import { CreateSkillDialog } from "./skill/CreateSkillDialog";
 
 
 /* ---------------- Model Picker ---------------- */
@@ -288,6 +289,7 @@ export function SkillPicker({
   const [tab, setTab] = useState<typeof categories[number]["key"]>("all");
   const [hoveredSkill, setHoveredSkill] = useState<typeof skillList[number]>(skillList[0]);
   const [previewSkill, setPreviewSkill] = useState<typeof skillList[number] | null>(null);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
   
   return (
     <div className="w-[840px] flex flex-col rounded-[28px] bg-white dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
