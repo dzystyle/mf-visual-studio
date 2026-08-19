@@ -361,12 +361,13 @@ export function SkillPicker({
         </div>
 
         {/* Right Preview Area */}
-        <div className="flex-1 flex flex-col p-6 overflow-y-auto scrollbar-hide bg-[#F9F9F9] dark:bg-transparent relative">
+        <div className="flex-1 flex flex-col p-6 overflow-y-auto scrollbar-hide bg-[#F9F9F9] dark:bg-transparent relative group/preview">
           {hoveredSkill && (
             <div className="animate-in fade-in duration-300">
-              <div className="relative aspect-[16/10] rounded-2xl overflow-hidden group shadow-md border border-[#F0F0F0] dark:border-white/10">
+              <div className="relative aspect-[16/10] rounded-2xl overflow-hidden group/video shadow-md border border-[#F0F0F0] dark:border-white/10">
                 <video 
-                  src={skillPreviewVideo.url} 
+                  key={hoveredSkill.video}
+                  src={hoveredSkill.video} 
                   autoPlay 
                   muted 
                   loop 
@@ -374,8 +375,8 @@ export function SkillPicker({
                   className="w-full h-full object-cover" 
                 />
 
-                <button className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-black/20 backdrop-blur text-black/40 dark:text-white hover:bg-black/20 dark:hover:bg-black/40 transition-all">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <button className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-black/20 backdrop-blur text-black/40 dark:text-white hover:bg-black/20 dark:hover:bg-black/40 transition-all opacity-0 group-hover/video:opacity-100 hover:text-yellow-400 dark:hover:text-yellow-400">
+                  <Star className="h-4 w-4 fill-current stroke-[2.5px]" />
                 </button>
               </div>
               
@@ -406,25 +407,51 @@ export function SkillPicker({
               </div>
 
               <div className="absolute bottom-6 right-6 z-20">
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.dispatchEvent(new CustomEvent('open-create-skill'));
-                  }}
-                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 hover:bg-[#F5F5F5] dark:hover:bg-white/10 text-[13px] font-bold text-[#333] dark:text-white/80 hover:text-black dark:hover:text-white transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#E5E5E5] dark:border-white/10"
-                >
-                  <span className="leading-none">创建技能</span>
-                  <div className="grid grid-cols-2 gap-0.5 opacity-60">
-                    <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
-                    <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
-                    <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
-                    <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
-                  </div>
-                </button>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 hover:bg-[#F5F5F5] dark:hover:bg-white/10 text-[13px] font-bold text-[#333] dark:text-white/80 hover:text-black dark:hover:text-white transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#E5E5E5] dark:border-white/10">
+                      <span className="leading-none">创建Skill</span>
+                      <div className="grid grid-cols-2 gap-0.5 opacity-60">
+                        <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
+                        <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
+                        <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
+                        <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
+                      </div>
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent align="end" className="w-[180px] p-2 rounded-2xl bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5] dark:border-white/10 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+                    <div className="flex flex-col gap-1">
+                      <button 
+                        onClick={() => {
+                          window.dispatchEvent(new CustomEvent('open-create-skill', { detail: { mode: 'ai' } }));
+                        }}
+                        className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-white/5 text-[13px] font-bold text-[#333] dark:text-white transition-all text-left"
+                      >
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/20" />
+                        智能创建
+                      </button>
+                      <button className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-white/5 text-[13px] font-bold text-[#333] dark:text-white transition-all text-left">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/20" />
+                        上传本地Skill
+                      </button>
+                      <button 
+                        onClick={() => {
+                          // Redirect to skill creation page with manual reference
+                          window.dispatchEvent(new CustomEvent('open-create-skill', { detail: { mode: 'manual' } }));
+                        }}
+                        className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-white/5 text-[13px] font-bold text-[#333] dark:text-white transition-all text-left"
+                      >
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/20" />
+                        手动创建Skill
+                      </button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
           )}
         </div>
+
 
       </div>
 
