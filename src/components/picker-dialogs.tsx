@@ -346,8 +346,8 @@ export function SkillPicker({
               </button>
               {hoveredSkill?.id === s.id && (
                 <div className="ml-2">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#999] dark:text-white/40">
-                    <path d="m9 18 6-6-6-6"/>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[#999] dark:text-white/40">
+                    <path d="m7 15 5-5-5-5"/>
                   </svg>
                 </div>
               )}
