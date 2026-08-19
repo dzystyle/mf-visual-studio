@@ -365,7 +365,7 @@ export function SkillPicker({
               <div className="relative aspect-[16/10] rounded-2xl overflow-hidden group shadow-md border border-[#F0F0F0] dark:border-white/10">
                 {hoveredSkill.video ? (
                   <video 
-                    src={hoveredSkill.video} 
+                    src="https://cdn.artrail.ai/assets/videos/one-punch-man.mp4" 
                     autoPlay 
                     muted 
                     loop 
@@ -383,6 +383,7 @@ export function SkillPicker({
               <div className="mt-5 space-y-3">
                 <div className="space-y-2">
                   <h3 className="text-[15px] font-bold text-[#1A1A1A] dark:text-white/90 tracking-tight leading-tight">{hoveredSkill.models}</h3>
+
                   <p className="text-[13px] leading-[1.6] text-[#666] dark:text-white/60 font-medium">
                     {hoveredSkill.desc}
                   </p>
