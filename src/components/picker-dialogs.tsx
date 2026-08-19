@@ -283,55 +283,55 @@ export function SkillPicker({
   const [previewSkill, setPreviewSkill] = useState<typeof skillList[number] | null>(null);
   
   return (
-    <div className="w-[840px] flex flex-col rounded-[28px] bg-[#F9F9F9] dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
+    <div className="w-[840px] flex flex-col rounded-[28px] bg-white dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
       {/* Search Header */}
-      <div className="flex items-center px-6 py-4 border-b border-[#F0F0F0] dark:border-white/5 bg-white/50 dark:bg-transparent">
+      <div className="flex items-center px-6 py-4 border-b border-[#F0F0F0] dark:border-white/5 bg-white dark:bg-transparent">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#999]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#999] stroke-[2.5px]" />
           <input 
             type="text" 
             placeholder="搜索技能" 
-            className="w-full bg-transparent pl-10 pr-4 py-2 text-sm focus:outline-none placeholder:text-[#999]" 
+            className="w-full bg-transparent pl-10 pr-4 py-2 text-[15px] font-bold focus:outline-none placeholder:text-[#999]" 
           />
         </div>
-        <button className="flex items-center gap-1 text-xs font-medium text-[#666] dark:text-white/60 hover:text-black dark:hover:text-white transition-colors">
+        <button className="flex items-center gap-0.5 text-[13px] font-bold text-[#666] dark:text-white/60 hover:text-black dark:hover:text-white transition-colors">
           全部 <ChevronRight className="h-4 w-4" />
         </button>
       </div>
 
       <div className="flex flex-1 overflow-hidden h-[480px]">
         {/* Left Sidebar Categories */}
-        <div className="w-[140px] border-right border-[#F0F0F0] dark:border-white/5 py-4 flex flex-col gap-1">
+        <div className="w-[140px] border-right border-[#F0F0F0] dark:border-white/5 py-4 flex flex-col gap-1 bg-[#F9F9F9] dark:bg-transparent">
           {categories.map((c) => (
             <button
               key={c.key}
               onClick={() => setTab(c.key)}
-              className={`flex items-center gap-3 px-6 py-2.5 text-[13px] font-medium transition-all relative ${
+              className={`flex items-center gap-3 px-6 py-2.5 text-[13px] font-bold transition-all relative ${
                 tab === c.key
                   ? "text-black dark:text-white"
                   : "text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/60"
               }`}
             >
-              {tab === c.key && <Check className="h-3.5 w-3.5 absolute left-2" />}
-              <span className={tab === c.key ? "pl-0" : "pl-0"}>{c.label}</span>
+              {tab === c.key && <Check className="h-3.5 w-3.5 absolute left-2 stroke-[3px]" />}
+              <span className="pl-0">{c.label}</span>
             </button>
           ))}
         </div>
 
         {/* Middle Skill List */}
-        <div className="w-[300px] border-x border-[#F0F0F0] dark:border-white/5 bg-white/30 dark:bg-white/5 overflow-y-auto scrollbar-hide py-2 relative z-10">
+        <div className="w-[300px] border-x border-[#F0F0F0] dark:border-white/5 bg-white dark:bg-white/5 overflow-y-auto scrollbar-hide px-2 py-2 relative z-10">
           {skillList.map((s) => (
             <div
               key={s.id}
               onMouseEnter={() => setHoveredSkill(s)}
               onClick={() => onSelect?.(s.title)}
-              className={`group flex items-center justify-between px-6 py-4 cursor-pointer transition-all ${
-                hoveredSkill?.id === s.id ? "bg-white dark:bg-white/10 shadow-sm" : "hover:bg-white/50 dark:hover:bg-white/5"
+              className={`group flex items-center justify-between px-4 py-4 cursor-pointer transition-all ${
+                hoveredSkill?.id === s.id ? "bg-[#F5F5F5] dark:bg-white/10 rounded-2xl" : "hover:bg-[#F9F9F9] dark:hover:bg-white/5 rounded-2xl"
               }`}
             >
               <div className="flex-1 min-w-0 pr-4">
-                <h4 className="text-[14px] font-bold text-[#1A1A1A] dark:text-white/90 truncate">{s.title}</h4>
-                <p className="mt-1 text-[11px] text-[#999] dark:text-white/40 font-medium tracking-tight">
+                <h4 className="text-[14px] font-bold text-[#333] dark:text-white/90 truncate">{s.title}</h4>
+                <p className="mt-0.5 text-[11px] text-[#999] dark:text-white/40 font-bold tracking-tight">
                   {s.models}
                 </p>
               </div>
@@ -340,15 +340,13 @@ export function SkillPicker({
                   e.stopPropagation();
                   onSelect?.(s.title);
                 }}
-                className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-[#F5F5F5] dark:hover:bg-white/10 text-[#999] dark:text-white/40 hover:text-black dark:hover:text-white transition-all opacity-0 group-hover:opacity-100"
+                className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-white dark:hover:bg-white/10 text-[#999] dark:text-white/40 hover:text-black dark:hover:text-white transition-all opacity-0 group-hover:opacity-100"
               >
                 <Plus className="h-4 w-4" />
               </button>
               {hoveredSkill?.id === s.id && (
-                <div className="ml-2">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#999] dark:text-white/40">
-                    <path d="m9 18 6-6-6-6"/>
-                  </svg>
+                <div className="ml-2 flex items-center">
+                  <span className="text-[16px] leading-none text-[#999] dark:text-white/40 font-serif">↵</span>
                 </div>
               )}
             </div>
@@ -356,33 +354,35 @@ export function SkillPicker({
         </div>
 
         {/* Right Preview Area */}
-        <div className="flex-1 flex flex-col p-6 overflow-y-auto scrollbar-hide bg-white/50 dark:bg-transparent relative">
+        <div className="flex-1 flex flex-col p-6 overflow-y-auto scrollbar-hide bg-[#F9F9F9] dark:bg-transparent relative">
           {hoveredSkill && (
             <div className="animate-in fade-in duration-300">
-              <div className="relative aspect-[16/10] rounded-2xl overflow-hidden group shadow-lg">
+              <div className="relative aspect-[16/10] rounded-2xl overflow-hidden group shadow-md border border-[#F0F0F0] dark:border-white/10">
                 <img src={hoveredSkill.img} alt={hoveredSkill.title} className="w-full h-full object-cover" />
-                <button className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-black/20 backdrop-blur text-white hover:bg-black/40 transition-all">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <button className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-black/20 backdrop-blur text-black/40 dark:text-white hover:bg-black/20 dark:hover:bg-black/40 transition-all">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </button>
               </div>
               
               <div className="mt-6 space-y-4">
                 <div>
-                  <h3 className="text-lg font-bold text-[#1A1A1A] dark:text-white/90 tracking-tight">{hoveredSkill.models}</h3>
-                  <p className="mt-2 text-[13px] leading-relaxed text-[#666] dark:text-white/60">
+                  <h3 className="text-lg font-bold text-[#333] dark:text-white/90 tracking-tight">{hoveredSkill.models}</h3>
+                  <p className="mt-2 text-[13px] leading-relaxed text-[#666] dark:text-white/60 font-medium">
                     {hoveredSkill.desc}
                   </p>
                 </div>
-
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {hoveredSkill.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1 rounded-full bg-[#F2F2F2] dark:bg-white/5 text-[11px] font-medium text-[#666] dark:text-white/60">
-                      {tag}
-                    </span>
-                  ))}
+ 
+                <div className="flex flex-wrap items-center gap-2 pt-2">
+                  <div className="flex flex-wrap items-center gap-2 max-w-[180px]">
+                    {hoveredSkill.tags.map(tag => (
+                      <span key={tag} className="px-3 py-1.5 rounded-xl bg-white/60 dark:bg-white/5 text-[12px] font-bold text-[#666] dark:text-white/60 shadow-sm border border-black/5 dark:border-white/5 whitespace-nowrap">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                   <button 
                     onClick={() => setPreviewSkill(hoveredSkill)}
-                    className="ml-auto flex items-center gap-1 text-[13px] font-bold text-black dark:text-white hover:opacity-70 transition-all"
+                    className="ml-auto flex items-center gap-0.5 text-[13px] font-bold text-[#333] dark:text-white hover:opacity-70 transition-all"
                   >
                     详情 <ChevronRight className="h-4 w-4" />
                   </button>
@@ -391,12 +391,13 @@ export function SkillPicker({
 
               <div className="absolute bottom-6 right-6 z-20">
                 <button 
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     window.dispatchEvent(new CustomEvent('open-create-skill'));
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 text-[13px] font-bold text-black/60 dark:text-white/40 hover:text-black dark:hover:text-white transition-all shadow-sm border border-black/5 dark:border-white/5"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/60 dark:bg-white/5 hover:bg-white/90 dark:hover:bg-white/10 text-[13px] font-bold text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white transition-all shadow-sm border border-black/5 dark:border-white/5"
                 >
-                  创建技能 <LayoutGrid className="h-4 w-4 opacity-60" />
+                  创建技能 <div className="grid grid-cols-2 gap-0.5 opacity-60"><div className="w-[6px] h-[6px] rounded-[1px] border border-current"></div><div className="w-[6px] h-[6px] rounded-[1px] border border-current"></div><div className="w-[6px] h-[6px] rounded-[1px] border border-current"></div><div className="w-[6px] h-[6px] rounded-[1px] border border-current"></div></div>
                 </button>
               </div>
             </div>
