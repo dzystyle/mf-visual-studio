@@ -356,33 +356,33 @@ export function SkillPicker({
         </div>
 
         {/* Right Preview Area */}
-        <div className="flex-1 flex flex-col p-6 overflow-y-auto scrollbar-hide bg-white/50 dark:bg-transparent relative">
+        <div className="flex-1 flex flex-col p-6 overflow-y-auto scrollbar-hide bg-[#F9F9F9] dark:bg-transparent relative">
           {hoveredSkill && (
             <div className="animate-in fade-in duration-300">
-              <div className="relative aspect-[16/10] rounded-2xl overflow-hidden group shadow-lg">
+              <div className="relative aspect-[16/10] rounded-2xl overflow-hidden group shadow-md border border-[#F0F0F0] dark:border-white/10">
                 <img src={hoveredSkill.img} alt={hoveredSkill.title} className="w-full h-full object-cover" />
-                <button className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-black/20 backdrop-blur text-white hover:bg-black/40 transition-all">
+                <button className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-white/60 dark:bg-black/20 backdrop-blur text-black/60 dark:text-white hover:bg-white/80 dark:hover:bg-black/40 transition-all">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </button>
               </div>
               
               <div className="mt-6 space-y-4">
                 <div>
-                  <h3 className="text-lg font-bold text-[#1A1A1A] dark:text-white/90 tracking-tight">{hoveredSkill.models}</h3>
-                  <p className="mt-2 text-[13px] leading-relaxed text-[#666] dark:text-white/60">
+                  <h3 className="text-lg font-bold text-[#333] dark:text-white/90 tracking-tight">{hoveredSkill.models}</h3>
+                  <p className="mt-2 text-[13px] leading-relaxed text-[#666] dark:text-white/60 font-medium">
                     {hoveredSkill.desc}
                   </p>
                 </div>
-
-                <div className="flex flex-wrap gap-2 pt-2">
+ 
+                <div className="flex flex-wrap items-center gap-2 pt-2">
                   {hoveredSkill.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1 rounded-full bg-[#F2F2F2] dark:bg-white/5 text-[11px] font-medium text-[#666] dark:text-white/60">
+                    <span key={tag} className="px-3 py-1.5 rounded-xl bg-white/60 dark:bg-white/5 text-[12px] font-bold text-[#666] dark:text-white/60 shadow-sm border border-black/5 dark:border-white/5">
                       {tag}
                     </span>
                   ))}
                   <button 
                     onClick={() => setPreviewSkill(hoveredSkill)}
-                    className="ml-auto flex items-center gap-1 text-[13px] font-bold text-black dark:text-white hover:opacity-70 transition-all"
+                    className="ml-auto flex items-center gap-0.5 text-[13px] font-bold text-[#333] dark:text-white hover:opacity-70 transition-all"
                   >
                     详情 <ChevronRight className="h-4 w-4" />
                   </button>
