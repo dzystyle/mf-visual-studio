@@ -294,7 +294,7 @@ export function SkillPicker({
             className="w-full bg-transparent pl-10 pr-4 py-2 text-sm focus:outline-none placeholder:text-[#999]" 
           />
         </div>
-        <button className="flex items-center gap-1 text-xs font-bold text-[#666] dark:text-white/60 hover:text-black dark:hover:text-white transition-colors">
+        <button className="flex items-center gap-0.5 text-[13px] font-bold text-[#666] dark:text-white/60 hover:text-black dark:hover:text-white transition-colors">
           全部 <ChevronRight className="h-4 w-4" />
         </button>
       </div>
