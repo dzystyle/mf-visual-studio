@@ -2,6 +2,7 @@ import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X, ChevronRight, Save, LayoutGrid, Eye, Code2, Plus, Mic, ArrowUp, CheckCircle2, MoreHorizontal, Send, ChevronDown, Check, Undo2, Redo2, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PromptBox } from "../PromptBox";
 
 interface CreateSkillDialogProps {
   open: boolean;
@@ -880,47 +881,14 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
 
               {/* Input Area */}
               <div className="p-6">
-                <div className="relative rounded-2xl border border-[var(--color-border)] bg-[var(--color-secondary)] p-4 focus-within:border-[var(--color-foreground)]/10 transition">
-                  <textarea 
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSend();
-                      }
-                    }}
-                    placeholder="请输入你想创建的Skill想法..."
-                    className="w-full bg-transparent text-sm resize-none focus:outline-none min-h-[80px] placeholder:text-muted-foreground/30"
-                  />
-                  <div className="flex items-center justify-between mt-2">
-                    <div className="flex items-center gap-2">
-                      <button className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] transition">
-                        <Plus className="h-4 w-4" />
-                      </button>
-                      <button className="flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 text-[11px] text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] transition">
-                        <LayoutGrid className="h-3 w-3" />
-                        模型
-                        <span className="rounded bg-emerald-500 px-1 text-[8px] text-white font-bold leading-tight uppercase">New</span>
-                      </button>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button className="flex h-8 w-8 items-center justify-center text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition">
-                        <Mic className="h-4 w-4" />
-                      </button>
-                      <button 
-                        onClick={handleSend}
-                        disabled={!inputValue.trim()}
-                        className={cn(
-                          "flex h-8 w-8 items-center justify-center rounded-full transition shadow-sm",
-                          inputValue.trim() ? "bg-[var(--color-foreground)] text-[var(--color-background)] hover:opacity-90 active:scale-95" : "bg-[var(--color-muted)] text-[var(--color-muted-foreground)]/30 cursor-not-allowed"
-                        )}
-                      >
-                        <ArrowUp className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <PromptBox 
+                  isMini={false} 
+                  showCanvasToggle={false}
+                  onSubmit={(text) => {
+                    setInputValue(text);
+                    handleSend();
+                  }}
+                />
               </div>
             </div>
 
