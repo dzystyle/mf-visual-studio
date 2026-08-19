@@ -503,12 +503,13 @@ export function SkillPickerDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[500px] border-none bg-transparent p-0 text-white backdrop-blur-none shadow-none">
+      <DialogContent className="max-w-[840px] border-none bg-transparent p-0 text-white backdrop-blur-none shadow-none">
         <SkillPicker onSelect={(title) => { onSelect?.(title); onOpenChange(false); }} />
       </DialogContent>
     </Dialog>
   );
 }
+
 
 /* ---------------- Assets Picker ---------------- */
 const assetTabs = [
