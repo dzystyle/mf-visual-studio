@@ -419,7 +419,7 @@ export function SkillPicker({
                       </div>
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent align="end" className="w-[180px] p-2 rounded-2xl bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5] dark:border-white/10 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+                  <PopoverContent side="right" align="end" alignOffset={-10} sideOffset={10} className="w-[180px] p-2 rounded-2xl bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5] dark:border-white/10 shadow-2xl animate-in fade-in slide-in-from-left-2 duration-200 z-[300]">
                     <div className="flex flex-col gap-1">
                       <button 
                         onClick={() => {
