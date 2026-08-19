@@ -409,41 +409,19 @@ export function SkillPicker({
               </div>
 
               <div className="absolute bottom-6 right-6 z-20">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <button className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 hover:bg-[#F5F5F5] dark:hover:bg-white/10 text-[13px] font-bold text-[#333] dark:text-white/80 hover:text-black dark:hover:text-white transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#E5E5E5] dark:border-white/10">
-                      <span className="leading-none">创建Skill</span>
-                      <div className="grid grid-cols-2 gap-0.5 opacity-60">
-                        <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
-                        <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
-                        <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
-                        <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
-                      </div>
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent side="right" align="end" alignOffset={-10} sideOffset={10} className="w-[180px] p-2 rounded-2xl bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5] dark:border-white/10 shadow-2xl animate-in fade-in slide-in-from-left-2 duration-200 z-[300]">
-                    <div className="flex flex-col gap-1">
-                      <button 
-                        onClick={() => setCreateDialogOpen(true)}
-                        className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-white/5 text-[13px] font-bold text-[#333] dark:text-white transition-all text-left"
-                      >
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/20" />
-                        智能创建
-                      </button>
-                      <button className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-white/5 text-[13px] font-bold text-[#333] dark:text-white transition-all text-left">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/20" />
-                        上传本地Skill
-                      </button>
-                      <button 
-                        onClick={() => setCreateDialogOpen(true)}
-                        className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F5F5F5] dark:hover:bg-white/5 text-[13px] font-bold text-[#333] dark:text-white transition-all text-left"
-                      >
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/20" />
-                        手动创建Skill
-                      </button>
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                <button 
+                  onClick={() => setCreateDialogOpen(true)}
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 hover:bg-[#F5F5F5] dark:hover:bg-white/10 text-[13px] font-bold text-[#333] dark:text-white/80 hover:text-black dark:hover:text-white transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-[#E5E5E5] dark:border-white/10"
+                >
+                  <span className="leading-none">创建Skill</span>
+                  <div className="grid grid-cols-2 gap-0.5 opacity-60">
+                    <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
+                    <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
+                    <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
+                    <div className="w-[6px] h-[6px] rounded-[1.5px] border-[1.5px] border-current"></div>
+                  </div>
+                </button>
+
 
                 <CreateSkillDialog 
                   open={createDialogOpen} 
