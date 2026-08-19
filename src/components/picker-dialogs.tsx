@@ -375,11 +375,13 @@ export function SkillPicker({
                 </div>
  
                 <div className="flex flex-wrap items-center gap-2 pt-2">
-                  {hoveredSkill.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1.5 rounded-xl bg-white/60 dark:bg-white/5 text-[12px] font-bold text-[#666] dark:text-white/60 shadow-sm border border-black/5 dark:border-white/5 whitespace-nowrap">
-                      {tag}
-                    </span>
-                  ))}
+                  <div className="flex flex-wrap items-center gap-2 max-w-[180px]">
+                    {hoveredSkill.tags.map(tag => (
+                      <span key={tag} className="px-3 py-1.5 rounded-xl bg-white/60 dark:bg-white/5 text-[12px] font-bold text-[#666] dark:text-white/60 shadow-sm border border-black/5 dark:border-white/5 whitespace-nowrap">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                   <button 
                     onClick={() => setPreviewSkill(hoveredSkill)}
                     className="ml-auto flex items-center gap-0.5 text-[13px] font-bold text-[#333] dark:text-white hover:opacity-70 transition-all"
