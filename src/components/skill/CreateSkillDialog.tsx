@@ -498,9 +498,10 @@ export function CreateSkillDialog({ open, onOpenChange }: CreateSkillDialogProps
         <DialogPrimitive.Content 
           className={cn(
             "fixed inset-x-0 bottom-0 top-[60px] z-[501] flex flex-col overflow-hidden bg-[var(--color-background)] shadow-2xl animate-in slide-in-from-bottom-full duration-500 rounded-t-[32px] border-t border-white/5",
-            "max-w-none"
+            "max-w-none focus:outline-none"
           )}
         >
+
 
 
           {/* Global Action Bar (Floating Right) */}

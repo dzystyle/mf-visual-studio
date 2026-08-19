@@ -303,6 +303,7 @@ export function SkillPicker({
           <input 
             type="text" 
             placeholder="搜索skill" 
+
             className="w-full bg-transparent pl-10 pr-4 py-2 text-[15px] font-bold focus:outline-none placeholder:text-[#999]" 
           />
         </div>
