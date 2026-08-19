@@ -809,14 +809,6 @@ function CreativeAssistantPage() {
                     </span>
                     <button 
                       onClick={() => {
-                        // Download logic...
-                      }}
-                      className="p-2 rounded-xl bg-[var(--color-secondary)]/50 border border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all shadow-sm"
-                    >
-                      <Download className="h-5 w-5" />
-                    </button>
-                  </div>
-
                         if (!activeResource) return;
                         const url = activeResource.type === 'script' ? '#' : activeResource.data?.url;
                         const filename = activeResource.type === 'script' ? 'story-script.md' : activeResource.data?.name;
@@ -838,27 +830,28 @@ function CreativeAssistantPage() {
                           link.click();
                         }
                       }}
-                      className="p-1.5 rounded-lg bg-[var(--color-secondary)] border border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-colors"
+                      className="p-2 rounded-xl bg-[var(--color-secondary)]/50 border border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-accent)] transition-all shadow-sm"
                     >
-                      <Download className="h-4 w-4" />
+                      <Download className="h-5 w-5" />
                     </button>
                   </div>
                   
-                  <div className="flex-1 overflow-y-auto p-4 scrollbar-hide">
+                  <div className="flex-1 overflow-y-auto p-12 scrollbar-hide">
                     {activeResource?.type === 'script' && <StoryboardContent />}
                     {activeResource?.type === 'image' && (
-                      <div className="flex flex-col items-center justify-center h-full gap-4">
-                        <img src={activeResource.data.url} alt="Preview" className="max-w-full max-h-[70%] object-contain rounded-xl shadow-lg border border-[var(--color-border)]" />
+                      <div className="flex flex-col items-center justify-center h-full gap-8">
+                        <img src={activeResource.data.url} alt="Preview" className="max-w-full max-h-[85%] object-contain rounded-3xl shadow-2xl border border-[var(--color-border)] bg-white dark:bg-black" />
                       </div>
                     )}
                     {activeResource?.type === 'video' && (
-                      <div className="flex flex-col items-center justify-center h-full gap-4">
-                        <video src={activeResource.data.url} controls className="max-w-full max-h-[70%] rounded-xl shadow-lg border border-[var(--color-border)]" />
+                      <div className="flex flex-col items-center justify-center h-full gap-8">
+                        <video src={activeResource.data.url} controls className="max-w-full max-h-[85%] rounded-3xl shadow-2xl border border-[var(--color-border)] bg-black" />
                       </div>
                     )}
                   </div>
                 </div>
               </div>
+
               
               {/* Collapse handle */}
               <button 
