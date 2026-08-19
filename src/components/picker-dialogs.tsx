@@ -389,7 +389,6 @@ export function SkillPicker({
                 </div>
               </div>
 
-
               <div className="absolute bottom-4 right-6">
                 <button 
                   onClick={() => {
@@ -404,6 +403,7 @@ export function SkillPicker({
           )}
         </div>
       </div>
+
 
 
       {/* Skill Detail Preview Modal */}
