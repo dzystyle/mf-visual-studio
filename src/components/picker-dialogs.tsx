@@ -301,19 +301,19 @@ export function SkillPicker({
 
       <div className="flex flex-1 overflow-hidden h-[480px]">
         {/* Left Sidebar Categories */}
-        <div className="w-[140px] border-right border-[#F0F0F0] dark:border-white/5 py-4 flex flex-col gap-1">
+        <div className="w-[140px] border-right border-[#F0F0F0] dark:border-white/5 py-4 flex flex-col gap-1 bg-[#F9F9F9] dark:bg-transparent">
           {categories.map((c) => (
             <button
               key={c.key}
               onClick={() => setTab(c.key)}
-              className={`flex items-center gap-3 px-6 py-2.5 text-[13px] font-medium transition-all relative ${
+              className={`flex items-center gap-3 px-6 py-2.5 text-[13px] font-bold transition-all relative ${
                 tab === c.key
                   ? "text-black dark:text-white"
                   : "text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/60"
               }`}
             >
-              {tab === c.key && <Check className="h-3.5 w-3.5 absolute left-2" />}
-              <span className={tab === c.key ? "pl-0" : "pl-0"}>{c.label}</span>
+              {tab === c.key && <Check className="h-3.5 w-3.5 absolute left-2 stroke-[3px]" />}
+              <span className="pl-0">{c.label}</span>
             </button>
           ))}
         </div>
