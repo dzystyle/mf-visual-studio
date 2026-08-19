@@ -323,12 +323,12 @@ export function PromptBox({
       <div className="relative">
         <div className={`flex flex-wrap items-center ${!isMini ? 'mb-2' : ''}`}>
           {!isMini && skill && (
-            <div className="flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-3 py-1.5 text-[13px] text-white font-medium group transition-all hover:bg-white/15 animate-in fade-in slide-in-from-top-1 duration-300 mr-2 mb-1 dark:bg-white/5 dark:border-white/10">
-              <Package className="h-3.5 w-3.5 text-white/60" />
+            <div className="flex items-center gap-2 rounded-full bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/20 px-3 py-1.5 text-[13px] text-black dark:text-white font-medium group transition-all hover:bg-black/10 dark:hover:bg-white/15 animate-in fade-in slide-in-from-top-1 duration-300 mr-2 mb-1">
+              <Package className="h-3.5 w-3.5 text-black/60 dark:text-white/60" />
               <span>{skill}</span>
               <button 
                 onClick={() => setSkill(null)}
-                className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-white/20 text-white/40 hover:text-white transition-all"
+                className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/20 text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-all"
               >
                 <X className="h-3 w-3" />
               </button>
