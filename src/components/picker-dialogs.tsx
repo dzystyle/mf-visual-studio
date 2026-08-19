@@ -283,9 +283,9 @@ export function SkillPicker({
   const [previewSkill, setPreviewSkill] = useState<typeof skillList[number] | null>(null);
   
   return (
-    <div className="w-[840px] flex flex-col rounded-[28px] bg-[#F9F9F9] dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
+    <div className="w-[840px] flex flex-col rounded-[28px] bg-white dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
       {/* Search Header */}
-      <div className="flex items-center px-6 py-4 border-b border-[#F0F0F0] dark:border-white/5 bg-white/50 dark:bg-transparent">
+      <div className="flex items-center px-6 py-4 border-b border-[#F0F0F0] dark:border-white/5 bg-white dark:bg-transparent">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#999]" />
           <input 
@@ -294,7 +294,7 @@ export function SkillPicker({
             className="w-full bg-transparent pl-10 pr-4 py-2 text-sm focus:outline-none placeholder:text-[#999]" 
           />
         </div>
-        <button className="flex items-center gap-1 text-xs font-medium text-[#666] dark:text-white/60 hover:text-black dark:hover:text-white transition-colors">
+        <button className="flex items-center gap-1 text-xs font-bold text-[#666] dark:text-white/60 hover:text-black dark:hover:text-white transition-colors">
           全部 <ChevronRight className="h-4 w-4" />
         </button>
       </div>
