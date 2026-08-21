@@ -66,7 +66,7 @@ export function ArtrailTV() { // Keeping component name but changing UI text
                     <span className="text-lg font-bold">Artrail.ai</span>
                  </div>
                  <h1 className="text-4xl font-bold text-white mb-2 leading-tight">
-                    Artrail 教程达人招募计划长期在线
+                    ArTrail 教程达人招募计划长期在线
                  </h1>
                  <p className="text-white/60 max-w-md">官方每月支持PRO会员 + 28000积分 | 至高单月得 ¥150000 元现金激励</p>
                  <div className="mt-6 flex gap-2">
