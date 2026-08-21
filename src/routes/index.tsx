@@ -60,14 +60,69 @@ function Home() {
           </p>
 
           <div className={`mt-8 transition-all duration-500 ${isScrolledToBottom ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
-            <PromptBox
-              onSubmit={(prompt, canvasMode) =>
-                navigate({ 
-                  to: canvasMode ? "/script" : "/creative-assistant", 
-                  search: { prompt } 
-                })
-              }
-            />
+            <div className="flex flex-col items-center gap-6">
+              {/* Tabs for different creation modes */}
+              <div className="flex items-center gap-1.5 p-1 bg-white/5 backdrop-blur-md rounded-full border border-white/10">
+                <button className="flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium text-white/40 hover:text-white/60 transition-all">
+                  创作
+                </button>
+                <button className="flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold text-white bg-black/40 shadow-inner transition-all">
+                  短剧
+                </button>
+                <button className="flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium text-white/40 hover:text-white/60 transition-all">
+                  营销
+                </button>
+                <div className="w-px h-3 bg-white/10 mx-2" />
+                <span className="text-xs text-white/60 font-medium px-2">Agent一起聊聊创作想法</span>
+              </div>
+
+              <div className="w-full max-w-4xl relative group">
+                {/* Secondary Navigation bar integrated with PromptBox style */}
+                <div className="absolute -top-10 left-0 right-0 flex px-8 pointer-events-none">
+                  <div className="flex items-end gap-0.5">
+                    <button className="h-10 px-6 rounded-t-2xl bg-white/5 border-t border-x border-white/10 flex items-center gap-2 text-xs font-medium text-white/60 hover:bg-white/10 hover:text-white transition-all pointer-events-auto">
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                      上传剧本
+                    </button>
+                    <button className="h-10 px-6 rounded-t-2xl bg-white/5 border-t border-x border-white/10 flex items-center gap-2 text-xs font-medium text-white/60 hover:bg-white/10 hover:text-white transition-all pointer-events-auto relative">
+                      <Plus className="h-3.5 w-3.5" />
+                      剧本创作
+                      <span className="absolute -top-2 -right-2 px-1.5 py-0.5 rounded text-[8px] font-bold bg-aurora-purple/20 text-aurora-purple border border-aurora-purple/20">剧本限免1次</span>
+                    </button>
+                    <button className="h-10 px-6 rounded-t-2xl bg-white/5 border-t border-x border-white/10 flex items-center gap-2 text-xs font-medium text-white/60 hover:bg-white/10 hover:text-white transition-all pointer-events-auto">
+                      <LayoutGrid className="h-3.5 w-3.5" />
+                      自由画布
+                    </button>
+                    <div className="h-10 px-8 rounded-t-[20px] bg-white border-t border-x border-white/5 flex items-center gap-2 text-xs font-bold text-black pointer-events-auto relative shadow-[0_-4px_12px_rgba(255,255,255,0.05)]">
+                      <RotateCcw className="h-3.5 w-3.5" />
+                      重制转绘
+                      <span className="ml-1.5 px-1.5 py-0.5 rounded text-[8px] font-bold bg-black text-white">NEW</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative pt-[2px]">
+                   <PromptBox
+                    onSubmit={(prompt, canvasMode) =>
+                      navigate({ 
+                        to: canvasMode ? "/script" : "/creative-assistant", 
+                        search: { prompt } 
+                      })
+                    }
+                  />
+                </div>
+                
+                {/* Footer Tip */}
+                <div className="mt-4 flex items-center justify-center gap-4 text-[11px] text-white/30">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3.5 h-3.5 rounded-full border border-white/20 flex items-center justify-center text-[8px]">i</div>
+                    <span>请确认上传的视频拥有合法版权或已获得授权</span>
+                  </div>
+                  <div className="w-px h-3 bg-white/10" />
+                  <button className="hover:text-white/50 transition-colors">没有剧本？进入画布创作</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
