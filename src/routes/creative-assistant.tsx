@@ -908,6 +908,20 @@ function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChang
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
+function VideoActionItem({ icon, tooltip }: { icon: React.ReactNode; tooltip: string }) {
+  return (
+    <div className="relative group/tooltip">
+      <button className="h-8 w-8 flex items-center justify-center rounded-xl text-[var(--color-foreground)] hover:bg-[var(--color-secondary)] transition-all active:scale-90">
+        {icon}
+      </button>
+      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 rounded-lg bg-black text-white text-[11px] font-bold whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-all pointer-events-none shadow-2xl scale-90 group-hover/tooltip:scale-100 origin-bottom">
+        {tooltip}
+        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />
+      </div>
+    </div>
+  );
+}
+
 function StatusLine({ icon, text, subText }: { icon: 'check' | 'loading'; text: string; subText?: string }) {
   return (
     <div className="flex items-center gap-3 px-1 py-1 group">
