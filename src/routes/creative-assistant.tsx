@@ -628,8 +628,8 @@ function CreativeAssistantPage() {
                           </button>
                         </div>
 
-                        {/* Bottom Actions Bar */}
-                        <div className="absolute bottom-3 right-3 opacity-0 group-hover/video:opacity-100 transition-all duration-300 transform translate-y-2 group-hover/video:translate-y-0 flex items-center gap-1.5 p-1.5 bg-white/95 dark:bg-black/80 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-2xl z-20">
+                        {/* Top Actions Bar */}
+                        <div className="absolute top-3 right-3 opacity-0 group-hover/video:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover/video:translate-y-0 flex items-center gap-1.5 p-1.5 bg-white/95 dark:bg-black/80 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-2xl z-20">
                           <VideoActionItem icon={<PenTool className="h-4 w-4" />} tooltip="标注视频帧" />
                           <VideoActionItem icon={<Scissors className="h-4 w-4" />} tooltip="去剪映编辑" />
                           <VideoActionItem icon={<RotateCcw className="h-4 w-4" />} tooltip="重新生成" />
