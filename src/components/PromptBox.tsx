@@ -157,8 +157,7 @@ export function PromptBox({
         id: Math.random().toString(36).substr(2, 9),
         name,
         kind,
-        url,
-        status: 'completed'
+        url
       };
       setAttachments(prev => [...prev, newAttachment]);
     };
