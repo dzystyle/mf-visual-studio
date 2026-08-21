@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
+import { VideoAnnotationDialog } from "@/components/VideoAnnotationDialog";
 import { cn } from "@/lib/utils";
 import { 
   Popover, 
