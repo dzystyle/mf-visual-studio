@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
+import { VideoAnnotationDialog } from "@/components/VideoAnnotationDialog";
 import { cn } from "@/lib/utils";
 import { 
   Popover, 
@@ -84,6 +85,7 @@ function CreativeAssistantPage() {
   const [activeResource, setActiveResource] = useState<{ type: 'script' | 'image' | 'video'; data?: any } | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [showShareToast, setShowShareToast] = useState(false);
+  const [isAnnotationOpen, setIsAnnotationOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const triggeredStepsRef = useRef<Set<number>>(new Set());
   
@@ -624,7 +626,9 @@ function CreativeAssistantPage() {
 
                         {/* Top Actions Bar */}
                         <div className="absolute top-3 right-3 opacity-0 group-hover/video:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover/video:translate-y-0 flex items-center gap-1.5 p-1.5 bg-white/95 dark:bg-black/80 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-2xl z-20">
-                          <VideoActionItem icon={<PenTool className="h-4 w-4" />} tooltip="标注视频帧" />
+                          <div onClick={() => setIsAnnotationOpen(true)}>
+                            <VideoActionItem icon={<PenTool className="h-4 w-4" />} tooltip="标注视频帧" />
+                          </div>
                           <VideoActionItem icon={<Scissors className="h-4 w-4" />} tooltip="去剪映编辑" />
                           <VideoActionItem icon={<RotateCcw className="h-4 w-4" />} tooltip="重新生成" />
                           <VideoActionItem icon={<MessageCirclePlus className="h-4 w-4" />} tooltip="引用到输入框" />
@@ -884,6 +888,24 @@ function CreativeAssistantPage() {
             </motion.div>
           )}
         </AnimatePresence>
+        <VideoAnnotationDialog 
+          open={isAnnotationOpen}
+          onOpenChange={setIsAnnotationOpen}
+          videoUrl={videoFileUrl}
+          posterUrl={videoPreview}
+          onConfirm={(imageUrl) => {
+            // Logic to add the annotated image to PromptBox attachments
+            // In this UI implementation, we can simulate adding it to the message flow or persistent storage
+            const newMsg: Message = {
+              id: Date.now().toString(),
+              role: "user",
+              content: "我已基于视频帧完成标注",
+              timestamp: new Date().toLocaleString(),
+              attachments: [{ name: "annotated-frame.jpg", type: "IMAGE", url: imageUrl }]
+            };
+            setMessages(prev => [...prev, newMsg]);
+          }}
+        />
       </div>
       
       {/* Footer Question Mark */}
