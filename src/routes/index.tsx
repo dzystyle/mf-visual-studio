@@ -65,7 +65,7 @@ function Home() {
             <div className="flex justify-center mb-4">
               <div className="flex items-center p-1 bg-black/5 dark:bg-white/5 backdrop-blur-md rounded-full border border-black/[0.03] dark:border-white/[0.03] shadow-[0_2px_10px_-3px_rgba(0,0,0,0.07)] dark:shadow-none">
                 <div className="flex bg-black/[0.03] dark:bg-white/[0.03] p-0.5 rounded-full items-center">
-                  {["创作", "短剧", "营销"].map((tab) => (
+                  {["创作", "短剧", "题词"].map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
