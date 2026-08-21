@@ -233,16 +233,16 @@ export function VideoAnnotationDialog({
             </div>
 
             {/* Bottom Actions */}
-            <div className="flex items-center justify-end gap-3 pb-2">
+            <div className="flex items-center justify-end gap-3 pb-2 pt-4 border-t border-black/5 dark:border-white/5">
               <button 
                 onClick={() => onOpenChange(false)}
-                className="px-6 py-2.5 rounded-2xl bg-[#F5F5F7] dark:bg-white/5 text-[14px] font-bold text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-all active:scale-95"
+                className="px-8 py-2.5 rounded-2xl bg-[#F5F5F7] dark:bg-white/5 text-[14px] font-bold text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-all active:scale-95 min-w-[100px]"
               >
                 取消
               </button>
               <button 
                 onClick={handleConfirm}
-                className="px-6 py-2.5 rounded-2xl bg-[#F5F5F7] dark:bg-white text-[14px] font-bold text-black dark:text-black hover:opacity-90 transition-all active:scale-95 shadow-sm"
+                className="px-8 py-2.5 rounded-2xl bg-black dark:bg-white text-[14px] font-bold text-white dark:text-black hover:opacity-90 transition-all active:scale-95 shadow-sm min-w-[100px]"
               >
                 确认
               </button>
