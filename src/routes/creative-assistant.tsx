@@ -385,7 +385,7 @@ function CreativeAssistantPage() {
                             <ChoiceCard 
                               step={1}
                               totalSteps={4}
-                              title="视频时长希望控制在多少秒以内？"
+                              title="'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''\n                                        \n                                            \n                                            首页输入框需要参考上图加四个菜单:1.智能体创作:AI 智能体生成图片、视频、音频2.智体画布:可视化画布，编排 Agent 创作流程3.元词速创:直接运行你的元提示词快速生成.4.智能体重制转绘：AI 解析原有视频，重制全新画面与视频内容.以你资深产品经理的角度深度思考一下."
                               options={[
                                 { num: "1", label: "15秒以内", desc: "节奏紧凑，适合信息流投放", active: stepStates[1][0] },
                                 { num: "2", label: "15-30秒", desc: "可展示更多角色 and 玩法细节", active: stepStates[1][1] },
