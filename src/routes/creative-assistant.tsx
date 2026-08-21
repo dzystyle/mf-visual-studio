@@ -914,9 +914,9 @@ function VideoActionItem({ icon, tooltip }: { icon: React.ReactNode; tooltip: st
       <button className="h-8 w-8 flex items-center justify-center rounded-xl text-[var(--color-foreground)] hover:bg-[var(--color-secondary)] transition-all active:scale-90">
         {icon}
       </button>
-      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 rounded-lg bg-black text-white text-[11px] font-bold whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-all pointer-events-none shadow-2xl scale-90 group-hover/tooltip:scale-100 origin-bottom">
+      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1.5 rounded-lg bg-black text-white text-[11px] font-bold whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-all pointer-events-none shadow-2xl scale-90 group-hover/tooltip:scale-100 origin-top">
         {tooltip}
-        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-black" />
       </div>
     </div>
   );
