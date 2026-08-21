@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X, Code, Calendar, LayoutGrid, Star, PenLine, Scissors, RefreshCw, Highlighter, Download, AtSign } from "lucide-react";
+import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X, Code, Calendar, LayoutGrid, Star } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 
@@ -13,11 +13,6 @@ import skillProduct from "@/assets/skill-product.jpg";
 import skillTravel from "@/assets/skill-travel.jpg";
 import skillPreviewVideo from "@/assets/skill-preview-video.mp4.asset.json";
 import { CreateSkillDialog } from "./skill/CreateSkillDialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 
 /* ---------------- Model Picker ---------------- */
@@ -385,71 +380,6 @@ export function SkillPicker({
                   playsInline 
                   className="w-full h-full object-cover" 
                 />
-
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/video:opacity-100 transition-opacity flex flex-col items-center justify-center p-2 gap-2">
-                  <div className="flex flex-col items-center gap-2 scale-90 origin-center">
-                    <button className="px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 text-white text-[10px] font-bold backdrop-blur-md transition-all border border-white/10">
-                      标注视频帧
-                    </button>
-                    <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md p-1.5 rounded-xl border border-white/5">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all">
-                            <PenLine className="w-3.5 h-3.5" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">去剪映编辑</TooltipContent>
-                      </Tooltip>
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all">
-                            <RefreshCw className="w-3.5 h-3.5" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">重新生成</TooltipContent>
-                      </Tooltip>
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button 
-                            className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all"
-                          >
-                            <AtSign className="w-3.5 h-3.5" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">引用到输入框</TooltipContent>
-                      </Tooltip>
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all">
-                            <Sparkles className="w-3.5 h-3.5" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">提升画质</TooltipContent>
-                      </Tooltip>
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all">
-                            <Highlighter className="w-3.5 h-3.5" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">字幕擦除</TooltipContent>
-                      </Tooltip>
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all">
-                            <Download className="w-3.5 h-3.5" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">下载</TooltipContent>
-                      </Tooltip>
-                    </div>
-                  </div>
-                </div>
 
                 <button className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-black/20 backdrop-blur text-black/40 dark:text-white hover:bg-black/20 dark:hover:bg-black/40 transition-all opacity-0 group-hover/video:opacity-100 hover:text-yellow-400 dark:hover:text-yellow-400">
                   <Star className="h-4 w-4 fill-current stroke-[2.5px]" />
