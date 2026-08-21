@@ -53,7 +53,7 @@ function Home() {
 
         <div className="mx-auto max-w-4xl pt-10 text-center">
           <h1 className="text-[44px] font-semibold leading-tight tracking-tight text-foreground">
-            Artrail 1.0 — 你的专属 AI 创作 平台
+            ArTrail&nbsp;1.0 — 你的专属 AI 创作 平台
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
             把品味和习惯写进 Skill,让精力回归创意
