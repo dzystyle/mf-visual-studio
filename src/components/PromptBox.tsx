@@ -151,6 +151,23 @@ export function PromptBox({
   }, []);
 
   useEffect(() => {
+    const handleAddAttachment = (e: any) => {
+      const { url, name, kind } = e.detail;
+      const newAttachment: Attachment = {
+        id: Math.random().toString(36).substr(2, 9),
+        name,
+        kind,
+        url,
+        status: 'completed'
+      };
+      setAttachments(prev => [...prev, newAttachment]);
+    };
+
+    window.addEventListener('artrail-add-attachment' as any, handleAddAttachment as any);
+    return () => window.removeEventListener('artrail-add-attachment' as any, handleAddAttachment as any);
+  }, []);
+
+  useEffect(() => {
     const textBeforeCursor = text.slice(0, cursorPos);
     const lastAtPos = textBeforeCursor.lastIndexOf("@");
     
