@@ -60,6 +60,24 @@ function Home() {
           </p>
 
           <div className={`mt-8 transition-all duration-500 ${isScrolledToBottom ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+            {/* Input Tabs */}
+            <div className="flex justify-center mb-6">
+              <div className="flex p-1.5 bg-black/5 dark:bg-white/5 backdrop-blur-md rounded-full border border-black/[0.03] dark:border-white/[0.03] shadow-[0_2px_10px_-3px_rgba(0,0,0,0.07)] dark:shadow-none">
+                <button className="flex items-center gap-2 px-6 py-1.5 text-[14px] font-medium rounded-full bg-foreground text-background shadow-lg transition-all duration-300">
+                  <span>创作</span>
+                </button>
+                <button className="flex items-center gap-2 px-6 py-1.5 text-[14px] font-medium text-muted-foreground hover:text-foreground transition-all duration-300">
+                  <span>短剧</span>
+                </button>
+                <button className="flex items-center gap-2 px-6 py-1.5 text-[14px] font-medium text-muted-foreground hover:text-foreground transition-all duration-300">
+                  <span>营销</span>
+                </button>
+                <div className="ml-4 mr-2 flex items-center border-l border-black/10 dark:border-white/10 pl-4">
+                   <span className="text-[14px] text-foreground/90 font-medium">Agent一起聊聊创作想法</span>
+                </div>
+              </div>
+            </div>
+
             <PromptBox
               onSubmit={(prompt, canvasMode) =>
                 navigate({ 
