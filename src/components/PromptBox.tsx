@@ -13,6 +13,13 @@ import {
   Search,
   Mic,
   AtSign,
+  PenLine,
+  Scissors,
+  RefreshCw,
+  Sparkles,
+  Highlighter,
+  Download,
+  VolumeX,
 } from "lucide-react";
 import {
   ModelPicker,
@@ -25,6 +32,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import * as Portal from "@radix-ui/react-portal";
 
 type Attachment = {
@@ -295,21 +307,82 @@ export function PromptBox({
                 </div>
               )}
               
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-start justify-between p-2">
-                <button 
-                  onClick={() => handleMentionSelect(a.name, a.kind, a.url)}
-                  className="w-7 h-7 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110"
-                  title="引用到输入框"
-                >
-                  <AtSign className="w-3.5 h-3.5" />
-                </button>
-                <button 
-                  onClick={() => removeAttachment(a.id, a.name)}
-                  className="w-7 h-7 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white backdrop-blur-md transition-all hover:scale-110"
-                  title="删除"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-2 gap-2">
+                <div className="flex flex-col items-center gap-2">
+                  <button className="px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 text-white text-[10px] font-bold backdrop-blur-md transition-all border border-white/10">
+                    标注视频帧
+                  </button>
+                  <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md p-1.5 rounded-xl border border-white/5">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all">
+                          <PenLine className="w-3.5 h-3.5" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">去剪映编辑</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all">
+                          <RefreshCw className="w-3.5 h-3.5" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">重新生成</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button 
+                          onClick={() => handleMentionSelect(a.name, a.kind, a.url)}
+                          className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all"
+                        >
+                          <AtSign className="w-3.5 h-3.5" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">引用到输入框</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all">
+                          <Sparkles className="w-3.5 h-3.5" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">提升画质</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all">
+                          <Highlighter className="w-3.5 h-3.5" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">字幕擦除</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all">
+                          <Download className="w-3.5 h-3.5" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">下载</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button 
+                          onClick={() => removeAttachment(a.id, a.name)}
+                          className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="bg-black text-white border-white/10 text-[10px] py-1 px-2 rounded-lg">删除</TooltipContent>
+                    </Tooltip>
+                  </div>
+                </div>
               </div>
 
               <div className="absolute bottom-0 inset-x-0 bg-black/40 backdrop-blur-sm py-0.5 px-1 text-[8px] text-white/80 truncate text-center group-hover:hidden">

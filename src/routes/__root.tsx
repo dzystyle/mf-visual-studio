@@ -11,6 +11,7 @@ import appCss from "../styles.css?url";
 import { Sidebar } from "@/components/Sidebar";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 function NotFoundComponent() {
   return (
@@ -91,13 +92,15 @@ function RootComponent() {
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <div className="min-h-screen bg-background text-foreground">
-          <Sidebar />
-          <main className="ml-[72px]">
-            <Outlet />
-          </main>
-          <Toaster position="top-center" expand={true} richColors closeButton />
-        </div>
+        <TooltipProvider>
+          <div className="min-h-screen bg-background text-foreground">
+            <Sidebar />
+            <main className="ml-[72px]">
+              <Outlet />
+            </main>
+            <Toaster position="top-center" expand={true} richColors closeButton />
+          </div>
+        </TooltipProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );
