@@ -48,7 +48,7 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
 
             <div className="absolute bottom-6 left-8 right-8">
               <h2 className="text-3xl font-bold tracking-tight text-foreground mb-2">{skill.title}</h2>
-              <p className="text-sm text-muted-foreground">@{skill.author?.replace('@', '') || 'Artrail'}</p>
+              <p className="text-sm text-muted-foreground">@{skill.author?.replace('@', '') || 'ArTrail'}</p>
             </div>
           </div>
 

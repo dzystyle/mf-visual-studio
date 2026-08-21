@@ -293,7 +293,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
                       handleSendMessage();
                     }
                   }}
-                  placeholder="补充更多信息，或回复 Artrail 团队..."
+                  placeholder="补充更多信息，或回复 ArTrail 团队..."
                   className="w-full bg-[#1A1A1A] border border-white/5 rounded-[24px] py-6 px-8 text-base focus:outline-none focus:border-white/20 transition-all min-h-[120px] resize-none pr-16"
                 />
                 <button 

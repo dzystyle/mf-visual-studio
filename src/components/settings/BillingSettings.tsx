@@ -178,7 +178,7 @@ export function BillingSettings({ activeSection = 'credits' }: BillingSettingsPr
           </DialogHeader>
           
           <div className="p-8 pt-4 space-y-8 overflow-y-auto max-h-[80vh] scrollbar-hide">
-            <p className="text-sm text-white/40 text-center">最多可保存 5 个发票信息。发票收取邮箱默认使用 Artrail 账号邮箱，可自行修改。</p>
+            <p className="text-sm text-white/40 text-center">最多可保存 5 个发票信息。发票收取邮箱默认使用 ArTrail 账号邮箱，可自行修改。</p>
             
             <div className="space-y-6 rounded-[24px] bg-white/[0.02] p-6 border border-white/5">
               <div className="space-y-2">
@@ -281,7 +281,7 @@ export function BillingSettings({ activeSection = 'credits' }: BillingSettingsPr
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-2 duration-500">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-white">价格详情</h2>
-        <p className="mt-2 text-sm text-white/40">了解 Artrail 的积分消耗规则和各模型定价。</p>
+        <p className="mt-2 text-sm text-white/40">了解 ArTrail 的积分消耗规则和各模型定价。</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

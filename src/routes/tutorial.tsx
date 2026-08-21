@@ -11,13 +11,13 @@ export const Route = createFileRoute("/tutorial")({
         <div className="mx-auto max-w-4xl">
           <h1 className="text-2xl font-semibold">教程</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            从零开始,掌握 Artrail 1.0 的核心工作流。
+            从零开始,掌握 ArTrail 1.0 的核心工作流。
           </p>
         </div>
       </section>
       <section className="px-8 pb-24">
         <div className="mx-auto grid max-w-4xl gap-3">
-          {["快速上手 Artrail 1.0", "Skill 是什么、如何使用", "模型选择指南", "如何生成高质量电影级视频"].map(
+          {["快速上手 ArTrail 1.0", "Skill 是什么、如何使用", "模型选择指南", "如何生成高质量电影级视频"].map(
             (t, i) => (
               <div key={i} className="rounded-xl border border-border bg-card/60 p-5 hover:bg-card">
                 <div className="text-xs text-muted-foreground">第 {i + 1} 章</div>

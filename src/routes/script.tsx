@@ -45,7 +45,7 @@ export const Route = createFileRoute("/script")({
     prompt: typeof s.prompt === "string" ? s.prompt : undefined,
   }),
   head: () => ({
-    meta: [{ title: "剧本视频制作 — Artrail" }],
+    meta: [{ title: "剧本视频制作 — ArTrail" }],
   }),
   component: ScriptPage,
 });
@@ -677,7 +677,7 @@ function BotMessage({ nodes }: { nodes: BotNode[] }) {
     <div className="space-y-3">
       <div className="flex items-center gap-1.5 text-[13px] font-semibold">
         <span className="text-aurora-pink">✦</span>
-        <span>Artrail</span>
+        <span>ArTrail</span>
       </div>
       {nodes.map((n, i) => (
         <BotNodeView key={i} node={n} />

@@ -8,19 +8,19 @@ function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-black text-white p-8 md:p-20 font-sans">
       <div className="mx-auto max-w-4xl">
-        <h1 className="mb-12 text-center text-4xl font-bold tracking-tight">Artrail - 隐私政策</h1>
+        <h1 className="mb-12 text-center text-4xl font-bold tracking-tight">ArTrail - 隐私政策</h1>
         
         <div className="rounded-2xl border border-white/5 bg-[#0f0f12] p-8 md:p-12 shadow-2xl">
           <div className="prose prose-invert max-w-none space-y-8 text-white/70">
             <section>
-              <h2 className="text-xl font-semibold text-white">Artrail Privacy Policy</h2>
+              <h2 className="text-xl font-semibold text-white">ArTrail Privacy Policy</h2>
               <p className="text-sm">Last Updated Date: April 13, 2026</p>
             </section>
 
             <section>
               <h3 className="text-lg font-medium text-white">Introduction</h3>
               <p>
-                Welcome to Artrail Platform ("Artrail", or the "Platform"), which includes the Artrail mobile application, desktop software, official website, and any other features, functionalities, or services provided now or in the future (collectively the "Services"). The Services are offered by ARTRAIL PTE. LTD. ("we", "us", or "our"), with its registered address at 60 PAYA LEBAR ROAD #11-53 PAYA LEBAR SQUARE SINGAPORE 409051, SINGAPORE. The associated company is Artrail Limited, with its registered address at Suite 603, 6/F, Laws Comm Plaza, 788 Cheung Sha Wan Road, Hong Kong. We value your privacy and are committed to protecting your personal data. This Privacy Policy ("Policy") explains how we collect, use, share, and safeguard your personal information when you access or use the Services, including any site or platform that links to this Policy.
+                Welcome to ArTrail Platform ("ArTrail", or the "Platform"), which includes the ArTrail mobile application, desktop software, official website, and any other features, functionalities, or services provided now or in the future (collectively the "Services"). The Services are offered by ARTRAIL PTE. LTD. ("we", "us", or "our"), with its registered address at 60 PAYA LEBAR ROAD #11-53 PAYA LEBAR SQUARE SINGAPORE 409051, SINGAPORE. The associated company is ArTrail Limited, with its registered address at Suite 603, 6/F, Laws Comm Plaza, 788 Cheung Sha Wan Road, Hong Kong. We value your privacy and are committed to protecting your personal data. This Privacy Policy ("Policy") explains how we collect, use, share, and safeguard your personal information when you access or use the Services, including any site or platform that links to this Policy.
               </p>
             </section>
 
