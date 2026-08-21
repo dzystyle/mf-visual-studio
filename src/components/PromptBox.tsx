@@ -13,6 +13,8 @@ import {
   Search,
   Mic,
   AtSign,
+  ArrowUpRight,
+  RotateCcw,
 } from "lucide-react";
 import {
   ModelPicker,
