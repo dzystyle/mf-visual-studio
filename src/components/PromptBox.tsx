@@ -13,8 +13,6 @@ import {
   Search,
   Mic,
   AtSign,
-  ArrowUpRight,
-  RotateCcw,
 } from "lucide-react";
 import {
   ModelPicker,
@@ -28,7 +26,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import * as Portal from "@radix-ui/react-portal";
-import { cn } from "@/lib/utils";
 
 type Attachment = {
   id: string;
@@ -643,10 +640,10 @@ export function PromptBox({
 
 
             {showCanvasToggle && (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-card/40 border border-border rounded-full hover:bg-card transition group cursor-pointer" onClick={() => setCanvasMode(!canvasMode)}>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-card/40 border border-border rounded-full hover:bg-card transition group">
                 <span className="text-[11px] font-bold text-muted-foreground group-hover:text-foreground">画布</span>
                 <button 
-                  type="button"
+                  onClick={() => setCanvasMode(!canvasMode)}
                   className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
                 >
                   <span
@@ -690,33 +687,6 @@ function AddItem({ icon: Icon, label, onClick }: { icon: any; label: string; onC
         <Icon className="h-4 w-4 opacity-70 group-hover:opacity-100" />
       </div>
       <span>{label}</span>
-    </button>
-  );
-}
-
-function CanvasMenuItem({ icon: Icon, label, desc, badge, onClick }: { icon: any; label: string; desc: string; badge?: string; onClick: () => void }) {
-  return (
-    <button 
-      onClick={onClick}
-      className="flex w-full items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-accent transition-all group text-left"
-    >
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/50 group-hover:bg-accent transition-colors shrink-0 mt-0.5">
-        <Icon className="h-4.5 w-4.5 text-foreground/60 group-hover:text-foreground" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-foreground/90 group-hover:text-foreground">{label}</span>
-          {badge && (
-            <span className={cn(
-              "px-1.5 py-0.5 rounded text-[8px] font-bold uppercase",
-              badge === 'NEW' ? "bg-black text-white dark:bg-white dark:text-black" : "bg-aurora-purple/20 text-aurora-purple"
-            )}>
-              {badge}
-            </span>
-          )}
-        </div>
-        <p className="text-[10px] text-muted-foreground/60 mt-0.5 line-clamp-1">{desc}</p>
-      </div>
     </button>
   );
 }
