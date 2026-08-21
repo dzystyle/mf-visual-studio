@@ -23,7 +23,7 @@ export function AccountSettings() {
         <div className="flex items-center justify-between border-b border-white/5 pb-8">
           <div className="space-y-1">
             <div className="text-sm font-medium text-white">任务完成通知:</div>
-            <div className="text-xs text-white/40">当 ArTrail 的项目文件切换到后台时，允许 ArTrail 在任务完成后向用户发送通知。</div>
+            <div className="text-xs text-white/40">当 Artrail 的项目文件切换到后台时，允许 Artrail 在任务完成后向用户发送通知。</div>
           </div>
           <Switch className="data-[state=checked]:bg-primary" />
         </div>

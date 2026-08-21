@@ -25,7 +25,7 @@ export function TopBar({ title, variant }: { title?: string; variant?: "light" |
           : "border-border bg-card/80 text-foreground hover:bg-card"
       )}>
         <BookOpen className="h-3.5 w-3.5 text-aurora-orange" />
-        <span className="font-medium">全新 ArTrail 1.0 使用教程</span>
+        <span className="font-medium">全新 Artrail 1.0 使用教程</span>
       </button>
 
       <NotificationTrigger variant={variant} />
@@ -435,11 +435,11 @@ export function BrandMark({ variant = "dark" }: { variant?: "light" | "dark" }) 
 
   return (
     <div className="absolute left-6 top-5 z-20 flex items-center gap-2">
-      <img src={logoAsset.url} alt="ArTrail Logo" className="h-6 w-auto" />
+      <img src={logoAsset.url} alt="Artrail Logo" className="h-6 w-auto" />
       <span className={cn(
         "text-[15px] font-semibold tracking-tight",
         isLight ? "text-[#1D1D1F]" : "text-white"
-      )}>ArTrail.ai</span>
+      )}>artrail.ai</span>
     </div>
   );
 }

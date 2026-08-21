@@ -8,7 +8,7 @@ function TermsOfService() {
   return (
     <div className="min-h-screen bg-black text-white p-8 md:p-20 font-sans">
       <div className="mx-auto max-w-4xl">
-        <h1 className="mb-12 text-center text-4xl font-bold tracking-tight">ArTrail - 使用条款</h1>
+        <h1 className="mb-12 text-center text-4xl font-bold tracking-tight">Artrail - 使用条款</h1>
         
         <div className="rounded-2xl border border-white/5 bg-[#0f0f12] p-8 md:p-12 shadow-2xl">
           <div className="prose prose-invert max-w-none space-y-8 text-white/70">
@@ -24,12 +24,12 @@ function TermsOfService() {
             </section>
 
             <section>
-              <p>Welcome to ArTrail.ai!</p>
+              <p>Welcome to Artrail.ai!</p>
               <p>
-                This Terms of Service ("Terms") constitutes a legally binding document between you ("User" or "You") and ArTrail.ai ("ArTrail.ai," "we," "us," or "our") concerning your use of the ArTrail.ai video agent service (the "Service").
+                This Terms of Service ("Terms") constitutes a legally binding document between you ("User" or "You") and Artrail.ai ("Artrail.ai," "we," "us," or "our") concerning your use of the Artrail.ai video agent service (the "Service").
               </p>
               <p>
-                Please read and fully understand all terms of this Terms before using the Service, especially those clauses that exclude or limit liability and those governing applicable law and dispute resolution. The Services are offered by ARTRAIL PTE. LTD. ("we", "us", or "our"), with its registered address at 60 PAYA LEBAR ROAD #11-53 PAYA LEBAR SQUARE SINGAPORE 409051, SINGAPORE. The associated company is ArTrail Limited, with its registered address at Suite 603, 6/F, Laws Comm Plaza, 788 Cheung Sha Wan Road, Hong Kong. By registering for, logging into, or using the Service, you signify that you have read, understood, and agree to be bound by all terms of this Terms. If you do not agree with any part of these Terms, please cease using the Service immediately.
+                Please read and fully understand all terms of this Terms before using the Service, especially those clauses that exclude or limit liability and those governing applicable law and dispute resolution. The Services are offered by ARTRAIL PTE. LTD. ("we", "us", or "our"), with its registered address at 60 PAYA LEBAR ROAD #11-53 PAYA LEBAR SQUARE SINGAPORE 409051, SINGAPORE. The associated company is Artrail Limited, with its registered address at Suite 603, 6/F, Laws Comm Plaza, 788 Cheung Sha Wan Road, Hong Kong. By registering for, logging into, or using the Service, you signify that you have read, understood, and agree to be bound by all terms of this Terms. If you do not agree with any part of these Terms, please cease using the Service immediately.
               </p>
             </section>
 

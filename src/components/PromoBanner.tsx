@@ -7,7 +7,7 @@ export function PromoBanner() {
   return (
     <div className="promo-bg relative flex items-center justify-center gap-3 px-6 py-2 text-[13px] text-foreground">
       <span className="font-medium">
-        ArTrail 1.0 - Skill 沉淀你的品味和习惯,限时福利:
+        Artrail 1.0 - Skill 沉淀你的品味和习惯,限时福利:
       </span>
       <span className="font-semibold">会员低至 4.6 折,</span>
       <span className="font-semibold">年包多送 10万 积分</span>

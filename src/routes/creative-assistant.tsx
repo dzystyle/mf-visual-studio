@@ -56,7 +56,7 @@ export const Route = createFileRoute("/creative-assistant")({
     prompt: typeof s.prompt === "string" ? s.prompt : undefined,
   }),
   head: () => ({
-    meta: [{ title: "创作助手 — ArTrail" }],
+    meta: [{ title: "创作助手 — Artrail" }],
   }),
   component: CreativeAssistantPage,
 });

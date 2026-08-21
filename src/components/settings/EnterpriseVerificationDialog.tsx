@@ -31,7 +31,7 @@ export function EnterpriseVerificationDialog({ open, onOpenChange, onSuccess }: 
                 使用Seedance 2.0 & 2.5需要完成认证
               </p>
               <button className="text-sm font-medium text-white/80 transition-opacity hover:opacity-100">
-                如有疑问请扫码添加ArTrail社群 →
+                如有疑问请扫码添加Artrail社群 →
               </button>
             </div>
           </DialogHeader>
