@@ -639,7 +639,18 @@ function CreativeAssistantPage() {
                           </div>
                           <VideoActionItem icon={<Scissors className="h-4 w-4" />} tooltip="去剪映编辑" />
                           <VideoActionItem icon={<RotateCcw className="h-4 w-4" />} tooltip="重新生成" />
-                          <VideoActionItem icon={<MessageCirclePlus className="h-4 w-4" />} tooltip="引用到输入框" />
+                          <div onClick={() => {
+                            const event = new CustomEvent('artrail-add-attachment', {
+                              detail: {
+                                url: videoFileUrl,
+                                name: `video-ref-${Date.now()}.mp4`,
+                                kind: 'video'
+                              }
+                            });
+                            window.dispatchEvent(event);
+                          }}>
+                            <VideoActionItem icon={<MessageCirclePlus className="h-4 w-4" />} tooltip="引用到输入框" />
+                          </div>
                           <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
                           <VideoActionItem icon={<span className="text-[10px] font-bold">HD</span>} tooltip="提升画质" />
                           <VideoActionItem icon={<Eraser className="h-4 w-4" />} tooltip="字幕擦除" />
