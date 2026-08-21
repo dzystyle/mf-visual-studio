@@ -5,7 +5,7 @@ import { PromoBanner } from "@/components/PromoBanner";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
 import { SkillCard, hotSkills } from "@/components/SkillCard";
-import { ArtrailTV } from "@/components/tv/ArtrailTV";
+import { ArTrailTV } from "@/components/tv/ArTrailTV";
 import { CreateCanvasDialog } from "@/components/CreateCanvasDialog";
 import projectTeacher from "@/assets/project-teacher.jpg";
 import tvSpace from "@/assets/tv-space.jpg";
@@ -13,7 +13,7 @@ import tvSpace from "@/assets/tv-space.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "artrail.ai — 你的专属 AI 创作 平台" },
+      { title: "ArTrail.ai — 你的专属 AI 创作 平台" },
       { name: "description", content: "把品味和习惯写进 Skill,让精力回归创意。" },
     ],
   }),
@@ -53,7 +53,7 @@ function Home() {
 
         <div className="mx-auto max-w-4xl pt-10 text-center">
           <h1 className="text-[44px] font-semibold leading-tight tracking-tight text-foreground">
-            Artrail 1.0 — 你的专属 AI 创作 平台
+            ArTrail 1.0 — 你的专属 AI 创作 平台
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
             把品味和习惯写进 Skill,让精力回归创意
@@ -110,7 +110,7 @@ function Home() {
       </section>
 
       {/* Inspiration Discovery Section */}
-      <ArtrailTV />
+      <ArTrailTV />
 
       {/* Floating Mini Prompt Box */}
       <div 
@@ -312,7 +312,7 @@ function ProjectCard({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-secondary to-muted text-3xl font-semibold tracking-tight text-foreground/30">
-            Artrail
+            ArTrail
           </div>
         )}
       </div>

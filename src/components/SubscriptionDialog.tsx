@@ -80,7 +80,7 @@ export function SubscriptionDialog({
               </div>
             </div>
 
-            <h1 className="text-2xl font-bold tracking-tight">Artrail - 价格与套餐</h1>
+            <h1 className="text-2xl font-bold tracking-tight">ArTrail - 价格与套餐</h1>
 
             <div className="mt-8 flex justify-center">
               <div className="flex border-b border-white/10 w-full max-w-md hidden">
@@ -206,7 +206,7 @@ export function SubscriptionDialog({
 
           {/* FAQ Section */}
           <div className="mx-auto mt-24 max-w-4xl px-6">
-            <h2 className="mb-10 text-center text-xl font-bold text-foreground">Artrail 订阅与积分常见问题</h2>
+            <h2 className="mb-10 text-center text-xl font-bold text-foreground">ArTrail 订阅与积分常见问题</h2>
             <Accordion type="single" collapsible className="w-full space-y-4 border-none">
               <FaqItem 
                 id="q1" 
@@ -214,18 +214,18 @@ export function SubscriptionDialog({
                 title="什么是积分（credits），我如何获得？" 
                 content={
                   <div className="space-y-3 text-white/60 text-xs">
-                    <p>• 积分是 Artrail 平台的标准计量单位。当你通过对话、故事板或其他创作工具开始创作时，系统会根据所使用的模型类型、生成时长、分辨率及其他相关参数自动扣除相应积分。</p>
+                    <p>• 积分是 ArTrail 平台的标准计量单位。当你通过对话、故事板或其他创作工具开始创作时，系统会根据所使用的模型类型、生成时长、分辨率及其他相关参数自动扣除相应积分。</p>
                     <p>• 你可以通过两种方式获取积分：</p>
                     <div className="pl-4 space-y-2">
                       <p>• <span className="text-white">订阅获取积分</span> 订阅任意会员后，可获取固定额度的月度积分，有效期为 30 天；</p>
                       <p>• <span className="text-white">免费与奖励积分</span></p>
                       <ul className="pl-4 space-y-1">
                         <li>• 邀请奖励积分（Invite Bonus Credits）：成功邀请用户注册后获取，有效期 7 天；</li>
-                        <li>• 探索使用奖励（Exploration Bonus Credits）：使用 Artrail 制作视频，在中间步骤可获得探索使用奖励，有效期 30 天；</li>
+                        <li>• 探索使用奖励（Exploration Bonus Credits）：使用 ArTrail 制作视频，在中间步骤可获得探索使用奖励，有效期 30 天；</li>
                         <li>• 超创奖励积分与活动奖励积分（Super Creator / Event Bonus Credits）：其发放数量及有效期将根据具体的社区计划及运营活动规则进行设置。</li>
                       </ul>
                     </div>
-                    <p className="mt-2 text-[10px] italic">⚠️ 积分规则、奖励政策及相关活动机制可能会根据运营需要进行调整，调整可在提前通知或不提前通知的情况下进行。在法律允许范围内，Artrail 保留相关规则的最终解释权。</p>
+                    <p className="mt-2 text-[10px] italic">⚠️ 积分规则、奖励政策及相关活动机制可能会根据运营需要进行调整，调整可在提前通知或不提前通知的情况下进行。在法律允许范围内，ArTrail 保留相关规则的最终解释权。</p>
                   </div>
                 } 
               />
@@ -253,7 +253,7 @@ export function SubscriptionDialog({
                 title="订阅是如何运作的？" 
                 content={
                   <div className="space-y-3 text-white/60 text-xs">
-                    <p>Artrail 提供灵活的月度与年度订阅方案，每个方案都包含一定数量的积分，可用于对话、图像生成、视频生成、音乐与旁白生成、编辑等功能。</p>
+                    <p>ArTrail 提供灵活的月度与年度订阅方案，每个方案都包含一定数量的积分，可用于对话、图像生成、视频生成、音乐与旁白生成、编辑等功能。</p>
                     <p><span className="text-white">当你升级订阅时：</span></p>
                     <ul className="pl-4 space-y-1">
                       <li>• 旧套餐仅按已使用积分比例计费；</li>
@@ -323,7 +323,7 @@ export function SubscriptionDialog({
                 如有关于订阅或积分的问题，欢迎联系 support@artrail.ai
               </div>
               <div className="mt-2 text-[10px] leading-relaxed text-white/20">
-                <span className="text-yellow-500/50">⚠️</span> Artrail 会根据产品优化与用户体验需要，不断调整功能、价格、订阅方案及积分政策。上述内容仅供参考，可能会在提前通知或不提前通知的情况下进行变更。如出现争议或不一致情况，以官方服务条款、系统记录与实际账单数据为准。
+                <span className="text-yellow-500/50">⚠️</span> ArTrail 会根据产品优化与用户体验需要，不断调整功能、价格、订阅方案及积分政策。上述内容仅供参考，可能会在提前通知或不提前通知的情况下进行变更。如出现争议或不一致情况，以官方服务条款、系统记录与实际账单数据为准。
               </div>
             </div>
           </div>

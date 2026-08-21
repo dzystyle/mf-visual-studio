@@ -31,7 +31,7 @@ function CheckoutPage() {
             <div className="mb-4 h-10 w-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600">
               <span className="text-white font-bold text-xl">M</span>
             </div>
-            <p className="text-muted-foreground text-sm font-medium">Pay Artrail</p>
+            <p className="text-muted-foreground text-sm font-medium">Pay ArTrail</p>
             <h1 className="text-[44px] font-bold tracking-tight mt-1 text-foreground">¥{displayAmount.toFixed(2)}</h1>
           </div>
 
@@ -150,7 +150,7 @@ function CheckoutPage() {
             <div>
               <p className="text-[13px] font-medium text-foreground leading-tight">Save my information for faster checkout</p>
               <p className="text-[12px] text-muted-foreground mt-1 leading-normal">
-                Pay securely at Artrail and everywhere <span className="text-primary font-medium">Link</span> is accepted.
+                Pay securely at ArTrail and everywhere <span className="text-primary font-medium">Link</span> is accepted.
               </p>
             </div>
           </div>

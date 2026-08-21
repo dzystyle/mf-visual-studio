@@ -8,19 +8,19 @@ import tvDrama from "@/assets/tv-drama.jpg";
 import tvPalace from "@/assets/tv-palace.jpg";
 
 const TV_DATA = [
-  { id: 1, title: "The Surprise Lion", author: "Artrail.ai", image: tvSpace, category: "漫剧", isLarge: true },
+  { id: 1, title: "The Surprise Lion", author: "ArTrail.ai", image: tvSpace, category: "漫剧", isLarge: true },
   { id: 2, title: "端午思念", author: "Holly", image: tvDrama, category: "漫剧" },
   { id: 3, title: "跑得全网最松弛的“面条猫”", author: "Bill", image: tvPalace, category: "漫剧" },
   { id: 4, title: "大虚", author: "参生", image: tvSpace, category: "漫剧" },
   { id: 5, title: "余烬星海", author: "小蓝蓝的天", image: tvDrama, category: "剧本生视频" },
   { id: 6, title: "宝可梦世界杯", author: "Holly", image: tvPalace, category: "漫剧" },
-  { id: 7, title: "史前一万年", author: "Artrail", image: tvSpace, category: "漫剧" },
-  { id: 8, title: "Dad.exe", author: "Artrail", image: tvDrama, category: "漫剧" },
-  { id: 9, title: "The Hand", author: "Artrail", image: tvPalace, category: "漫剧" },
-  { id: 10, title: "Auto Life", author: "Artrail", image: tvSpace, category: "漫剧" },
+  { id: 7, title: "史前一万年", author: "ArTrail", image: tvSpace, category: "漫剧" },
+  { id: 8, title: "Dad.exe", author: "ArTrail", image: tvDrama, category: "漫剧" },
+  { id: 9, title: "The Hand", author: "ArTrail", image: tvPalace, category: "漫剧" },
+  { id: 10, title: "Auto Life", author: "ArTrail", image: tvSpace, category: "漫剧" },
 ];
 
-export function ArtrailTV() { // Keeping component name but changing UI text
+export function ArTrailTV() { // Keeping component name but changing UI text
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = React.useState("品牌设计");
   const [hoveredId, setHoveredId] = React.useState<number | null>(null);
@@ -63,10 +63,10 @@ export function ArtrailTV() { // Keeping component name but changing UI text
               <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent p-10 flex flex-col justify-center">
                  <div className="flex items-center gap-2 mb-4">
                     <img src="/favicon.png" alt="Logo" className="h-6 w-6" />
-                    <span className="text-lg font-bold">Artrail.ai</span>
+                    <span className="text-lg font-bold">ArTrail.ai</span>
                  </div>
                  <h1 className="text-4xl font-bold text-white mb-2 leading-tight">
-                    Artrail 教程达人招募计划长期在线
+                    ArTrail 教程达人招募计划长期在线
                  </h1>
                  <p className="text-white/60 max-w-md">官方每月支持PRO会员 + 28000积分 | 至高单月得 ¥150000 元现金激励</p>
                  <div className="mt-6 flex gap-2">

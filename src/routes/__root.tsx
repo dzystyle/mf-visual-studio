@@ -55,10 +55,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "artrail.ai — 你的专属 AI 视频创作 平台" },
+      { title: "ArTrail.ai — 你的专属 AI 视频创作 平台" },
       {
         name: "description",
-        content: "Artrail 1.0:把品味和习惯写进 Skill,让精力回归创意。",
+        content: "ArTrail 1.0:把品味和习惯写进 Skill,让精力回归创意。",
       },
     ],
     links: [
