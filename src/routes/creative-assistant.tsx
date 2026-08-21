@@ -18,7 +18,16 @@ import {
   Trash2,
   Folder,
   File,
-  ChevronRight as ChevronRightIcon
+  ChevronRight as ChevronRightIcon,
+  PenTool,
+  Scissors,
+  RotateCcw,
+  MessageCirclePlus,
+  Zap,
+  Eraser,
+  Maximize2,
+  Volume2,
+  VolumeX
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
@@ -595,7 +604,7 @@ function CreativeAssistantPage() {
 
                       <div className="text-[15px] mb-4">我把角色改成完全原创的热血游戏角色：光头英雄改为黑发短发剑客主角，机械改造人改为火焰法师，脱离原有IP形象特征，保留热血燃战的宣发调性。</div>
 
-                      <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl mb-2 group">
+                      <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl mb-2 group/video">
                         <video 
                           src={videoFileUrl} 
                           className="w-full h-full object-cover" 
@@ -610,6 +619,26 @@ function CreativeAssistantPage() {
                         </div>
                         <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white pointer-events-none">
                           0:15
+                        </div>
+
+                        {/* Hover Overlay Menu */}
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/video:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col items-center justify-center">
+                          <button className="pointer-events-auto px-4 py-2 rounded-full bg-black/80 backdrop-blur-xl border border-white/20 text-white text-[13px] font-bold flex items-center gap-2 transform translate-y-4 group-hover/video:translate-y-0 transition-transform duration-300 hover:bg-black/90 active:scale-95">
+                            标注视频帧
+                          </button>
+                        </div>
+
+                        {/* Bottom Actions Bar */}
+                        <div className="absolute bottom-3 right-3 opacity-0 group-hover/video:opacity-100 transition-all duration-300 transform translate-y-2 group-hover/video:translate-y-0 flex items-center gap-1.5 p-1.5 bg-white/95 dark:bg-black/80 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-2xl z-20">
+                          <VideoActionItem icon={<PenTool className="h-4 w-4" />} tooltip="标注视频帧" />
+                          <VideoActionItem icon={<Scissors className="h-4 w-4" />} tooltip="去剪映编辑" />
+                          <VideoActionItem icon={<RotateCcw className="h-4 w-4" />} tooltip="重新生成" />
+                          <VideoActionItem icon={<MessageCirclePlus className="h-4 w-4" />} tooltip="引用到输入框" />
+                          <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
+                          <VideoActionItem icon={<span className="text-[10px] font-bold">HD</span>} tooltip="提升画质" />
+                          <VideoActionItem icon={<Eraser className="h-4 w-4" />} tooltip="字幕擦除" />
+                          <VideoActionItem icon={<Download className="h-4 w-4" />} tooltip="下载" />
+                          <VideoActionItem icon={<VolumeX className="h-4 w-4" />} tooltip="下载" />
                         </div>
                       </div>
                       <div className="text-[15px] mb-4">视频已生成成功。先确认一下效果。</div>
@@ -878,6 +907,20 @@ function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChang
 }
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+
+function VideoActionItem({ icon, tooltip }: { icon: React.ReactNode; tooltip: string }) {
+  return (
+    <div className="relative group/tooltip">
+      <button className="h-8 w-8 flex items-center justify-center rounded-xl text-[var(--color-foreground)] hover:bg-[var(--color-secondary)] transition-all active:scale-90">
+        {icon}
+      </button>
+      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 rounded-lg bg-black text-white text-[11px] font-bold whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-all pointer-events-none shadow-2xl scale-90 group-hover/tooltip:scale-100 origin-bottom">
+        {tooltip}
+        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black" />
+      </div>
+    </div>
+  );
+}
 
 function StatusLine({ icon, text, subText }: { icon: 'check' | 'loading'; text: string; subText?: string }) {
   return (
