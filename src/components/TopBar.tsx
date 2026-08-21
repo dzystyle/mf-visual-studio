@@ -439,7 +439,7 @@ export function BrandMark({ variant = "dark" }: { variant?: "light" | "dark" }) 
       <span className={cn(
         "text-[15px] font-semibold tracking-tight",
         isLight ? "text-[#1D1D1F]" : "text-white"
-      )}>artrail.ai</span>
+      )}>ArTrail.ai</span>
     </div>
   );
 }

@@ -13,7 +13,7 @@ import tvSpace from "@/assets/tv-space.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "artrail.ai — 你的专属 AI 创作 平台" },
+      { title: "ArTrail.ai — 你的专属 AI 创作 平台" },
       { name: "description", content: "把品味和习惯写进 Skill,让精力回归创意。" },
     ],
   }),
