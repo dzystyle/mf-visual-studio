@@ -621,12 +621,6 @@ function CreativeAssistantPage() {
                           0:15
                         </div>
 
-                        {/* Hover Overlay Menu */}
-                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/video:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col items-center justify-center">
-                          <button className="pointer-events-auto px-4 py-2 rounded-full bg-black/80 backdrop-blur-xl border border-white/20 text-white text-[13px] font-bold flex items-center gap-2 transform translate-y-4 group-hover/video:translate-y-0 transition-transform duration-300 hover:bg-black/90 active:scale-95">
-                            标注视频帧
-                          </button>
-                        </div>
 
                         {/* Top Actions Bar */}
                         <div className="absolute top-3 right-3 opacity-0 group-hover/video:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover/video:translate-y-0 flex items-center gap-1.5 p-1.5 bg-white/95 dark:bg-black/80 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-2xl z-20">
