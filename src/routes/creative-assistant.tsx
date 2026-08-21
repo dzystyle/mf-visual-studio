@@ -86,6 +86,8 @@ function CreativeAssistantPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [showShareToast, setShowShareToast] = useState(false);
   const [isAnnotationOpen, setIsAnnotationOpen] = useState(false);
+  const [annotationTime, setAnnotationTime] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const triggeredStepsRef = useRef<Set<number>>(new Set());
   
@@ -608,6 +610,7 @@ function CreativeAssistantPage() {
 
                       <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl mb-2 group/video">
                         <video 
+                          ref={videoRef}
                           src={videoFileUrl} 
                           className="w-full h-full object-cover" 
                           controls
@@ -626,7 +629,12 @@ function CreativeAssistantPage() {
 
                         {/* Top Actions Bar */}
                         <div className="absolute top-3 right-3 opacity-0 group-hover/video:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover/video:translate-y-0 flex items-center gap-1.5 p-1.5 bg-white/95 dark:bg-black/80 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-2xl z-20">
-                          <div onClick={() => setIsAnnotationOpen(true)}>
+                          <div onClick={() => {
+                            if (videoRef.current) {
+                              setAnnotationTime(videoRef.current.currentTime);
+                            }
+                            setIsAnnotationOpen(true);
+                          }}>
                             <VideoActionItem icon={<PenTool className="h-4 w-4" />} tooltip="标注视频帧" />
                           </div>
                           <VideoActionItem icon={<Scissors className="h-4 w-4" />} tooltip="去剪映编辑" />

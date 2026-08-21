@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { 
   X, 
   Square, 
@@ -12,7 +12,10 @@ import {
   MousePointer2,
   PenTool,
   Play,
-  Pause
+  Pause,
+  Undo2,
+  Redo2,
+  Image as ImageIcon
 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
@@ -24,6 +27,7 @@ interface VideoAnnotationDialogProps {
   videoUrl: string;
   posterUrl: string;
   onConfirm?: (imageUrl: string) => void;
+  currentTime?: number;
 }
 
 export function VideoAnnotationDialog({
@@ -31,15 +35,41 @@ export function VideoAnnotationDialog({
   onOpenChange,
   videoUrl,
   posterUrl,
-  onConfirm
+  onConfirm,
+  currentTime: initialTime = 0
 }: VideoAnnotationDialogProps) {
   const [activeTool, setActiveTool] = useState("pen");
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(initialTime);
+  const [capturedFrame, setCapturedFrame] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const duration = 15; // Mock duration
 
+  useEffect(() => {
+    if (open) {
+      setCurrentTime(initialTime);
+      setCapturedFrame(null);
+    }
+  }, [open, initialTime]);
+
+  const captureFrame = useCallback(() => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        setCapturedFrame(canvas.toDataURL("image/jpeg"));
+        setIsPlaying(false);
+      }
+    }
+  }, []);
+
   const tools = [
-    { id: 'select', icon: <MousePointer2 className="h-4 w-4" /> },
+    { id: 'select', icon: <div className="relative"><MousePointer2 className="h-4 w-4" /><Plus className="h-2 w-2 absolute -top-1 -right-1" /></div> },
     { id: 'pen', icon: <PenTool className="h-4 w-4" /> },
     { id: 'arrow', icon: <ArrowUpRight className="h-4 w-4" /> },
     { id: 'text', icon: <Type className="h-4 w-4" /> },
@@ -47,8 +77,8 @@ export function VideoAnnotationDialog({
     { id: 'pin', icon: <MapPin className="h-4 w-4" /> },
     { id: 'rect', icon: <Square className="h-4 w-4 rounded-sm" strokeWidth={2.5} /> },
     { id: 'spot', icon: <div className="h-3 w-3 rounded-full bg-red-500" /> },
-    { id: 'undo', icon: <RotateCcw className="h-4 w-4" /> },
-    { id: 'redo', icon: <RotateCw className="h-4 w-4" /> },
+    { id: 'undo', icon: <Undo2 className="h-4 w-4" /> },
+    { id: 'redo', icon: <Redo2 className="h-4 w-4" /> },
   ];
 
   const formatTime = (time: number) => {
@@ -58,9 +88,7 @@ export function VideoAnnotationDialog({
   };
 
   const handleConfirm = () => {
-    // In a real app, we would capture the current frame + annotations
-    // Here we simulate by returning the poster URL
-    onConfirm?.(posterUrl);
+    onConfirm?.(capturedFrame || posterUrl);
     onOpenChange(false);
   };
 
@@ -102,27 +130,68 @@ export function VideoAnnotationDialog({
           {/* Canvas Area */}
           <div className="flex-1 px-8 pb-4 relative overflow-hidden group/canvas">
             <div className="relative w-full h-full aspect-video rounded-3xl overflow-hidden border border-black/5 dark:border-white/10 bg-black shadow-inner">
-              <img 
-                src={posterUrl} 
-                alt="Video Frame" 
-                className="w-full h-full object-contain pointer-events-none" 
-              />
+              {!capturedFrame ? (
+                <div className="relative w-full h-full">
+                  <video 
+                    ref={videoRef}
+                    src={videoUrl} 
+                    className="w-full h-full object-contain"
+                    onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+                    onLoadedMetadata={(e) => {
+                      if (initialTime) e.currentTarget.currentTime = initialTime;
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover/canvas:opacity-100 transition-opacity">
+                    <button 
+                      onClick={captureFrame}
+                      className="px-6 py-3 rounded-2xl bg-white text-black font-bold shadow-2xl flex items-center gap-2 hover:scale-105 transition-transform"
+                    >
+                      <ImageIcon className="h-5 w-5" />
+                      捕捉当前帧进行标注
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <img 
+                  src={capturedFrame} 
+                  alt="Captured Frame" 
+                  className="w-full h-full object-contain" 
+                />
+              )}
+              
+              <canvas ref={canvasRef} className="hidden" />
               
               {/* Mock Annotation Overlays based on tool */}
               <div className="absolute inset-0 pointer-events-none">
                 <AnimatePresence>
+                  {capturedFrame && activeTool === 'pen' && (
+                    <motion.svg 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="absolute inset-0 w-full h-full pointer-events-none"
+                    >
+                      <path 
+                        d="M 150 200 Q 200 150 250 200 T 350 200" 
+                        fill="none" 
+                        stroke="#EF4444" 
+                        strokeWidth="4" 
+                        strokeLinecap="round" 
+                        className="drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+                      />
+                    </motion.svg>
+                  )}
                   {activeTool === 'spot' && (
                     <motion.div 
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="absolute top-1/2 left-1/3 w-8 h-8 rounded-full bg-red-500/30 border-2 border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.5)]"
+                      className="absolute top-1/2 left-1/3 w-32 h-32 rounded-full border-4 border-red-500 shadow-[0_0_30px_rgba(239,68,68,0.6)]"
                     />
                   )}
                   {activeTool === 'rect' && (
                     <motion.div 
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="absolute top-1/4 left-1/4 w-40 h-32 border-2 border-red-500 rounded-lg shadow-[0_0_20px_rgba(239,68,68,0.2)]"
+                      className="absolute top-1/4 left-1/4 w-48 h-40 border-4 border-red-500 rounded-2xl shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                     />
                   )}
                 </AnimatePresence>
