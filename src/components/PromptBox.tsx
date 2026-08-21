@@ -28,6 +28,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import * as Portal from "@radix-ui/react-portal";
+import { cn } from "@/lib/utils";
 
 type Attachment = {
   id: string;
