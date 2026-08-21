@@ -901,13 +901,12 @@ function CreativeAssistantPage() {
           onOpenChange={setIsAnnotationOpen}
           videoUrl={videoFileUrl}
           posterUrl={videoPreview}
+          currentTime={annotationTime}
           onConfirm={(imageUrl) => {
-            // Logic to add the annotated image to PromptBox attachments
-            // In this UI implementation, we can simulate adding it to the message flow or persistent storage
             const newMsg: Message = {
               id: Date.now().toString(),
               role: "user",
-              content: "我已基于视频帧完成标注",
+              content: "基于这张标注的视频帧进行修改",
               timestamp: new Date().toLocaleString(),
               attachments: [{ name: "annotated-frame.jpg", type: "IMAGE", url: imageUrl }]
             };

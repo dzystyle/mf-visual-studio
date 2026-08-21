@@ -15,7 +15,8 @@ import {
   Pause,
   Undo2,
   Redo2,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Plus
 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
