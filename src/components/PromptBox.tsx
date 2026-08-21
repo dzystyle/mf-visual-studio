@@ -640,17 +640,62 @@ export function PromptBox({
 
 
             {showCanvasToggle && (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-card/40 border border-border rounded-full hover:bg-card transition group">
-                <span className="text-[11px] font-bold text-muted-foreground group-hover:text-foreground">画布</span>
-                <button 
-                  onClick={() => setCanvasMode(!canvasMode)}
-                  className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-card/40 border border-border rounded-full hover:bg-card transition group cursor-pointer">
+                    <span className="text-[11px] font-bold text-muted-foreground group-hover:text-foreground">画布</span>
+                    <button 
+                      type="button"
+                      className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
+                    >
+                      <span
+                        className={`pointer-events-none block h-3.5 w-3.5 rounded-full shadow-md ring-0 transition-transform ${canvasMode ? 'translate-x-4 bg-white' : 'translate-x-0.5 bg-white'}`}
+                      />
+                    </button>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent 
+                  side="top" 
+                  align="start" 
+                  sideOffset={12} 
+                  className="w-[280px] p-1.5 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl z-[150] animate-in fade-in zoom-in-95 duration-200"
                 >
-                  <span
-                    className={`pointer-events-none block h-3.5 w-3.5 rounded-full shadow-md ring-0 transition-transform ${canvasMode ? 'translate-x-4 bg-white' : 'translate-x-0.5 bg-white'}`}
-                  />
-                </button>
-              </div>
+                  <div className="flex flex-col gap-0.5">
+                    <CanvasMenuItem 
+                      icon={Plus} 
+                      label="智能体创作" 
+                      desc="AI 智能体生成图片、视频、音频" 
+                      onClick={() => {
+                        // Logic for creating agent
+                      }}
+                    />
+                    <CanvasMenuItem 
+                      icon={LayoutGrid} 
+                      label="智体画布" 
+                      desc="可视化画布，编排 Agent 创作流程" 
+                      badge="热"
+                      onClick={() => setCanvasMode(!canvasMode)}
+                    />
+                    <CanvasMenuItem 
+                      icon={ArrowUpRight} 
+                      label="元词速创" 
+                      desc="直接运行你的元提示词快速生成" 
+                      onClick={() => {
+                        // Logic for meta prompt creation
+                      }}
+                    />
+                    <CanvasMenuItem 
+                      icon={RotateCcw} 
+                      label="智能体重制转绘" 
+                      desc="AI 解析原有视频，重制全新画面" 
+                      badge="NEW"
+                      onClick={() => {
+                        // Logic for video remake
+                      }}
+                    />
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
           </div>
 
