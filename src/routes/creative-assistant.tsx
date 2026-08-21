@@ -18,7 +18,16 @@ import {
   Trash2,
   Folder,
   File,
-  ChevronRight as ChevronRightIcon
+  ChevronRight as ChevronRightIcon,
+  PenTool,
+  Scissors,
+  RotateCcw,
+  MessageCirclePlus,
+  Zap,
+  Eraser,
+  Maximize2,
+  Volume2,
+  VolumeX
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
