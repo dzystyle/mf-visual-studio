@@ -697,6 +697,25 @@ function CreativeAssistantPage() {
           </button>
         </div>
 
+        <VideoAnnotationDialog 
+          open={isAnnotationOpen}
+          onOpenChange={setIsAnnotationOpen}
+          videoUrl={videoFileUrl}
+          posterUrl={videoPreview}
+          currentTime={annotationTime}
+          onConfirm={(imageUrl) => {
+            // Create a custom event to notify PromptBox
+            const event = new CustomEvent('artrail-add-attachment', {
+              detail: {
+                url: imageUrl,
+                name: `annotation-${Date.now()}.jpg`,
+                kind: 'image'
+              }
+            });
+            window.dispatchEvent(event);
+          }}
+        />
+
         {/* Resources Panel */}
         <AnimatePresence>
           {showResources && (
