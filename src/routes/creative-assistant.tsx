@@ -184,13 +184,33 @@ function CreativeAssistantPage() {
   };
 
   useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const updateActive = () => {
+      const top = container.getBoundingClientRect().top + 120;
+      const visible = messages.reduce<{ id: string; distance: number } | null>((best, message) => {
+        const element = messageRefs.current[message.id];
+        if (!element) return best;
+        const distance = Math.abs(element.getBoundingClientRect().top - top);
+        return !best || distance < best.distance ? { id: message.id, distance } : best;
+      }, null);
+      if (visible) setActiveMessageId(visible.id);
+    };
+    container.addEventListener("scroll", updateActive, { passive: true });
+    updateActive();
+    return () => container.removeEventListener("scroll", updateActive);
+  }, [messages]);
+
+  useEffect(() => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo({
-        top: scrollContainerRef.current.scrollHeight,
-        behavior: "smooth"
-      });
+      scrollContainerRef.current.scrollTo({ top: scrollContainerRef.current.scrollHeight, behavior: "smooth" });
     }
   }, [messages, isTyping]);
+
+  const scrollToMessage = (id: string) => {
+    messageRefs.current[id]?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setActiveMessageId(id);
+  };
 
   const handleOptionClick = (step: number, index: number) => {
     setStepStates(prev => {
