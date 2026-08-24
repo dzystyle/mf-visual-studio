@@ -73,6 +73,7 @@ type Message = {
   statusLines?: { icon: 'check' | 'loading'; text: string; subText?: string }[];
   isDetailedAssistant?: boolean;
   isDetailedAssistant2?: boolean;
+  isThreeViewAssistant?: boolean;
   isVideoOutput?: boolean;
 };
 
@@ -81,6 +82,7 @@ function CreativeAssistantPage() {
   const [showResources, setShowResources] = useState(false);
   const [resourceMode, setResourceMode] = useState<'grid' | 'folder'>('folder');
   const [currentStep, setCurrentStep] = useState(1);
+  const [isThreeViewFlow, setIsThreeViewFlow] = useState(false);
   const [inputValue, setInputValue] = useState(initialPrompt || "");
   const [activeResource, setActiveResource] = useState<{ type: 'script' | 'image' | 'video'; data?: any } | null>(null);
   const [isTyping, setIsTyping] = useState(false);
@@ -107,6 +109,8 @@ function CreativeAssistantPage() {
   // Initial workflow from search param if present
   useEffect(() => {
     if (initialPrompt && messages.length === 0) {
+      const threeView = initialPrompt.includes("三视图") || initialPrompt.includes("三视图生成");
+      setIsThreeViewFlow(threeView);
       const firstMsg: Message = {
         id: "1",
         role: "user",
@@ -128,6 +132,15 @@ function CreativeAssistantPage() {
     triggeredStepsRef.current.add(stepIndex);
     
     setIsProcessing(true);
+    if (isThreeViewFlow) {
+      const timer = setTimeout(() => {
+        setMessages(prev => [...prev,
+          { id: "tv-1", role: "assistant", timestamp: "2026/8/13 15:49:59", content: "我先查看一下你上传的参考图，然后加载图片创作能力来制作三视图。", statusLines: [{ icon: "check", text: "技能学习", subText: "三视图生成" }, { icon: "check", text: "读取文件", subText: "查看用户上传的角色参考图" }, { icon: "check", text: "技能学习", subText: "图片生成" }] },
+          { id: "tv-2", role: "assistant", timestamp: "2026/8/13 15:50:08", content: "参考图已确认，埼玉的角色特征很清晰。你目前上传了1张参考图，三视图需要多角度还原角色，建议再上传几张不同视角的参考图效果会更好。如果暂时没有更多图片，我就基于现有这张直接开始创作。", isChoiceCard: true },
+        ]); setIsProcessing(false);
+      }, 700);
+      return () => clearTimeout(timer);
+    }
     const fullWorkflow = [
       {
         id: "2",
@@ -229,6 +242,10 @@ function CreativeAssistantPage() {
   };
 
   const nextStep = () => {
+    if (isThreeViewFlow) {
+      setMessages(prev => [...prev, { id: `tv-confirm-${Date.now()}`, role: "user", content: "我已确认以上信息", timestamp: "2026/8/13 15:50:33" }, { id: "tv-result", role: "assistant", timestamp: "2026/8/13 15:50:41", content: "好的，基于这张参考图直接生成三视图。\n\n生成图像 基于图[1]的角色形象，生成一张标准角色设定三视图。日系王道热血动漫画风，赛璐璐画法，线条利落干…", attachments: [{ name: "saitama.webp", type: "IMAGE", url: charSam }] }]);
+      return;
+    }
     setCurrentStep(prev => {
       if (prev === 4) {
         // When user finishes the choice card, simulate a user message
@@ -389,10 +406,13 @@ function CreativeAssistantPage() {
                             <ChoiceCard 
                               step={1}
                               totalSteps={4}
-                              title="视频时长希望控制在多少秒以内？"
-                              options={[
+                              title={isThreeViewFlow ? "你目前上传了1张参考图，建议上传至少3张不同视角的图片以获得更好的三视图效果。是否有更多参考图可以上传？" : "视频时长希望控制在多少秒以内？"}
+                              options={isThreeViewFlow ? [
+                                { num: "1", label: "没有更多，直接用这张生成", desc: "基于当前参考图开始生成标准三视图", active: stepStates[1][0] },
+                                { num: "2", label: "我去找更多图片", desc: "补充不同角度的参考图", active: stepStates[1][1] },
+                              ] : [
                                 { num: "1", label: "15秒以内", desc: "节奏紧凑，适合信息流投放", active: stepStates[1][0] },
-                                { num: "2", label: "15-30秒", desc: "可展示更多角色 and 玩法细节", active: stepStates[1][1] },
+                                { num: "2", label: "15-30秒", desc: "可展示更多角色和玩法细节", active: stepStates[1][1] },
                                 { num: "3", label: "30-60秒", desc: "完整剧情+玩法展示", active: stepStates[1][2] },
                               ]}
                               onOptionClick={(i) => handleOptionClick(1, i)}
