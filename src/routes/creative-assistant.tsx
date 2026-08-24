@@ -407,9 +407,12 @@ function CreativeAssistantPage() {
                               step={1}
                               totalSteps={4}
                               title={isThreeViewFlow ? "你目前上传了1张参考图，建议上传至少3张不同视角的图片以获得更好的三视图效果。是否有更多参考图可以上传？" : "视频时长希望控制在多少秒以内？"}
-                              options={[
+                              options={isThreeViewFlow ? [
+                                { num: "1", label: "没有更多，直接用这张生成", desc: "基于当前参考图开始生成标准三视图", active: stepStates[1][0] },
+                                { num: "2", label: "我去找更多图片", desc: "补充不同角度的参考图", active: stepStates[1][1] },
+                              ] : [
                                 { num: "1", label: "15秒以内", desc: "节奏紧凑，适合信息流投放", active: stepStates[1][0] },
-                                { num: "2", label: "15-30秒", desc: "可展示更多角色 and 玩法细节", active: stepStates[1][1] },
+                                { num: "2", label: "15-30秒", desc: "可展示更多角色和玩法细节", active: stepStates[1][1] },
                                 { num: "3", label: "30-60秒", desc: "完整剧情+玩法展示", active: stepStates[1][2] },
                               ]}
                               onOptionClick={(i) => handleOptionClick(1, i)}
