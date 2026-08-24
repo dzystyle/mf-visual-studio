@@ -406,7 +406,7 @@ function CreativeAssistantPage() {
                             <ChoiceCard 
                               step={1}
                               totalSteps={4}
-                              title="视频时长希望控制在多少秒以内？"
+                              title={isThreeViewFlow ? "你目前上传了1张参考图，建议上传至少3张不同视角的图片以获得更好的三视图效果。是否有更多参考图可以上传？" : "视频时长希望控制在多少秒以内？"}
                               options={[
                                 { num: "1", label: "15秒以内", desc: "节奏紧凑，适合信息流投放", active: stepStates[1][0] },
                                 { num: "2", label: "15-30秒", desc: "可展示更多角色 and 玩法细节", active: stepStates[1][1] },
