@@ -325,7 +325,7 @@ function CreativeAssistantPage() {
         )}>
           <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide relative z-0">
             <div className="relative mx-auto max-w-4xl space-y-10 pl-12 sm:pl-16">
-              <FlowRail hoveredStep={hoveredFlowStep} onHover={setHoveredFlowStep} />
+              <FlowRail activeStep={currentStep} hoveredStep={hoveredFlowStep} onHover={setHoveredFlowStep} />
               {/* Global Share Button - Only visible at the top of the first message */}
               {messages.length > 0 && (
                 <div className="flex justify-end mb-4">
@@ -960,7 +960,7 @@ const flowSteps = [
   { id: 5, label: "交付成片", detail: "预览、调整与下载视频" },
 ];
 
-function FlowRail({ hoveredStep, onHover }: { hoveredStep: number | null; onHover: (step: number | null) => void }) {
+function FlowRail({ activeStep, hoveredStep, onHover }: { activeStep: number; hoveredStep: number | null; onHover: (step: number | null) => void }) {
   return (
     <div className="absolute left-0 top-3 bottom-3 z-10 hidden w-10 flex-col items-center sm:flex" aria-label="对话阶段流程">
       <div className="absolute top-4 bottom-4 w-px bg-[var(--color-border)]" />
@@ -973,7 +973,7 @@ function FlowRail({ hoveredStep, onHover }: { hoveredStep: number | null; onHove
         >
           <span className={cn(
             "relative z-10 flex h-2 w-2 rounded-full transition-all duration-200",
-            hoveredStep === step.id || currentFlowStep(step.id) ? "h-3 w-3 bg-[var(--color-foreground)]" : "bg-[var(--color-border)]"
+            hoveredStep === step.id || activeStep === step.id ? "h-3 w-3 bg-[var(--color-foreground)]" : "bg-[var(--color-border)]"
           )} />
           <AnimatePresence>
             {hoveredStep === step.id && (
@@ -993,9 +993,6 @@ function FlowRail({ hoveredStep, onHover }: { hoveredStep: number | null; onHove
   );
 }
 
-function currentFlowStep(step: number) {
-  return step === 1;
-}
 
 function VideoActionItem({ icon, tooltip }: { icon: React.ReactNode; tooltip: string }) {
   return (
