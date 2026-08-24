@@ -952,6 +952,51 @@ function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChang
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
+const flowSteps = [
+  { id: 1, label: "确认需求", detail: "视频时长、风格与投放方向" },
+  { id: 2, label: "确认风格", detail: "确定热血燃战的视觉调性" },
+  { id: 3, label: "上传素材", detail: "角色、场景与品牌素材" },
+  { id: 4, label: "生成方案", detail: "脚本、分镜与制作任务" },
+  { id: 5, label: "交付成片", detail: "预览、调整与下载视频" },
+];
+
+function FlowRail({ hoveredStep, onHover }: { hoveredStep: number | null; onHover: (step: number | null) => void }) {
+  return (
+    <div className="absolute left-0 top-3 bottom-3 z-10 hidden w-10 flex-col items-center sm:flex" aria-label="对话阶段流程">
+      <div className="absolute top-4 bottom-4 w-px bg-[var(--color-border)]" />
+      {flowSteps.map((step) => (
+        <div
+          key={step.id}
+          className="group relative flex h-16 w-10 items-center justify-center"
+          onMouseEnter={() => onHover(step.id)}
+          onMouseLeave={() => onHover(null)}
+        >
+          <span className={cn(
+            "relative z-10 flex h-2 w-2 rounded-full transition-all duration-200",
+            hoveredStep === step.id || currentFlowStep(step.id) ? "h-3 w-3 bg-[var(--color-foreground)]" : "bg-[var(--color-border)]"
+          )} />
+          <AnimatePresence>
+            {hoveredStep === step.id && (
+              <motion.div
+                initial={{ opacity: 0, x: -8, scale: 0.96 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -8, scale: 0.96 }}
+                className="absolute left-7 top-1/2 z-30 -translate-y-1/2 whitespace-nowrap rounded-full border border-[var(--color-border)] bg-[var(--color-foreground)] px-3 py-2 text-[11px] font-medium text-[var(--color-background)] shadow-xl"
+              >
+                <span className="font-bold">{step.label}</span><span className="mx-1 opacity-50">·</span>{step.detail}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function currentFlowStep(step: number) {
+  return step === 1;
+}
+
 function VideoActionItem({ icon, tooltip }: { icon: React.ReactNode; tooltip: string }) {
   return (
     <div className="relative group/tooltip">
