@@ -366,7 +366,8 @@ function CreativeAssistantPage() {
               )}
               {messages.map((msg) => (
                 <div 
-                  key={msg.id} 
+                  key={msg.id}
+                  ref={(element) => { messageRefs.current[msg.id] = element; }}
                   className={cn(
                     "flex flex-col gap-3 relative group",
                     msg.role === "user" ? "items-end" : "items-start"
