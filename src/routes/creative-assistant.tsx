@@ -1,33 +1,10 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { 
-  MessageSquare, 
-  ChevronRight, 
-  LayoutGrid, 
-  Plus, 
-  ArrowUp, 
-  Mic, 
-  ChevronDown,
-  FileText,
-  Image as ImageIcon,
-  Video,
-  X,
-  Search,
-  Download,
-  Share2,
-  Trash2,
-  Folder,
-  File,
-  ChevronRight as ChevronRightIcon,
-  PenTool,
-  Scissors,
-  RotateCcw,
-  MessageCirclePlus,
-  Zap,
-  Eraser,
-  Maximize2,
-  Volume2,
-  VolumeX
+  MessageSquare, ChevronRight, LayoutGrid, Plus, ArrowUp, Mic, ChevronDown,
+  FileText, Image as ImageIcon, Video, X, Search, Download, Share2, Trash2,
+  Folder, File, ChevronRight as ChevronRightIcon, PenTool, Scissors, RotateCcw,
+  MessageCirclePlus, Zap, Eraser, Maximize2, Volume2, VolumeX, Check
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
