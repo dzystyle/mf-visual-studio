@@ -82,6 +82,7 @@ function CreativeAssistantPage() {
   const [showResources, setShowResources] = useState(false);
   const [resourceMode, setResourceMode] = useState<'grid' | 'folder'>('folder');
   const [currentStep, setCurrentStep] = useState(1);
+  const [isThreeViewFlow, setIsThreeViewFlow] = useState(false);
   const [inputValue, setInputValue] = useState(initialPrompt || "");
   const [activeResource, setActiveResource] = useState<{ type: 'script' | 'image' | 'video'; data?: any } | null>(null);
   const [isTyping, setIsTyping] = useState(false);
