@@ -73,6 +73,7 @@ type Message = {
   statusLines?: { icon: 'check' | 'loading'; text: string; subText?: string }[];
   isDetailedAssistant?: boolean;
   isDetailedAssistant2?: boolean;
+  isThreeViewAssistant?: boolean;
   isVideoOutput?: boolean;
 };
 
