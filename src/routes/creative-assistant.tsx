@@ -324,7 +324,8 @@ function CreativeAssistantPage() {
           showResources ? "mr-[600px]" : "mr-0"
         )}>
           <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide relative z-0">
-            <div className="mx-auto max-w-4xl space-y-10">
+            <div className="relative mx-auto max-w-4xl space-y-10 pl-12 sm:pl-16">
+              <FlowRail hoveredStep={hoveredFlowStep} onHover={setHoveredFlowStep} />
               {/* Global Share Button - Only visible at the top of the first message */}
               {messages.length > 0 && (
                 <div className="flex justify-end mb-4">
