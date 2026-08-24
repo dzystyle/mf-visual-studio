@@ -242,6 +242,10 @@ function CreativeAssistantPage() {
   };
 
   const nextStep = () => {
+    if (isThreeViewFlow) {
+      setMessages(prev => [...prev, { id: `tv-confirm-${Date.now()}`, role: "user", content: "我已确认以上信息", timestamp: "2026/8/13 15:50:33" }, { id: "tv-result", role: "assistant", timestamp: "2026/8/13 15:50:41", content: "好的，基于这张参考图直接生成三视图。\n\n生成图像 基于图[1]的角色形象，生成一张标准角色设定三视图。日系王道热血动漫画风，赛璐璐画法，线条利落干…", attachments: [{ name: "saitama.webp", type: "IMAGE", url: charSam }] }]);
+      return;
+    }
     setCurrentStep(prev => {
       if (prev === 4) {
         // When user finishes the choice card, simulate a user message
