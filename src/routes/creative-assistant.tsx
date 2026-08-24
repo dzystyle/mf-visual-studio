@@ -316,6 +316,21 @@ function CreativeAssistantPage() {
       </AnimatePresence>
 
       <div className="flex flex-1 overflow-hidden pt-20 relative z-0">
+        {/* Workflow navigator */}
+        <aside className="hidden w-24 shrink-0 flex-col items-center gap-3 border-r border-[var(--color-border)] bg-[var(--color-background)]/80 py-8 lg:flex">
+          <div className="mb-2 flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-primary)] text-[var(--color-primary-foreground)]">
+            <Check className="h-4 w-4" />
+          </div>
+          <div className="absolute left-[47px] top-20 bottom-24 w-px bg-[var(--color-border)]" />
+          {messages.map((message, index) => {
+            const isActive = activeMessageId === message.id;
+            const icon = message.isVideoOutput ? <Video className="h-4 w-4" /> : message.isDetailedAssistant || message.isDetailedAssistant2 ? <ImageIcon className="h-4 w-4" /> : message.role === "user" ? <MessageSquare className="h-4 w-4" /> : <FileText className="h-4 w-4" />;
+            return <button key={message.id} onClick={() => scrollToMessage(message.id)} title={`定位到第 ${index + 1} 个流程`} className={cn("group relative z-10 flex w-16 flex-col items-center gap-1.5 rounded-xl p-1.5 transition-all", isActive ? "bg-[var(--color-secondary)] text-[var(--color-foreground)] shadow-sm" : "text-[var(--color-muted-foreground)] hover:bg-[var(--color-secondary)]/70")}>
+              <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg border bg-[var(--color-card)]", isActive ? "border-[var(--color-primary)] text-[var(--color-primary)]" : "border-[var(--color-border)]")}>{icon}</span>
+              <span className="max-w-full truncate text-[10px]">{message.isVideoOutput ? "视频" : message.isDetailedAssistant || message.isDetailedAssistant2 ? "素材" : message.role === "user" ? "需求" : "分析"}</span>
+            </button>;
+          })}
+        </aside>
         {/* Main Chat Area */}
         <div className={cn(
           "flex flex-1 flex-col transition-all duration-500 ease-in-out relative",
