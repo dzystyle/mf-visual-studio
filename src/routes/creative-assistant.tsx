@@ -66,7 +66,9 @@ function CreativeAssistantPage() {
   const [annotationTime, setAnnotationTime] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const messageRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const triggeredStepsRef = useRef<Set<number>>(new Set());
+  const [activeMessageId, setActiveMessageId] = useState<string>("1");
   
   const [stepStates, setStepStates] = useState({
     1: [true, false, false], // Duration options
