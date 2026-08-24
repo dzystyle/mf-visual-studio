@@ -90,6 +90,7 @@ function CreativeAssistantPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const triggeredStepsRef = useRef<Set<number>>(new Set());
+  const [hoveredFlowStep, setHoveredFlowStep] = useState<number | null>(null);
   
   const [stepStates, setStepStates] = useState({
     1: [true, false, false], // Duration options
