@@ -132,6 +132,15 @@ function CreativeAssistantPage() {
     triggeredStepsRef.current.add(stepIndex);
     
     setIsProcessing(true);
+    if (isThreeViewFlow) {
+      const timer = setTimeout(() => {
+        setMessages(prev => [...prev,
+          { id: "tv-1", role: "assistant", timestamp: "2026/8/13 15:49:59", content: "我先查看一下你上传的参考图，然后加载图片创作能力来制作三视图。", statusLines: [{ icon: "check", text: "技能学习", subText: "三视图生成" }, { icon: "check", text: "读取文件", subText: "查看用户上传的角色参考图" }, { icon: "check", text: "技能学习", subText: "图片生成" }] },
+          { id: "tv-2", role: "assistant", timestamp: "2026/8/13 15:50:08", content: "参考图已确认，埼玉的角色特征很清晰。你目前上传了1张参考图，三视图需要多角度还原角色，建议再上传几张不同视角的参考图效果会更好。如果暂时没有更多图片，我就基于现有这张直接开始创作。", isChoiceCard: true },
+        ]); setIsProcessing(false);
+      }, 700);
+      return () => clearTimeout(timer);
+    }
     const fullWorkflow = [
       {
         id: "2",
