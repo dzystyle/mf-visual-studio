@@ -109,6 +109,8 @@ function CreativeAssistantPage() {
   // Initial workflow from search param if present
   useEffect(() => {
     if (initialPrompt && messages.length === 0) {
+      const threeView = initialPrompt.includes("三视图") || initialPrompt.includes("三视图生成");
+      setIsThreeViewFlow(threeView);
       const firstMsg: Message = {
         id: "1",
         role: "user",
