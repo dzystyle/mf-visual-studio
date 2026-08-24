@@ -90,7 +90,6 @@ function CreativeAssistantPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const triggeredStepsRef = useRef<Set<number>>(new Set());
-  const [hoveredFlowStep, setHoveredFlowStep] = useState<number | null>(null);
   
   const [stepStates, setStepStates] = useState({
     1: [true, false, false], // Duration options
@@ -324,8 +323,7 @@ function CreativeAssistantPage() {
           showResources ? "mr-[600px]" : "mr-0"
         )}>
           <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide relative z-0">
-            <div className="relative mx-auto max-w-4xl space-y-10 pl-12 sm:pl-16">
-              <FlowRail activeStep={currentStep} hoveredStep={hoveredFlowStep} onHover={setHoveredFlowStep} />
+            <div className="mx-auto max-w-4xl space-y-10">
               {/* Global Share Button - Only visible at the top of the first message */}
               {messages.length > 0 && (
                 <div className="flex justify-end mb-4">
@@ -951,48 +949,6 @@ function ScriptDetailDialog({ open, onOpenChange }: { open: boolean; onOpenChang
 }
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-
-const flowSteps = [
-  { id: 1, label: "确认需求", detail: "视频时长、风格与投放方向" },
-  { id: 2, label: "确认风格", detail: "确定热血燃战的视觉调性" },
-  { id: 3, label: "上传素材", detail: "角色、场景与品牌素材" },
-  { id: 4, label: "生成方案", detail: "脚本、分镜与制作任务" },
-  { id: 5, label: "交付成片", detail: "预览、调整与下载视频" },
-];
-
-function FlowRail({ activeStep, hoveredStep, onHover }: { activeStep: number; hoveredStep: number | null; onHover: (step: number | null) => void }) {
-  return (
-    <div className="absolute left-0 top-3 bottom-3 z-10 hidden w-10 flex-col items-center sm:flex" aria-label="对话阶段流程">
-      <div className="absolute top-4 bottom-4 w-px bg-[var(--color-border)]" />
-      {flowSteps.map((step) => (
-        <div
-          key={step.id}
-          className="group relative flex h-16 w-10 items-center justify-center"
-          onMouseEnter={() => onHover(step.id)}
-          onMouseLeave={() => onHover(null)}
-        >
-          <span className={cn(
-            "relative z-10 flex h-2 w-2 rounded-full transition-all duration-200",
-            hoveredStep === step.id || activeStep === step.id ? "h-3 w-3 bg-[var(--color-foreground)]" : "bg-[var(--color-border)]"
-          )} />
-          <AnimatePresence>
-            {hoveredStep === step.id && (
-              <motion.div
-                initial={{ opacity: 0, x: -8, scale: 0.96 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -8, scale: 0.96 }}
-                className="absolute left-7 top-1/2 z-30 -translate-y-1/2 whitespace-nowrap rounded-full border border-[var(--color-border)] bg-[var(--color-foreground)] px-3 py-2 text-[11px] font-medium text-[var(--color-background)] shadow-xl"
-              >
-                <span className="font-bold">{step.label}</span><span className="mx-1 opacity-50">·</span>{step.detail}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 
 function VideoActionItem({ icon, tooltip }: { icon: React.ReactNode; tooltip: string }) {
   return (
