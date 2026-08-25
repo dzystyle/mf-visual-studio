@@ -180,66 +180,9 @@ function UserMenu({
           </button>
         </div>
 
-        <div className="space-y-0 px-2 pb-2 mt-2">
-          <div className="px-3 pt-2">
-            <div className="flex items-center justify-between text-xs text-foreground/40 font-medium">
-              <div className="flex items-center gap-2 text-foreground">
-                <FilmIconGradient className="h-3.5 w-3.5" />
-                <span className="text-[13px]">会员积分</span>
-              </div>
-              <span className="font-bold text-foreground text-[13px]">2081</span>
-            </div>
-            <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
-              <div 
-                className="flex justify-between cursor-pointer hover:text-foreground/50 transition-colors"
-                onClick={() => { setShowCreditPurchase(true); setOpen(false); }}
-              >
-                <span>套餐</span><span>2000</span>
-              </div>
-              <div 
-                className="flex justify-between cursor-pointer hover:text-foreground/50 transition-colors"
-                onClick={() => { setShowCreditPurchase(true); setOpen(false); }}
-              >
-                <span>通用积分</span><span>0</span>
-              </div>
-              <div 
-                className="flex justify-between cursor-pointer hover:text-foreground/50 transition-colors"
-                onClick={() => { setShowCreditPurchase(true); setOpen(false); }}
-              >
-                <span>模型专属积分</span><span>0</span>
-              </div>
-              <div 
-                className="flex justify-between cursor-pointer hover:text-foreground/50 transition-colors"
-                onClick={() => { setShowCreditPurchase(true); setOpen(false); }}
-              >
-                <span>额外</span><span>81</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="px-3 pt-3 pb-3">
-            <div className="flex items-center justify-between text-xs text-foreground/40 font-medium">
-              <div className="flex items-center gap-2 text-foreground">
-                <Gift className="h-3.5 w-3.5 text-foreground/60" />
-                <span className="text-[13px]">奖励积分</span>
-              </div>
-              <span className="font-bold text-foreground text-[13px]">0</span>
-            </div>
-            <div className="mt-2 space-y-1.5 pl-5.5 text-[11px] text-foreground/30">
-              <div className="flex justify-between"><span>邀请奖励</span><span>0</span></div>
-            </div>
-            
-            <Link 
-              to="/settings/billing" 
-              search={{ tab: 'credits' }}
-              onClick={() => setOpen(false)} 
-              className="mt-4 flex w-full items-center justify-center rounded-full bg-foreground/5 py-2.5 text-[13px] font-semibold text-foreground/80 transition-colors hover:bg-foreground/10"
-            >
-              查看用量
-            </Link>
-          </div>
-
-          <div className="border-t border-border/50 opacity-50" />
+         <div className="space-y-0 px-2 pb-2 mt-2">
+           {/* 会员积分、奖励积分及查看用量暂时隐藏 */}
+           <div className="border-t border-border/50 opacity-50" />
           
           <Link to="/settings/team" onClick={() => setOpen(false)}><MenuItem icon={Users} label="团队管理" className="py-2" /></Link>
           <MenuItem 
