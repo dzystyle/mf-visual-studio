@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useRef, useState, useEffect } from "react";
 import { Plus, ChevronRight, Play, ArrowUpRight } from "lucide-react";
+import { toast } from "sonner";
 import { PromoBanner } from "@/components/PromoBanner";
 import { BrandMark, TopBar } from "@/components/TopBar";
 import { PromptBox } from "@/components/PromptBox";
