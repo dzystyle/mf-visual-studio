@@ -69,7 +69,13 @@ function Home() {
                   {["智能", "画布", "营销"].map((tab) => (
                     <button
                       key={tab}
-                      onClick={() => setActiveTab(tab)}
+                      onClick={() => {
+                        if (tab === "营销") {
+                          toast.info("功能开发中");
+                          return;
+                        }
+                        setActiveTab(tab);
+                      }}
                       className={`flex items-center justify-center px-6 py-1.5 text-[14px] font-medium rounded-full transition-all duration-300 ${
                         activeTab === tab
                           ? "bg-black text-white dark:bg-white dark:text-black shadow-lg"
