@@ -259,6 +259,40 @@ function CreativeAssistantPage() {
 
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
 
+  // 刷新历史:清除当前阶段的助手回复并重新生成
+  const handleRefreshHistory = () => {
+    if (messages.length === 0) {
+      toast.info("当前暂无会话内容");
+      return;
+    }
+    const lastUserIdx = messages.reduce((acc, m, i) => (m.role === "user" ? i : acc), -1);
+    const kept = lastUserIdx >= 0 ? messages.slice(0, lastUserIdx + 1) : [];
+    triggeredStepsRef.current.clear();
+    setMessages(kept);
+    toast.success("正在刷新当前会话...");
+    if (kept.length > 0) {
+      setTimeout(() => triggerAssistantResponse(Math.min(currentStep, 5)), 300);
+    }
+  };
+
+  // 新会话:重置全部会话状态
+  const handleNewSession = () => {
+    triggeredStepsRef.current.clear();
+    setMessages([]);
+    setInputValue("");
+    setCurrentStep(1);
+    setStepStates({
+      1: [true, false, false],
+      2: [true, false, false, false],
+      3: [true, true, false, false],
+      4: [false, true],
+    });
+    setActiveResource(null);
+    setIsTyping(false);
+    setIsProcessing(false);
+    toast.success("已创建新会话,开始新的创作吧");
+  };
+
   const handleSendMessage = (textOverride?: string) => {
     const textToSend = typeof textOverride === 'string' ? textOverride : inputValue;
     if (!textToSend.trim() || isProcessing) return;
