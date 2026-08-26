@@ -30,7 +30,9 @@ import {
   VolumeX
 } from "lucide-react";
 import { BrandMark, TopBar } from "@/components/TopBar";
+import { AssistantToolbar } from "@/components/assistant/AssistantToolbar";
 import { PromptBox } from "@/components/PromptBox";
+import { toast } from "sonner";
 import { VideoAnnotationDialog } from "@/components/VideoAnnotationDialog";
 import { cn } from "@/lib/utils";
 import { 
