@@ -24,11 +24,12 @@ export function SubscriptionDialog({
     const discount = personalCycle === "year" ? 0.83 : 1;
     
     return [
-      { name: "Starter", basePrice: 140, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 10 },
-      { name: "Basic", basePrice: 350, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 20 },
-      { name: "Plus", basePrice: 700, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 50, vip: true },
-      { name: "Pro", basePrice: 1400, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 80, vip: true },
+      { name: "Starter", basePrice: 140, baseCredits: 2000, extra: 400, bonus: "多送20%", concurrency: 10, current: true, rates: [0.525, 0.233, 0.233, 0.350, 0.408] },
+      { name: "Basic", basePrice: 350, baseCredits: 5000, extra: 1500, bonus: "多送30%", concurrency: 20, rates: [0.485, 0.215, 0.215, 0.323, 0.377] },
+      { name: "Plus", basePrice: 700, baseCredits: 10000, extra: 4000, bonus: "多送40%", concurrency: 50, vip: true, rates: [0.450, 0.200, 0.200, 0.300, 0.350] },
+      { name: "Pro", basePrice: 1400, baseCredits: 20000, extra: 10000, bonus: "多送50%", concurrency: 80, vip: true, rates: [0.420, 0.187, 0.187, 0.280, 0.327] },
     ].map(plan => ({
+
       ...plan,
       price: Math.round(plan.basePrice * discount),
       credits: `${plan.baseCredits * (personalCycle === "year" ? 2 : 1.5)} + ${plan.extra}`
@@ -83,7 +84,7 @@ export function SubscriptionDialog({
             <h1 className="text-2xl font-bold tracking-tight">Artrail - 价格与套餐</h1>
 
             <div className="mt-8 flex justify-center">
-              <div className="flex border-b border-white/10 w-full max-w-md hidden">
+              <div className="flex border-b border-white/10 w-full max-w-2xl">
                 <button 
                   onClick={() => setActiveTab("personal")}
                   className={cn(
@@ -146,7 +147,8 @@ export function SubscriptionDialog({
                       price={plan.price} 
                       credits={plan.credits} 
                       bonus={plan.bonus} 
-                      features={getPersonalFeatures(plan.concurrency, plan.vip)} 
+                      isCurrent={(plan as any).current}
+                      features={getPersonalFeatures(plan.concurrency, plan.vip, (plan as any).rates)} 
                     />
                   ))}
                 </div>
@@ -345,7 +347,7 @@ function CountdownItem({ value, label }: { value: string; label: string }) {
   );
 }
 
-function PersonalCard({ name, price, credits, bonus, features, highlight }: any) {
+function PersonalCard({ name, price, credits, bonus, features, highlight, isCurrent }: any) {
   return (
     <div className="relative flex flex-col rounded-3xl border border-border bg-card p-6 text-left transition hover:border-accent">
       <div className="flex items-center justify-between">
@@ -372,7 +374,7 @@ function PersonalCard({ name, price, credits, bonus, features, highlight }: any)
 
       <Link to="/checkout">
         <button className="mt-6 w-full rounded-full bg-white py-2.5 text-sm font-bold text-black hover:bg-white/90 transition-colors">
-          立即订阅
+          {isCurrent ? "恢复续订" : "升级"}
         </button>
       </Link>
 
@@ -512,12 +514,19 @@ function FaqItem({ id, num, title, content }: any) {
   );
 }
 
-const getPersonalFeatures = (concurrency: number, vipStyle: boolean = false) => [
+const getPersonalFeatures = (
+  concurrency: number,
+  vipStyle: boolean = false,
+  rates: number[] = [0.525, 0.233, 0.233, 0.35, 0.408],
+) => [
   {
-    title: "创作补贴",
+    title: "限时活动",
     items: [
-      { label: "注册奖励：100 积分" },
-      { label: "探索使用奖励：200 积分" },
+      { label: "Seedance 2.5 480p", info: true, sub: `限时 6折 低至 ¥${rates[0].toFixed(3)}/秒` },
+      { label: "Wan 3.0 480p", sub: `限时 6折 低至 ¥${rates[1].toFixed(3)}/秒` },
+      { label: "MiniMax H3 Max 480p", sub: `限时 6折 低至 ¥${rates[2].toFixed(3)}/秒` },
+      { label: "Wan 3.0 Prime 480p", sub: `限时 6折 低至 ¥${rates[3].toFixed(3)}/秒` },
+      { label: "MiniMax H3 768p", sub: `限时 6折 低至 ¥${rates[4].toFixed(3)}/秒` },
     ]
   },
   {

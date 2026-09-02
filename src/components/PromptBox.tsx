@@ -10,16 +10,23 @@ import {
   FileText,
   X,
   ChevronDown,
+  ChevronRight,
   Search,
   Mic,
   AtSign,
+  PackagePlus,
+  Folder,
+  Bot,
 } from "lucide-react";
+import { DEFAULT_HISTORY, type HistoryItem } from "./AppSidebar";
 import {
   ModelPicker,
   SkillPicker,
   ElementsPickerDialog,
   CreativePreferencePicker,
+  skillList,
 } from "./picker-dialogs";
+import { CreateSkillDialog } from "./skill/CreateSkillDialog";
 import {
   Popover,
   PopoverContent,
@@ -44,20 +51,21 @@ const ACCEPT_MAP: Record<Attachment["kind"], string> = {
 export function PromptBox({ 
   onSubmit, 
   isMini = false,
-  showCanvasToggle = true
 }: { 
-  onSubmit?: (text: string, canvasMode: boolean) => void;
+  onSubmit?: (text: string, canvasMode: boolean, skill?: string | null) => void; 
   isMini?: boolean;
-  showCanvasToggle?: boolean;
 } = {}) {
   const [text, setText] = useState("");
   const [plusOpen, setPlusOpen] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [model, setModel] = useState<string | null>(null);
   const [skill, setSkill] = useState<string | null>(null);
+  const [project, setProject] = useState<HistoryItem | null>(null);
+  const [projectOpen, setProjectOpen] = useState(false);
+  const [projectQuery, setProjectQuery] = useState("");
+  const [projectWarn, setProjectWarn] = useState(false);
   const [ratio, setRatio] = useState("16:9");
   const [duration, setDuration] = useState(17);
-  const [canvasMode, setCanvasMode] = useState(false);
   const [assetsOpen, setAssetsOpen] = useState(false);
   const [resolution, setResolution] = useState("720p");
   const [mentionOpen, setMentionOpen] = useState(false);
@@ -67,6 +75,9 @@ export function PromptBox({
   const [mentionFilter, setMentionFilter] = useState("");
   const [cursorPos, setCursorPos] = useState(0);
   const [mentionRect, setMentionRect] = useState<DOMRect | null>(null);
+  const [slashOpen, setSlashOpen] = useState(false);
+  const [slashFilter, setSlashFilter] = useState("");
+  const [createSkillOpen, setCreateSkillOpen] = useState(false);
 
   // Stats for the hover capsule (synced with localStorage)
    const [prefs, setPrefs] = useState({
@@ -146,8 +157,18 @@ export function PromptBox({
       textareaRef.current?.focus();
     };
 
+    const handleInsertTemplate = (e: any) => {
+      const templateName = e.detail;
+      setText(templateName);
+      textareaRef.current?.focus();
+    };
+
     window.addEventListener('select-skill', handleSelectSkill);
-    return () => window.removeEventListener('select-skill', handleSelectSkill);
+    window.addEventListener('insert-template', handleInsertTemplate);
+    return () => {
+      window.removeEventListener('select-skill', handleSelectSkill);
+      window.removeEventListener('insert-template', handleInsertTemplate);
+    };
   }, []);
 
   useEffect(() => {
@@ -169,7 +190,25 @@ export function PromptBox({
   useEffect(() => {
     const textBeforeCursor = text.slice(0, cursorPos);
     const lastAtPos = textBeforeCursor.lastIndexOf("@");
-    
+    const lastSlashPos = textBeforeCursor.lastIndexOf("/");
+
+    // "/" triggers the Skill list (only when it starts a token, not inside a path like 2026/8/28)
+    if (lastSlashPos > lastAtPos) {
+      const beforeSlash = textBeforeCursor.slice(0, lastSlashPos);
+      const afterSlash = textBeforeCursor.slice(lastSlashPos + 1);
+      const isTokenStart = lastSlashPos === 0 || /[\s，。,.、;；]/.test(beforeSlash.slice(-1));
+      if (isTokenStart && !/[\s/]/.test(afterSlash) && !/^\d/.test(afterSlash)) {
+        if (textareaRef.current) {
+          setMentionRect(textareaRef.current.getBoundingClientRect());
+        }
+        setSlashFilter(afterSlash);
+        setSlashOpen(true);
+        setMentionOpen(false);
+        return;
+      }
+    }
+    setSlashOpen(false);
+
     if (lastAtPos !== -1) {
       const afterAt = textBeforeCursor.slice(lastAtPos + 1);
       // Only trigger if there's no space after '@' or the space is just being typed
@@ -288,6 +327,23 @@ export function PromptBox({
         setCursorPos(insertionPos);
       }
     }, 10);
+  };
+
+  const handleSlashSkillSelect = (title: string) => {
+    const textBeforeCursor = text.slice(0, cursorPos);
+    const lastSlashPos = textBeforeCursor.lastIndexOf("/");
+    let newText = text;
+    let newPos = cursorPos;
+    if (lastSlashPos !== -1) {
+      newText = text.slice(0, lastSlashPos) + text.slice(cursorPos);
+      newPos = lastSlashPos;
+    }
+    setText(newText);
+    setCursorPos(newPos);
+    setSlashOpen(false);
+    setSlashFilter("");
+    setSkill(title);
+    setTimeout(() => textareaRef.current?.focus(), 10);
   };
 
 
@@ -464,7 +520,7 @@ export function PromptBox({
                           e.preventDefault();
                           const v = text.trim();
                           if (v && onSubmit) {
-                            onSubmit(v, canvasMode);
+                            onSubmit(v, false, skill);
                             setText("");
                             setAttachments([]);
                             setSelectedMentions([]);
@@ -536,6 +592,66 @@ export function PromptBox({
             </div>
           </Portal.Root>
         )}
+
+        {!isMini && slashOpen && mentionRect && (
+          <Portal.Root>
+            <div
+              className="fixed bg-popover/95 border border-border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden z-[9999] animate-in fade-in slide-in-from-top-2 duration-200"
+              style={{
+                top: mentionRect.bottom + 8,
+                left: mentionRect.left,
+                width: 360,
+              }}
+            >
+              <div className="p-3 border-b border-border/50">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
+                  <input
+                    type="text"
+                    value={slashFilter}
+                    onChange={(e) => setSlashFilter(e.target.value)}
+                    placeholder="搜索技能"
+                    className="w-full bg-accent/50 border-none rounded-xl pl-9 pr-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all"
+                  />
+                </div>
+              </div>
+              <div className="max-h-72 overflow-y-auto p-2 scrollbar-hide">
+                {skillList
+                  .filter((s) => s.title.toLowerCase().includes(slashFilter.toLowerCase()))
+                  .map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => handleSlashSkillSelect(s.title)}
+                      className="w-full flex items-center gap-3 px-2.5 py-2.5 rounded-xl hover:bg-accent transition-all group text-left"
+                    >
+                      <div className="h-12 w-12 rounded-xl overflow-hidden border border-border bg-accent/50 shrink-0">
+                        <img src={s.img} alt={s.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-foreground truncate">{s.title}</div>
+                        <div className="text-[11px] text-muted-foreground/70 truncate mt-0.5">{s.desc}</div>
+                      </div>
+                    </button>
+                  ))}
+                {skillList.filter((s) => s.title.toLowerCase().includes(slashFilter.toLowerCase())).length === 0 && (
+                  <div className="py-8 text-center text-xs text-muted-foreground/60">未找到匹配的 Skill</div>
+                )}
+              </div>
+              <div className="border-t border-border/50">
+                <button
+                  onClick={() => { setSlashOpen(false); setCreateSkillOpen(true); }}
+                  className="flex w-full items-center justify-between px-4 py-3 text-sm font-medium text-foreground/80 hover:bg-accent hover:text-foreground transition group"
+                >
+                  <span className="flex items-center gap-2.5">
+                    <PackagePlus className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
+                    创建技能
+                  </span>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground/50" />
+                </button>
+              </div>
+            </div>
+          </Portal.Root>
+        )}
       </div>
 
       {!isMini && (
@@ -562,6 +678,7 @@ export function PromptBox({
             <input ref={fileInputRef} type="file" multiple className="hidden" onChange={onFiles} />
             
             <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} onSelect={handleMentionSelect} />
+            <CreateSkillDialog open={createSkillOpen} onOpenChange={setCreateSkillOpen} />
             
             {/* <Popover>
               <PopoverTrigger asChild>
@@ -655,19 +772,83 @@ export function PromptBox({
             </Popover>
 
 
-            {showCanvasToggle && (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-card/40 border border-border rounded-full hover:bg-card transition group">
-                <span className="text-[11px] font-bold text-muted-foreground group-hover:text-foreground">画布</span>
-                <button 
-                  onClick={() => setCanvasMode(!canvasMode)}
-                  className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${canvasMode ? 'bg-[#9333EA]' : 'bg-[#E5E5E5]'}`}
-                >
-                  <span
-                    className={`pointer-events-none block h-3.5 w-3.5 rounded-full shadow-md ring-0 transition-transform ${canvasMode ? 'translate-x-4 bg-white' : 'translate-x-0.5 bg-white'}`}
-                  />
-                </button>
-              </div>
-            )}
+            <Popover open={projectOpen} onOpenChange={setProjectOpen}>
+              <PopoverTrigger asChild>
+                <div className="relative">
+                  {projectWarn && !project && !projectOpen && (
+                    <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 z-[120] animate-in fade-in slide-in-from-bottom-1 duration-300 pointer-events-none">
+                      <div className="bg-[#1A1A1A] text-white text-[11px] font-medium rounded-xl px-3.5 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.24)] whitespace-nowrap border border-white/10 dark:bg-[#0A0A0A]/95">
+                        请先选择一个项目，作品会自动归档到该项目
+                        <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-[5px] border-x-transparent border-t-[5px] border-t-[#1A1A1A] dark:border-t-[#0A0A0A]" />
+                      </div>
+                    </div>
+                  )}
+                  <button type="button" className="relative">
+                    {projectWarn && !project && (
+                      <span className="absolute -inset-1 rounded-full bg-primary/40 animate-ping pointer-events-none" />
+                    )}
+                    <span className={`relative block rounded-full transition-shadow ${projectWarn && !project ? "ring-2 ring-primary shadow-[0_0_14px_hsl(var(--primary)/0.55)]" : ""}`}>
+                      <Chip
+                        icon={Folder}
+                        label={project ? `项目：${project.title}` : "选择项目"}
+                        active={!!project || projectWarn}
+                        onClear={project ? () => setProject(null) : undefined}
+                      />
+                    </span>
+                  </button>
+                </div>
+              </PopoverTrigger>
+              <PopoverContent
+                side="top"
+                align="center"
+                sideOffset={12}
+                className="w-[320px] p-0 border-border bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl z-[100] animate-in fade-in zoom-in-95 duration-200 overflow-hidden"
+              >
+                <div className="px-3 pt-3 pb-2 border-b border-border/60">
+                  <div className="flex items-center gap-2 rounded-lg bg-accent/50 px-2.5 py-1.5">
+                    <Search className="h-3.5 w-3.5 text-muted-foreground" />
+                    <input
+                      value={projectQuery}
+                      onChange={(e) => setProjectQuery(e.target.value)}
+                      placeholder="搜索项目..."
+                      className="flex-1 bg-transparent text-xs outline-none placeholder:text-muted-foreground/60"
+                    />
+                  </div>
+                </div>
+                <div className="max-h-[280px] overflow-y-auto p-1.5">
+                  {DEFAULT_HISTORY.filter((h) => h.title.includes(projectQuery)).length === 0 && (
+                    <div className="px-3 py-6 text-center text-xs text-muted-foreground">未找到相关项目</div>
+                  )}
+                  {(["今天", "昨天", "本月", "更早"] as const).map((g) => {
+                    const list = DEFAULT_HISTORY.filter((h) => h.group === g && h.title.includes(projectQuery));
+                    if (list.length === 0) return null;
+                    return (
+                      <div key={g} className="mb-1">
+                        <div className="px-2.5 py-1 text-[10px] font-medium text-muted-foreground/70">{g}</div>
+                        {list.map((h) => {
+                          const SrcIcon = h.source === "canvas" ? LayoutGrid : Bot;
+                          const selected = project?.id === h.id;
+                          return (
+                            <button
+                              key={h.id}
+                              type="button"
+                              onClick={() => { setProject(h); setProjectWarn(false); setProjectOpen(false); setProjectQuery(""); textareaRef.current?.focus(); }}
+                              className={`flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-xs transition-colors ${selected ? "bg-primary/10 text-primary" : "hover:bg-accent/60"}`}
+                            >
+                              <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg ${h.source === "canvas" ? "bg-blue-500/10 text-blue-500" : "bg-emerald-500/10 text-emerald-500"}`}>
+                                <SrcIcon className="h-3.5 w-3.5" />
+                              </span>
+                              <span className="flex-1 truncate font-medium">{h.title}</span>
+                              <span className="text-[10px] text-muted-foreground/70">{h.source === "canvas" ? "画布" : "Agent"}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="flex items-center gap-2">
@@ -676,8 +857,12 @@ export function PromptBox({
             </button>
             <button onClick={() => {
                 const v = text.trim();
-                if (v && onSubmit) { 
-                  onSubmit(v, canvasMode); 
+                if (v && !project) {
+                  setProjectWarn(true);
+                  return;
+                }
+                if (v && onSubmit) {
+                  onSubmit(v, false, skill);
                   setText(""); 
                   setAttachments([]);
                   setSelectedMentions([]);

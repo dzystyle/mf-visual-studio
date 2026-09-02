@@ -8,7 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
-import { Sidebar } from "@/components/Sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -91,9 +91,9 @@ function RootComponent() {
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <div className="min-h-screen bg-background text-foreground">
-          <Sidebar />
-          <main className="ml-[72px]">
+        <div className="flex min-h-screen bg-background text-foreground">
+          <AppSidebar />
+          <main className="min-w-0 flex-1">
             <Outlet />
           </main>
           <Toaster position="top-center" expand={true} richColors closeButton />

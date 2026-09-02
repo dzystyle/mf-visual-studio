@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X, Code, Calendar, LayoutGrid, Star } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 
 
@@ -226,6 +227,7 @@ export function ModelPickerDialog({
 /* ---------------- Skill Picker ---------------- */
 const categories = [
   { key: "all", label: "全部" },
+  { key: "default", label: "默认调用", icon: Star, tip: "未手动选择Skill时，Agent会从默认调用的skill里面寻找合适的" },
   { key: "mine", label: "我的" },
   { key: "starred", label: "收藏" },
   { key: "film", label: "专业影视" },
@@ -235,15 +237,27 @@ const categories = [
   { key: "creative", label: "创意发散" },
 ] as const;
 
-const skillList = [
+export const skillList = [
+  {
+    id: "three-view",
+    title: "三视图生成",
+    desc: "基于参考图与角色描述，生成标准纯白底三视图（正面 / 侧面 / 背面），A-pose 比例对齐。",
+    models: "Seedream 4.0",
+    tags: ["角色设定", "新手必用"],
+    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4",
+    isDefault: false
+  },
   {
     id: "destiny",
-    title: "百万主角登场动效",
+
+    title: "游戏icon设置",
     desc: "主角高燃登场视频生成：基于案例提示词模板替换画风，保留极限镜头语言。",
     models: "MiniMax H3",
     tags: ["动漫游戏", "新手必用"],
     img: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=800&auto=format&fit=crop",
-    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4"
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4",
+    isDefault: true
   },
   {
     id: "jojo",
@@ -252,7 +266,8 @@ const skillList = [
     models: "Seedance 2.5",
     tags: ["动漫游戏", "新手必用"],
     img: "https://images.unsplash.com/photo-1578632738981-43c9ad4c585f?q=80&w=800&auto=format&fit=crop",
-    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4"
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4",
+    isDefault: false
   },
   {
     id: "gta6",
@@ -261,7 +276,8 @@ const skillList = [
     models: "Seedance 2.5",
     tags: ["新手必用", "动漫游戏"],
     img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
-    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4"
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4",
+    isDefault: true
   },
   {
     id: "3d-horror",
@@ -270,7 +286,8 @@ const skillList = [
     models: "Seedance 2.5",
     tags: ["大师美学", "动漫游戏"],
     img: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=800&auto=format&fit=crop",
-    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4"
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4",
+    isDefault: false
   },
   {
     id: "dimension",
@@ -279,7 +296,8 @@ const skillList = [
     models: "Seedance 2.5",
     tags: ["新手必用", "动漫游戏"],
     img: "https://images.unsplash.com/photo-1560972550-aba3456b5564?q=80&w=800&auto=format&fit=crop",
-    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4"
+    video: "https://cdn.artrail.ai/assets/videos/one-punch-man.mp4",
+    isDefault: true
   },
 ];
 
@@ -293,6 +311,12 @@ export function SkillPicker({
   const [hoveredSkill, setHoveredSkill] = useState<typeof skillList[number]>(skillList[0]);
   const [previewSkill, setPreviewSkill] = useState<typeof skillList[number] | null>(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+
+  const filteredSkills = tab === "default" ? skillList.filter((s) => s.isDefault) : skillList;
+
+  useEffect(() => {
+    setHoveredSkill(filteredSkills[0] || skillList[0]);
+  }, [tab]);
   
   return (
     <div className="w-[840px] flex flex-col rounded-[28px] bg-white dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl">
@@ -315,25 +339,47 @@ export function SkillPicker({
       <div className="flex flex-1 overflow-hidden h-[480px]">
         {/* Left Sidebar Categories */}
         <div className="w-[140px] border-right border-[#F0F0F0] dark:border-white/5 py-4 flex flex-col gap-1 bg-[#F9F9F9] dark:bg-transparent">
-          {categories.map((c) => (
-            <button
-              key={c.key}
-              onClick={() => setTab(c.key)}
-              className={`flex items-center gap-3 px-6 py-2.5 text-[13px] font-bold transition-all relative ${
-                tab === c.key
-                  ? "text-black dark:text-white"
-                  : "text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/60"
-              }`}
-            >
-              {tab === c.key && <Check className="h-3.5 w-3.5 absolute left-2 stroke-[3px]" />}
-              <span className="pl-0">{c.label}</span>
-            </button>
-          ))}
+          <TooltipProvider delayDuration={100}>
+            {categories.map((c) => {
+              const Icon = "icon" in c ? c.icon : null;
+              const isDefault = c.key === "default";
+              const button = (
+                <button
+                  key={isDefault ? undefined : c.key}
+                  onClick={() => setTab(c.key)}
+                  className={`flex items-center gap-2 px-6 py-2.5 text-[13px] font-bold transition-all relative ${
+                    tab === c.key
+                      ? "text-black dark:text-white"
+                      : "text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/60"
+                  }`}
+                >
+                  {tab === c.key && <Check className="h-3.5 w-3.5 absolute left-2 stroke-[3px]" />}
+                  {Icon && (
+                    <Icon className={`h-3.5 w-3.5 shrink-0 ${tab === c.key ? "text-black dark:text-white" : "text-[#999] dark:text-white/40"}`} />
+                  )}
+                  <span className="pl-0">{c.label}</span>
+                </button>
+              );
+
+              return isDefault ? (
+                <Tooltip key={c.key}>
+                  <TooltipTrigger asChild>{button}</TooltipTrigger>
+                  <TooltipContent
+                    side="top"
+                    sideOffset={8}
+                    className="max-w-[260px] bg-white dark:bg-zinc-100 text-black border border-black/10 dark:border-white/20 shadow-2xl px-3 py-2 text-xs leading-relaxed z-[9999]"
+                  >
+                    {c.tip}
+                  </TooltipContent>
+                </Tooltip>
+              ) : button;
+            })}
+          </TooltipProvider>
         </div>
 
         {/* Middle Skill List */}
         <div className="w-[300px] border-x border-[#F0F0F0] dark:border-white/5 bg-white dark:bg-white/5 overflow-y-auto scrollbar-hide px-2 py-2 relative z-10">
-          {skillList.map((s) => (
+          {filteredSkills.map((s) => (
             <div
               key={s.id}
               onMouseEnter={() => setHoveredSkill(s)}

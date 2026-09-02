@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { TopBar } from "@/components/TopBar";
-import { Sidebar } from "@/components/Sidebar";
+
 import { TeamOverview } from "@/components/team/TeamOverview";
 import { TeamMembers, TeamApproval } from "@/components/team/TeamMembers";
 import { TeamStructure } from "@/components/team/TeamStructure";
@@ -29,7 +29,6 @@ function TeamManagementPage() {
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      <Sidebar />
       <div className="flex-1 flex flex-col">
         {/* Reuse the shared TopBar components / layout logic */}
         <div className="relative h-16 w-full px-8 flex items-center justify-between border-b border-border/40 bg-sidebar/50 backdrop-blur-md">

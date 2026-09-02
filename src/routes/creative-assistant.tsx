@@ -27,13 +27,36 @@ import {
   Eraser,
   Maximize2,
   Volume2,
-  VolumeX
+  VolumeX,
+  Layers,
+  SquareDashedMousePointer,
+  
+
 } from "lucide-react";
-import { BrandMark, TopBar } from "@/components/TopBar";
+import { TopBar } from "@/components/TopBar";
 import { AssistantToolbar } from "@/components/assistant/AssistantToolbar";
 import { PromptBox } from "@/components/PromptBox";
 import { toast } from "sonner";
 import { VideoAnnotationDialog } from "@/components/VideoAnnotationDialog";
+import { ImageAnnotationDialog } from "@/components/image/ImageAnnotationDialog";
+import { RegionEditDialog } from "@/components/image/RegionEditDialog";
+import { LayerSplitDialog } from "@/components/image/LayerSplitDialog";
+import threeViewImage from "@/assets/three-view-result.jpg";
+import { FlowBlockView } from "@/components/assistant/blocks";
+import {
+  ASSISTANT_NEW_SESSION_EVENT,
+  ASSISTANT_SELECT_HISTORY_EVENT,
+} from "@/components/AppSidebar";
+import { IconSheetFlow, IconSheetResult, type IconSheetDraft } from "@/components/assistant/IconSheetFlow";
+import {
+  STAGES,
+  createContext,
+  type Block,
+  type FlowContext,
+  type FlowOption,
+  type Stage,
+} from "@/lib/agent-flow";
+
 import { cn } from "@/lib/utils";
 import { 
   Popover, 
@@ -52,11 +75,12 @@ import videoFileAsset from "@/assets/video-preview.mp4.asset.json";
 const videoFileUrl = videoFileAsset.url;
 
 
-type Search = { prompt?: string };
+type Search = { prompt?: string; skill?: string };
 
 export const Route = createFileRoute("/creative-assistant")({
   validateSearch: (s: Record<string, unknown>): Search => ({
     prompt: typeof s.prompt === "string" ? s.prompt : undefined,
+    skill: typeof s.skill === "string" ? s.skill : undefined,
   }),
   head: () => ({
     meta: [{ title: "创作助手 — Artrail" }],
@@ -64,272 +88,325 @@ export const Route = createFileRoute("/creative-assistant")({
   component: CreativeAssistantPage,
 });
 
-type Message = {
+type Entry = {
   id: string;
   role: "user" | "assistant";
   content?: string;
-  card?: React.ReactNode;
+  block?: Block;
   timestamp: string;
+  skill?: string;
+  icon?: "flow" | "result";
   attachments?: { name: string; type: string; url?: string }[];
-  isChoiceCard?: boolean;
-  statusLines?: { icon: 'check' | 'loading'; text: string; subText?: string }[];
-  isDetailedAssistant?: boolean;
-  isDetailedAssistant2?: boolean;
-  isVideoOutput?: boolean;
 };
 
 function CreativeAssistantPage() {
-  const { prompt: initialPrompt } = Route.useSearch();
+  const { prompt: initialPrompt, skill: initialSkill } = Route.useSearch();
+
+  // 「游戏icon设置」Skill：走图标集确认流程，而不是视频 Agent 流程
+  const isIconSheetRequest =
+    initialSkill === "游戏icon设置" ||
+    (!!initialPrompt &&
+      /(icon|图标)/i.test(initialPrompt) &&
+      /(\d{1,3}\s*(个|张|枚)|图标集|套图)/.test(initialPrompt));
+  const [iconDraft, setIconDraft] = useState<IconSheetDraft | null>(null);
+
+  const [imgAnnotateOpen, setImgAnnotateOpen] = useState(false);
+  const [regionEditOpen, setRegionEditOpen] = useState(false);
+  const [layerSplitOpen, setLayerSplitOpen] = useState(false);
+
   const [showResources, setShowResources] = useState(false);
+  
   const [resourceMode, setResourceMode] = useState<'grid' | 'folder'>('folder');
-  const [currentStep, setCurrentStep] = useState(1);
   const [inputValue, setInputValue] = useState(initialPrompt || "");
   const [activeResource, setActiveResource] = useState<{ type: 'script' | 'image' | 'video'; data?: any } | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [showShareToast, setShowShareToast] = useState(false);
   const [isAnnotationOpen, setIsAnnotationOpen] = useState(false);
   const [annotationTime, setAnnotationTime] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const triggeredStepsRef = useRef<Set<number>>(new Set());
-  
-  const [stepStates, setStepStates] = useState({
-    1: [true, false, false], // Duration options
-    2: [true, false, false, false], // Style options
-    3: [true, true, false, false], // Content options (multi)
-    4: [false, true], // Asset options
-  });
 
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [visibleMessageCount, setVisibleMessageCount] = useState(0);
+  /* ---------------- Agent 流程引擎 ---------------- */
+  const ctxRef = useRef<FlowContext>(createContext(initialPrompt || "", initialSkill));
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const stageRef = useRef(0);
+  const runningRef = useRef(false);
 
-  const [workflow, setWorkflow] = useState<any[]>([]);
+  const [entries, setEntries] = useState<Entry[]>([]);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [waiting, setWaiting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Initial workflow from search param if present
+  const now = () => new Date().toLocaleString();
+
+  const clearTimers = () => {
+    timersRef.current.forEach((t) => clearTimeout(t));
+    timersRef.current = [];
+  };
+
+  const pushBlock = (block: Block, stageId: string, i: number) => {
+    setEntries((prev) => [
+      ...prev,
+      { id: `${stageId}-${i}-${Math.random().toString(36).slice(2, 7)}`, role: "assistant", block, timestamp: now() },
+    ]);
+  };
+
+  const runStage = (index: number) => {
+    if (index >= STAGES.length || runningRef.current) return;
+    runningRef.current = true;
+    stageRef.current = index;
+    const stage: Stage = STAGES[index](ctxRef.current);
+    setIsProcessing(true);
+    setIsTyping(true);
+
+    stage.blocks.forEach((block, i) => {
+      const timer = setTimeout(() => {
+        pushBlock(block, stage.id, i);
+        if (i === stage.blocks.length - 1) {
+          setIsTyping(false);
+          setIsProcessing(false);
+          runningRef.current = false;
+          const last = stage.blocks[stage.blocks.length - 1];
+          if (last.kind === "options") {
+            setWaiting(true);
+          } else {
+            const next = setTimeout(() => runStage(index + 1), 600);
+            timersRef.current.push(next);
+          }
+        }
+      }, 500 * (i + 1));
+      timersRef.current.push(timer);
+    });
+  };
+
+  /* ---------------- 图标集流程（游戏icon设置 Skill） ---------------- */
+  const pushEntry = (entry: Omit<Entry, "id" | "timestamp"> & { id?: string }) => {
+    setEntries((prev) => [
+      ...prev,
+      {
+        id: entry.id ?? `icon-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        timestamp: now(),
+        ...entry,
+      } as Entry,
+    ]);
+  };
+
+  const runIconSheet = () => {
+    setIsTyping(true);
+    setIsProcessing(true);
+    const steps = [
+      "解析需求：识别数量、题材、品质分配与参考风格…",
+      "参考对齐 (ref-align)：锁定构图角度、投影方向与描边厚度…",
+      "生成清单：按题材扩写道具名并分配品质档位…",
+      "提取色卡：从参考作品中抽取 6 色主色板…",
+    ];
+    steps.forEach((text, i) => {
+      const t = setTimeout(() => {
+        pushEntry({ role: "assistant", content: text });
+      }, 500 * (i + 1));
+      timersRef.current.push(t);
+    });
+    const done = setTimeout(() => {
+      setIsTyping(false);
+      setIsProcessing(false);
+      pushEntry({
+        role: "assistant",
+        content: "草案已生成。你只需要确认下面 3 张卡片，需要精调可以点「高级」展开 5 步向导。",
+      });
+      pushEntry({ role: "assistant", icon: "flow", id: "icon-flow" });
+    }, 500 * (steps.length + 1));
+    timersRef.current.push(done);
+  };
+
+  const handleIconConfirm = (draft: IconSheetDraft) => {
+    setIconDraft(draft);
+    pushEntry({ role: "assistant", icon: "result", id: `icon-result-${Date.now()}` });
+    const t = setTimeout(() => {
+      pushEntry({
+        role: "assistant",
+        content: `已按「${draft.style} · ${draft.theme}」生成 ${draft.gridCount} 个图标（普通 ${draft.normalCount} / 精致 ${draft.fineCount}），网格 ${draft.gridLayout}。你可以继续微调单个图标，或让我导出透明底 PNG 图集。`,
+      });
+    }, 2600);
+    timersRef.current.push(t);
+  };
+
+  // 入口：带 prompt 进入即启动流程
   useEffect(() => {
-    if (initialPrompt && messages.length === 0) {
-      const firstMsg: Message = {
-        id: "1",
+    if (!initialPrompt || entries.length > 0) return;
+    setEntries([
+      {
+        id: "user-0",
         role: "user",
         content: initialPrompt,
-        timestamp: new Date().toLocaleString(),
-      };
-      setMessages([firstMsg]);
-      
-      // Delay response to ensure state consistency and avoid double triggers
-      const timer = setTimeout(() => {
-        triggerAssistantResponse(1);
-      }, 100);
-      return () => clearTimeout(timer);
+        timestamp: now(),
+        skill: initialSkill,
+      },
+    ]);
+    if (isIconSheetRequest) {
+      runIconSheet();
+      return () => clearTimers();
     }
+    const t = setTimeout(() => runStage(0), 400);
+    timersRef.current.push(t);
+    return () => clearTimers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialPrompt]);
 
-  const triggerAssistantResponse = (stepIndex: number) => {
-    if (triggeredStepsRef.current.has(stepIndex)) return;
-    triggeredStepsRef.current.add(stepIndex);
-    
-    setIsProcessing(true);
-    const fullWorkflow = [
-      {
-        id: "2",
-        role: "assistant",
-        content: "掌趣一拳超人游戏宣发，埼玉一拳秒杀的震撼感很适合做营销短视频的开场钩子。我先确认几个关键信息，帮你把方向定准。",
-        timestamp: "2026/8/13 14:34:26",
-      },
-      {
-        id: "3",
-        role: "assistant",
-        isChoiceCard: true,
-        timestamp: "2026/8/13 14:34:26",
-      },
-      {
-        id: "5",
-        role: "assistant",
-        content: "收到，15秒以内的热血燃战风格，突出角色和战斗特效。请把你的素材上传上来，我基于你的素材来制作营销短视频。",
-        timestamp: "2026/8/13 14:37:15",
-      },
-      {
-        id: "9",
-        role: "assistant",
-        timestamp: "2026/8/13 14:38:55",
-        isDetailedAssistant: true,
-      },
-      {
-        id: "11",
-        role: "assistant",
-        timestamp: "2026/8/13 14:43:06",
-        isDetailedAssistant2: true,
-      },
-      {
-        id: "13",
-        role: "assistant",
-        timestamp: "2026/8/13 15:31:25",
-        isVideoOutput: true,
-      },
-    ];
+  const handleSelect = (optionId: string, opt: FlowOption) => {
+    if (answers[optionId]) return;
+    setAnswers((prev) => ({ ...prev, [optionId]: opt.key }));
+    setEntries((prev) => [
+      ...prev,
+      { id: `pick-${optionId}`, role: "user", content: opt.label, timestamp: now() },
+    ]);
 
-    // Simulate different response sequences based on interaction point
-    const timer = setTimeout(() => {
-      setIsTyping(true);
-      const typingTimer = setTimeout(() => {
-        setMessages(prev => {
-          let msgsToAdd: Message[] = [];
-          
-          if (stepIndex === 1) {
-            const alreadyHasFirstResponse = prev.some(m => m.id === "2");
-            const alreadyHasChoiceCard = prev.some(m => m.isChoiceCard && m.id === "3");
-            
-            if (!alreadyHasFirstResponse) msgsToAdd.push(fullWorkflow[0] as Message);
-            if (!alreadyHasChoiceCard) msgsToAdd.push(fullWorkflow[1] as Message);
-          } else if (stepIndex === 2) {
-            const alreadyHasResponse = prev.some(m => m.id === "5" || m.isDetailedAssistant || m.isDetailedAssistant2 || m.isVideoOutput);
-            if (!alreadyHasResponse) msgsToAdd.push(fullWorkflow[2] as Message);
-          } else if (stepIndex === 3) {
-            const alreadyHasDetailed = prev.some(m => m.id === "9" || m.isDetailedAssistant);
-            if (!alreadyHasDetailed) msgsToAdd.push(fullWorkflow[3] as Message);
-          } else if (stepIndex === 4) {
-            const alreadyHasDetailed2 = prev.some(m => m.id === "11" || m.isDetailedAssistant2);
-            if (!alreadyHasDetailed2) msgsToAdd.push(fullWorkflow[4] as Message);
-          } else if (stepIndex === 5) {
-            const alreadyHasVideo = prev.some(m => m.id === "13" || m.isVideoOutput);
-            if (!alreadyHasVideo) msgsToAdd.push(fullWorkflow[5] as Message);
-          }
-          
-          if (msgsToAdd.length === 0) return prev;
-          return [...prev, ...msgsToAdd];
-        });
-        setIsTyping(false);
-        setIsProcessing(false);
-      }, 1000);
-      return () => clearTimeout(typingTimer);
-    }, 500);
+    const ctx = ctxRef.current;
+    if (optionId === "hotspot") ctx.hotspot = opt.label;
+    if (optionId === "direction") ctx.direction = opt.label;
+    if (optionId === "branch") ctx.branch = opt.label;
+    if (optionId === "strategy") ctx.strategy = opt.label;
+
+    setWaiting(false);
+
+    // 需要回炉的分支
+    if (optionId === "plan-confirm" && opt.key === "edit") {
+      setAnswers((prev) => {
+        const next = { ...prev };
+        delete next.hotspot;
+        delete next.direction;
+        delete next.branch;
+        delete next["plan-confirm"];
+        return next;
+      });
+      const t = setTimeout(() => runStage(1), 600);
+      timersRef.current.push(t);
+      return;
+    }
+    if (optionId === "asset-confirm" && opt.key === "regen") {
+      const t = setTimeout(() => runStage(6), 600);
+      timersRef.current.push(t);
+      return;
+    }
+
+    const t = setTimeout(() => runStage(stageRef.current + 1), 600);
+    timersRef.current.push(t);
   };
 
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({
         top: scrollContainerRef.current.scrollHeight,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
-  }, [messages, isTyping]);
+  }, [entries, isTyping]);
 
-  const handleOptionClick = (step: number, index: number) => {
-    setStepStates(prev => {
-      const newState = { ...prev };
-      const stepOptions = [...(newState[step as keyof typeof newState] as boolean[])];
-      if (step === 3) {
-        stepOptions[index] = !stepOptions[index];
-      } else {
-        stepOptions.fill(false);
-        stepOptions[index] = true;
-      }
-      newState[step as keyof typeof newState] = stepOptions;
-      return newState;
-    });
-  };
-
-  const nextStep = () => {
-    setCurrentStep(prev => {
-      if (prev === 4) {
-        // When user finishes the choice card, simulate a user message
-        // Use functional state update to ensure we're checking the latest messages
-        setMessages(prevMsgs => {
-          const alreadyConfirmed = prevMsgs.some(m => m.role === "user" && m.content === "我已确认以上信息");
-          if (alreadyConfirmed) return prevMsgs;
-          
-          const userMsg: Message = {
-            id: `confirm-${Date.now()}`,
-            role: "user",
-            content: "我已确认以上信息",
-            timestamp: new Date().toLocaleString(),
-          };
-          
-          // Trigger assistant response on the next tick
-          setTimeout(() => triggerAssistantResponse(2), 0);
-          
-          return [...prevMsgs, userMsg];
-        });
-        return prev;
-      }
-      return prev + 1;
-    });
-  };
-
-  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
-
-  // 刷新历史:清除当前阶段的助手回复并重新生成
+  // 刷新历史:回到最近一次用户消息并重跑当前阶段
   const handleRefreshHistory = () => {
-    if (messages.length === 0) {
+    if (entries.length === 0) {
       toast.info("当前暂无会话内容");
       return;
     }
-    const lastUserIdx = messages.reduce((acc, m, i) => (m.role === "user" ? i : acc), -1);
-    const kept = lastUserIdx >= 0 ? messages.slice(0, lastUserIdx + 1) : [];
-    triggeredStepsRef.current.clear();
-    setMessages(kept);
+    clearTimers();
+    runningRef.current = false;
+    const lastUserIdx = entries.reduce((acc, m, i) => (m.role === "user" ? i : acc), -1);
+    setEntries(lastUserIdx >= 0 ? entries.slice(0, lastUserIdx + 1) : []);
+    setWaiting(false);
     toast.success("正在刷新当前会话...");
-    if (kept.length > 0) {
-      setTimeout(() => triggerAssistantResponse(Math.min(currentStep, 5)), 300);
+    if (isIconSheetRequest) {
+      setIconDraft(null);
+      const ti = setTimeout(() => runIconSheet(), 400);
+      timersRef.current.push(ti);
+      return;
     }
+    const t = setTimeout(() => runStage(stageRef.current), 400);
+    timersRef.current.push(t);
   };
 
   // 新会话:重置全部会话状态
   const handleNewSession = () => {
-    triggeredStepsRef.current.clear();
-    setMessages([]);
+    clearTimers();
+    runningRef.current = false;
+    stageRef.current = 0;
+    ctxRef.current = createContext("", undefined);
+    setIconDraft(null);
+    setEntries([]);
+    setAnswers({});
+    setWaiting(false);
     setInputValue("");
-    setCurrentStep(1);
-    setStepStates({
-      1: [true, false, false],
-      2: [true, false, false, false],
-      3: [true, true, false, false],
-      4: [false, true],
-    });
     setActiveResource(null);
     setIsTyping(false);
     setIsProcessing(false);
     toast.success("已创建新会话,开始新的创作吧");
   };
 
-  const handleSendMessage = (textOverride?: string) => {
-    const textToSend = typeof textOverride === 'string' ? textOverride : inputValue;
-    if (!textToSend.trim() || isProcessing) return;
-    
-    const userMsg: Message = {
-      id: Math.random().toString(),
-      role: "user",
-      content: textToSend,
-      timestamp: new Date().toLocaleString(),
+  // 监听全局侧栏的「创作」新建会话与历史条目选择事件
+  useEffect(() => {
+    const onNew = () => handleNewSession();
+    const onSelect = () => {
+      clearTimers();
+      runningRef.current = false;
+      stageRef.current = 0;
+      ctxRef.current = createContext("", undefined);
+      setIconDraft(null);
+      setEntries([]);
+      setAnswers({});
+      setWaiting(false);
+      setInputValue("");
+      setActiveResource(null);
+      setIsTyping(false);
+      setIsProcessing(false);
     };
-    
-    // Check for specific keywords to trigger next stages
-    let nextStage = 0;
-    if (textToSend.includes("图片") || textToSend.includes("素材")) {
-      userMsg.attachments = [{ name: "saitama.webp", type: "IMAGE", url: charSam }];
-      nextStage = 3;
-    } else if (textToSend.includes("生成") || textToSend.includes("宣发")) {
-      nextStage = 4;
-    } else if (textToSend.includes("继续")) {
-      nextStage = 5;
-    } else if (messages.length === 0) {
-      nextStage = 1;
-    }
+    window.addEventListener(ASSISTANT_NEW_SESSION_EVENT, onNew);
+    window.addEventListener(ASSISTANT_SELECT_HISTORY_EVENT, onSelect);
+    return () => {
+      window.removeEventListener(ASSISTANT_NEW_SESSION_EVENT, onNew);
+      window.removeEventListener(ASSISTANT_SELECT_HISTORY_EVENT, onSelect);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    setMessages(prev => [...prev, userMsg]);
+
+  const handleSendMessage = (textOverride?: string) => {
+    const textToSend = typeof textOverride === "string" ? textOverride : inputValue;
+    if (!textToSend.trim() || isProcessing) return;
+
+    setEntries((prev) => [
+      ...prev,
+      { id: `user-${Date.now()}`, role: "user", content: textToSend, timestamp: now() },
+    ]);
     setInputValue("");
-    
-    if (nextStage > 0) {
-      triggerAssistantResponse(nextStage);
+
+    // 首条消息启动完整流程；流程进行中的追加消息作为补充需求
+    if (stageRef.current === 0 && entries.filter((e) => e.role === "assistant").length === 0) {
+      if (isIconSheetRequest) {
+        const ti = setTimeout(() => runIconSheet(), 400);
+        timersRef.current.push(ti);
+        return;
+      }
+      ctxRef.current = createContext(textToSend, initialSkill);
+      const t = setTimeout(() => runStage(0), 400);
+      timersRef.current.push(t);
+    } else if (!waiting) {
+      const t = setTimeout(() => {
+        setEntries((prev) => [
+          ...prev,
+          {
+            id: `ack-${Date.now()}`,
+            role: "assistant",
+            content: "收到，这条补充需求我已记入本次项目的账本，会在后续镜头里体现。",
+            timestamp: now(),
+          },
+        ]);
+      }, 700);
+      timersRef.current.push(t);
     }
   };
 
   return (
     <div className="flex h-screen flex-col bg-[var(--color-background)] text-[var(--color-foreground)] overflow-hidden font-sans">
-      <div className="absolute top-0 left-0 right-0 z-50 p-6 flex items-center justify-between pointer-events-none">
-        <div className="pointer-events-auto flex items-center gap-4">
-          <BrandMark />
+      <div className="absolute top-0 left-0 right-0 z-50 p-6 flex items-center justify-end gap-4 pointer-events-none">
+        <div className="pointer-events-auto">
+          <AssistantToolbar onRefreshHistory={handleRefreshHistory} onNewSession={handleNewSession} />
         </div>
         <div className="pointer-events-auto">
           <TopBar />
@@ -358,10 +435,38 @@ function CreativeAssistantPage() {
           "flex flex-1 flex-col transition-all duration-500 ease-in-out relative",
           showResources ? "mr-[600px]" : "mr-0"
         )}>
+          {/* 左侧对话节点导航:紧靠对话流左缘,垂直居中固定,每个节点对应一次用户输入,悬浮高亮并显示内容 */}
+          {entries.some((e) => e.role === "user") && (
+            <div className="absolute inset-y-0 left-0 right-0 z-30 pointer-events-none">
+              <div className="mx-auto max-w-4xl h-full px-6 relative">
+                <div className="absolute -left-9 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 pointer-events-auto">
+                  {entries.filter((e) => e.role === "user").map((e, i) => (
+                    <div key={e.id} className="relative group/node flex items-center">
+                      <button
+                        onClick={() => {
+                          const el = scrollContainerRef.current?.querySelector(`[data-entry-id="${e.id}"]`);
+                          el?.scrollIntoView({ behavior: "smooth", block: "center" });
+                        }}
+                        className={cn(
+                          "block h-[3px] w-2.5 rounded-full bg-[var(--color-muted-foreground)]/40 transition-all duration-200",
+                          "group-hover/node:w-4 group-hover/node:bg-[var(--color-foreground)] group-hover/node:shadow-[0_0_8px_var(--color-foreground)]",
+                          i === 0 && "w-4 bg-[var(--color-foreground)]"
+                        )}
+                        aria-label={`节点 ${i + 1}`}
+                      />
+                      {/* 悬浮提示:胶囊显示该节点用户输入的内容标题 */}
+                      <div className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 z-30 hidden group-hover/node:block max-w-xs whitespace-nowrap overflow-hidden text-ellipsis rounded-full bg-neutral-900 dark:bg-neutral-100 px-3.5 py-1.5 text-[12px] font-medium text-neutral-50 dark:text-neutral-900 shadow-lg">
+                        {e.content || "（附件/选择）"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
           <div ref={scrollContainerRef} className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide relative z-0">
-            <div className="mx-auto max-w-4xl space-y-10">
-              {/* Global Share Button - Only visible at the top of the first message */}
-              {messages.length > 0 && (
+            <div className="mx-auto max-w-4xl space-y-6 relative">
+              {entries.length > 0 && (
                 <div className="flex justify-end mb-4">
                   <button 
                     onClick={() => {
@@ -377,26 +482,28 @@ function CreativeAssistantPage() {
                 </div>
               )}
 
-              {messages.length === 0 && (
+              {entries.length === 0 && (
                 <div className="h-[60vh] flex flex-col items-center justify-center text-center opacity-60">
                   <div className="w-20 h-20 rounded-3xl bg-[var(--color-secondary)] flex items-center justify-center mb-6 border border-[var(--color-border)] shadow-sm">
                     <MessageSquare className="w-10 h-10 text-[var(--color-foreground)]" />
                   </div>
                   <h1 className="text-3xl font-bold mb-3">Creative Assistant</h1>
-                  <p className="text-lg font-medium max-w-md">输入一段话，让我帮你策划并生成精美的宣发视频。</p>
+                  <p className="text-lg font-medium max-w-md">输入一段话，我会先做创意规划，再逐段生成并拼接成片。</p>
                 </div>
               )}
-              {messages.map((msg) => (
-                <div 
-                  key={msg.id} 
+
+              {entries.map((entry) => (
+                <div
+                  key={entry.id}
+                  data-entry-id={entry.id}
                   className={cn(
-                    "flex flex-col gap-3 relative group",
-                    msg.role === "user" ? "items-end" : "items-start"
+                    "flex flex-col gap-2 relative group",
+                    entry.role === "user" ? "items-end" : "items-start"
                   )}
                 >
-                  {msg.attachments && msg.attachments.length > 0 && (
+                  {entry.attachments && entry.attachments.length > 0 && (
                     <div className="flex flex-wrap gap-3 mb-1">
-                      {msg.attachments.map((file, i) => (
+                      {entry.attachments.map((file, i) => (
                         <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] w-fit shadow-sm">
                           <div className="h-10 w-10 rounded-lg overflow-hidden shrink-0 border border-[var(--color-border)]">
                             <img src={file.url} className="w-full h-full object-cover" />
@@ -406,301 +513,61 @@ function CreativeAssistantPage() {
                       ))}
                     </div>
                   )}
-                  {msg.content && (
+
+                  {entry.skill && (
+                    <div className="flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] px-3 py-1 text-[12px] text-[var(--color-foreground)] shadow-sm">
+                      <Zap className="h-3.5 w-3.5" />
+                      Skill · {entry.skill}
+                    </div>
+                  )}
+
+                  {entry.content && (
                     <div className={cn(
                       "max-w-[85%] px-5 py-3 text-[15px] leading-relaxed tracking-tight shadow-sm border whitespace-pre-wrap",
-                      msg.role === "user" 
-                        ? "rounded-2xl rounded-tr-sm bg-[var(--color-primary)] text-[var(--color-primary-foreground)] border-transparent" 
+                      entry.role === "user"
+                        ? "rounded-2xl rounded-tr-sm bg-[var(--color-primary)] text-[var(--color-primary-foreground)] border-transparent"
                         : "rounded-2xl rounded-tl-sm bg-[var(--color-card)] text-[var(--color-foreground)] border-[var(--color-border)]"
                     )}>
-                      {msg.content}
+                      {entry.content}
                     </div>
                   )}
 
-                  {msg.isChoiceCard && (
-                    <div className={cn("w-full relative group", messages.filter(m => m.isChoiceCard).indexOf(msg) !== messages.filter(m => m.isChoiceCard).length - 1 && "hidden")}>
-                      <AnimatePresence mode="wait">
-                        {currentStep === 1 && msg.id === messages.filter((m: Message) => m.isChoiceCard).pop()?.id && (
-                          <motion.div key="step1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                            <ChoiceCard 
-                              step={1}
-                              totalSteps={4}
-                              title="视频时长希望控制在多少秒以内？"
-                              options={[
-                                { num: "1", label: "15秒以内", desc: "节奏紧凑，适合信息流投放", active: stepStates[1][0] },
-                                { num: "2", label: "15-30秒", desc: "可展示更多角色 and 玩法细节", active: stepStates[1][1] },
-                                { num: "3", label: "30-60秒", desc: "完整剧情+玩法展示", active: stepStates[1][2] },
-                              ]}
-                              onOptionClick={(i) => handleOptionClick(1, i)}
-                              onNext={nextStep}
-                              onPrev={prevStep}
-                            />
-                          </motion.div>
-                        )}
-                        {currentStep === 2 && (
-                          <motion.div key="step2" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                            <ChoiceCard 
-                              step={2}
-                              totalSteps={4}
-                              title="视频风格偏向哪种？"
-                              options={[
-                                { num: "1", label: "热血燃战", desc: "高燃打斗、特效炸裂，突出战斗爽感", active: stepStates[2][0] },
-                                { num: "2", label: "电影质感", desc: "大场面、史诗感、氛围渲染", active: stepStates[2][1] },
-                                { num: "3", label: "搞笑反差", desc: "埼玉日常呆萌 vs 战斗无敌的反差感", active: stepStates[2][2] },
-                                { num: "4", label: "潮酷炫技", desc: "快节奏剪辑、潮流视觉、炫酷转场", active: stepStates[2][3] },
-                              ]}
-                              onOptionClick={(i) => handleOptionClick(2, i)}
-                              onNext={nextStep}
-                              onPrev={prevStep}
-                            />
-                          </motion.div>
-                        )}
-                        {currentStep === 3 && (
-                          <motion.div key="step3" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                            <ChoiceCard 
-                              step={3}
-                              totalSteps={4}
-                              isMulti
-                              title="视频主要想突出什么内容？"
-                              options={[
-                                { num: "1", label: "角色展示（埼玉、杰诺斯等）", active: stepStates[3][0] },
-                                { num: "2", label: "战斗特效与打斗场面", active: stepStates[3][1] },
-                                { num: "3", label: "游戏玩法特色", active: stepStates[3][2] },
-                                { num: "4", label: "下载引导/预约转化", active: stepStates[3][3] },
-                              ]}
-                              onOptionClick={(i) => handleOptionClick(3, i)}
-                              onNext={nextStep}
-                              onPrev={prevStep}
-                            />
-                          </motion.div>
-                        )}
-                        {currentStep === 4 && (
-                          <motion.div key="step4" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                            <ChoiceCard 
-                              step={4}
-                              totalSteps={4}
-                              title="是否有参考素材需要提供？（游戏画面截图、角色立绘等）"
-                              options={[
-                                { num: "1", label: "没有，直接帮我做", desc: "由AI根据描述生成", active: stepStates[4][0] },
-                                { num: "2", label: "有素材，我来上传", desc: "上传后我会基于素材创作", active: stepStates[4][1] },
-                              ]}
-                              onOptionClick={(i) => handleOptionClick(4, i)}
-                              onNext={nextStep}
-                              onPrev={prevStep}
-                            />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
+                  {entry.icon === "flow" && (
+                    <IconSheetFlow prompt={initialPrompt || ""} onConfirm={handleIconConfirm} />
                   )}
 
-                  {msg.statusLines && (
-                    <div className="flex flex-col gap-2 w-full max-w-xl">
-                      {msg.statusLines.map((line, i) => (
-                        <StatusLine key={i} icon={line.icon} text={line.text} subText={line.subText} />
-                      ))}
-                    </div>
+                  {entry.icon === "result" && iconDraft && <IconSheetResult draft={iconDraft} />}
+
+                  {entry.block && (
+                    <FlowBlockView
+                      block={entry.block}
+                      selected={entry.block.kind === "options" ? answers[entry.block.id] : undefined}
+                      onSelect={handleSelect}
+                      onOpenArtifact={() => {
+                        setShowResources(true);
+                        setActiveResource({ type: "script" });
+                      }}
+                      onAnnotate={() => {
+                        setAnnotationTime(0);
+                        setIsAnnotationOpen(true);
+                      }}
+                      mediaUrls={{ image: skillReenact, video: videoFileUrl, poster: videoPreview }}
+                    />
                   )}
-
-                  {msg.isDetailedAssistant && (
-                    <div className="flex flex-col gap-2 w-full max-w-xl relative group">
-                      <div className="text-[15px] mb-4">埼玉的经典战斗姿态很抓眼，一拳前伸的构图天生适合做开场。我先看一下素材，然后开始制作。</div>
-                      <StatusLine icon="check" text="读取文件" subText="查看用户上传的一拳超人素材" />
-                      <div className="text-[15px] mt-2 mb-4">素材确认完毕，埼玉的战斗姿态非常适合做宣发开场。接下来加载营销视频制作流程。</div>
-                      
-                      <StatusLine icon="check" text="技能学习" subText="营销视频大师" />
-                      <StatusLine icon="check" text="任务规划" />
-                      <div className="text-[15px] mt-2 mb-2">先读取输入规范文件，确认产物格式和项目状态定义。</div>
-                      <StatusLine icon="check" text="读取文件" subText="读取输入与项目状态参考文件" />
-                      
-                      <StatusLine icon="check" text="任务规划" />
-                      <div className="text-[15px] mt-2 mb-2">现在读取营销基础与路由文件，确定方向创意路由。</div>
-                      <StatusLine icon="check" text="读取文件" subText="读取营销基础与路由参考文件" />
-                      
-                      <div className="text-[15px] mt-2 mb-2">这是一个游戏宣发视频，核心说服力来自品牌含义和情感关联，路由到品牌片方向。现在读取品牌片方向创意文件。</div>
-                      <StatusLine icon="check" text="读取文件" subText="读取品牌片方向创意文件" />
-                      
-                      <StatusLine icon="check" text="任务规划" />
-                      <div className="text-[15px] mt-2 mb-2">现在创建项目目录并编写内部营销脑图和故事脚本。先搜索一下掌趣一拳超人游戏的相关信息，确保脚本内容准确。</div>
-                      <StatusLine icon="check" text="联网搜索" subText="完成 2 次搜索" />
-                      <StatusLine icon="check" text="执行命令" subText="创建项目目录" />
-                      
-                      <div className="text-[15px] mt-2 mb-2">搜索结果很全面。掌趣科技的《一拳超人：最强之男》是一款策略卡牌手游，核心卖点包括正版授权、还原动画剧情、原版声优、策略阵容搭配、埼玉一拳秒杀等。现在编写内部营销脑图和故事脚本。</div>
-                      <StatusLine icon="check" text="写入文件" subText="编写内部营销脑图story-brief.md" />
-                      
-                      <div className="text-[15px] mt-2 mb-2">现在编写故事脚本，这是需要你确认的第一个产物。</div>
-                      <StatusLine icon="check" text="写入文件" subText="编写故事脚本story-script.md" />
-                      
-                      <div className="text-[15px] mt-2 mb-2">故事脚本已写好。这份脚本请你确认：埼玉蓄力开场、一拳冲击波过渡、英雄阵容快剪展示、埼玉一拳秒杀收尾 + 品牌口号 + 下载引导，5个镜头共15秒。画面节奏和卖点顺序对齐后，我再进入素材检查和视频方案环节。如果要改，直接告诉我，改完再发你看。</div>
-                      <StatusLine icon="check" text="发送产物" />
-                      <div 
-                        onClick={() => {
-                          setShowResources(true);
-                          setActiveResource({ type: 'script' });
-                        }}
-                        className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 flex items-center justify-between shadow-sm max-w-sm hover:border-[var(--color-muted-foreground)] cursor-pointer transition-all"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center text-[var(--color-primary)]">
-                            <FileText className="h-5 w-5" />
-                          </div>
-                          <div>
-                            <div className="text-[14px] font-bold">story-script.md</div>
-                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-onepunch-game-promo/story-script.md</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1 text-[12px] text-[var(--color-muted-foreground)]">
-                          查看文件 <ChevronRight className="h-3 w-3" />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {msg.isDetailedAssistant2 && (
-                    <div className="flex flex-col gap-2 w-full max-w-xl relative group">
-                      <StatusLine icon="check" text="任务规划" />
-                      <div className="text-[15px] mt-2 mb-4">故事脚本已确认通过。现在进入素材完整性检查。</div>
-                      <div className="text-[15px] mb-2 font-medium">脚本中引用的实体有：</div>
-                      <ul className="space-y-2 text-[15px] mb-4 list-none">
-                        <li>• <span className="font-bold">埼玉</span> - 已有用户上传立绘（./upload/user_upload_image_1.webp），可用</li>
-                        <li>• <span className="font-bold">杰诺斯</span> - 脚本中出现，但没有参考素材，需要生成</li>
-                        <li>• <span className="font-bold">战栗的龙卷、原子武士、银色獠牙</span> - 快剪镜头中短暂出现，可由视频模型根据描述生成，不需要单独素材图</li>
-                        <li>• <span className="font-bold">游戏Logo/品牌定帧</span> - 文字元素，由视频模型渲染</li>
-                      </ul>
-                      <div className="text-[15px] mb-4">埼玉的素材已齐备。杰诺斯在脚本中有3秒重要展示镜头，需要生成一张角色参考图来稳定形象一致性。我来生成这张素材。</div>
-                      
-                      <div className="w-full bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
-                        <StatusLine icon="check" text="生成图像" subText="日系少年热血动漫风格，赛璐璐平涂动画质感。杰诺斯（魔鬼改造人），年轻男性，金色短发，锐利的眼神，…" />
-                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4 mt-2">
-                          杰诺斯参考图已生成。我先确认一下效果是否符合预期。
-                        </div>
-                      </div>
-
-                      <StatusLine icon="check" text="读取文件" subText="查看杰诺斯参考图生成效果" />
-                      <div className="text-[15px] mt-2 mb-4">杰诺斯参考图效果不错，金色机械臂、冷峻面容、赛璐璐动画风格都与埼玉素材风格统一。素材已齐备：埼玉有用户上传立绘，杰诺斯有生成的参考图。</div>
-                      
-                      <StatusLine icon="check" text="任务规划" />
-                      <div className="text-[15px] mt-2 mb-4">现在读取协作与质量文件 and Seedance编译指导文件，编译最终生成方案。</div>
-                      <StatusLine icon="check" text="资料探索" subText="读取 2 个文件" />
-                      
-                      <div className="text-[15px] mt-2 mb-4">当前单个请求最大生成时长是15秒，整片15秒可以在一次请求中完成。现在编译最终生成方案。</div>
-                      <StatusLine icon="check" text="写入文件" subText="编译最终生成方案final-generation-info.md" />
-                      
-                      <div className="text-[15px] mt-2 mb-4">这是可直接生成视频的完整方案，请你最终确认：15秒一次生成，埼玉蓄力开场、冲击波过渡、英雄阵容快剪、一拳秒杀收尾加品牌口号、品牌定帧下载引导。参考素材为埼玉立绘（@图1） and 杰诺斯参考图（@图2）。确认后我会按此方案生成视频并交付成片。如果要改，直接告诉我。</div>
-                      
-                      <StatusLine icon="check" text="发送产物" />
-                      <div className="mt-4 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 flex items-center justify-between shadow-sm max-w-sm hover:border-[var(--color-muted-foreground)] cursor-pointer transition-all">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center text-[var(--color-primary)]">
-                            <FileText className="h-5 w-5" />
-                          </div>
-                          <div>
-                            <div className="text-[14px] font-bold">final-generation-info.md</div>
-                            <div className="text-[11px] text-[var(--color-muted-foreground)]">/workspace/video-projects/20260813-1400-onepunch-game-promo/final-generation-info.md</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1 text-[12px] text-[var(--color-muted-foreground)]">
-                          查看文件 <ChevronRight className="h-3 w-3" />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {msg.role === 'assistant' && msg.id === '13' && (
-                    <div className="flex flex-col gap-2 w-full max-w-xl relative group">
-                      <StatusLine icon="check" text="任务规划" />
-                      <div className="text-[15px] mt-2 mb-4">方案已确认，开始生成视频。</div>
-                      
-                      <div className="w-full bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
-                        <StatusLine icon="check" text="生成视频" subText="时长：15秒以内，比例：16:9。任务：生成品牌TVC。 标题：《英雄参上 一拳K.O.》 风格…" />
-                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4 mt-2">
-                          视频生成因参考图涉及第三方IP内容未通过平台审核。这是审核硬限制，无法通过修改提示词规避。
-                        </div>
-                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4">
-                          有两个可行的方向：
-                        </div>
-                        <ul className="space-y-2 text-[14px] text-[var(--color-muted-foreground)] mb-4 list-none">
-                          <li>• 不使用角色参考图，改为纯文字提示词生成，由视频模型自由演绎一拳超人风格的热血战斗场景</li>
-                          <li>• 你提供自有版权的素材（如官方授权的游戏画面截图），再重新生成</li>
-                        </ul>
-                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed">
-                          你想怎么处理？
-                        </div>
-                      </div>
-
-                      <StatusLine icon="check" text="任务规划" subText="参考图未通过平台审核（涉及第三方IP），你希望怎么处理？" />
-                      
-                      <div className="text-[15px] mb-4">好的，我改为纯文字提示词方式生成，不使用角色参考图。</div>
-
-                      <div className="w-full bg-[var(--color-secondary)]/50 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
-                        <StatusLine icon="check" text="生成视频" subText="时长：15秒以内，比例：16:9。任务：生成品牌TVC。 标题：《英雄参上 一拳K.O.》 风格…" />
-                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed mb-4 mt-2">
-                          视频生成再次未通过平台审核，这次是文字提示词涉及版权限制。
-                        </div>
-                        <div className="text-[14px] text-[var(--color-muted-foreground)] leading-relaxed">
-                          问题在于提示词中直接使用了「一拳超人」等受版权保护的名称。我需要把所有IP相关名称改为通用描述后再试一次：把「一拳超人」改为「最强英雄」，去掉所有直接引用IP名称的内容。你同意我这样调整后重新生成吗？
-                        </div>
-                      </div>
-
-                      <div className="text-[15px] mb-4">我把角色改成完全原创的热血游戏角色：光头英雄改为黑发短发剑客主角，机械改造人改为火焰法师，脱离原有IP形象特征，保留热血燃战的宣发调性。</div>
-
-                      <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-xl mb-2 group/video">
-                        <video 
-                          ref={videoRef}
-                          src={videoFileUrl} 
-                          className="w-full h-full object-cover" 
-                          controls
-                          autoPlay
-                          muted
-                          loop
-                          poster={videoPreview}
-                        />
-                        <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-1 pointer-events-none">
-                          <span className="opacity-70">AI 生成</span>
-                        </div>
-                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white pointer-events-none">
-                          0:15
-                        </div>
-
-
-                        {/* Top Actions Bar */}
-                        <div className="absolute top-3 right-3 opacity-0 group-hover/video:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover/video:translate-y-0 flex items-center gap-1.5 p-1.5 bg-white/95 dark:bg-black/80 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-2xl z-20">
-                          <div onClick={() => {
-                            if (videoRef.current) {
-                              setAnnotationTime(videoRef.current.currentTime);
-                            }
-                            setIsAnnotationOpen(true);
-                          }}>
-                            <VideoActionItem icon={<PenTool className="h-4 w-4" />} tooltip="标注视频帧" />
-                          </div>
-                          <VideoActionItem icon={<Scissors className="h-4 w-4" />} tooltip="去剪映编辑" />
-                          <VideoActionItem icon={<RotateCcw className="h-4 w-4" />} tooltip="重新生成" />
-                          <VideoActionItem icon={<MessageCirclePlus className="h-4 w-4" />} tooltip="引用到输入框" />
-                          <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
-                          <VideoActionItem icon={<span className="text-[10px] font-bold">HD</span>} tooltip="提升画质" />
-                          <VideoActionItem icon={<Eraser className="h-4 w-4" />} tooltip="字幕擦除" />
-                          <VideoActionItem icon={<Download className="h-4 w-4" />} tooltip="下载" />
-                          <VideoActionItem icon={<VolumeX className="h-4 w-4" />} tooltip="下载" />
-                        </div>
-                      </div>
-                      <div className="text-[15px] mb-4">视频已生成成功。先确认一下效果。</div>
-                      
-                      <StatusLine icon="check" text="读取文件" subText="查看生成的视频效果" />
-                      <StatusLine icon="check" text="任务规划" />
-                      
-                      <div className="text-[15px] mb-4">视频已生成完成，15秒热血燃战风格的游戏宣发成片。赤焰拳客在废墟战场中双拳燃烧火焰，结尾定格在「英雄参上 一拳K.O.」品牌口号 and 游戏Logo。</div>
-                      
-                      <div className="text-[15px] mb-4">由于IP形象审核限制，角色已从埼玉/杰诺斯替换为原创的赤焰拳客形象，保留了热血战斗的宣发调性。成片已交付，你可以审阅后告诉我是否需要调整。</div>
-                      
-                      <StatusLine icon="check" text="发送产物" />
-                      
-                      <div className="text-[15px] mb-2 font-medium">成片已交付。由于平台审核限制，原IP角色形象（埼玉/杰诺斯）无法直接生成，已替换为原创的赤焰拳客角色，保留了热血燃战的游戏宣发风格。如果你有官方授权的角色素材，可以上传后重新生成更贴近原作的画面。需要调整什么直接说。</div>
-                    </div>
-                  )}
-
-                  <div className="text-[11px] text-[var(--color-muted-foreground)] px-1 font-medium">{msg.timestamp}</div>
                 </div>
               ))}
+
+              {isTyping && (
+                <div className="flex items-center gap-2 text-[13px] text-[var(--color-muted-foreground)]">
+                  <span className="flex gap-1">
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--color-muted-foreground)] [animation-delay:0ms]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--color-muted-foreground)] [animation-delay:120ms]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--color-muted-foreground)] [animation-delay:240ms]" />
+                  </span>
+                  Agent 正在处理…
+                </div>
+              )}
+
             </div>
           </div>
 
@@ -708,7 +575,6 @@ function CreativeAssistantPage() {
           <div className="px-6 pb-10">
             <div className="mx-auto max-w-5xl">
               <PromptBox 
-                showCanvasToggle={false}
                 onSubmit={(text) => {
                   setInputValue(text);
                   handleSendMessage(text);
@@ -733,7 +599,44 @@ function CreativeAssistantPage() {
           </button>
         </div>
 
+        <ImageAnnotationDialog
+          open={imgAnnotateOpen}
+          onOpenChange={setImgAnnotateOpen}
+          imageUrl={threeViewImage}
+          onConfirm={(url) => {
+            window.dispatchEvent(new CustomEvent('artrail-add-attachment', {
+              detail: { url, name: `标注图片-${Date.now()}.jpg`, kind: 'image' }
+            }));
+            toast.success("标注结果已添加到输入框");
+          }}
+        />
+
+        <RegionEditDialog
+          open={regionEditOpen}
+          onOpenChange={setRegionEditOpen}
+          imageUrl={threeViewImage}
+          onConfirm={(url) => {
+            window.dispatchEvent(new CustomEvent('artrail-add-attachment', {
+              detail: { url, name: `局部编辑-${Date.now()}.jpg`, kind: 'image' }
+            }));
+            toast.success("局部编辑结果已添加到输入框");
+          }}
+        />
+
+        <LayerSplitDialog
+          open={layerSplitOpen}
+          onOpenChange={setLayerSplitOpen}
+          imageUrl={threeViewImage}
+          onConfirm={(url) => {
+            window.dispatchEvent(new CustomEvent('artrail-add-attachment', {
+              detail: { url, name: `图层分离-${Date.now()}.jpg`, kind: 'image' }
+            }));
+            toast.success("图层分离结果已添加到输入框");
+          }}
+        />
+
         <VideoAnnotationDialog 
+
           open={isAnnotationOpen}
           onOpenChange={setIsAnnotationOpen}
           videoUrl={videoFileUrl}
@@ -958,14 +861,16 @@ function CreativeAssistantPage() {
           posterUrl={videoPreview}
           currentTime={annotationTime}
           onConfirm={(imageUrl) => {
-            const newMsg: Message = {
-              id: Date.now().toString(),
-              role: "user",
-              content: "基于这张标注的视频帧进行修改",
-              timestamp: new Date().toLocaleString(),
-              attachments: [{ name: "annotated-frame.jpg", type: "IMAGE", url: imageUrl }]
-            };
-            setMessages(prev => [...prev, newMsg]);
+            setEntries((prev) => [
+              ...prev,
+              {
+                id: `annotate-${Date.now()}`,
+                role: "user",
+                content: "基于这张标注的视频帧进行修改",
+                timestamp: new Date().toLocaleString(),
+                attachments: [{ name: "annotated-frame.jpg", type: "IMAGE", url: imageUrl }],
+              },
+            ]);
           }}
         />
       </div>

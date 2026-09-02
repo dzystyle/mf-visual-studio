@@ -18,7 +18,7 @@ export function TopBar({ title, variant }: { title?: string; variant?: "light" |
   
   return (
     <div className="absolute right-6 top-4 z-50 flex items-center gap-3">
-      <button className={cn(
+      {/* <button className={cn(
         "flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs backdrop-blur transition-all",
         isLight 
           ? "border-[#E5E5E7] bg-white/80 text-[#1D1D1F] hover:bg-white" 
@@ -26,7 +26,7 @@ export function TopBar({ title, variant }: { title?: string; variant?: "light" |
       )}>
         <BookOpen className="h-3.5 w-3.5 text-aurora-orange" />
         <span className="font-medium">全新 Artrail 1.0 使用教程</span>
-      </button>
+      </button> */}
 
       <NotificationTrigger variant={variant} />
       <UserMenuContainer variant={variant} />

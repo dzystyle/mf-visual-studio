@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X, ChevronRight, Save, LayoutGrid, Eye, Code2, Plus, Mic, ArrowUp, CheckCircle2, MoreHorizontal, Send, ChevronDown, Check, Undo2, Redo2, RotateCcw, Share2, Copy, Trash2, Edit2, PlayCircle, Info } from "lucide-react";
+import { X, ChevronRight, Save, LayoutGrid, Eye, Code2, Plus, Mic, ArrowUp, CheckCircle2, MoreHorizontal, Send, ChevronDown, Check, Undo2, Redo2, RotateCcw, Share2, Copy, Trash2, Edit2, PlayCircle, Info, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -14,7 +14,21 @@ interface SkillDetailDialogProps {
 export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDetailDialogProps) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = React.useState<"intro" | "content">("intro");
-  
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [cover, setCover] = React.useState<{ url: string; type: "image" | "video" } | null>(null);
+
+  React.useEffect(() => {
+    setCover(null);
+  }, [skill?.id]);
+
+  const handlePickFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    setCover({ url, type: file.type.startsWith("video") ? "video" : "image" });
+    e.target.value = "";
+  };
+
   if (!skill) return null;
 
   const handleUseSkill = () => {
@@ -31,13 +45,37 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
         <DialogPrimitive.Overlay className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-md transition-all duration-300" />
         <DialogPrimitive.Content className="fixed left-1/2 top-1/2 z-[60] w-full max-w-[800px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2.5rem] border border-border bg-background text-foreground shadow-2xl focus:outline-none focus-visible:ring-0">
           
-          <div className="relative aspect-[16/9] w-full overflow-hidden">
-            <img 
-              src={skill.image} 
-              alt={skill.title} 
-              className="h-full w-full object-cover"
+          <div className="relative aspect-[16/9] w-full overflow-hidden group/cover">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*,video/*"
+              className="hidden"
+              onChange={handlePickFile}
             />
+            {cover ? (
+              cover.type === "video" ? (
+                <video src={cover.url} className="h-full w-full object-cover" autoPlay muted loop playsInline />
+              ) : (
+                <img src={cover.url} alt={skill.title} className="h-full w-full object-cover" />
+              )
+            ) : (
+              <img 
+                src={skill.image} 
+                alt={skill.title} 
+                className="h-full w-full object-cover"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/50 text-white/80 opacity-0 transition-opacity duration-200 group-hover/cover:opacity-100 focus:opacity-100"
+            >
+              <Upload className="h-7 w-7" />
+              <span className="text-sm">点击上传图或视频</span>
+            </button>
             
             <button 
               onClick={() => onOpenChange(false)}

@@ -15,9 +15,11 @@ import { Route as SkillRouteImport } from './routes/skill'
 import { Route as ScriptRouteImport } from './routes/script'
 import { Route as QuickRouteImport } from './routes/quick'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as ProcessRouteImport } from './routes/process'
 import { Route as ElementsRouteImport } from './routes/elements'
 import { Route as CreativeAssistantRouteImport } from './routes/creative-assistant'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as CanvasRouteImport } from './routes/canvas'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SettingsTeamRouteImport } from './routes/settings/team'
@@ -58,6 +60,11 @@ const ProjectsRoute = ProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProcessRoute = ProcessRouteImport.update({
+  id: '/process',
+  path: '/process',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ElementsRoute = ElementsRouteImport.update({
   id: '/elements',
   path: '/elements',
@@ -71,6 +78,11 @@ const CreativeAssistantRoute = CreativeAssistantRouteImport.update({
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CanvasRoute = CanvasRouteImport.update({
+  id: '/canvas',
+  path: '/canvas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -121,9 +133,11 @@ const LegalPrivacyRoute = LegalPrivacyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/canvas': typeof CanvasRoute
   '/checkout': typeof CheckoutRoute
   '/creative-assistant': typeof CreativeAssistantRoute
   '/elements': typeof ElementsRoute
+  '/process': typeof ProcessRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
   '/script': typeof ScriptRoute
@@ -141,9 +155,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/canvas': typeof CanvasRoute
   '/checkout': typeof CheckoutRoute
   '/creative-assistant': typeof CreativeAssistantRoute
   '/elements': typeof ElementsRoute
+  '/process': typeof ProcessRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
   '/script': typeof ScriptRoute
@@ -162,9 +178,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/canvas': typeof CanvasRoute
   '/checkout': typeof CheckoutRoute
   '/creative-assistant': typeof CreativeAssistantRoute
   '/elements': typeof ElementsRoute
+  '/process': typeof ProcessRoute
   '/projects': typeof ProjectsRoute
   '/quick': typeof QuickRoute
   '/script': typeof ScriptRoute
@@ -184,9 +202,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/canvas'
     | '/checkout'
     | '/creative-assistant'
     | '/elements'
+    | '/process'
     | '/projects'
     | '/quick'
     | '/script'
@@ -204,9 +224,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/canvas'
     | '/checkout'
     | '/creative-assistant'
     | '/elements'
+    | '/process'
     | '/projects'
     | '/quick'
     | '/script'
@@ -224,9 +246,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/canvas'
     | '/checkout'
     | '/creative-assistant'
     | '/elements'
+    | '/process'
     | '/projects'
     | '/quick'
     | '/script'
@@ -245,9 +269,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CanvasRoute: typeof CanvasRoute
   CheckoutRoute: typeof CheckoutRoute
   CreativeAssistantRoute: typeof CreativeAssistantRoute
   ElementsRoute: typeof ElementsRoute
+  ProcessRoute: typeof ProcessRoute
   ProjectsRoute: typeof ProjectsRoute
   QuickRoute: typeof QuickRoute
   ScriptRoute: typeof ScriptRoute
@@ -308,6 +334,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/process': {
+      id: '/process'
+      path: '/process'
+      fullPath: '/process'
+      preLoaderRoute: typeof ProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/elements': {
       id: '/elements'
       path: '/elements'
@@ -327,6 +360,13 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/canvas': {
+      id: '/canvas'
+      path: '/canvas'
+      fullPath: '/canvas'
+      preLoaderRoute: typeof CanvasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -397,9 +437,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CanvasRoute: CanvasRoute,
   CheckoutRoute: CheckoutRoute,
   CreativeAssistantRoute: CreativeAssistantRoute,
   ElementsRoute: ElementsRoute,
+  ProcessRoute: ProcessRoute,
   ProjectsRoute: ProjectsRoute,
   QuickRoute: QuickRoute,
   ScriptRoute: ScriptRoute,

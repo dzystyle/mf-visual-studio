@@ -1,10 +1,24 @@
 import * as React from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { X, Play, Info, Share2, CheckCircle2, ChevronLeft, ChevronRight, Maximize2, Volume2, Pause } from "lucide-react";
+import {
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Maximize2,
+  Play,
+  LayoutGrid,
+  Clock,
+  PlaySquare,
+} from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import tvSpace from "@/assets/tv-space.jpg";
 import tvDrama from "@/assets/tv-drama.jpg";
+import tvPalace from "@/assets/tv-palace.jpg";
+import skillStory from "@/assets/skill-story.jpg";
+import skillReenact from "@/assets/skill-reenact.jpg";
+import skillScript from "@/assets/skill-script.jpg";
+import charLisa from "@/assets/char-lisa.jpg";
 
 interface TvDetailDialogProps {
   open: boolean;
@@ -13,128 +27,186 @@ interface TvDetailDialogProps {
     title: string;
     author: string;
     image: string;
+    category?: string;
     videoUrl?: string;
   };
 }
 
+const REEL = [tvPalace, tvSpace, tvDrama, skillStory, skillReenact, skillScript, charLisa];
+
 export function TvDetailDialog({ open, onOpenChange, videoData }: TvDetailDialogProps) {
   const navigate = useNavigate();
+  const [active, setActive] = React.useState(0);
+
+  React.useEffect(() => {
+    if (open) setActive(1);
+  }, [open]);
+
   if (!videoData) return null;
 
-  const thumbnails = [
-    { id: 1, image: videoData.image, active: true },
-    { id: 2, image: tvSpace, active: false },
-    { id: 3, image: tvDrama, active: false },
-    { id: 4, image: tvSpace, active: false },
-  ];
+  const tags = [videoData.title, "末日", videoData.category ?? "爱死机"];
+
+  const goProcess = () => {
+    onOpenChange(false);
+    navigate({ to: "/process", search: { title: videoData.title, author: videoData.author } });
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-screen h-screen border-none bg-black/95 p-0 sm:rounded-none">
-        <div className="relative flex h-full w-full flex-col overflow-hidden">
-          {/* Top Bar / Navigation */}
-          <div className="absolute left-0 right-0 top-0 z-50 flex items-center justify-between bg-gradient-to-b from-black/80 to-transparent p-4">
-            <div className="flex items-center gap-4 overflow-x-auto pb-2 no-scrollbar px-10 mx-auto">
-               {thumbnails.map((thumb) => (
-                 <div 
-                   key={thumb.id}
-                   className={cn(
-                     "relative h-12 w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 transition-all duration-200",
-                     thumb.active ? "border-primary scale-110" : "border-transparent opacity-50 hover:opacity-80"
-                   )}
-                 >
-                   <img src={thumb.image} alt="" className="h-full w-full object-cover" />
-                 </div>
-               ))}
+      <DialogContent className="h-screen max-w-screen border-none bg-black p-0 sm:rounded-none">
+        <div className="relative flex h-full w-full overflow-hidden bg-black">
+          {/* 返回 */}
+          <button
+            onClick={() => onOpenChange(false)}
+            className="absolute left-6 top-6 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/80 transition hover:bg-white/20 hover:text-white"
+            aria-label="返回"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+
+          {/* 左侧播放区 */}
+          <div className="relative flex flex-1 flex-col items-center justify-center px-16 py-10">
+            <div className="relative w-full max-w-[1100px] overflow-hidden rounded-2xl bg-[#0a0a0a] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]">
+              <div className="relative aspect-video w-full">
+                <img
+                  src={REEL[active] ?? videoData.image}
+                  alt={videoData.title}
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute left-4 top-3 text-[11px] tracking-widest text-white/50">
+                  AIGC By {videoData.author}
+                </div>
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/70 to-transparent" />
+                <button className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20">
+                  <Play className="h-4 w-4 fill-current" />
+                </button>
+              </div>
             </div>
-            <button 
+
+            {/* 底部胶片条 */}
+            <div className="mt-10 flex w-full max-w-[1100px] items-center justify-center gap-4">
+              <button
+                onClick={() => setActive((i) => (i - 1 + REEL.length) % REEL.length)}
+                className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-white/70 transition hover:bg-white/20 hover:text-white"
+                aria-label="上一个"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <div className="flex flex-1 items-center justify-center gap-3 overflow-hidden">
+                {REEL.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActive(i)}
+                    className={cn(
+                      "relative h-[52px] flex-shrink-0 overflow-hidden rounded-lg border transition-all duration-300",
+                      i === active
+                        ? "w-[112px] border-white/70 opacity-100 shadow-lg"
+                        : "w-[88px] border-white/10 opacity-45 hover:opacity-80"
+                    )}
+                  >
+                    <img src={img} alt="" className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => setActive((i) => (i + 1) % REEL.length)}
+                className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-white/70 transition hover:bg-white/20 hover:text-white"
+                aria-label="下一个"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* 右侧信息面板 */}
+          <aside className="relative m-4 ml-0 flex w-[420px] flex-shrink-0 flex-col rounded-3xl bg-[#141414] p-7">
+            <button
               onClick={() => onOpenChange(false)}
-              className="absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+              className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-lg text-white/50 transition hover:bg-white/10 hover:text-white"
+              aria-label="关闭"
             >
-              <X className="h-6 w-6" />
+              <Maximize2 className="h-4 w-4" />
             </button>
-          </div>
 
-          {/* Main Content Area */}
-          <div className="relative flex flex-1 items-center justify-center">
-            {/* Background Blur Image */}
-            <div className="absolute inset-0 z-0">
-              <img src={videoData.image} alt="" className="h-full w-full object-cover blur-3xl opacity-30" />
+            <h2 className="pr-10 text-2xl font-semibold text-white">{videoData.title}</h2>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {tags.map((t) => (
+                <span key={t} className="rounded-md bg-white/[0.07] px-2.5 py-1 text-[12px] text-white/70">
+                  {t}
+                </span>
+              ))}
             </div>
 
-            {/* Main Video/Image Display */}
-            <div className="relative z-10 w-full max-w-5xl px-6 aspect-video">
-               <div className="group relative h-full w-full overflow-hidden rounded-2xl shadow-2xl shadow-black">
-                 <img src={videoData.image} alt={videoData.title} className="h-full w-full object-cover" />
-                 
-                 {/* Video Controls Overlay */}
-                 <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-transparent p-8 opacity-100 transition-opacity">
-                    <div className="flex flex-col gap-1 mb-8">
-                       <div className="text-sm text-white/60">@{videoData.author}</div>
-                       <h2 className="text-4xl font-bold text-white">{videoData.title}</h2>
-                    </div>
-
-                    {/* Bottom Action Bar */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                         <button 
-                           onClick={() => navigate({ to: "/script" })}
-                           className="flex items-center gap-2 rounded-full bg-white px-8 py-3 font-semibold text-black transition hover:bg-white/90"
-                         >
-                           <Play className="h-5 w-5 fill-current" />
-                           查看创作过程
-                         </button>
-                         <button className="flex items-center gap-2 rounded-full bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur-md transition hover:bg-white/20 border border-white/10">
-                           <div className="flex items-center gap-2">
-                              <span className="flex h-5 w-5 items-center justify-center rounded bg-emerald-500/20 text-emerald-500">
-                                <CheckCircle2 className="h-3 w-3" />
-                              </span>
-                              剧本生视频 (需上传剧本)
-                           </div>
-                         </button>
-                         <button className="flex items-center gap-2 rounded-full bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur-md transition hover:bg-white/20 border border-white/10">
-                           <span className="text-emerald-500 text-xs">✓ 已添加我的Skill</span>
-                         </button>
-                         <button className="flex items-center justify-center rounded-full bg-white/10 p-3 text-white backdrop-blur-md transition hover:bg-white/20 border border-white/10">
-                           <Share2 className="h-5 w-5" />
-                         </button>
-                      </div>
-
-                      <div className="flex items-center gap-6 text-white/80">
-                         <div className="flex items-center gap-3">
-                           <Pause className="h-4 w-4 fill-current cursor-pointer hover:text-white" />
-                           <span className="text-sm font-mono tracking-tighter">00:04 / 01:43</span>
-                         </div>
-                         <div className="flex items-center gap-4">
-                            <Volume2 className="h-5 w-5 cursor-pointer hover:text-white" />
-                            <Maximize2 className="h-5 w-5 cursor-pointer hover:text-white" />
-                         </div>
-                      </div>
-                    </div>
-
-                    {/* Progress Bar */}
-                    <div className="absolute bottom-0 left-0 h-1 w-full bg-white/20">
-                      <div className="h-full w-[15%] bg-white" />
-                    </div>
-                 </div>
-
-                 {/* Subtitles Placeholder */}
-                 <div className="absolute bottom-24 left-0 right-0 text-center">
-                    <p className="text-2xl font-medium text-white/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                      Yeah, let's stop bombarding this
-                    </p>
-                 </div>
-               </div>
+            <div className="mt-5 flex items-center gap-3 text-[13px] text-white/70">
+              <img src={videoData.image} alt="" className="h-6 w-6 rounded-full object-cover" />
+              <span>{videoData.author}</span>
+              <span className="text-white/25">·</span>
+              <span className="flex items-center gap-1.5">
+                <PlaySquare className="h-3.5 w-3.5" /> 4296.3w
+              </span>
             </div>
 
-            {/* Navigation Arrows */}
-            <button className="absolute left-10 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-white/5 text-white/40 transition hover:bg-white/10 hover:text-white">
-              <ChevronLeft className="h-8 w-8" />
-            </button>
-            <button className="absolute right-10 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-white/5 text-white/40 transition hover:bg-white/10 hover:text-white">
-              <ChevronRight className="h-8 w-8" />
-            </button>
-          </div>
+            <div className="mt-8">
+              <div className="text-[15px] font-medium text-white">作品介绍</div>
+              <ul className="mt-3 space-y-2 text-[13px] leading-relaxed text-white/60">
+                <li className="flex gap-2">
+                  <span className="mt-[7px] h-1 w-1 flex-shrink-0 rounded-full bg-white/40" />
+                  <span>
+                    海外观众称之为「最具类型强度的 AI 电影」,几天内播放量破千万,好莱坞电影 AI 制作人表示,
+                    这是自己最近几年看到的最好短片之一。
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="mt-8">
+              <div className="text-[15px] font-medium text-white">创作课程</div>
+              <div className="mt-3 flex cursor-pointer gap-3 rounded-xl p-2 transition hover:bg-white/[0.05]">
+                <div className="relative h-[62px] w-[110px] flex-shrink-0 overflow-hidden rounded-lg">
+                  <img src={tvSpace} alt="" className="h-full w-full object-cover" />
+                  <span className="absolute bottom-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-white">
+                    <Play className="h-2.5 w-2.5 fill-current" />
+                  </span>
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[13px] leading-snug text-white/90">
+                    国产「爱死机」的制作全流程公开
+                  </div>
+                  <div className="mt-2 flex items-center gap-1.5 text-[12px] text-white/45">
+                    <Clock className="h-3 w-3" /> 42:47
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-auto pt-8">
+              <div className="mb-5 flex justify-center -space-x-2">
+                {[charLisa, skillReenact, skillStory].map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt=""
+                    className="h-11 w-11 rounded-xl border-2 border-[#141414] object-cover"
+                  />
+                ))}
+              </div>
+              <button
+                onClick={goProcess}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-white py-3.5 text-[14px] font-semibold text-black transition hover:bg-white/90"
+              >
+                <LayoutGrid className="h-4 w-4" /> 查看创作模版
+              </button>
+            </div>
+          </aside>
+
+          <button
+            onClick={() => onOpenChange(false)}
+            className="absolute right-8 top-8 z-50 hidden h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white"
+            aria-label="关闭"
+          >
+            <X className="h-4 w-4" />
+          </button>
         </div>
       </DialogContent>
     </Dialog>
