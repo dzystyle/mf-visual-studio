@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Plus } from "lucide-react";
 import { toast } from "sonner";
-import { DEFAULT_HISTORY } from "@/components/AppSidebar";
+import { DEFAULT_HISTORY, type HistoryItem } from "@/components/AppSidebar";
+import { CreateProjectDialog } from "./CreateProjectDialog";
 
 type CanvasStyle = "free" | "node";
 
@@ -59,8 +60,8 @@ export function CreateCanvasDialog({
   const [project, setProject] = useState("");
   const [projectOpen, setProjectOpen] = useState(false);
   const [commonPrompt, setCommonPrompt] = useState("");
-
-  const projects = DEFAULT_HISTORY;
+  const [createProjectOpen, setCreateProjectOpen] = useState(false);
+  const [projects, setProjects] = useState<HistoryItem[]>(DEFAULT_HISTORY);
 
   const reset = () => {
     setName("");
@@ -68,6 +69,19 @@ export function CreateCanvasDialog({
     setProject("");
     setCommonPrompt("");
     setProjectOpen(false);
+  };
+
+  const handleCreateProject = (projectName: string) => {
+    const newProject: HistoryItem = {
+      id: `proj-${Date.now()}`,
+      title: projectName,
+      group: "今天",
+      kind: "video",
+      source: "agent",
+    };
+    setProjects((prev) => [newProject, ...prev]);
+    setProject(projectName);
+    toast.success(`项目「${projectName}」创建成功`);
   };
 
   const handleCreate = () => {
@@ -163,6 +177,14 @@ export function CreateCanvasDialog({
             {projectOpen && (
               <div className="absolute z-20 left-0 right-0 top-full mt-1.5 rounded-xl border border-border bg-popover shadow-xl overflow-hidden">
                 <div className="max-h-52 overflow-y-auto py-1.5">
+                  <button
+                    onClick={() => { setProjectOpen(false); setCreateProjectOpen(true); }}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-left transition-colors hover:bg-accent text-primary font-medium"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    <span>创建项目</span>
+                  </button>
+                  <div className="mx-3 my-1.5 h-px bg-border" />
                   {projects.map((p) => (
                     <button
                       key={p.id}
@@ -177,6 +199,12 @@ export function CreateCanvasDialog({
               </div>
             )}
           </div>
+
+          <CreateProjectDialog
+            open={createProjectOpen}
+            onOpenChange={setCreateProjectOpen}
+            onConfirm={handleCreateProject}
+          />
 
           {/* 画布公共提示词 */}
           <div>

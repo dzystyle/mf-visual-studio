@@ -126,6 +126,7 @@ function SkillDiscoveryPage() {
   const [myFilter, setMyFilter] = useState("全部");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState<any>(null);
+  const [detailIsMine, setDetailIsMine] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [userCreatedSkills, setUserCreatedSkills] = useState<any[]>([]);
 
@@ -209,6 +210,7 @@ function SkillDiscoveryPage() {
           open={isDetailOpen}
           onOpenChange={setIsDetailOpen}
           skill={selectedSkill}
+          isMine={detailIsMine}
           onEdit={(skill) => {
             setIsDetailOpen(false);
             // We pass data to the create dialog
@@ -270,6 +272,7 @@ function SkillDiscoveryPage() {
                   {...skill} 
                   onClick={() => {
                     setSelectedSkill(skill);
+                    setDetailIsMine(false);
                     setIsDetailOpen(true);
                   }}
                 />
@@ -311,6 +314,7 @@ function SkillDiscoveryPage() {
                   isMySkill={true}
                   onClick={() => {
                     setSelectedSkill(skill);
+                    setDetailIsMine(true);
                     setIsDetailOpen(true);
                   }}
                 />
@@ -328,6 +332,7 @@ function SkillDiscoveryPage() {
                     myLabel={idx === 0 ? "历史使用" : (idx === 1 || idx === 6 || idx === 7 ? "我创建的" : undefined)}
                     onClick={() => {
                       setSelectedSkill(skill);
+                      setDetailIsMine(true);
                       setIsDetailOpen(true);
                     }}
                   />

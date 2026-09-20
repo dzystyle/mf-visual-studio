@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
-import { ChevronRight, ChevronUp, ArrowUpRight } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { ChevronLeft, ChevronRight, ChevronDown, ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import { PromoBanner } from "@/components/PromoBanner";
 import { BrandMark, TopBar } from "@/components/TopBar";
@@ -9,6 +9,7 @@ import { SkillCard, hotSkills } from "@/components/SkillCard";
 import { ArtrailTV } from "@/components/tv/ArtrailTV";
 import { FeatureCarousel } from "@/components/FeatureCarousel";
 import { CreateCanvasDialog } from "@/components/CreateCanvasDialog";
+import { WhatsNewDialog } from "@/components/WhatsNewDialog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,6 +21,17 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+const SKILL_CATEGORIES = [
+  "全部",
+  "剧情短片",
+  "动漫游戏",
+  "大师美学",
+  "科幻特效",
+  "效率工具",
+  "广告营销",
+  "萌宠",
+];
+
 function Home() {
   const navigate = useNavigate();
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
@@ -27,6 +39,12 @@ function Home() {
   
   const [activeTab, setActiveTab] = useState("智能");
   const [canvasDialogOpen, setCanvasDialogOpen] = useState(false);
+  const [whatsNewOpen, setWhatsNewOpen] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setWhatsNewOpen(true), 600);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +66,7 @@ function Home() {
     <div className="relative">
       <PromoBanner />
       <CreateCanvasDialog open={canvasDialogOpen} onOpenChange={setCanvasDialogOpen} />
+      <WhatsNewDialog open={whatsNewOpen} onOpenChange={setWhatsNewOpen} />
 
       {/* Hero with aurora */}
       <section className="aurora-bg relative px-6 pb-8 pt-6">
@@ -95,23 +114,22 @@ function Home() {
                 </div>
               </div>
             </div>
-
-
-            <PromptBox
-              onSubmit={(prompt, canvasMode, skill) =>
-                navigate({ 
-                  to: canvasMode ? "/script" : "/creative-assistant", 
-                  search: (skill ? { prompt, skill } : { prompt }) as any 
-                })
-              }
-            />
           </div>
         </div>
 
-        <div className="mx-auto mt-6 max-w-6xl">
-          <div className="mb-3 text-center">
-            <div className="text-[13px] font-medium text-muted-foreground">热门 模版</div>
-          </div>
+        <div className={`mx-auto w-full max-w-[810px] transition-all duration-500 ${isScrolledToBottom ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+          <PromptBox
+            tall
+            onSubmit={(prompt, canvasMode, skill) =>
+              navigate({ 
+                to: canvasMode ? "/script" : "/creative-assistant", 
+                search: (skill ? { prompt, skill } : { prompt }) as any 
+              })
+            }
+          />
+        </div>
+
+        <div className="mx-auto mt-6 w-full max-w-[810px]">
           <SkillsWithPreview />
         </div>
       </section>
@@ -157,14 +175,23 @@ function Home() {
 function SkillsWithPreview() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [showAll, setShowAll] = useState(false);
+  const [category, setCategory] = useState("全部");
+  const [catOpen, setCatOpen] = useState(false);
+  const [page, setPage] = useState(0);
   const active = hotSkills.find((s) => s.id === hovered) ?? null;
+  const filtered = useMemo(
+    () => (category === "全部" ? hotSkills : hotSkills.filter((s) => s.tags?.includes(category))),
+    [category]
+  );
+  const pageCount = Math.max(1, Math.ceil(filtered.length / 4));
+  const safePage = Math.min(page, pageCount - 1);
+  const visible = filtered.slice(safePage * 4, safePage * 4 + 4);
 
   return (
     <div className="relative">
       {active && (
         <div
-          className="fixed z-[30] -translate-x-1/2 -translate-y-[calc(100%+12px)] transition-all duration-200"
+          className="fixed z-[30] -translate-x-1/2 translate-y-3 transition-all duration-200"
           style={{
             left: position.x,
             top: position.y,
@@ -244,45 +271,73 @@ function SkillsWithPreview() {
             </div>
           </div>
           {/* Arrow */}
-          <div className="absolute left-1/2 -bottom-1.5 h-3 w-3 -translate-x-1/2 rotate-45 border-b border-r border-white/10 bg-[#161616]" />
+          <div className="absolute left-1/2 -top-1.5 h-3 w-3 -translate-x-1/2 rotate-45 border-t border-l border-white/10 bg-[#161616]" />
         </div>
       )}
 
-      <div className="flex flex-col items-center gap-3">
-        {showAll ? (
-          <>
-            <div className="grid w-full grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
-              {hotSkills.slice(0, 30).map((s) => (
-                <SkillHoverItem key={s.id} skill={s} hovered={hovered} setHovered={setHovered} setPosition={setPosition} />
-              ))}
-            </div>
-            <button
-              onClick={() => setShowAll(false)}
-              className="flex items-center gap-1 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-4 py-2 text-[13px] font-medium text-emerald-600 transition hover:bg-emerald-500/[0.12] dark:border-emerald-400/20 dark:bg-emerald-400/[0.06] dark:text-emerald-400 dark:hover:bg-emerald-400/[0.12]"
-            >
-              收起 <ChevronUp className="h-3.5 w-3.5" />
-            </button>
-          </>
-        ) : (
-          <>
-            <div className="grid w-full grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
-              {hotSkills.slice(0, 5).map((s) => (
-                <SkillHoverItem key={s.id} skill={s} hovered={hovered} setHovered={setHovered} setPosition={setPosition} />
-              ))}
-            </div>
-            <div className="grid w-full grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
-              {hotSkills.slice(5, 9).map((s) => (
-                <SkillHoverItem key={s.id} skill={s} hovered={hovered} setHovered={setHovered} setPosition={setPosition} />
-              ))}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="text-[15px] font-semibold text-foreground">热门模版</div>
+            <div className="h-3.5 w-px bg-black/10 dark:bg-white/15" />
+            <div className="relative">
               <button
-                onClick={() => setShowAll(true)}
-                className="flex items-center justify-between rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-4 py-3 text-[13px] font-medium text-emerald-600 transition hover:bg-emerald-500/[0.12] dark:border-emerald-400/20 dark:bg-emerald-400/[0.06] dark:text-emerald-400 dark:hover:bg-emerald-400/[0.12]"
+                onClick={() => setCatOpen((v) => !v)}
+                className="flex items-center gap-1 rounded-lg px-1 py-0.5 text-[13px] text-muted-foreground transition hover:text-foreground"
               >
-                更多模版 <ChevronRight className="h-3.5 w-3.5" />
+                {category}
+                <ChevronDown className="h-3 w-3" />
               </button>
+              {catOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setCatOpen(false)} />
+                  <div className="absolute left-0 top-full z-50 mt-1.5 w-32 overflow-hidden rounded-xl border border-black/[0.08] bg-white py-1 shadow-xl shadow-black/10 dark:border-white/10 dark:bg-[#1a1a1d] dark:shadow-black/50">
+                    {SKILL_CATEGORIES.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => {
+                          setCategory(c);
+                          setPage(0);
+                          setCatOpen(false);
+                        }}
+                        className={`block w-full px-3 py-1.5 text-left text-[12px] transition ${
+                          c === category
+                            ? "bg-black/[0.04] text-foreground dark:bg-white/[0.06]"
+                            : "text-muted-foreground hover:bg-black/[0.03] hover:text-foreground dark:hover:bg-white/[0.04]"
+                        }`}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
-          </>
-        )}
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setPage(Math.max(0, safePage - 1))}
+              disabled={safePage === 0}
+              aria-label="上一页"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-black/[0.08] bg-white/70 text-foreground/70 transition hover:bg-white disabled:opacity-30 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:bg-white/[0.1]"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setPage(Math.min(pageCount - 1, safePage + 1))}
+              disabled={safePage === pageCount - 1}
+              aria-label="下一页"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-black/[0.08] bg-white/70 text-foreground/70 transition hover:bg-white disabled:opacity-30 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70 dark:hover:bg-white/[0.1]"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+        <div className="grid w-full grid-cols-4 gap-2.5">
+          {visible.map((s) => (
+            <SkillHoverItem key={s.id} skill={s} hovered={hovered} setHovered={setHovered} setPosition={setPosition} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -306,7 +361,7 @@ function SkillHoverItem({
           const rect = e.currentTarget.getBoundingClientRect();
           setPosition({
             x: rect.left + rect.width / 2,
-            y: rect.top,
+            y: rect.bottom,
           });
         }
       }}
@@ -314,7 +369,7 @@ function SkillHoverItem({
         const rect = e.currentTarget.getBoundingClientRect();
         setPosition({
           x: rect.left + rect.width / 2,
-          y: rect.top,
+          y: rect.bottom,
         });
         setHovered(s.id);
       }}
@@ -322,6 +377,7 @@ function SkillHoverItem({
     >
       <SkillCard
         {...s}
+        compact
         onTry={() => {
           const event = new CustomEvent('insert-template', { detail: s.title });
           window.dispatchEvent(event);

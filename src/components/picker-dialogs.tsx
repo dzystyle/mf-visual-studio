@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X, Code, Calendar, LayoutGrid, Star } from "lucide-react";
+import { Search, Check, Plus, Sparkles, Image as ImageIcon, Video, Music, FileText, ChevronRight, Eye, X, Code, LayoutGrid, Star } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -230,8 +230,8 @@ const categories = [
   { key: "default", label: "默认调用", icon: Star, tip: "未手动选择Skill时，Agent会从默认调用的skill里面寻找合适的" },
   { key: "mine", label: "我的" },
   { key: "starred", label: "收藏" },
-  { key: "film", label: "专业影视" },
-  { key: "marketing", label: "专业营销" },
+  { key: "film", label: "图片技能" },
+  { key: "marketing", label: "视频技能" },
   { key: "product", label: "产品推广" },
   { key: "drama", label: "短剧漫剧" },
   { key: "creative", label: "创意发散" },
@@ -594,13 +594,6 @@ export function SkillPickerDialog({
 
 
 /* ---------------- Assets Picker ---------------- */
-const assetTabs = [
-  { key: "works", label: "作品" },
-  { key: "history", label: "历史上传" },
-  { key: "char", label: "角色" },
-  { key: "product", label: "商品" },
-] as const;
-
 const assetSubTabs = [
   { key: "all", label: "全部" },
   { key: "image", label: "图片" },
@@ -623,7 +616,6 @@ export function ElementsPicker({
 }: { 
   onSelect?: (name: string, kind?: string, url?: string) => void 
 }) {
-  const [tab, setTab] = useState<typeof assetTabs[number]["key"]>("works");
   const [subTab, setSubTab] = useState<typeof assetSubTabs[number]["key"]>("all");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
@@ -641,263 +633,232 @@ export function ElementsPicker({
   };
 
   return (
-    <div className="w-[1000px] h-[720px] bg-[#0A0A0A] text-white overflow-hidden flex flex-col relative">
-      {/* Sidebar and Main Content Wrapper */}
+    <div className="w-[1000px] h-[720px] flex flex-col rounded-[28px] bg-white dark:bg-[#0A0A0A]/95 text-[#1A1A1A] dark:text-white shadow-[0_24px_64px_-12px_rgba(0,0,0,0.12)] overflow-hidden animate-in zoom-in-95 fade-in duration-300 origin-bottom border border-[#E5E5E5]/50 dark:border-white/10 dark:backdrop-blur-xl relative">
+      {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Left Sidebar */}
-        <div className="w-[180px] border-r border-white/5 flex flex-col pt-6">
-          <div className="px-6 mb-8">
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-bold">所有资产</span>
-              <span className="text-sm text-white/40">(8)</span>
-            </div>
-          </div>
-          
-          <nav className="flex-1 space-y-1 px-3">
-            {assetTabs.map((t) => (
-              <button
-                key={t.key}
-                onClick={() => setTab(t.key)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                  tab === t.key 
-                    ? "bg-white/10 text-white shadow-lg" 
-                    : "text-white/40 hover:text-white/60 hover:bg-white/5"
-                }`}
-              >
-                {t.key === 'works' && <LayoutGrid className="h-4 w-4" />}
-                {t.key === 'history' && <Calendar className="h-4 w-4" />}
-                {t.key === 'char' && <Sparkles className="h-4 w-4" />}
-                {t.key === 'product' && <ImageIcon className="h-4 w-4" />}
-                {t.label}
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        {/* Right Main Content */}
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 bg-white dark:bg-transparent">
           {/* Top Header */}
-          <div className="flex items-center justify-end px-6 py-4 border-b border-white/5 h-[72px]">
+          <div className="flex items-center justify-end px-6 py-4 border-b border-[#F0F0F0] dark:border-white/5 h-[72px]">
             <button 
               onClick={() => (window as any).closeElementsPicker?.()}
-              className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-white/5 transition"
+              className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-black/[0.03] dark:hover:bg-white/5 transition"
             >
-          <X className="h-4 w-4 text-white/40" />
-        </button>
-      </div>
-
-      {/* Toolbar / Filters */}
-      <div className="flex items-center gap-3 px-6 py-4 flex-wrap border-b border-white/5">
-        {/* Creation Source Dropdown */}
-        <Popover>
-          <PopoverTrigger asChild>
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-              创作资产 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
+              <X className="h-4 w-4 text-[#999] dark:text-white/40" />
             </button>
-          </PopoverTrigger>
-          <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
-            <div className="space-y-1">
-              {['全部来源', '画布创作', '工作流创作', 'AI生成'].map((item) => (
-                <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
-              ))}
-            </div>
-          </PopoverContent>
-        </Popover>
-
-        {/* Media Type Filters */}
-        <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
-          {assetSubTabs.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setSubTab(t.key)}
-              className={`px-3 py-1 rounded-md text-xs font-medium transition ${
-                subTab === t.key ? "bg-white/10 text-white" : "text-white/40 hover:text-white/60"
-              }`}
-            >
-              <div className="flex items-center gap-1.5">
-                {t.key === 'image' && <ImageIcon className="h-3 w-3" />}
-                {t.key === 'video' && <Video className="h-3 w-3" />}
-                {t.label}
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {/* Date Filter */}
-        <Popover>
-          <PopoverTrigger asChild>
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-              时间范围 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="w-48 bg-[#1A1A1A] border-white/10 p-1 text-white">
-            <div className="space-y-1">
-              {['全部时间', '今天', '最近7天', '最近30天', '自定义范围'].map((item) => (
-                <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
-              ))}
-            </div>
-          </PopoverContent>
-        </Popover>
-
-        {/* Sort Order */}
-        <Popover>
-          <PopoverTrigger asChild>
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-              倒序 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="w-32 bg-[#1A1A1A] border-white/10 p-1 text-white">
-            <div className="space-y-1">
-              {['正序', '倒序'].map((item) => (
-                <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
-              ))}
-            </div>
-          </PopoverContent>
-        </Popover>
-
-        <div className="flex-1" />
-
-        {/* Right Side Filters */}
-        <div className="flex items-center gap-2">
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-                全部项目 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
-              <div className="space-y-1">
-                {['全部项目', '一拳超人宣发', '游戏预告', '节日活动'].map((item) => (
-                  <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
-                ))}
-              </div>
-            </PopoverContent>
-          </Popover>
-
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-                全部人员 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
-              <div className="space-y-1">
-                {['全部人员', '我自己', '设计师-阿强', '项目经理-老李'].map((item) => (
-                  <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
-                ))}
-              </div>
-            </PopoverContent>
-          </Popover>
-
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg text-sm hover:bg-white/10 transition">
-                全部画布 <ChevronRight className="h-4 w-4 rotate-90 text-white/40" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
-              <div className="space-y-1">
-                {['全部画布', '主画布-01', '备选画布-02', '草稿-03'].map((item) => (
-                  <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
-                ))}
-              </div>
-            </PopoverContent>
-          </Popover>
-          
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/40" />
-            <input 
-              type="text" 
-              placeholder="搜索资产..." 
-              className="pl-9 pr-4 py-1.5 bg-white/5 rounded-lg text-xs w-40 focus:outline-none focus:ring-1 focus:ring-white/10"
-            />
           </div>
 
-          <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
+          {/* Toolbar / Filters */}
+          <div className="flex items-center gap-3 px-6 py-4 flex-wrap border-b border-[#F0F0F0] dark:border-white/5">
+            {/* Creation Source Dropdown */}
             <Popover>
               <PopoverTrigger asChild>
-                <button className="p-1.5 rounded bg-white/10"><Sparkles className="h-3.5 w-3.5" /></button>
+                <button className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F5F5] dark:bg-white/5 rounded-lg text-sm text-[#333] dark:text-white/80 hover:bg-[#EEE] dark:hover:bg-white/10 transition">
+                  创作资产 <ChevronRight className="h-4 w-4 rotate-90 text-[#999] dark:text-white/40" />
+                </button>
               </PopoverTrigger>
-              <PopoverContent className="w-40 bg-[#1A1A1A] border-white/10 p-1 text-white">
+              <PopoverContent className="w-40 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5]/50 dark:border-white/10 p-1 text-[#1A1A1A] dark:text-white">
                 <div className="space-y-1">
-                  {['AI 优化排序', '按关联度排序'].map((item) => (
-                    <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                  {['全部来源', '画布创作', '工作流创作', 'AI生成'].map((item) => (
+                    <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-black/[0.03] dark:hover:bg-white/5 rounded-md transition-colors">{item}</button>
                   ))}
                 </div>
               </PopoverContent>
             </Popover>
-            <button className="p-1.5 rounded hover:bg-white/10"><Check className="h-3.5 w-3.5 text-white/40" /></button>
-          </div>
 
-          <button 
-            onClick={() => {
-              if (selectedIds.length === assetItems.length) {
-                setSelectedIds([]);
-              } else {
-                setSelectedIds(assetItems.map(i => i.id));
-              }
-            }}
-            className="flex items-center gap-1.5 px-4 py-1.5 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition"
-          >
-            <Check className="h-3.5 w-3.5" />
-            批量操作
-          </button>
-        </div>
-      </div>
-
-      {/* Main Grid */}
-      <div className="flex-1 overflow-y-auto px-6 py-6 scrollbar-hide">
-        <div className="grid grid-cols-4 lg:grid-cols-5 gap-6">
-          {assetItems.map((item) => {
-            const isSelected = selectedIds.includes(item.id);
-            return (
-              <div key={item.id} className="group relative">
-                <div 
-                  onClick={() => toggleSelect(item.id)}
-                  className={`relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer transition-all ${
-                    isSelected ? "ring-2 ring-primary ring-offset-2 ring-offset-[#0A0A0A]" : "bg-white/5 hover:bg-white/10"
+            {/* Media Type Filters */}
+            <div className="flex items-center gap-1 bg-[#F5F5F5] dark:bg-white/5 rounded-lg p-1">
+              {assetSubTabs.map((t) => (
+                <button
+                  key={t.key}
+                  onClick={() => setSubTab(t.key)}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition ${
+                    subTab === t.key ? "bg-white dark:bg-white/10 text-black dark:text-white shadow-sm" : "text-[#666] dark:text-white/40 hover:text-black dark:hover:text-white/60"
                   }`}
                 >
-                  <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
-                  
-                  {/* Video Icon/Duration */}
-                  {item.kind === "video" && (
-                    <div className="absolute top-2 right-2 h-6 w-6 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                      <Video className="h-3 w-3 text-white" />
-                    </div>
-                  )}
-
-                  {/* Hover/Selected Overlay */}
-                  <div className={`absolute inset-0 bg-black/20 transition-opacity ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
-                </div>
-                
-                {/* Info Footer */}
-                <div className="mt-3 flex items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <Sparkles className="h-3 w-3 text-white/40" />
-                    <span className="text-[10px] font-medium text-white/40">D</span>
+                  <div className="flex items-center gap-1.5">
+                    {t.key === 'image' && <ImageIcon className="h-3 w-3" />}
+                    {t.key === 'video' && <Video className="h-3 w-3" />}
+                    {t.label}
                   </div>
-                  <span className="text-[10px] text-white/40 font-medium">· {item.date}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Date Filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F5F5] dark:bg-white/5 rounded-lg text-sm text-[#333] dark:text-white/80 hover:bg-[#EEE] dark:hover:bg-white/10 transition">
+                  时间范围 <ChevronRight className="h-4 w-4 rotate-90 text-[#999] dark:text-white/40" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-48 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5]/50 dark:border-white/10 p-1 text-[#1A1A1A] dark:text-white">
+                <div className="space-y-1">
+                  {['全部时间', '今天', '最近7天', '最近30天', '自定义范围'].map((item) => (
+                    <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-black/[0.03] dark:hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                  ))}
                 </div>
+              </PopoverContent>
+            </Popover>
+
+            {/* Sort Order */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F5F5] dark:bg-white/5 rounded-lg text-sm text-[#333] dark:text-white/80 hover:bg-[#EEE] dark:hover:bg-white/10 transition">
+                  倒序 <ChevronRight className="h-4 w-4 rotate-90 text-[#999] dark:text-white/40" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-32 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5]/50 dark:border-white/10 p-1 text-[#1A1A1A] dark:text-white">
+                <div className="space-y-1">
+                  {['正序', '倒序'].map((item) => (
+                    <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-black/[0.03] dark:hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            <div className="flex-1" />
+
+            {/* Right Side Filters */}
+            <div className="flex items-center gap-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F5F5] dark:bg-white/5 rounded-lg text-sm text-[#333] dark:text-white/80 hover:bg-[#EEE] dark:hover:bg-white/10 transition">
+                    全部项目 <ChevronRight className="h-4 w-4 rotate-90 text-[#999] dark:text-white/40" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5]/50 dark:border-white/10 p-1 text-[#1A1A1A] dark:text-white">
+                  <div className="space-y-1">
+                    {['全部项目', '一拳超人宣发', '游戏预告', '节日活动'].map((item) => (
+                      <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-black/[0.03] dark:hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F5F5] dark:bg-white/5 rounded-lg text-sm text-[#333] dark:text-white/80 hover:bg-[#EEE] dark:hover:bg-white/10 transition">
+                    全部人员 <ChevronRight className="h-4 w-4 rotate-90 text-[#999] dark:text-white/40" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5]/50 dark:border-white/10 p-1 text-[#1A1A1A] dark:text-white">
+                  <div className="space-y-1">
+                    {['全部人员', '我自己', '设计师-阿强', '项目经理-老李'].map((item) => (
+                      <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-black/[0.03] dark:hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F5F5] dark:bg-white/5 rounded-lg text-sm text-[#333] dark:text-white/80 hover:bg-[#EEE] dark:hover:bg-white/10 transition">
+                    全部画布 <ChevronRight className="h-4 w-4 rotate-90 text-[#999] dark:text-white/40" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5]/50 dark:border-white/10 p-1 text-[#1A1A1A] dark:text-white">
+                  <div className="space-y-1">
+                    {['全部画布', '主画布-01', '备选画布-02', '草稿-03'].map((item) => (
+                      <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-black/[0.03] dark:hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+              
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#999] dark:text-white/40" />
+                <input 
+                  type="text" 
+                  placeholder="搜索资产..." 
+                  className="pl-9 pr-4 py-1.5 bg-[#F5F5F5] dark:bg-white/5 border border-[#E5E5E5]/50 dark:border-white/10 rounded-lg text-xs w-40 text-[#1A1A1A] dark:text-white placeholder:text-[#999] dark:placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-black/5 dark:focus:ring-white/10"
+                />
               </div>
-            );
-          })}
+
+              <div className="flex items-center gap-1 bg-[#F5F5F5] dark:bg-white/5 rounded-lg p-1">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="p-1.5 rounded bg-white dark:bg-white/10 text-[#1A1A1A] dark:text-white"><Sparkles className="h-3.5 w-3.5" /></button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-40 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5]/50 dark:border-white/10 p-1 text-[#1A1A1A] dark:text-white">
+                    <div className="space-y-1">
+                      {['AI 优化排序', '按关联度排序'].map((item) => (
+                        <button key={item} className="w-full text-left px-3 py-2 text-xs hover:bg-black/[0.03] dark:hover:bg-white/5 rounded-md transition-colors">{item}</button>
+                      ))}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                <button className="p-1.5 rounded hover:bg-black/[0.03] dark:hover:bg-white/10 text-[#999] dark:text-white/40"><Check className="h-3.5 w-3.5" /></button>
+              </div>
+
+              <button 
+                onClick={() => {
+                  if (selectedIds.length === assetItems.length) {
+                    setSelectedIds([]);
+                  } else {
+                    setSelectedIds(assetItems.map(i => i.id));
+                  }
+                }}
+                className="flex items-center gap-1.5 px-4 py-1.5 bg-[#F5F5F5] dark:bg-white/10 rounded-lg text-sm font-medium text-[#333] dark:text-white hover:bg-[#EEE] dark:hover:bg-white/20 transition"
+              >
+                <Check className="h-3.5 w-3.5" />
+                批量操作
+              </button>
+            </div>
+          </div>
+
+          {/* Main Grid */}
+          <div className="flex-1 overflow-y-auto px-6 py-6 scrollbar-hide">
+            <div className="grid grid-cols-4 lg:grid-cols-5 gap-6">
+              {assetItems.map((item) => {
+                const isSelected = selectedIds.includes(item.id);
+                return (
+                  <div key={item.id} className="group relative">
+                    <div 
+                      onClick={() => toggleSelect(item.id)}
+                      className={`relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer transition-all ${
+                        isSelected ? "ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-[#0A0A0A]" : "bg-[#F5F5F5] dark:bg-white/5 hover:bg-[#EEE] dark:hover:bg-white/10"
+                      }`}
+                    >
+                      <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
+                      
+                      {/* Video Icon/Duration */}
+                      {item.kind === "video" && (
+                        <div className="absolute top-2 right-2 h-6 w-6 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                          <Video className="h-3 w-3 text-white" />
+                        </div>
+                      )}
+
+                      {/* Hover/Selected Overlay */}
+                      <div className={`absolute inset-0 bg-black/20 transition-opacity ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
+                    </div>
+                    
+                    {/* Info Footer */}
+                    <div className="mt-3 flex items-center gap-2">
+                      <div className="flex items-center gap-1">
+                        <Sparkles className="h-3 w-3 text-[#999] dark:text-white/40" />
+                        <span className="text-[10px] font-medium text-[#999] dark:text-white/40">D</span>
+                      </div>
+                      <span className="text-[10px] text-[#999] dark:text-white/40 font-medium">· {item.date}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
       {/* Footer Actions */}
       {selectedIds.length > 0 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-8 py-4 bg-[#1A1A1A] border border-white/10 rounded-2xl flex items-center gap-6 shadow-2xl z-30 animate-in fade-in slide-in-from-bottom-4">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-8 py-4 bg-white dark:bg-[#1A1A1A] border border-[#E5E5E5]/50 dark:border-white/10 rounded-2xl flex items-center gap-6 shadow-2xl z-30 animate-in fade-in slide-in-from-bottom-4 text-[#1A1A1A] dark:text-white">
           <div className="text-sm font-medium">
             已选择 <span className="text-primary">{selectedIds.length}</span> 个素材
           </div>
-          <div className="h-4 w-[1px] bg-white/10" />
+          <div className="h-4 w-[1px] bg-[#E5E5E5] dark:bg-white/10" />
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setSelectedIds([])}
-              className="px-4 py-2 text-sm text-white/60 hover:text-white transition"
+              className="px-4 py-2 text-sm text-[#666] dark:text-white/60 hover:text-black dark:hover:text-white transition"
             >
               取消
             </button>
@@ -925,7 +886,7 @@ export function ElementsPickerDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1000px] border-white/10 bg-[#0A0A0A] p-0 text-white overflow-hidden rounded-[24px] shadow-2xl [&>button]:hidden">
+      <DialogContent className="max-w-[1000px] border-none bg-transparent p-0 text-white backdrop-blur-none shadow-none">
         <div ref={(el) => {
           if (el) {
             (window as any).closeElementsPicker = () => onOpenChange(false);

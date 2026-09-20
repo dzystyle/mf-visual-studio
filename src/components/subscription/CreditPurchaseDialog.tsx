@@ -23,7 +23,7 @@ const GENERAL_OPTIONS: PurchaseOption[] = [
 ];
 
 const MODEL_SPECIFIC_OPTIONS = [
-  { name: "SD 2.5&2.0", credits: 200000, bonus: 100000, price: 14000, savings: 7000, icon: "📊", color: "from-green-500/20" },
+  { name: "SD 2.5&2.0", credits: 200000, bonus: 100000, price: 14000, savings: 7000, icon: "📊", color: "from-emerald-500/20" },
   { name: "MiniMax H3", credits: 200000, bonus: 100000, price: 14000, savings: 7000, icon: "🌀", color: "from-blue-500/20" },
   { name: "GPT Image 2", credits: 200000, bonus: 100000, price: 14000, savings: 7000, icon: "❄️", color: "from-red-500/20" },
   { name: "Nano Banana 2.0&Pro", credits: 200000, bonus: 100000, price: 14000, savings: 7000, icon: "🍌", color: "from-yellow-500/20" },
@@ -41,23 +41,23 @@ export function CreditPurchaseDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent 
-        className="w-full max-w-[1200px] h-fit max-h-[92vh] overflow-y-auto scrollbar-hide border border-white/10 bg-[#111111] p-0 text-foreground animate-in slide-in-from-bottom duration-500 rounded-t-3xl rounded-b-none sm:rounded-b-3xl top-auto bottom-0 sm:bottom-6 translate-y-0 left-1/2 -translate-x-1/2"
+      <DialogContent
+        className="w-full max-w-[1200px] h-fit max-h-[92vh] overflow-y-auto scrollbar-hide bg-card border border-border/60 p-0 text-foreground animate-in fade-in zoom-in-95 duration-300 rounded-[24px]"
         style={{ margin: 0 }}
       >
-        <div className="relative p-6 pt-10">
-          <DialogClose className="absolute right-6 top-6 rounded-full bg-white/5 p-2 text-white/40 hover:bg-white/10 hover:text-white transition-colors cursor-pointer">
+        <div className="relative p-8 pt-10">
+          <DialogClose className="absolute right-6 top-6 rounded-full bg-muted/50 p-2 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer">
             <X className="h-4 w-4" />
           </DialogClose>
 
           {/* Custom Tabs */}
           <div className="flex justify-center mb-8">
-            <div className="flex bg-white/5 rounded-full p-1 border border-white/10">
+            <div className="flex bg-muted/40 rounded-full p-1 border border-border/60">
               <button
                 onClick={() => setActiveTab("general")}
                 className={cn(
-                  "px-8 py-2 rounded-full text-sm font-medium transition-all",
-                  activeTab === "general" ? "bg-white/10 text-white shadow-lg" : "text-white/40 hover:text-white/60"
+                  "px-8 py-2 rounded-full text-sm font-medium transition-all cursor-pointer",
+                  activeTab === "general" ? "bg-foreground/10 text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 通用积分充值
@@ -65,11 +65,11 @@ export function CreditPurchaseDialog({
               <button
                 onClick={() => setActiveTab("model")}
                 className={cn(
-                  "px-8 py-2 rounded-full text-sm font-medium transition-all",
-                  activeTab === "model" ? "bg-white/10 text-white shadow-lg" : "text-white/40 hover:text-white/60"
+                  "px-8 py-2 rounded-full text-sm font-medium transition-all cursor-pointer",
+                  activeTab === "model" ? "bg-foreground/10 text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                模型专属卡 <span className="text-[#E6B380] ml-1">额外赠送 50%</span>
+                模型专属卡 <span className="text-primary ml-1">额外赠送 50%</span>
               </button>
             </div>
           </div>
@@ -84,49 +84,49 @@ export function CreditPurchaseDialog({
                       onClick={() => setSelectedOption(idx)}
                       className={cn(
                         "relative flex flex-col justify-between p-4 rounded-xl border transition-all cursor-pointer h-[120px]",
-                        selectedOption === idx 
-                          ? "bg-white/5 border-[#E6B380] shadow-[0_0_15px_rgba(230,179,128,0.2)]" 
-                          : "bg-white/[0.02] border-white/5 hover:border-white/10"
+                        selectedOption === idx
+                          ? "bg-primary/10 border-primary shadow-[0_0_18px_-4px] shadow-primary/40"
+                          : "bg-card/50 border-border/50 hover:border-border"
                       )}
                     >
                       {opt.bonusTag && (
-                        <div className="absolute -top-2 right-2 px-2 py-0.5 rounded-full bg-[#E6B380] text-[9px] font-bold text-black uppercase">
+                        <div className="absolute -top-2 right-2 px-2 py-0.5 rounded-full bg-primary text-[9px] font-bold text-primary-foreground uppercase">
                           {opt.bonusTag}
                         </div>
                       )}
                       <div>
                         <div className="text-lg font-bold">
                           {opt.credits.toLocaleString()}
-                          {opt.bonus && <span className="text-[#E6B380]"> + {opt.bonus.toLocaleString()}</span>}
+                          {opt.bonus && <span className="text-primary"> + {opt.bonus.toLocaleString()}</span>}
                         </div>
-                        <div className="text-[10px] text-white/40 mt-1 flex items-center gap-1">
+                        <div className="text-[10px] text-muted-foreground mt-1 flex items-center gap-1">
                           积分 <div className="h-2 w-2 rounded-[1px] bg-gradient-to-br from-yellow-400 to-orange-400" />
                         </div>
                       </div>
                       <div className="text-lg font-medium text-right text-foreground/90">
                         <span className="text-sm">¥</span>{opt.price.toLocaleString()}
                       </div>
-                      
+
                       {selectedOption === idx && (
-                        <div className="absolute inset-0 rounded-xl border border-[#E6B380] pointer-events-none" />
+                        <div className="absolute inset-0 rounded-xl border border-primary pointer-events-none" />
                       )}
                     </div>
                   ))}
                 </div>
 
                 {/* Custom Plan / Enterprise */}
-                <div className="col-span-1 rounded-xl bg-gradient-to-b from-[#2A1F1F] to-[#1A1A1A] border border-white/5 p-6 flex flex-col items-center justify-center text-center gap-4">
-                  <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center">
-                    <CrownIcon className="h-6 w-6 text-[#E6B380]" />
+                <div className="col-span-1 rounded-xl bg-muted/30 border border-border/50 p-6 flex flex-col items-center justify-center text-center gap-4">
+                  <div className="h-10 w-10 rounded-full bg-muted/50 flex items-center justify-center">
+                    <CrownIcon className="h-6 w-6 text-primary" />
                   </div>
                   <div>
                     <div className="text-lg font-bold mb-1">定制</div>
-                    <div className="text-[10px] text-white/40 leading-relaxed">
+                    <div className="text-[10px] text-muted-foreground leading-relaxed">
                       大额积分采购<br />
                       更高并发通道
                     </div>
                   </div>
-                  <button className="w-full py-2 rounded-full bg-white/5 text-xs font-medium hover:bg-white/10 transition-colors">
+                  <button className="w-full py-2 rounded-full bg-muted/40 text-xs font-medium text-foreground hover:bg-muted transition-colors cursor-pointer">
                     联系我们
                   </button>
                 </div>
@@ -139,26 +139,26 @@ export function CreditPurchaseDialog({
                     onClick={() => setSelectedOption(idx)}
                     className={cn(
                       "group relative flex flex-col p-5 rounded-2xl border transition-all cursor-pointer h-[240px] overflow-hidden",
-                      selectedOption === idx 
-                        ? "bg-white/5 border-[#E6B380] shadow-[0_0_20px_rgba(230,179,128,0.1)]" 
-                        : "bg-white/[0.02] border-white/5 hover:border-white/10"
+                      selectedOption === idx
+                        ? "bg-primary/10 border-primary shadow-[0_0_24px_-6px] shadow-primary/40"
+                        : "bg-card/50 border-border/50 hover:border-border"
                     )}
                   >
                     {/* Background Glow */}
                     <div className={cn("absolute -bottom-10 -right-10 w-32 h-32 bg-gradient-to-br blur-3xl opacity-20 transition-opacity group-hover:opacity-40", opt.color)} />
-                    
-                    <div className="absolute top-0 right-4 px-2 py-0.5 rounded-b-lg bg-[#E6B380] text-[9px] font-bold text-black uppercase">
+
+                    <div className="absolute top-0 right-4 px-2 py-0.5 rounded-b-lg bg-primary text-[9px] font-bold text-primary-foreground uppercase">
                       额外赠送 50%
                     </div>
 
-                    <div className="text-[10px] text-white/40 mb-2">{opt.name}</div>
+                    <div className="text-[10px] text-muted-foreground mb-2">{opt.name}</div>
                     <div className="text-2xl font-bold mb-1">
                       {opt.credits.toLocaleString()}
                     </div>
-                    <div className="text-[#E6B380] text-lg font-medium mb-1">
+                    <div className="text-primary text-lg font-medium mb-1">
                       + {opt.bonus.toLocaleString()}
                     </div>
-                    <div className="text-[10px] text-white/40 flex items-center gap-1">
+                    <div className="text-[10px] text-muted-foreground flex items-center gap-1">
                       积分 <div className="h-2 w-2 rounded-[1px] bg-gradient-to-br from-yellow-400 to-orange-400" />
                     </div>
 
@@ -168,7 +168,7 @@ export function CreditPurchaseDialog({
                           <div className="text-xl font-bold">
                             <span className="text-xs font-normal mr-1">¥</span>{opt.price.toLocaleString()}
                           </div>
-                          <div className="text-[10px] text-green-500/80">(节省 ¥{opt.savings.toLocaleString()})</div>
+                          <div className="text-[10px] text-emerald-500/80">(节省 ¥{opt.savings.toLocaleString()})</div>
                        </div>
                     </div>
                   </div>
@@ -177,14 +177,14 @@ export function CreditPurchaseDialog({
             )}
           </div>
 
-          <div className="mt-12 flex items-center justify-between border-t border-white/5 pt-6">
-            <div className="text-[10px] text-white/20">
+          <div className="mt-12 flex items-center justify-between border-t border-border/50 pt-6">
+            <div className="text-[10px] text-muted-foreground/60">
               积分有效期说明：仅限会员购买，积分有效期2年，购买后不退不换
             </div>
-            
-            <button className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FFD8B1] via-[#FFF3E6] to-white px-8 py-2.5 text-sm font-bold text-black shadow-lg transition-transform hover:scale-105 active:scale-95">
-              <div className="flex h-4 w-4 items-center justify-center rounded-sm bg-black/10">
-                <Play fill="black" className="h-2 w-2 text-black ml-0.5" />
+
+            <button className="flex items-center gap-2 rounded-full bg-primary px-8 py-2.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/25 transition-transform hover:scale-105 active:scale-95 cursor-pointer">
+              <div className="flex h-4 w-4 items-center justify-center rounded-sm bg-primary-foreground/15">
+                <Play fill="currentColor" className="h-2 w-2 ml-0.5" />
               </div>
               去支付
             </button>

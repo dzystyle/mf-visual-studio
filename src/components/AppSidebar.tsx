@@ -8,13 +8,16 @@ import {
   PanelLeftOpen,
   Trash2,
   Pencil,
-  MessagesSquare,
   Sparkles,
+  MessagesSquare,
+  MessageSquare,
   Zap,
   LayoutGrid,
   FolderClosed,
   Package,
   Bot,
+  ChevronDown,
+  Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logoAsset from "@/assets/logo.png.asset.json";
@@ -59,14 +62,24 @@ const SOURCE_META = {
 
 const GROUP_ORDER: HistoryItem["group"][] = ["今天", "昨天", "本月", "更早"];
 
-const NAV_ITEMS = [
-  { to: "/", icon: Sparkles, label: "创作" },
-  { to: "/canvas", icon: LayoutGrid, label: "画布" },
-  { to: "/creative-assistant", icon: MessagesSquare, label: "探讨" },
-  { to: "/quick", icon: Zap, label: "快速" },
-  { to: "/elements", icon: FolderClosed, label: "资产" },
-  { to: "/skill", icon: Package, label: "Skill" },
-] as const;
+const NAV_SECTIONS: {
+  items: { to: string; icon: typeof Sparkles; label: string }[];
+}[] = [
+  {
+    items: [
+      { to: "/", icon: Sparkles, label: "创作" },
+      { to: "/creative-assistant", icon: MessagesSquare, label: "探讨" },
+      { to: "/quick", icon: Zap, label: "快速" },
+      { to: "/canvas", icon: LayoutGrid, label: "画布" },
+    ],
+  },
+  {
+    items: [
+      { to: "/elements", icon: FolderClosed, label: "资产" },
+      { to: "/skill", icon: Package, label: "Skill" },
+    ],
+  },
+];
 
 export const ASSISTANT_NEW_SESSION_EVENT = "assistant:new-session";
 export const ASSISTANT_SELECT_HISTORY_EVENT = "assistant:select-history";
@@ -140,6 +153,7 @@ export function AppSidebar() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<string | undefined>("h3");
   const [preview, setPreview] = useState<PreviewState | null>(null);
+  const [tab, setTab] = useState<"all" | "agent" | "canvas">("all");
 
   const showPreview = (item: HistoryItem, e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -147,19 +161,26 @@ export function AppSidebar() {
   };
 
   const grouped = useMemo(() => {
-    const filtered = items.filter((i) =>
-      i.title.toLowerCase().includes(query.trim().toLowerCase())
+    const filtered = items.filter(
+      (i) =>
+        (tab === "all" || i.source === tab) &&
+        i.title.toLowerCase().includes(query.trim().toLowerCase())
     );
     return GROUP_ORDER.map((g) => ({
       group: g,
       list: filtered.filter((i) => i.group === g),
     })).filter((g) => g.list.length > 0);
-  }, [items, query]);
+  }, [items, query, tab]);
 
   const goAssistant = () => {
     if (pathname !== "/creative-assistant") {
       navigate({ to: "/creative-assistant" });
     }
+  };
+
+  const handleNewSession = () => {
+    goAssistant();
+    window.dispatchEvent(new CustomEvent(ASSISTANT_NEW_SESSION_EVENT));
   };
 
   const handleSelectHistory = (item: HistoryItem) => {
@@ -201,27 +222,34 @@ export function AppSidebar() {
 
               {/* 功能导航 */}
               <nav className="px-2 pb-1">
-                {NAV_ITEMS.map((item) => {
-                  const active =
-                    item.to === "/"
-                      ? pathname === "/"
-                      : pathname.startsWith(item.to);
-                  return (
-                    <Link
-                      key={item.label}
-                      to={item.to}
-                      className={cn(
-                        "mb-0.5 flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] transition",
-                        active
-                          ? "bg-[var(--color-accent)] font-semibold text-[var(--color-foreground)]"
-                          : "text-[var(--color-foreground)]/75 hover:bg-[var(--color-accent)]/60 hover:text-[var(--color-foreground)]"
-                      )}
-                    >
-                      <item.icon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-                      {item.label}
-                    </Link>
-                  );
-                })}
+                {NAV_SECTIONS.map((section, si) => (
+                  <div key={si}>
+                    {si > 0 && (
+                      <div className="mx-3 my-2 h-px bg-[var(--color-border)]" />
+                    )}
+                    {section.items.map((item) => {
+                      const active =
+                        item.to === "/"
+                          ? pathname === "/"
+                          : pathname.startsWith(item.to);
+                      return (
+                        <Link
+                          key={item.label}
+                          to={item.to}
+                          className={cn(
+                            "mb-0.5 flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] transition",
+                            active
+                              ? "bg-[var(--color-accent)] font-semibold text-[var(--color-foreground)]"
+                              : "text-[var(--color-foreground)]/75 hover:bg-[var(--color-accent)]/60 hover:text-[var(--color-foreground)]"
+                          )}
+                        >
+                          <item.icon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                          {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ))}
               </nav>
 
               <div className="mx-4 my-1 h-px bg-[var(--color-border)]" />
@@ -259,21 +287,72 @@ export function AppSidebar() {
                 </DropdownMenu>
               </div>
 
-              {/* 搜索 */}
+              {/* 搜索 + 来源筛选 */}
               <div className="px-4 pb-2">
-                <div className="flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-secondary)] px-3 py-1.5">
+                <div className="flex items-center gap-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-secondary)] px-2 py-1.5">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        title="筛选来源"
+                        className="flex shrink-0 items-center gap-1 rounded-lg px-1.5 py-1 text-[11px] font-medium text-[var(--color-muted-foreground)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"
+                      >
+                        {tab === "all" && <Layers className="h-3 w-3" strokeWidth={1.75} />}
+                        {tab === "agent" && <Bot className="h-3 w-3" strokeWidth={1.75} />}
+                        {tab === "canvas" && <LayoutGrid className="h-3 w-3" strokeWidth={1.75} />}
+                        <span className="max-w-[48px] truncate">
+                          {tab === "all" ? "全部" : tab === "agent" ? "Agent" : "画布"}
+                        </span>
+                        <ChevronDown className="h-3 w-3 opacity-60" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-28">
+                      <DropdownMenuItem
+                        className={cn("text-[12px]", tab === "all" && "bg-[var(--color-accent)]")}
+                        onClick={() => setTab("all")}
+                      >
+                        <Layers className="mr-2 h-3.5 w-3.5" strokeWidth={1.75} /> 全部
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className={cn("text-[12px]", tab === "agent" && "bg-[var(--color-accent)]")}
+                        onClick={() => setTab("agent")}
+                      >
+                        <Bot className="mr-2 h-3.5 w-3.5" strokeWidth={1.75} /> 智能Agent
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className={cn("text-[12px]", tab === "canvas" && "bg-[var(--color-accent)]")}
+                        onClick={() => setTab("canvas")}
+                      >
+                        <LayoutGrid className="mr-2 h-3.5 w-3.5" strokeWidth={1.75} /> 画布
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+
+                  <div className="h-3.5 w-px bg-[var(--color-border)]" />
+
                   <Search className="h-3.5 w-3.5 text-[var(--color-muted-foreground)]" />
                   <input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="搜索创作"
-                    className="w-full bg-transparent text-[12px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none"
+                    className="min-w-0 flex-1 bg-transparent text-[12px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none"
                   />
                 </div>
               </div>
 
               {/* 列表 */}
               <div className="scrollbar-hide flex-1 overflow-y-auto px-2 pb-6">
+                <div
+                  onClick={handleNewSession}
+                  className="group flex cursor-pointer items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-[var(--color-accent)]/60"
+                >
+                  <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[var(--color-primary)]/30 bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+                    <MessageSquare className="h-4 w-4" strokeWidth={1.75} />
+                  </div>
+                  <span className="flex-1 truncate text-[13px] text-[var(--color-foreground)]/80 group-hover:text-[var(--color-foreground)]">
+                    新会话
+                  </span>
+                </div>
+
                 {grouped.length === 0 && (
                   <p className="px-3 py-8 text-center text-[12px] text-[var(--color-muted-foreground)]">
                     暂无匹配的创作记录

@@ -418,6 +418,7 @@ export function SkillCard({
   desc,
   image,
   hot,
+  compact,
   onHover,
   onLeave,
   onTry,
@@ -426,6 +427,7 @@ export function SkillCard({
   desc: string;
   image: string;
   hot?: boolean;
+  compact?: boolean;
   onHover?: () => void;
   onLeave?: () => void;
   onTry?: () => void;
@@ -434,7 +436,9 @@ export function SkillCard({
     <div
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
-      className="group relative flex w-full items-center gap-3 rounded-2xl border border-black/[0.06] bg-white/60 px-3 py-3 text-left shadow-sm transition hover:border-black/[0.12] hover:bg-white/80 dark:border-white/[0.08] dark:bg-[#1a1a1d] dark:hover:border-white/[0.16] dark:hover:bg-[#202024]"
+      className={`group relative flex w-full items-center text-left shadow-sm transition ${
+        compact ? "gap-2.5 rounded-xl px-2.5 py-2.5" : "gap-3 rounded-2xl px-3 py-3"
+      } border border-black/[0.06] bg-white/60 hover:border-black/[0.12] hover:bg-white/80 dark:border-white/[0.08] dark:bg-[#1a1a1d] dark:hover:border-white/[0.16] dark:hover:bg-[#202024]`}
     >
       {hot && (
         <div className="absolute -top-2 right-3 z-10 rounded-full bg-gradient-to-r from-emerald-500/90 to-teal-500/90 px-2 py-px text-[9px] font-medium text-white shadow-md dark:from-emerald-400/20 dark:to-teal-400/20 dark:text-emerald-300 dark:border dark:border-emerald-400/30">
@@ -445,13 +449,17 @@ export function SkillCard({
         src={image}
         alt={title}
         loading="lazy"
-        className="h-14 w-[72px] shrink-0 rounded-xl object-cover ring-1 ring-black/10 dark:ring-white/10"
+        className={
+          compact
+            ? "h-12 w-12 shrink-0 rounded-lg object-cover ring-1 ring-black/10 dark:ring-white/10"
+            : "h-14 w-[72px] shrink-0 rounded-xl object-cover ring-1 ring-black/10 dark:ring-white/10"
+        }
       />
       <div className="min-w-0 flex-1">
-        <div className="truncate text-[13px] font-semibold text-foreground">
+        <div className={`truncate font-semibold text-foreground ${compact ? "text-[12px]" : "text-[13px]"}`}>
           {title}
         </div>
-        <div className="mt-0.5 line-clamp-1 text-[11px] text-muted-foreground">
+        <div className={`mt-0.5 line-clamp-1 text-muted-foreground ${compact ? "text-[10px]" : "text-[11px]"}`}>
           {desc}
         </div>
       </div>

@@ -30,7 +30,9 @@ import {
   VolumeX,
   Layers,
   SquareDashedMousePointer,
-  
+  CheckSquare,
+  Check,
+  DownloadCloud,
 
 } from "lucide-react";
 import { TopBar } from "@/components/TopBar";
@@ -73,6 +75,47 @@ import videoPreviewAsset from "@/assets/generated-video-preview.jpg.asset.json";
 const videoPreview = videoPreviewAsset.url;
 import videoFileAsset from "@/assets/video-preview.mp4.asset.json";
 const videoFileUrl = videoFileAsset.url;
+
+/* ---------------- 素材清单与导出 ---------------- */
+type ResourceFile = { id: string; name: string; kind: "doc" | "image" | "video"; url?: string; text?: string };
+
+const MOCK_SCRIPT_MD = `# story-script.md\n\n| 镜头 | 时长 | 描述 |\n| --- | --- | --- |\n| 01 | 2.5s | 主角特写 |\n| 02 | 3.0s | 场景全景 |\n`;
+
+const RESOURCE_FILES: ResourceFile[] = [
+  { id: "doc-1", name: "video-projects_20260813-1400-a.json", kind: "doc", text: "{}" },
+  { id: "doc-2", name: "video-projects_20260813-1400-b.json", kind: "doc", text: "{}" },
+  { id: "doc-3", name: "final-generation-info.md", kind: "doc", text: "# final-generation-info" },
+  { id: "doc-4", name: "story-brief.md", kind: "doc", text: "# story-brief" },
+  { id: "doc-5", name: "story-script.md", kind: "doc", text: MOCK_SCRIPT_MD },
+  { id: "img-1", name: "user_upload_image_1.webp", kind: "image", url: charSam },
+  { id: "img-2", name: "genos-reference.png", kind: "image", url: charBoss },
+  { id: "vid-1", name: "intro-animation.mp4", kind: "video", url: videoFileUrl },
+];
+
+function triggerDownload(href: string, filename: string) {
+  const link = document.createElement("a");
+  link.href = href;
+  link.download = filename;
+  link.rel = "noopener";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+async function exportResources(files: ResourceFile[]) {
+  for (const f of files) {
+    if (f.url) {
+      triggerDownload(f.url, f.name);
+    } else {
+      const blob = new Blob([f.text ?? ""], { type: "text/plain;charset=utf-8" });
+      const objectUrl = URL.createObjectURL(blob);
+      triggerDownload(objectUrl, f.name);
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 4000);
+    }
+    await new Promise((r) => setTimeout(r, 260));
+  }
+}
+
 
 
 type Search = { prompt?: string; skill?: string };
@@ -117,6 +160,20 @@ function CreativeAssistantPage() {
   const [showResources, setShowResources] = useState(false);
   
   const [resourceMode, setResourceMode] = useState<'grid' | 'folder'>('folder');
+  const [selectMode, setSelectMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [exporting, setExporting] = useState(false);
+  const isSelected = (id: string) => selectedIds.includes(id);
+  const toggleSelect = (id: string) =>
+    setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  const runExport = async (files: ResourceFile[]) => {
+    if (!files.length) return;
+    setExporting(true);
+    toast.info(`开始导出 ${files.length} 个素材…`);
+    await exportResources(files);
+    setExporting(false);
+    toast.success(`已导出 ${files.length} 个素材`);
+  };
   const [inputValue, setInputValue] = useState(initialPrompt || "");
   const [activeResource, setActiveResource] = useState<{ type: 'script' | 'image' | 'video'; data?: any } | null>(null);
   const [isTyping, setIsTyping] = useState(false);
@@ -689,15 +746,36 @@ function CreativeAssistantPage() {
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => { setSelectMode((v) => !v); setSelectedIds([]); setResourceMode('grid'); }}
+                    className={cn(
+                      "flex items-center gap-1.5 rounded-full border px-3 py-2 text-[12px] font-medium transition-colors",
+                      selectMode
+                        ? "border-transparent bg-[var(--color-foreground)] text-[var(--color-background)]"
+                        : "border-[var(--color-border)] bg-[var(--color-secondary)] text-[var(--color-foreground)] hover:bg-[var(--color-accent)]"
+                    )}
+                  >
+                    <CheckSquare className="h-3.5 w-3.5" />
+                    多选
+                  </button>
+                  <button
+                    disabled={exporting}
+                    onClick={() => runExport(RESOURCE_FILES)}
+                    className="flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-3 py-2 text-[12px] font-medium text-[var(--color-foreground)] transition-colors hover:bg-[var(--color-accent)] disabled:opacity-50"
+                  >
+                    <DownloadCloud className="h-3.5 w-3.5" />
+                    一键导出
+                  </button>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#86868B]" />
                     <input 
                       type="text" 
                       placeholder="查找..." 
-                      className="bg-[var(--color-secondary)] border border-[var(--color-border)] rounded-full pl-9 pr-4 py-2 text-sm text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 w-56 transition-all"
+                      className="bg-[var(--color-secondary)] border border-[var(--color-border)] rounded-full pl-9 pr-4 py-2 text-sm text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 w-40 transition-all"
                     />
                   </div>
+
                   <button onClick={() => setShowResources(false)} className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] p-1 rounded-full hover:bg-[var(--color-secondary)] transition-colors"><X className="h-6 w-6" /></button>
                 </div>
               </div>
@@ -716,16 +794,23 @@ function CreativeAssistantPage() {
                           <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 5 个</span>
                         </div>
                         <div className="grid grid-cols-2 gap-5">
-                          <ResourceCard title="video-projects_20260813-14..." type="JSON" date="1小时前" />
-                          <ResourceCard title="video-projects_20260813-14..." type="JSON" date="25分钟前" />
-                          <ResourceCard title="final-generation-info.md" type="MD" date="1小时前" />
-                          <ResourceCard title="story-brief.md" type="MD" date="1小时前" />
-                          <ResourceCard 
-                            title="story-script.md" 
-                            type="MD" 
-                            date="1小时前" 
-                            onClick={() => setActiveResource({ type: 'script' })} 
-                          />
+                          {RESOURCE_FILES.filter((f) => f.kind === "doc").map((f, i) => (
+                            <ResourceCard
+                              key={f.id}
+                              title={f.name}
+                              type={f.name.endsWith(".md") ? "MD" : "JSON"}
+                              date={i === 1 ? "25分钟前" : "1小时前"}
+                              selectable={selectMode}
+                              selected={isSelected(f.id)}
+                              onClick={() =>
+                                selectMode
+                                  ? toggleSelect(f.id)
+                                  : f.id === "doc-5"
+                                    ? setActiveResource({ type: 'script' })
+                                    : undefined
+                              }
+                            />
+                          ))}
                         </div>
                       </section>
 
@@ -736,20 +821,22 @@ function CreativeAssistantPage() {
                           <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 2 个</span>
                         </div>
                         <div className="grid grid-cols-2 gap-5">
-                          <ImageResourceCard 
-                            title="user_upload_image_1.webp" 
-                            type="WEBP" 
-                            date="1小时前" 
-                            img={charSam} 
-                            onClick={() => setActiveResource({ type: 'image', data: { url: charSam, name: 'user_upload_image_1.webp' } })}
-                          />
-                          <ImageResourceCard 
-                            title="genos-reference.png" 
-                            type="PNG" 
-                            date="1小时前" 
-                            img={charBoss} 
-                            onClick={() => setActiveResource({ type: 'image', data: { url: charBoss, name: 'genos-reference.png' } })}
-                          />
+                          {RESOURCE_FILES.filter((f) => f.kind === "image").map((f) => (
+                            <ImageResourceCard
+                              key={f.id}
+                              title={f.name}
+                              type={f.name.split(".").pop()!.toUpperCase()}
+                              date="1小时前"
+                              img={f.url!}
+                              selectable={selectMode}
+                              selected={isSelected(f.id)}
+                              onClick={() =>
+                                selectMode
+                                  ? toggleSelect(f.id)
+                                  : setActiveResource({ type: 'image', data: { url: f.url, name: f.name } })
+                              }
+                            />
+                          ))}
                         </div>
                       </section>
 
@@ -760,15 +847,25 @@ function CreativeAssistantPage() {
                           <span className="text-[12px] text-[var(--color-muted-foreground)] font-medium">共 1 个</span>
                         </div>
                         <div className="grid grid-cols-2 gap-5">
-                          <ImageResourceCard 
-                            title="intro-animation.mp4" 
-                            type="MP4" 
-                            date="刚刚" 
-                            img={skillReenact} 
-                            onClick={() => setActiveResource({ type: 'video', data: { url: videoFileUrl, name: 'intro-animation.mp4' } })}
-                          />
+                          {RESOURCE_FILES.filter((f) => f.kind === "video").map((f) => (
+                            <ImageResourceCard
+                              key={f.id}
+                              title={f.name}
+                              type="MP4"
+                              date="刚刚"
+                              img={skillReenact}
+                              selectable={selectMode}
+                              selected={isSelected(f.id)}
+                              onClick={() =>
+                                selectMode
+                                  ? toggleSelect(f.id)
+                                  : setActiveResource({ type: 'video', data: { url: f.url, name: f.name } })
+                              }
+                            />
+                          ))}
                         </div>
                       </section>
+
                     </div>
                   ) : (
                     <FolderView 
@@ -840,6 +937,41 @@ function CreativeAssistantPage() {
                   </div>
                 </div>
               </div>
+
+              {/* 多选操作条 */}
+              {selectMode && !activeResource && (
+                <div className="flex items-center justify-between gap-3 border-t border-[var(--color-border)] bg-[var(--color-card)] px-6 py-4">
+                  <span className="text-[13px] text-[var(--color-muted-foreground)]">
+                    已选 <span className="font-bold text-[var(--color-foreground)]">{selectedIds.length}</span> 项
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() =>
+                        setSelectedIds(selectedIds.length === RESOURCE_FILES.length ? [] : RESOURCE_FILES.map((f) => f.id))
+                      }
+                      className="rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-3 py-2 text-[12px] font-medium text-[var(--color-foreground)] hover:bg-[var(--color-accent)]"
+                    >
+                      {selectedIds.length === RESOURCE_FILES.length ? "取消全选" : "全选"}
+                    </button>
+                    <button
+                      onClick={() => { setSelectMode(false); setSelectedIds([]); }}
+                      className="rounded-full border border-[var(--color-border)] bg-[var(--color-secondary)] px-3 py-2 text-[12px] font-medium text-[var(--color-foreground)] hover:bg-[var(--color-accent)]"
+                    >
+                      退出多选
+                    </button>
+                    <button
+                      disabled={!selectedIds.length || exporting}
+                      onClick={() => runExport(RESOURCE_FILES.filter((f) => selectedIds.includes(f.id)))}
+                      className="flex items-center gap-1.5 rounded-full bg-[var(--color-foreground)] px-4 py-2 text-[12px] font-medium text-[var(--color-background)] transition hover:opacity-90 disabled:opacity-40"
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      导出所选
+                    </button>
+                  </div>
+                </div>
+              )}
+              
+
               
               {/* Collapse handle */}
               <button 
@@ -1073,12 +1205,31 @@ function ChoiceItem({
   );
 }
 
-function ResourceCard({ title, type, date, onClick }: { title: string; type: string; date: string; onClick?: () => void }) {
+function SelectBadge({ selected }: { selected: boolean }) {
+  return (
+    <div
+      className={cn(
+        "absolute right-3 top-3 z-10 flex h-5 w-5 items-center justify-center rounded-md border transition-colors",
+        selected
+          ? "border-transparent bg-[var(--color-foreground)] text-[var(--color-background)]"
+          : "border-[var(--color-border)] bg-[var(--color-card)]/90"
+      )}
+    >
+      {selected && <Check className="h-3.5 w-3.5" />}
+    </div>
+  );
+}
+
+function ResourceCard({ title, type, date, onClick, selectable, selected }: { title: string; type: string; date: string; onClick?: () => void; selectable?: boolean; selected?: boolean }) {
   return (
     <div 
       onClick={onClick}
-      className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[var(--color-muted-foreground)] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer"
+      className={cn(
+        "relative bg-[var(--color-card)] border rounded-3xl p-5 flex flex-col gap-5 group transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer",
+        selected ? "border-[var(--color-foreground)]" : "border-[var(--color-border)] hover:border-[var(--color-muted-foreground)]"
+      )}
     >
+      {selectable && <SelectBadge selected={!!selected} />}
       <div className="h-28 w-full bg-[var(--color-secondary)] rounded-2xl flex items-center justify-center border border-[var(--color-border)]">
         <div className="text-[12px] font-bold text-[var(--color-muted-foreground)] uppercase tracking-[0.2em]">{type}</div>
       </div>
@@ -1094,12 +1245,16 @@ function ResourceCard({ title, type, date, onClick }: { title: string; type: str
   );
 }
 
-function ImageResourceCard({ title, type, date, img, onClick }: { title: string; type: string; date: string; img: string; onClick?: () => void }) {
+function ImageResourceCard({ title, type, date, img, onClick, selectable, selected }: { title: string; type: string; date: string; img: string; onClick?: () => void; selectable?: boolean; selected?: boolean }) {
   return (
     <div 
       onClick={onClick}
-      className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl p-5 flex flex-col gap-5 group hover:border-[var(--color-muted-foreground)] transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer"
+      className={cn(
+        "relative bg-[var(--color-card)] border rounded-3xl p-5 flex flex-col gap-5 group transition-all hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] cursor-pointer",
+        selected ? "border-[var(--color-foreground)]" : "border-[var(--color-border)] hover:border-[var(--color-muted-foreground)]"
+      )}
     >
+      {selectable && <SelectBadge selected={!!selected} />}
       <div className="h-28 w-full rounded-2xl overflow-hidden relative border border-[var(--color-border)]">
         <img src={img} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
         <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-[var(--color-card)]/90 backdrop-blur-md text-[10px] font-bold text-[var(--color-foreground)] uppercase tracking-wider shadow-sm">{type}</div>

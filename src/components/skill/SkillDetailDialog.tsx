@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X, ChevronRight, Save, LayoutGrid, Eye, Code2, Plus, Mic, ArrowUp, CheckCircle2, MoreHorizontal, Send, ChevronDown, Check, Undo2, Redo2, RotateCcw, Share2, Copy, Trash2, Edit2, PlayCircle, Info, Upload } from "lucide-react";
+import { X, ChevronRight, Save, LayoutGrid, Eye, Code2, Plus, Mic, ArrowUp, CheckCircle2, MoreHorizontal, Send, ChevronDown, Check, Undo2, Redo2, RotateCcw, Share2, Copy, Trash2, Edit2, PlayCircle, Info, Upload, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -8,17 +8,20 @@ interface SkillDetailDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   skill: any;
+  isMine?: boolean;
   onEdit?: (skill: any) => void;
 }
 
-export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDetailDialogProps) {
+export function SkillDetailDialog({ open, onOpenChange, skill, isMine, onEdit }: SkillDetailDialogProps) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = React.useState<"intro" | "content">("intro");
+  const [isPublic, setIsPublic] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [cover, setCover] = React.useState<{ url: string; type: "image" | "video" } | null>(null);
 
   React.useEffect(() => {
     setCover(null);
+    setIsPublic(false);
   }, [skill?.id]);
 
   const handlePickFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -200,6 +203,20 @@ export function SkillDetailDialog({ open, onOpenChange, skill, onEdit }: SkillDe
                   <Share2 className="h-4 w-4" />
                   分享
                 </button>
+                {isMine && (
+                  <button 
+                    onClick={() => setIsPublic((v) => !v)}
+                    className={cn(
+                      "flex items-center gap-2 h-11 rounded-xl border px-6 text-sm font-medium transition",
+                      isPublic
+                        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
+                        : "border-border bg-secondary text-foreground hover:bg-accent"
+                    )}
+                  >
+                    <Globe className="h-4 w-4" />
+                    {isPublic ? "已公开" : "公开skill"}
+                  </button>
+                )}
               </div>
               
               <button 

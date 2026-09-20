@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { toast } from "sonner";
 import {
   Plus,
   LayoutGrid,
@@ -17,6 +18,7 @@ import {
   PackagePlus,
   Folder,
   Bot,
+  Check,
 } from "lucide-react";
 import { DEFAULT_HISTORY, type HistoryItem } from "./AppSidebar";
 import {
@@ -27,6 +29,7 @@ import {
   skillList,
 } from "./picker-dialogs";
 import { CreateSkillDialog } from "./skill/CreateSkillDialog";
+import { CreateProjectDialog } from "./CreateProjectDialog";
 import {
   Popover,
   PopoverContent,
@@ -51,19 +54,25 @@ const ACCEPT_MAP: Record<Attachment["kind"], string> = {
 export function PromptBox({ 
   onSubmit, 
   isMini = false,
+  tall = false,
 }: { 
   onSubmit?: (text: string, canvasMode: boolean, skill?: string | null) => void; 
   isMini?: boolean;
+  tall?: boolean;
 } = {}) {
   const [text, setText] = useState("");
   const [plusOpen, setPlusOpen] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [model, setModel] = useState<string | null>(null);
+  const [agentMode, setAgentMode] = useState("Agent模式");
+  const [agentOpen, setAgentOpen] = useState(false);
   const [skill, setSkill] = useState<string | null>(null);
   const [project, setProject] = useState<HistoryItem | null>(null);
   const [projectOpen, setProjectOpen] = useState(false);
   const [projectQuery, setProjectQuery] = useState("");
   const [projectWarn, setProjectWarn] = useState(false);
+  const [projects, setProjects] = useState<HistoryItem[]>(DEFAULT_HISTORY);
+  const [createProjectOpen, setCreateProjectOpen] = useState(false);
   const [ratio, setRatio] = useState("16:9");
   const [duration, setDuration] = useState(17);
   const [assetsOpen, setAssetsOpen] = useState(false);
@@ -78,6 +87,20 @@ export function PromptBox({
   const [slashOpen, setSlashOpen] = useState(false);
   const [slashFilter, setSlashFilter] = useState("");
   const [createSkillOpen, setCreateSkillOpen] = useState(false);
+
+  const handleCreateProject = (projectName: string) => {
+    const newProject: HistoryItem = {
+      id: `proj-${Date.now()}`,
+      title: projectName,
+      group: "今天",
+      kind: "video",
+      source: "agent",
+    };
+    setProjects((prev) => [newProject, ...prev]);
+    setProject(newProject);
+    setProjectWarn(false);
+    toast.success(`项目「${projectName}」创建成功`);
+  };
 
   // Stats for the hover capsule (synced with localStorage)
    const [prefs, setPrefs] = useState({
@@ -349,7 +372,7 @@ export function PromptBox({
 
   return (
     <div className={`glass shadow-2xl relative z-[150] transition-all duration-500 ease-out-expo ${
-      isMini ? 'rounded-full p-2 pl-6' : 'rounded-2xl p-5'
+      isMini ? 'rounded-full p-2 pl-6' : tall ? 'rounded-2xl p-5 min-h-[150px] flex flex-col' : 'rounded-2xl p-5'
     }`}>
       {!isMini && attachments.length > 0 && (
         <div className="flex flex-wrap gap-3 mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
@@ -471,8 +494,8 @@ export function PromptBox({
             const remainingText = text.slice(currentLastPos);
             
             return (
-              <div className={`flex-1 flex flex-wrap items-center relative pointer-events-none ${isMini ? 'min-h-[32px]' : 'min-h-[24px]'}`}>
-                <div className="flex-1 flex flex-wrap items-center pointer-events-auto">
+              <div className={`flex-1 flex flex-wrap relative pointer-events-none ${isMini ? 'min-h-[32px] items-center' : tall ? 'min-h-[24px] items-start content-start' : 'min-h-[24px] items-center'}`}>
+                <div className={`flex-1 flex flex-wrap pointer-events-auto ${tall ? 'items-start content-start' : 'items-center'}`}>
                   {contentItems}
                   <div className="relative inline-flex flex-1 min-w-[50px] align-middle">
                     <textarea
@@ -529,7 +552,7 @@ export function PromptBox({
                       }}
                       placeholder={text === "" && selectedMentions.length === 0 ? "输入你的需求即可生成图片、视频；上传素材后可使用 @引用素材互动，例如：@Image 1 作首帧、@Image 2 作尾帧，参考 @Video 1 生成游戏宣发视频。" : ""}
                       className={`w-full bg-transparent text-[15px] leading-6 text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-all duration-300 resize-none overflow-hidden flex items-center ${
-                        isMini ? 'py-1 cursor-pointer' : 'py-0 min-h-[24px]'
+                        isMini ? 'py-1 cursor-pointer' : tall ? 'py-0 min-h-[72px]' : 'py-0 min-h-[24px]'
                       }`}
                     />
                   </div>
@@ -676,6 +699,49 @@ export function PromptBox({
               </PopoverContent>
             </Popover>
             <input ref={fileInputRef} type="file" multiple className="hidden" onChange={onFiles} />
+
+            <Popover open={agentOpen} onOpenChange={setAgentOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  className={`flex h-8 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-colors ${
+                    agentOpen ? "border-border bg-accent text-foreground" : "border-border text-muted-foreground hover:bg-accent hover:text-foreground"
+                  }`}
+                >
+                  <Bot className="h-3.5 w-3.5" />
+                  {agentMode}
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform ${agentOpen ? "rotate-180" : ""}`} />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent side="bottom" align="start" sideOffset={12} className="w-72 p-1.5 border-border bg-popover/90 backdrop-blur-xl rounded-2xl shadow-2xl z-[100] animate-in fade-in zoom-in-95 duration-200">
+                <button
+                  type="button"
+                  onClick={() => { setAgentMode("Agent模式"); setAgentOpen(false); }}
+                  className="w-full flex items-start justify-between gap-2 px-3 py-3 rounded-xl hover:bg-accent transition text-left"
+                >
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-foreground">Agent模式</span>
+                      <span className="rounded-md bg-accent px-1.5 py-0.5 text-[10px] text-muted-foreground border border-border">分钟级成片</span>
+                    </div>
+                    <div className="mt-1 text-[11px] leading-snug text-muted-foreground/80">描述你的想法，Agent 帮你完善创意并自动调用合适的模型</div>
+                  </div>
+                  {agentMode === "Agent模式" && <Check className="h-4 w-4 text-foreground shrink-0 mt-0.5" />}
+                </button>
+                {["视频生成", "图片生成", "音频生成"].map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => { setAgentMode(m); setAgentOpen(false); }}
+                    className="w-full flex items-center justify-between px-3 py-3 rounded-xl hover:bg-accent transition text-left"
+                  >
+                    <span className="text-sm font-medium text-foreground">{m}</span>
+                    {agentMode === m && <Check className="h-4 w-4 text-foreground" />}
+                  </button>
+                ))}
+              </PopoverContent>
+            </Popover>
+
             
             <ElementsPickerDialog open={assetsOpen} onOpenChange={setAssetsOpen} onSelect={handleMentionSelect} />
             <CreateSkillDialog open={createSkillOpen} onOpenChange={setCreateSkillOpen} />
@@ -816,11 +882,20 @@ export function PromptBox({
                   </div>
                 </div>
                 <div className="max-h-[280px] overflow-y-auto p-1.5">
-                  {DEFAULT_HISTORY.filter((h) => h.title.includes(projectQuery)).length === 0 && (
+                  <button
+                    type="button"
+                    onClick={() => { setProjectOpen(false); setCreateProjectOpen(true); }}
+                    className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-medium text-primary transition-colors hover:bg-primary/10"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    创建项目
+                  </button>
+                  <div className="mx-1.5 my-1.5 h-px bg-border/60" />
+                  {projects.filter((h) => h.title.includes(projectQuery)).length === 0 && (
                     <div className="px-3 py-6 text-center text-xs text-muted-foreground">未找到相关项目</div>
                   )}
                   {(["今天", "昨天", "本月", "更早"] as const).map((g) => {
-                    const list = DEFAULT_HISTORY.filter((h) => h.group === g && h.title.includes(projectQuery));
+                    const list = projects.filter((h) => h.group === g && h.title.includes(projectQuery));
                     if (list.length === 0) return null;
                     return (
                       <div key={g} className="mb-1">
@@ -849,6 +924,12 @@ export function PromptBox({
                 </div>
               </PopoverContent>
             </Popover>
+
+            <CreateProjectDialog
+              open={createProjectOpen}
+              onOpenChange={setCreateProjectOpen}
+              onConfirm={handleCreateProject}
+            />
           </div>
 
           <div className="flex items-center gap-2">
